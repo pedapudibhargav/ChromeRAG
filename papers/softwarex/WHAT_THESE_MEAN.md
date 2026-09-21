@@ -20,7 +20,9 @@ These live in `SOFTWAREX_DRAFT.md` and should match the References section in `C
 
 ## 2. APC only after acceptance
 
-**APC** = Article Publishing Charge (SoftareX open-access fee, ~USD 1,560 + tax).
+**APC** = Article Publishing Charge (SoftwareX open-access fee).  
+**Current list price on the journal homepage (checked 2026-09-21): USD 1,920 excluding taxes** — verify before paying at  
+https://www.sciencedirect.com/journal/softwarex (APCs change; do not rely on older blog/checklist numbers such as USD 1,560).
 
 | Stage | Pay? |
 |-------|------|
