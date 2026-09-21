@@ -182,23 +182,25 @@ During the preparation of this work, the author(s) used Cursor (Grok-assisted co
 
 ---
 
-## References (starter — expand in template)
+## References
 
-1. Barbaresi, A. (2021). Trafilatura: A Web Scraping Library… *ACL System Demonstrations*.
-2. SoftwareX Guide for Authors. Elsevier. https://www.sciencedirect.com/journal/softwarex/publish/guide-for-authors
-3. Related: MarkItDown (Microsoft), readability-lxml, HtmlRAG query-time pruning literature (cite final arXiv versions at submission).
+1. A. Barbaresi, “Trafilatura: A Web Scraping Library and Command-Line Tool for Text Discovery and Extraction,” in *Proc. ACL-IJCNLP 2021 System Demonstrations*, 2021, pp. 122–131. doi: [10.18653/v1/2021.acl-demo.15](https://doi.org/10.18653/v1/2021.acl-demo.15).
+2. J. Alarte, J. Silva, and S. Tamarit, “What Web Template Extractor Should I Use? A Benchmarking and Comparison for Five Template Extractors,” *ACM Trans. Web*, vol. 13, no. 2, Art. 9, 2019. doi: [10.1145/3316810](https://doi.org/10.1145/3316810).
+3. J. Tan, Z. Dou, W. Wang, M. Wang, W. Chen, and J.-R. Wen, “HtmlRAG: HTML is Better Than Plain Text for Modeling Retrieved Knowledge in RAG Systems,” in *Proc. ACM Web Conf. (WWW ’25)*, 2025. doi: [10.1145/3696410.3714546](https://doi.org/10.1145/3696410.3714546).
+4. B. C. Peddapudi, *ChromeRAG*, version 0.1.0, GitHub, 2026. [Online]. Available: https://github.com/pedapudibhargav/ChromeRAG/tree/v0.1.0
+5. Microsoft, *MarkItDown*: Python tool for converting files and office documents to Markdown, GitHub. [Online]. Available: https://github.com/microsoft/markitdown
 
 ---
 
 ## Paste checklist before Editorial Manager
 
-- [ ] Official SoftwareX **Word or LaTeX template** (mandatory; do not alter styles) — download from the Guide for authors; paste this content in
-- [ ] Article type: **Original Software Publication**
-- [ ] Public **GitHub** repo with `README.md` + `LICENSE` (not GitLab)
-- [ ] Code metadata table C2 filled with permanent URL / release tag
-- [ ] ≤4000 words (abstract+body+captions); ≤6 figures
-- [ ] Highlights (3–5 bullets, ≤85 chars each) — present above
-- [ ] Competing interests / funding / AI declaration / CRediT sections
-- [ ] Run `python scripts/check_softwarex_draft.py` and `python scripts/revalidate_corpus.py`
-- [ ] Optional graphical abstract (no general-purpose gen-AI cover art without editor permission)
-- [ ] Optional 60–90s screencast linked from README (SoftwareX encourages video)
+- [x] Official SoftwareX **Word** manuscript: `ChromeRAG_SoftwareX_OSP.docx` (figures embedded)
+- [ ] Article type: **Original Software Publication** (not Software Update)
+- [x] Public **GitHub** with `README.md` + `LICENSE.txt`
+- [x] C2 = `https://github.com/pedapudibhargav/ChromeRAG/tree/v0.1.0`
+- [x] Highlights file ready: `HIGHLIGHTS.md` (paste into EM)
+- [x] Competing-interests Word: `COMPETING_INTERESTS_DECLARATION.docx` (or Elsevier tool output)
+- [ ] Open `.docx` in Word once → spell-check → do not change styles
+- [ ] Optional 60–90s screencast (see `SCREENCAST.md`)
+- [ ] Submit at https://www.editorialmanager.com/softx
+- [ ] APC **only after acceptance** (not at submit)

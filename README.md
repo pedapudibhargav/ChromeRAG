@@ -176,6 +176,8 @@ papers/softwarex/  # SoftwareX manuscript draft
 - Figures: [`papers/softwarex/figures/`](papers/softwarex/figures/)
 - Limitations (JS shells / scoreable filter): [docs/limitations.html](docs/limitations.html)
 - Draft self-check: `python scripts/check_softwarex_draft.py`
+- Highlights / APC / refs explained: [`papers/softwarex/WHAT_THESE_MEAN.md`](papers/softwarex/WHAT_THESE_MEAN.md)
+- Optional screencast shot list: [`papers/softwarex/SCREENCAST.md`](papers/softwarex/SCREENCAST.md)
 
 SoftwareX APC (journal OA fee) is paid **only after acceptance**, not at submission.
 
