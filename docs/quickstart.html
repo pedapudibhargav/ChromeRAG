@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Quickstart — ChromeRAG</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./assets/site.css" />
+</head>
+<body>
+  <header class="site">
+    <div class="wrap nav">
+      <a class="brand" href="./index.html">Chrome<span>RAG</span></a>
+      <ul class="nav-links">
+        <li><a href="./index.html">Home</a></li>
+        <li><a href="./metrics.html">Metrics</a></li>
+        <li><a href="./results.html">Results</a></li>
+        <li><a href="./tests.html">Tests</a></li>
+        <li><a href="./limitations.html">Limitations</a></li>
+        <li><a href="./quickstart.html">Quickstart</a></li>
+      </ul>
+    </div>
+  </header>
+  <main class="wrap" style="padding:2rem 1.25rem 3rem">
+    <h1 style="font-family:var(--font-display)">Quickstart</h1>
+    <p style="color:var(--muted)">ChromeRAG extracts HTML files. Use your own crawler (or the POC fetch harness) to download pages.</p>
+
+    <h2>Install</h2>
+<pre>pip install -e .
+# optional baselines for comparison
+pip install -e ".[baselines,fetch]"</pre>
+
+    <h2>Extract one page</h2>
+<pre>chromerag extract page.html -o out.md --priority balanced --json-meta</pre>
+
+    <h2>Site corpus: learn then extract</h2>
+<pre>chromerag learn data/raw -o data/chrome_models/site.json --min-pages 3
+chromerag batch data/raw -o data/outputs --chrome-model data/chrome_models/site.json</pre>
+
+    <h2>Compare on ~200 public URLs</h2>
+<pre>python -m poc.run_corpus_comparison
+python -m poc.export_site_results</pre>
+
+    <div class="note">
+      Priority <code>precision</code> favors clean text (may drop chunks).
+      <code>coverage</code> favors keeping relevant text (may keep more residual chrome).
+      <code>balanced</code> is the default.
+    </div>
+  </main>
+  <footer class="site"><div class="wrap">ChromeRAG documentation</div></footer>
+  <script src="./assets/site.js"></script>
+</body>
+</html>

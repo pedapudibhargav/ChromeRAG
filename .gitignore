@@ -1,0 +1,29 @@
+# Secrets / local env
+.env
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+dist/
+build/
+.DS_Store
+
+# Local corpora & heavy outputs (regenerate via poc/)
+data/raw/
+data/outputs/
+data/chrome_models/
+
+# Corp TLS / private tooling (never publish)
+infra/certs/
+infra/certs/*.pem
+!infra/certs/.gitkeep
+
+# Author-private notes (process, venue strategy, internal research)
+# Keep local copies under private/; never push.
+private/
+
+# Docx work dirs
+papers/softwarex/_docx_work/
+papers/softwarex/_docx_patch/

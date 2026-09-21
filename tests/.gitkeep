@@ -1,0 +1,4 @@
+# ChromeRAG unit + packaging tests
+tests/
+!tests/**/*.py
+!tests/fixtures/

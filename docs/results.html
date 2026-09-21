@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Results — ChromeRAG</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./assets/site.css" />
+</head>
+<body>
+  <header class="site">
+    <div class="wrap nav">
+      <a class="brand" href="./index.html">Chrome<span>RAG</span></a>
+      <ul class="nav-links">
+        <li><a href="./index.html">Home</a></li>
+        <li><a href="./metrics.html">Metrics</a></li>
+        <li><a href="./results.html">Results</a></li>
+        <li><a href="./tests.html">Tests</a></li>
+        <li><a href="./limitations.html">Limitations</a></li>
+        <li><a href="./quickstart.html">Quickstart</a></li>
+      </ul>
+    </div>
+  </header>
+  <main class="wrap" style="padding:2rem 1.25rem 3rem">
+    <h1 style="font-family:var(--font-display)">Benchmark leaderboard</h1>
+    <p style="color:var(--muted)">
+      ChromeRAG vs Trafilatura, Readability, MarkItDown, markdownify, html2text, and BeautifulSoup on the public corpus.
+      Scores use the same content/noise anchors for every method.
+    </p>
+    <p id="leaderboard-status">Loading…</p>
+    <div id="leaderboard"></div>
+    <div class="note" style="margin-top:1.5rem">
+      Refresh this page after <code>python -m poc.run_corpus_comparison</code> and
+      <code>python -m poc.export_site_results</code>.
+    </div>
+  </main>
+  <footer class="site"><div class="wrap">ChromeRAG documentation</div></footer>
+  <script src="./assets/site.js"></script>
+</body>
+</html>

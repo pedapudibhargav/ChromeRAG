@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ChromeRAG</title>
+  <meta name="description" content="Ingest-time elimination of site template noise for enterprise web RAG." />
+  <!-- Relative assets only — safe for GitHub project pages (/repo/) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./assets/site.css" />
+</head>
+<body>
+  <header class="site">
+    <div class="wrap nav">
+      <a class="brand" href="./index.html">Chrome<span>RAG</span></a>
+      <ul class="nav-links">
+        <li><a href="./index.html">Home</a></li>
+        <li><a href="./metrics.html">Metrics</a></li>
+        <li><a href="./results.html">Results</a></li>
+        <li><a href="./tests.html">Tests</a></li>
+        <li><a href="./limitations.html">Limitations</a></li>
+        <li><a href="./quickstart.html">Quickstart</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap hero">
+      <h1>Ingest-time elimination of site template noise</h1>
+      <p class="lead">
+        ChromeRAG turns corporate HTML into RAG-ready Markdown: strip nav, footer, and CTA chrome,
+        keep docs and pricing content, inject Schema.org front-matter, and optionally learn
+        site-template patterns before extraction.
+      </p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="./quickstart.html">Get started</a>
+        <a class="btn btn-ghost" href="./results.html">See benchmark results</a>
+      </div>
+    </div>
+
+    <section>
+      <div class="wrap">
+        <h2>What it owns</h2>
+        <div class="grid">
+          <article class="card">
+            <h3>HTML → Markdown</h3>
+            <p>Pass HTML strings or files. Fetching, Playwright, and rate limits stay in your crawler.</p>
+          </article>
+          <article class="card">
+            <h3>Learn → extract</h3>
+            <p>Optional STCE mines repeated chrome across a site, then strips it on every page.</p>
+          </article>
+          <article class="card">
+            <h3>Precision vs coverage</h3>
+            <p>Choose cleaner vectors or higher content recall with a single priority flag.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <h2>Paper</h2>
+        <p>
+          <em>ChromeRAG: Ingest-Time Elimination of Site Template Noise for Enterprise Web RAG</em><br />
+          Package: <code>chromerag</code>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site">
+    <div class="wrap">
+      Open-source research software ·
+      <a href="https://github.com/pedapudibhargav/ChromeRAG">GitHub</a> ·
+      <a href="https://orcid.org/0009-0002-8523-8415">ORCID</a>.
+      Deployed from the <code>gh-pages</code> branch.
+    </div>
+  </footer>
+  <script src="./assets/site.js"></script>
+</body>
+</html>

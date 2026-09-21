@@ -1,0 +1,62 @@
+{
+  "generated_at": "2026-09-20T21:29:05.009938+00:00",
+  "pytest_exit_code": 0,
+  "totals": {
+    "tests": 7,
+    "passed": 7,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "cases": [
+    {
+      "classname": "tests.test_extractor",
+      "name": "test_version_semver_shape",
+      "time": 0.0,
+      "status": "passed",
+      "message": ""
+    },
+    {
+      "classname": "tests.test_extractor",
+      "name": "test_extract_keeps_main_content_drops_nav",
+      "time": 0.227,
+      "status": "passed",
+      "message": ""
+    },
+    {
+      "classname": "tests.test_extractor",
+      "name": "test_schema_front_matter_before_script_strip",
+      "time": 0.068,
+      "status": "passed",
+      "message": ""
+    },
+    {
+      "classname": "tests.test_extractor",
+      "name": "test_table_linearization",
+      "time": 0.07,
+      "status": "passed",
+      "message": ""
+    },
+    {
+      "classname": "tests.test_extractor",
+      "name": "test_precision_vs_coverage_keeps_core_content",
+      "time": 0.246,
+      "status": "passed",
+      "message": ""
+    },
+    {
+      "classname": "tests.test_extractor",
+      "name": "test_fuse_front_matter_reads_json_ld",
+      "time": 0.001,
+      "status": "passed",
+      "message": ""
+    },
+    {
+      "classname": "tests.test_extractor",
+      "name": "test_empty_html_does_not_crash",
+      "time": 0.067,
+      "status": "passed",
+      "message": ""
+    }
+  ]
+}

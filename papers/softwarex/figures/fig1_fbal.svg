@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="420" viewBox="0 0 720 420">
+  <rect width="100%" height="100%" fill="#FFFFFF"/>
+  <text x="360.0" y="28" text-anchor="middle" font-size="15" font-weight="600"
+        font-family="Helvetica,Arial,sans-serif">Fig. 1 — Fbal on 238 scoreable pages</text>
+  <text x="18" y="200.0" text-anchor="middle" font-size="11"
+        font-family="Helvetica,Arial,sans-serif"
+        transform="rotate(-90 18,200.0)">Fbal ↑</text>
+  <line x1="160" y1="50" x2="160" y2="350" stroke="#222" stroke-width="1"/>
+  <line x1="160" y1="350" x2="680" y2="350" stroke="#222" stroke-width="1"/>
+  <rect x="172.0" y="109.9" width="72.7" height="240.1" fill="#0B6E4F" rx="2"/><text x="208.3" y="103.9" text-anchor="middle" font-size="11" font-family="Helvetica,Arial,sans-serif">0.800</text><rect x="256.7" y="115.0" width="72.7" height="235.0" fill="#1B9AAA" rx="2"/><text x="293.0" y="109.0" text-anchor="middle" font-size="11" font-family="Helvetica,Arial,sans-serif">0.783</text><rect x="341.3" y="124.4" width="72.7" height="225.6" fill="#E09F3E" rx="2"/><text x="377.7" y="118.4" text-anchor="middle" font-size="11" font-family="Helvetica,Arial,sans-serif">0.752</text><rect x="426.0" y="141.5" width="72.7" height="208.5" fill="#9B2226" rx="2"/><text x="462.3" y="135.5" text-anchor="middle" font-size="11" font-family="Helvetica,Arial,sans-serif">0.695</text><rect x="510.7" y="147.1" width="72.7" height="202.9" fill="#3D5A80" rx="2"/><text x="547.0" y="141.1" text-anchor="middle" font-size="11" font-family="Helvetica,Arial,sans-serif">0.676</text><rect x="595.3" y="189.5" width="72.7" height="160.5" fill="#6C757D" rx="2"/><text x="631.7" y="183.5" text-anchor="middle" font-size="11" font-family="Helvetica,Arial,sans-serif">0.535</text>
+  <text x="208.3" y="392" text-anchor="middle" font-size="10" font-family="Helvetica,Arial,sans-serif" transform="rotate(-28 208.3,392)">chromerag_coverage</text><text x="293.0" y="392" text-anchor="middle" font-size="10" font-family="Helvetica,Arial,sans-serif" transform="rotate(-28 293.0,392)">chromerag</text><text x="377.7" y="392" text-anchor="middle" font-size="10" font-family="Helvetica,Arial,sans-serif" transform="rotate(-28 377.7,392)">trafilatura</text><text x="462.3" y="392" text-anchor="middle" font-size="10" font-family="Helvetica,Arial,sans-serif" transform="rotate(-28 462.3,392)">markitdown</text><text x="547.0" y="392" text-anchor="middle" font-size="10" font-family="Helvetica,Arial,sans-serif" transform="rotate(-28 547.0,392)">chromerag_precision</text><text x="631.7" y="392" text-anchor="middle" font-size="10" font-family="Helvetica,Arial,sans-serif" transform="rotate(-28 631.7,392)">readability</text>
+  <text x="160" y="412" font-size="9" fill="#555"
+        font-family="Helvetica,Arial,sans-serif">Source: corpus_comparison_report.json · higher=better</text>
+</svg>

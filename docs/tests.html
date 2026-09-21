@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tests — ChromeRAG</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./assets/site.css" />
+</head>
+<body>
+  <header class="site">
+    <div class="wrap nav">
+      <a class="brand" href="./index.html">Chrome<span>RAG</span></a>
+      <ul class="nav-links">
+        <li><a href="./index.html">Home</a></li>
+        <li><a href="./metrics.html">Metrics</a></li>
+        <li><a href="./results.html">Results</a></li>
+        <li><a href="./tests.html">Tests</a></li>
+        <li><a href="./limitations.html">Limitations</a></li>
+        <li><a href="./quickstart.html">Quickstart</a></li>
+      </ul>
+    </div>
+  </header>
+  <main class="wrap" style="padding:2rem 1.25rem 3rem">
+    <h1 style="font-family:var(--font-display)">Automated test report</h1>
+    <p style="color:var(--muted)">Generated at 2026-09-20T21:29:05.009938+00:00</p>
+    <p><strong>7 passed · 0 failed · 0 errors · 0 skipped · exit 0</strong></p>
+    <div class="note">
+      Published by GitHub Actions on every push to <code>main</code>
+      (site files deployed to the <code>gh-pages</code> branch).
+    </div>
+    <table>
+      <thead><tr><th>Suite</th><th>Test</th><th>Status</th><th>Time</th><th>Detail</th></tr></thead>
+      <tbody>
+<tr class='passed'><td><code>tests.test_extractor</code></td><td>test_version_semver_shape</td><td>passed</td><td>0.000s</td><td></td></tr>
+<tr class='passed'><td><code>tests.test_extractor</code></td><td>test_extract_keeps_main_content_drops_nav</td><td>passed</td><td>0.227s</td><td></td></tr>
+<tr class='passed'><td><code>tests.test_extractor</code></td><td>test_schema_front_matter_before_script_strip</td><td>passed</td><td>0.068s</td><td></td></tr>
+<tr class='passed'><td><code>tests.test_extractor</code></td><td>test_table_linearization</td><td>passed</td><td>0.070s</td><td></td></tr>
+<tr class='passed'><td><code>tests.test_extractor</code></td><td>test_precision_vs_coverage_keeps_core_content</td><td>passed</td><td>0.246s</td><td></td></tr>
+<tr class='passed'><td><code>tests.test_extractor</code></td><td>test_fuse_front_matter_reads_json_ld</td><td>passed</td><td>0.001s</td><td></td></tr>
+<tr class='passed'><td><code>tests.test_extractor</code></td><td>test_empty_html_does_not_crash</td><td>passed</td><td>0.067s</td><td></td></tr>
+      </tbody>
+    </table>
+    <h2 style="margin-top:2rem">Corpus benchmark</h2>
+    <p>See <a href="./results.html">Results</a> for the ~200-URL HTML→Markdown comparison (Recall / Noise / Fbal).</p>
+  </main>
+  <footer class="site"><div class="wrap">ChromeRAG documentation</div></footer>
+  <script src="./assets/site.js"></script>
+</body>
+</html>

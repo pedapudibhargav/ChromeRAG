@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Extraction Compare Lab</title>
+  <style>
+    :root {
+      --bg: #0f1419;
+      --panel: #1a222c;
+      --border: #2d3a47;
+      --text: #e7ecf1;
+      --muted: #8b9aab;
+      --accent: #3d9cf0;
+      --good: #3ecf8e;
+      --warn: #f0b429;
+      --bad: #f07178;
+      --mono: "JetBrains Mono", "SF Mono", ui-monospace, monospace;
+      --sans: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      background: radial-gradient(1200px 600px at 10% -10%, #1a2a3a 0%, var(--bg) 55%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: end;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15,20,25,.85);
+      backdrop-filter: blur(8px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    h1 { margin: 0; font-size: 1.1rem; font-weight: 600; letter-spacing: .02em; }
+    .sub { color: var(--muted); font-size: .85rem; margin-top: 4px; }
+    .controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; }
+    label { display: flex; flex-direction: column; gap: 4px; font-size: .72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+    select, button {
+      font: inherit;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+      padding: 8px 12px;
+      min-width: 160px;
+    }
+    button {
+      background: var(--accent);
+      border-color: transparent;
+      color: #041018;
+      font-weight: 600;
+      cursor: pointer;
+      min-width: auto;
+    }
+    button.secondary { background: var(--panel); color: var(--text); border-color: var(--border); }
+    button:disabled { opacity: .5; cursor: wait; }
+    main { padding: 16px 20px 40px; display: grid; gap: 16px; }
+    .matrix {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 10px;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+    }
+    .card .method { font-size: .78rem; color: var(--muted); margin-bottom: 6px; }
+    .card .tok { font-size: 1.35rem; font-weight: 650; font-variant-numeric: tabular-nums; }
+    .card .meta { font-size: .8rem; color: var(--muted); margin-top: 6px; line-height: 1.45; }
+    .pill { display: inline-block; padding: 1px 7px; border-radius: 999px; font-size: .7rem; margin-right: 4px; }
+    .pill.good { background: rgba(62,207,142,.15); color: var(--good); }
+    .pill.warn { background: rgba(240,180,41,.15); color: var(--warn); }
+    .pill.bad { background: rgba(240,113,120,.15); color: var(--bad); }
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      min-height: 70vh;
+    }
+    @media (max-width: 960px) { .compare { grid-template-columns: 1fr; } }
+    .pane {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      min-height: 60vh;
+      overflow: hidden;
+    }
+    .pane-head {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: baseline;
+      flex-wrap: wrap;
+    }
+    .pane-head strong { font-size: .95rem; }
+    .pane-stats { font-size: .78rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+    .pane pre {
+      margin: 0;
+      padding: 14px;
+      overflow: auto;
+      flex: 1;
+      font-family: var(--mono);
+      font-size: .78rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .mark-h { color: #7ec8ff; }
+    .mark-sec { color: #b8e986; }
+    .mark-tbl { color: #ffd580; }
+    .mark-fm { color: #c3a6ff; }
+    .status { color: var(--muted); font-size: .85rem; }
+    .err { color: var(--bad); }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Extraction Compare Lab</h1>
+      <div class="sub">Ours vs MarkItDown / Trafilatura / Readability — visual validation for RAG ingest</div>
+    </div>
+    <div class="controls">
+      <label>Page
+        <select id="page"></select>
+      </label>
+      <label>Left
+        <select id="left"></select>
+      </label>
+      <label>Right
+        <select id="right"></select>
+      </label>
+      <button id="load" type="button">Compare</button>
+      <button id="live" class="secondary" type="button">Re-run live</button>
+    </div>
+  </header>
+  <main>
+    <div id="pageMeta" class="status">Loading fixtures…</div>
+    <div id="matrix" class="matrix"></div>
+    <div class="compare">
+      <section class="pane">
+        <div class="pane-head">
+          <strong id="leftTitle">Left</strong>
+          <div class="pane-stats" id="leftStats"></div>
+        </div>
+        <pre id="leftText"></pre>
+      </section>
+      <section class="pane">
+        <div class="pane-head">
+          <strong id="rightTitle">Right</strong>
+          <div class="pane-stats" id="rightStats"></div>
+        </div>
+        <pre id="rightText"></pre>
+      </section>
+    </div>
+  </main>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    let methods = [];
+
+    function noisePill(n) {
+      if (n <= 1) return `<span class="pill good">noise ${n}</span>`;
+      if (n <= 5) return `<span class="pill warn">noise ${n}</span>`;
+      return `<span class="pill bad">noise ${n}</span>`;
+    }
+
+    function highlight(text) {
+      const esc = text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+      return esc
+        .replace(/^(---[\s\S]*?---)/m, '<span class="mark-fm">$1</span>')
+        .replace(/^(#{1,6} .+)$/gm, '<span class="mark-h">$1</span>')
+        .replace(/(\[Section:[^\]]+\])/g, '<span class="mark-sec">$1</span>')
+        .replace(/(\[Table:[^\]]+\])/g, '<span class="mark-tbl">$1</span>');
+    }
+
+    function fillSelect(el, items, preferred) {
+      el.innerHTML = items.map(m => `<option value="${m}">${m}</option>`).join("");
+      if (preferred && items.includes(preferred)) el.value = preferred;
+    }
+
+    function renderStats(el, stats, source) {
+      el.innerHTML = `${noisePill(stats.noise_total)}
+        tokens ${stats.tokens.toLocaleString()} · chars ${stats.chars.toLocaleString()} ·
+        headings ${stats.headings.heading_count} · tables ${stats.table_markers} ·
+        sections ${stats.section_markers} · src ${source}`;
+    }
+
+    async function loadPages() {
+      const res = await fetch("/api/pages");
+      const data = await res.json();
+      methods = data.methods;
+      fillSelect($("page"), data.pages.map(p => p.id), data.pages[0]?.id);
+      fillSelect($("left"), methods, "chromerag");
+      fillSelect($("right"), methods, "markitdown");
+      $("pageMeta").textContent = `${data.pages.length} fixtures loaded`;
+      await compare(false);
+    }
+
+    async function loadMatrix(pageId) {
+      const res = await fetch(`/api/matrix/${pageId}`);
+      const data = await res.json();
+      const meta = data.page;
+      $("pageMeta").innerHTML = `<strong>${meta.id}</strong> · ${meta.category || ""} ·
+        <a href="${meta.url || "#"}" target="_blank" rel="noopener" style="color:var(--accent)">${meta.url || ""}</a>
+        · jsonld=${meta.signals?.has_json_ld} microdata=${meta.signals?.has_microdata} table=${meta.signals?.has_table}`;
+      $("matrix").innerHTML = data.rows.map(r => `
+        <div class="card">
+          <div class="method">${r.method}</div>
+          <div class="tok">${r.tokens.toLocaleString()}</div>
+          <div class="meta">
+            ${noisePill(r.noise_total)}
+            h=${r.headings.heading_count}
+            tbl=${r.table_markers}
+            ${r.has_front_matter ? '<span class="pill good">YAML</span>' : ''}
+            ${r.section_markers ? '<span class="pill good">sections</span>' : ''}
+          </div>
+        </div>`).join("");
+    }
+
+    async function compare(live) {
+      const pageId = $("page").value;
+      const left = $("left").value;
+      const right = $("right").value;
+      $("load").disabled = true;
+      $("live").disabled = true;
+      try {
+        await loadMatrix(pageId);
+        const res = await fetch(`/api/compare/${pageId}?left=${encodeURIComponent(left)}&right=${encodeURIComponent(right)}&live=${live}`);
+        if (!res.ok) throw new Error(await res.text());
+        const data = await res.json();
+        $("leftTitle").textContent = data.left.method;
+        $("rightTitle").textContent = data.right.method;
+        renderStats($("leftStats"), data.left.stats, data.left.source);
+        renderStats($("rightStats"), data.right.stats, data.right.source);
+        $("leftText").innerHTML = highlight(data.left.text);
+        $("rightText").innerHTML = highlight(data.right.text);
+        syncScroll();
+      } catch (e) {
+        $("pageMeta").innerHTML = `<span class="err">${e.message}</span>`;
+      } finally {
+        $("load").disabled = false;
+        $("live").disabled = false;
+      }
+    }
+
+    function syncScroll() {
+      const a = $("leftText");
+      const b = $("rightText");
+      let lock = false;
+      const bind = (src, dst) => {
+        src.onscroll = () => {
+          if (lock) return;
+          lock = true;
+          const ratio = src.scrollTop / Math.max(1, src.scrollHeight - src.clientHeight);
+          dst.scrollTop = ratio * (dst.scrollHeight - dst.clientHeight);
+          lock = false;
+        };
+      };
+      bind(a, b);
+      bind(b, a);
+    }
+
+    $("load").onclick = () => compare(false);
+    $("live").onclick = () => compare(true);
+    $("page").onchange = () => compare(false);
+    loadPages();
+  </script>
+</body>
+</html>

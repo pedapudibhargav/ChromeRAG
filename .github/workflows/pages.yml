@@ -1,0 +1,79 @@
+# Run tests and publish the static site to the gh-pages branch.
+# GitHub Pages should be set to: Source = Deploy from a branch → Branch = gh-pages / (root)
+
+name: pages
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install package + test extras
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev,baselines]"
+
+      - name: Build docs + run tests
+        run: |
+          chmod +x scripts/build_docs.sh
+          ./scripts/build_docs.sh
+
+      - name: Upload site artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: docs/
+          if-no-files-found: error
+
+  deploy-gh-pages:
+    needs: test-and-build
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download site artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: site
+          path: _site
+
+      - name: Ensure Pages marker
+        run: |
+          touch _site/.nojekyll
+          test -f _site/index.html
+          test -f _site/tests.html
+          test -f _site/results.html
+          test -f _site/data/leaderboard.json || test -f _site/data/corpus_comparison_summary.md
+
+      - name: Deploy to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: _site
+          publish_branch: gh-pages
+          force_orphan: true
+          commit_message: "docs: publish site from ${{ github.sha }}"

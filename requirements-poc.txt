@@ -1,0 +1,9 @@
+# Baseline comparison tools for POC benchmarks.
+-r requirements.txt
+markdownify>=0.13.0
+readability-lxml>=0.8.1
+trafilatura>=1.12.0
+html2text>=2024.2.26
+extruct>=0.17.0
+# markitdown may be unavailable — probe and pin a cleared version.
+markitdown>=0.1.0

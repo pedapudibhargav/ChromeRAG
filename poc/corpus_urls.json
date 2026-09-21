@@ -1,0 +1,1870 @@
+{
+  "description": "Public web corpus for ChromeRAG multi-tool comparison (373 URLs across docs, pricing, marketing, wiki, hub, news, article).",
+  "urls": [
+    {
+      "id": "aws-ec2-home",
+      "url": "https://aws.amazon.com/ec2/",
+      "category": "cloud"
+    },
+    {
+      "id": "aws-ec2-pricing",
+      "url": "https://aws.amazon.com/ec2/pricing/on-demand/",
+      "category": "pricing"
+    },
+    {
+      "id": "aws-ec2-instance-types",
+      "url": "https://aws.amazon.com/ec2/instance-types/",
+      "category": "cloud"
+    },
+    {
+      "id": "aws-lambda-home",
+      "url": "https://aws.amazon.com/lambda/",
+      "category": "cloud"
+    },
+    {
+      "id": "aws-lambda-pricing",
+      "url": "https://aws.amazon.com/lambda/pricing/",
+      "category": "pricing"
+    },
+    {
+      "id": "aws-s3-docs",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html",
+      "category": "docs"
+    },
+    {
+      "id": "aws-rds",
+      "url": "https://aws.amazon.com/rds/",
+      "category": "cloud"
+    },
+    {
+      "id": "aws-eks",
+      "url": "https://aws.amazon.com/eks/",
+      "category": "cloud"
+    },
+    {
+      "id": "aws-bedrock",
+      "url": "https://aws.amazon.com/bedrock/",
+      "category": "cloud"
+    },
+    {
+      "id": "aws-sagemaker",
+      "url": "https://aws.amazon.com/sagemaker/",
+      "category": "cloud"
+    },
+    {
+      "id": "azure-overview",
+      "url": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/overview",
+      "category": "docs"
+    },
+    {
+      "id": "azure-architecture",
+      "url": "https://learn.microsoft.com/en-us/azure/architecture/browse/",
+      "category": "docs"
+    },
+    {
+      "id": "azure-functions",
+      "url": "https://learn.microsoft.com/en-us/azure/azure-functions/functions-overview",
+      "category": "docs"
+    },
+    {
+      "id": "azure-aks",
+      "url": "https://learn.microsoft.com/en-us/azure/aks/what-is-aks",
+      "category": "docs"
+    },
+    {
+      "id": "azure-blob",
+      "url": "https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blobs-overview",
+      "category": "docs"
+    },
+    {
+      "id": "azure-pricing",
+      "url": "https://azure.microsoft.com/en-us/pricing/",
+      "category": "pricing"
+    },
+    {
+      "id": "gcp-compute",
+      "url": "https://cloud.google.com/compute/docs",
+      "category": "docs"
+    },
+    {
+      "id": "gcp-gke",
+      "url": "https://cloud.google.com/kubernetes-engine/docs",
+      "category": "docs"
+    },
+    {
+      "id": "gcp-storage",
+      "url": "https://cloud.google.com/storage/docs",
+      "category": "docs"
+    },
+    {
+      "id": "gcp-functions",
+      "url": "https://cloud.google.com/functions/docs",
+      "category": "docs"
+    },
+    {
+      "id": "gcp-bigquery",
+      "url": "https://cloud.google.com/bigquery/docs",
+      "category": "docs"
+    },
+    {
+      "id": "gcp-pricing",
+      "url": "https://cloud.google.com/pricing",
+      "category": "pricing"
+    },
+    {
+      "id": "cloudflare-workers",
+      "url": "https://developers.cloudflare.com/workers/",
+      "category": "docs"
+    },
+    {
+      "id": "cloudflare-workers-guide",
+      "url": "https://developers.cloudflare.com/workers/get-started/guide/",
+      "category": "docs"
+    },
+    {
+      "id": "cloudflare-workers-routing",
+      "url": "https://developers.cloudflare.com/workers/configuration/routing/",
+      "category": "docs"
+    },
+    {
+      "id": "cloudflare-r2",
+      "url": "https://developers.cloudflare.com/r2/",
+      "category": "docs"
+    },
+    {
+      "id": "cloudflare-d1",
+      "url": "https://developers.cloudflare.com/d1/",
+      "category": "docs"
+    },
+    {
+      "id": "cloudflare-pages",
+      "url": "https://developers.cloudflare.com/pages/",
+      "category": "docs"
+    },
+    {
+      "id": "github-actions",
+      "url": "https://docs.github.com/en/actions",
+      "category": "docs"
+    },
+    {
+      "id": "github-actions-quickstart",
+      "url": "https://docs.github.com/en/actions/quickstart",
+      "category": "docs"
+    },
+    {
+      "id": "github-actions-about",
+      "url": "https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions",
+      "category": "docs"
+    },
+    {
+      "id": "github-packages",
+      "url": "https://docs.github.com/en/packages",
+      "category": "docs"
+    },
+    {
+      "id": "github-codespaces",
+      "url": "https://docs.github.com/en/codespaces",
+      "category": "docs"
+    },
+    {
+      "id": "github-copilot",
+      "url": "https://docs.github.com/en/copilot",
+      "category": "docs"
+    },
+    {
+      "id": "stripe-docs",
+      "url": "https://docs.stripe.com/",
+      "category": "docs"
+    },
+    {
+      "id": "stripe-payments",
+      "url": "https://docs.stripe.com/payments",
+      "category": "docs"
+    },
+    {
+      "id": "stripe-billing",
+      "url": "https://docs.stripe.com/billing",
+      "category": "docs"
+    },
+    {
+      "id": "stripe-checkout",
+      "url": "https://docs.stripe.com/payments/checkout",
+      "category": "docs"
+    },
+    {
+      "id": "twilio-docs",
+      "url": "https://www.twilio.com/docs",
+      "category": "docs"
+    },
+    {
+      "id": "twilio-sms",
+      "url": "https://www.twilio.com/docs/sms",
+      "category": "docs"
+    },
+    {
+      "id": "twilio-voice",
+      "url": "https://www.twilio.com/docs/voice",
+      "category": "docs"
+    },
+    {
+      "id": "twilio-verify",
+      "url": "https://www.twilio.com/docs/verify",
+      "category": "docs"
+    },
+    {
+      "id": "digitalocean-docs",
+      "url": "https://docs.digitalocean.com/",
+      "category": "docs"
+    },
+    {
+      "id": "digitalocean-droplets",
+      "url": "https://docs.digitalocean.com/products/droplets/",
+      "category": "docs"
+    },
+    {
+      "id": "digitalocean-k8s",
+      "url": "https://docs.digitalocean.com/products/kubernetes/",
+      "category": "docs"
+    },
+    {
+      "id": "digitalocean-spaces",
+      "url": "https://docs.digitalocean.com/products/spaces/",
+      "category": "docs"
+    },
+    {
+      "id": "hashicorp-terraform",
+      "url": "https://developer.hashicorp.com/terraform/docs",
+      "category": "docs"
+    },
+    {
+      "id": "hashicorp-vault",
+      "url": "https://developer.hashicorp.com/vault/docs",
+      "category": "docs"
+    },
+    {
+      "id": "hashicorp-consul",
+      "url": "https://developer.hashicorp.com/consul/docs",
+      "category": "docs"
+    },
+    {
+      "id": "hashicorp-nomad",
+      "url": "https://developer.hashicorp.com/nomad/docs",
+      "category": "docs"
+    },
+    {
+      "id": "k8s-home",
+      "url": "https://kubernetes.io/docs/home/",
+      "category": "docs"
+    },
+    {
+      "id": "k8s-concepts",
+      "url": "https://kubernetes.io/docs/concepts/",
+      "category": "docs"
+    },
+    {
+      "id": "k8s-pods",
+      "url": "https://kubernetes.io/docs/concepts/workloads/pods/",
+      "category": "docs"
+    },
+    {
+      "id": "k8s-services",
+      "url": "https://kubernetes.io/docs/concepts/services-networking/service/",
+      "category": "docs"
+    },
+    {
+      "id": "k8s-deployments",
+      "url": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/",
+      "category": "docs"
+    },
+    {
+      "id": "docker-docs",
+      "url": "https://docs.docker.com/",
+      "category": "docs"
+    },
+    {
+      "id": "docker-get-started",
+      "url": "https://docs.docker.com/get-started/",
+      "category": "docs"
+    },
+    {
+      "id": "docker-compose",
+      "url": "https://docs.docker.com/compose/",
+      "category": "docs"
+    },
+    {
+      "id": "docker-engine",
+      "url": "https://docs.docker.com/engine/",
+      "category": "docs"
+    },
+    {
+      "id": "python-docs",
+      "url": "https://docs.python.org/3/",
+      "category": "docs"
+    },
+    {
+      "id": "python-tutorial",
+      "url": "https://docs.python.org/3/tutorial/",
+      "category": "docs"
+    },
+    {
+      "id": "python-library",
+      "url": "https://docs.python.org/3/library/",
+      "category": "docs"
+    },
+    {
+      "id": "python-asyncio",
+      "url": "https://docs.python.org/3/library/asyncio.html",
+      "category": "docs"
+    },
+    {
+      "id": "mdn-js",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+      "category": "docs"
+    },
+    {
+      "id": "mdn-fetch",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API",
+      "category": "docs"
+    },
+    {
+      "id": "mdn-html",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML",
+      "category": "docs"
+    },
+    {
+      "id": "mdn-css",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS",
+      "category": "docs"
+    },
+    {
+      "id": "mdn-http",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP",
+      "category": "docs"
+    },
+    {
+      "id": "react-docs",
+      "url": "https://react.dev/learn",
+      "category": "docs"
+    },
+    {
+      "id": "react-hooks",
+      "url": "https://react.dev/reference/react/hooks",
+      "category": "docs"
+    },
+    {
+      "id": "nextjs-docs",
+      "url": "https://nextjs.org/docs",
+      "category": "docs"
+    },
+    {
+      "id": "nextjs-app",
+      "url": "https://nextjs.org/docs/app",
+      "category": "docs"
+    },
+    {
+      "id": "vue-docs",
+      "url": "https://vuejs.org/guide/introduction.html",
+      "category": "docs"
+    },
+    {
+      "id": "svelte-docs",
+      "url": "https://svelte.dev/docs/svelte/overview",
+      "category": "docs"
+    },
+    {
+      "id": "nodejs-docs",
+      "url": "https://nodejs.org/docs/latest/api/",
+      "category": "docs"
+    },
+    {
+      "id": "nodejs-fs",
+      "url": "https://nodejs.org/docs/latest/api/fs.html",
+      "category": "docs"
+    },
+    {
+      "id": "go-docs",
+      "url": "https://go.dev/doc/",
+      "category": "docs"
+    },
+    {
+      "id": "go-effective",
+      "url": "https://go.dev/doc/effective_go",
+      "category": "docs"
+    },
+    {
+      "id": "rust-book",
+      "url": "https://doc.rust-lang.org/book/",
+      "category": "docs"
+    },
+    {
+      "id": "rust-std",
+      "url": "https://doc.rust-lang.org/std/",
+      "category": "docs"
+    },
+    {
+      "id": "postgres-docs",
+      "url": "https://www.postgresql.org/docs/current/",
+      "category": "docs"
+    },
+    {
+      "id": "postgres-sql",
+      "url": "https://www.postgresql.org/docs/current/sql.html",
+      "category": "docs"
+    },
+    {
+      "id": "mysql-docs",
+      "url": "https://dev.mysql.com/doc/",
+      "category": "docs"
+    },
+    {
+      "id": "mongodb-docs",
+      "url": "https://www.mongodb.com/docs/",
+      "category": "docs"
+    },
+    {
+      "id": "redis-docs",
+      "url": "https://redis.io/docs/",
+      "category": "docs"
+    },
+    {
+      "id": "elasticsearch-docs",
+      "url": "https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html",
+      "category": "docs"
+    },
+    {
+      "id": "nginx-docs",
+      "url": "https://nginx.org/en/docs/",
+      "category": "docs"
+    },
+    {
+      "id": "apache-httpd",
+      "url": "https://httpd.apache.org/docs/",
+      "category": "docs"
+    },
+    {
+      "id": "prometheus-docs",
+      "url": "https://prometheus.io/docs/introduction/overview/",
+      "category": "docs"
+    },
+    {
+      "id": "grafana-docs",
+      "url": "https://grafana.com/docs/",
+      "category": "docs"
+    },
+    {
+      "id": "jenkins-docs",
+      "url": "https://www.jenkins.io/doc/",
+      "category": "docs"
+    },
+    {
+      "id": "gitlab-ci",
+      "url": "https://docs.gitlab.com/ee/ci/",
+      "category": "docs"
+    },
+    {
+      "id": "gitlab-docs",
+      "url": "https://docs.gitlab.com/",
+      "category": "docs"
+    },
+    {
+      "id": "atlassian-jira",
+      "url": "https://support.atlassian.com/jira-software-cloud/",
+      "category": "docs"
+    },
+    {
+      "id": "atlassian-confluence",
+      "url": "https://support.atlassian.com/confluence-cloud/",
+      "category": "docs"
+    },
+    {
+      "id": "salesforce-product",
+      "url": "https://www.salesforce.com/products/",
+      "category": "marketing"
+    },
+    {
+      "id": "salesforce-trailhead",
+      "url": "https://trailhead.salesforce.com/",
+      "category": "docs"
+    },
+    {
+      "id": "hubspot-docs",
+      "url": "https://developers.hubspot.com/docs/api/overview",
+      "category": "docs"
+    },
+    {
+      "id": "shopify-docs",
+      "url": "https://shopify.dev/docs",
+      "category": "docs"
+    },
+    {
+      "id": "shopify-admin-api",
+      "url": "https://shopify.dev/docs/api/admin",
+      "category": "docs"
+    },
+    {
+      "id": "zendesk-api",
+      "url": "https://developer.zendesk.com/api-reference/",
+      "category": "docs"
+    },
+    {
+      "id": "intercom-docs",
+      "url": "https://developers.intercom.com/",
+      "category": "docs"
+    },
+    {
+      "id": "sendgrid-docs",
+      "url": "https://docs.sendgrid.com/",
+      "category": "docs"
+    },
+    {
+      "id": "mailgun-docs",
+      "url": "https://documentation.mailgun.com/",
+      "category": "docs"
+    },
+    {
+      "id": "auth0-docs",
+      "url": "https://auth0.com/docs",
+      "category": "docs"
+    },
+    {
+      "id": "okta-docs",
+      "url": "https://developer.okta.com/docs/",
+      "category": "docs"
+    },
+    {
+      "id": "openai-docs",
+      "url": "https://platform.openai.com/docs/overview",
+      "category": "docs"
+    },
+    {
+      "id": "openai-api",
+      "url": "https://platform.openai.com/docs/api-reference",
+      "category": "docs"
+    },
+    {
+      "id": "anthropic-docs",
+      "url": "https://docs.anthropic.com/",
+      "category": "docs"
+    },
+    {
+      "id": "huggingface-docs",
+      "url": "https://huggingface.co/docs",
+      "category": "docs"
+    },
+    {
+      "id": "huggingface-transformers",
+      "url": "https://huggingface.co/docs/transformers/",
+      "category": "docs"
+    },
+    {
+      "id": "langchain-docs",
+      "url": "https://python.langchain.com/docs/introduction/",
+      "category": "docs"
+    },
+    {
+      "id": "llama-index",
+      "url": "https://docs.llamaindex.ai/",
+      "category": "docs"
+    },
+    {
+      "id": "pinecone-docs",
+      "url": "https://docs.pinecone.io/",
+      "category": "docs"
+    },
+    {
+      "id": "weaviate-docs",
+      "url": "https://weaviate.io/developers/weaviate",
+      "category": "docs"
+    },
+    {
+      "id": "qdrant-docs",
+      "url": "https://qdrant.tech/documentation/",
+      "category": "docs"
+    },
+    {
+      "id": "milvus-docs",
+      "url": "https://milvus.io/docs",
+      "category": "docs"
+    },
+    {
+      "id": "nvidia-dgx",
+      "url": "https://www.nvidia.com/en-us/data-center/dgx-platform/",
+      "category": "marketing"
+    },
+    {
+      "id": "nvidia-h100",
+      "url": "https://www.nvidia.com/en-us/data-center/h100/",
+      "category": "marketing"
+    },
+    {
+      "id": "nvidia-cuda",
+      "url": "https://docs.nvidia.com/cuda/",
+      "category": "docs"
+    },
+    {
+      "id": "nvidia-tensorrt",
+      "url": "https://docs.nvidia.com/deeplearning/tensorrt/",
+      "category": "docs"
+    },
+    {
+      "id": "vercel-docs",
+      "url": "https://vercel.com/docs",
+      "category": "docs"
+    },
+    {
+      "id": "netlify-docs",
+      "url": "https://docs.netlify.com/",
+      "category": "docs"
+    },
+    {
+      "id": "fly-docs",
+      "url": "https://fly.io/docs/",
+      "category": "docs"
+    },
+    {
+      "id": "heroku-docs",
+      "url": "https://devcenter.heroku.com/",
+      "category": "docs"
+    },
+    {
+      "id": "render-docs",
+      "url": "https://render.com/docs",
+      "category": "docs"
+    },
+    {
+      "id": "supabase-docs",
+      "url": "https://supabase.com/docs",
+      "category": "docs"
+    },
+    {
+      "id": "firebase-docs",
+      "url": "https://firebase.google.com/docs",
+      "category": "docs"
+    },
+    {
+      "id": "planetscale-docs",
+      "url": "https://planetscale.com/docs",
+      "category": "docs"
+    },
+    {
+      "id": "datadog-docs",
+      "url": "https://docs.datadoghq.com/",
+      "category": "docs"
+    },
+    {
+      "id": "newrelic-docs",
+      "url": "https://docs.newrelic.com/",
+      "category": "docs"
+    },
+    {
+      "id": "sentry-docs",
+      "url": "https://docs.sentry.io/",
+      "category": "docs"
+    },
+    {
+      "id": "pagerduty-docs",
+      "url": "https://developer.pagerduty.com/",
+      "category": "docs"
+    },
+    {
+      "id": "splunk-docs",
+      "url": "https://docs.splunk.com/",
+      "category": "docs"
+    },
+    {
+      "id": "terraform-aws",
+      "url": "https://registry.terraform.io/providers/hashicorp/aws/latest/docs",
+      "category": "docs"
+    },
+    {
+      "id": "ansible-docs",
+      "url": "https://docs.ansible.com/",
+      "category": "docs"
+    },
+    {
+      "id": "puppet-docs",
+      "url": "https://www.puppet.com/docs",
+      "category": "docs"
+    },
+    {
+      "id": "chef-docs",
+      "url": "https://docs.chef.io/",
+      "category": "docs"
+    },
+    {
+      "id": "pulumi-docs",
+      "url": "https://www.pulumi.com/docs/",
+      "category": "docs"
+    },
+    {
+      "id": "cdk-aws",
+      "url": "https://docs.aws.amazon.com/cdk/v2/guide/home.html",
+      "category": "docs"
+    },
+    {
+      "id": "fastapi-docs",
+      "url": "https://fastapi.tiangolo.com/",
+      "category": "docs"
+    },
+    {
+      "id": "django-docs",
+      "url": "https://docs.djangoproject.com/en/stable/",
+      "category": "docs"
+    },
+    {
+      "id": "flask-docs",
+      "url": "https://flask.palletsprojects.com/",
+      "category": "docs"
+    },
+    {
+      "id": "spring-docs",
+      "url": "https://docs.spring.io/spring-boot/docs/current/reference/html/",
+      "category": "docs"
+    },
+    {
+      "id": "rails-guides",
+      "url": "https://guides.rubyonrails.org/",
+      "category": "docs"
+    },
+    {
+      "id": "laravel-docs",
+      "url": "https://laravel.com/docs",
+      "category": "docs"
+    },
+    {
+      "id": "dotnet-docs",
+      "url": "https://learn.microsoft.com/en-us/dotnet/",
+      "category": "docs"
+    },
+    {
+      "id": "aspnet-core",
+      "url": "https://learn.microsoft.com/en-us/aspnet/core/",
+      "category": "docs"
+    },
+    {
+      "id": "typescript-docs",
+      "url": "https://www.typescriptlang.org/docs/",
+      "category": "docs"
+    },
+    {
+      "id": "typescript-handbook",
+      "url": "https://www.typescriptlang.org/docs/handbook/intro.html",
+      "category": "docs"
+    },
+    {
+      "id": "webpack-docs",
+      "url": "https://webpack.js.org/concepts/",
+      "category": "docs"
+    },
+    {
+      "id": "vite-docs",
+      "url": "https://vitejs.dev/guide/",
+      "category": "docs"
+    },
+    {
+      "id": "tailwind-docs",
+      "url": "https://tailwindcss.com/docs",
+      "category": "docs"
+    },
+    {
+      "id": "bootstrap-docs",
+      "url": "https://getbootstrap.com/docs/",
+      "category": "docs"
+    },
+    {
+      "id": "wikipedia-rag",
+      "url": "https://en.wikipedia.org/wiki/Retrieval-augmented_generation",
+      "category": "article"
+    },
+    {
+      "id": "wikipedia-html",
+      "url": "https://en.wikipedia.org/wiki/HTML",
+      "category": "article"
+    },
+    {
+      "id": "wikipedia-vector",
+      "url": "https://en.wikipedia.org/wiki/Vector_database",
+      "category": "article"
+    },
+    {
+      "id": "wikipedia-nlp",
+      "url": "https://en.wikipedia.org/wiki/Natural_language_processing",
+      "category": "article"
+    },
+    {
+      "id": "arxiv-abs-htmlrag",
+      "url": "https://arxiv.org/abs/2411.02959",
+      "category": "article"
+    },
+    {
+      "id": "arxiv-html-htmlrag",
+      "url": "https://arxiv.org/html/2411.02959",
+      "category": "article"
+    },
+    {
+      "id": "w3c-html",
+      "url": "https://www.w3.org/TR/html52/",
+      "category": "docs"
+    },
+    {
+      "id": "ietf-http",
+      "url": "https://www.rfc-editor.org/rfc/rfc9110.html",
+      "category": "docs"
+    },
+    {
+      "id": "owasp-top10",
+      "url": "https://owasp.org/www-project-top-ten/",
+      "category": "docs"
+    },
+    {
+      "id": "nist-cyber",
+      "url": "https://www.nist.gov/cyberframework",
+      "category": "docs"
+    },
+    {
+      "id": "ubuntu-server",
+      "url": "https://ubuntu.com/server/docs",
+      "category": "docs"
+    },
+    {
+      "id": "debian-docs",
+      "url": "https://www.debian.org/doc/",
+      "category": "docs"
+    },
+    {
+      "id": "arch-wiki",
+      "url": "https://wiki.archlinux.org/",
+      "category": "docs"
+    },
+    {
+      "id": "redhat-docs",
+      "url": "https://docs.redhat.com/en",
+      "category": "docs"
+    },
+    {
+      "id": "ibm-cloud-docs",
+      "url": "https://cloud.ibm.com/docs",
+      "category": "docs"
+    },
+    {
+      "id": "oracle-cloud-docs",
+      "url": "https://docs.oracle.com/en/cloud/",
+      "category": "docs"
+    },
+    {
+      "id": "alibaba-cloud-docs",
+      "url": "https://www.alibabacloud.com/help",
+      "category": "docs"
+    },
+    {
+      "id": "linode-docs",
+      "url": "https://www.linode.com/docs/",
+      "category": "docs"
+    },
+    {
+      "id": "vultr-docs",
+      "url": "https://docs.vultr.com/",
+      "category": "docs"
+    },
+    {
+      "id": "hetzner-docs",
+      "url": "https://docs.hetzner.com/",
+      "category": "docs"
+    },
+    {
+      "id": "cloudflare-home",
+      "url": "https://www.cloudflare.com/",
+      "category": "marketing"
+    },
+    {
+      "id": "mongodb-atlas",
+      "url": "https://www.mongodb.com/atlas",
+      "category": "marketing"
+    },
+    {
+      "id": "elastic-cloud",
+      "url": "https://www.elastic.co/cloud",
+      "category": "marketing"
+    },
+    {
+      "id": "databricks-docs",
+      "url": "https://docs.databricks.com/",
+      "category": "docs"
+    },
+    {
+      "id": "snowflake-docs",
+      "url": "https://docs.snowflake.com/",
+      "category": "docs"
+    },
+    {
+      "id": "dbt-docs",
+      "url": "https://docs.getdbt.com/",
+      "category": "docs"
+    },
+    {
+      "id": "airflow-docs",
+      "url": "https://airflow.apache.org/docs/",
+      "category": "docs"
+    },
+    {
+      "id": "spark-docs",
+      "url": "https://spark.apache.org/docs/latest/",
+      "category": "docs"
+    },
+    {
+      "id": "kafka-docs",
+      "url": "https://kafka.apache.org/documentation/",
+      "category": "docs"
+    },
+    {
+      "id": "rabbitmq-docs",
+      "url": "https://www.rabbitmq.com/docs",
+      "category": "docs"
+    },
+    {
+      "id": "celery-docs",
+      "url": "https://docs.celeryq.dev/",
+      "category": "docs"
+    },
+    {
+      "id": "pytest-docs",
+      "url": "https://docs.pytest.org/",
+      "category": "docs"
+    },
+    {
+      "id": "sphinx-docs",
+      "url": "https://www.sphinx-doc.org/",
+      "category": "docs"
+    },
+    {
+      "id": "mkdocs-docs",
+      "url": "https://www.mkdocs.org/",
+      "category": "docs"
+    },
+    {
+      "id": "readthedocs",
+      "url": "https://docs.readthedocs.io/",
+      "category": "docs"
+    },
+    {
+      "id": "notion-api",
+      "url": "https://developers.notion.com/",
+      "category": "docs"
+    },
+    {
+      "id": "slack-api",
+      "url": "https://api.slack.com/",
+      "category": "docs"
+    },
+    {
+      "id": "discord-api",
+      "url": "https://discord.com/developers/docs",
+      "category": "docs"
+    },
+    {
+      "id": "telegram-api",
+      "url": "https://core.telegram.org/bots/api",
+      "category": "docs"
+    },
+    {
+      "id": "figma-api",
+      "url": "https://www.figma.com/developers/api",
+      "category": "docs"
+    },
+    {
+      "id": "adobe-pdf",
+      "url": "https://developer.adobe.com/document-services/docs/overview/",
+      "category": "docs"
+    },
+    {
+      "id": "dropbox-api",
+      "url": "https://www.dropbox.com/developers/documentation",
+      "category": "docs"
+    },
+    {
+      "id": "box-api",
+      "url": "https://developer.box.com/",
+      "category": "docs"
+    },
+    {
+      "id": "twilio-segment",
+      "url": "https://segment.com/docs/",
+      "category": "docs"
+    },
+    {
+      "id": "mixpanel-docs",
+      "url": "https://docs.mixpanel.com/",
+      "category": "docs"
+    },
+    {
+      "id": "amplitude-docs",
+      "url": "https://www.docs.developers.amplitude.com/",
+      "category": "docs"
+    },
+    {
+      "id": "posthog-docs",
+      "url": "https://posthog.com/docs",
+      "category": "docs"
+    },
+    {
+      "id": "plausible-docs",
+      "url": "https://plausible.io/docs",
+      "category": "docs"
+    },
+    {
+      "id": "umami-docs",
+      "url": "https://umami.is/docs",
+      "category": "docs"
+    },
+    {
+      "id": "grafana-loki",
+      "url": "https://grafana.com/docs/loki/latest/",
+      "category": "docs"
+    },
+    {
+      "id": "grafana-tempo",
+      "url": "https://grafana.com/docs/tempo/latest/",
+      "category": "docs"
+    },
+    {
+      "id": "opentelemetry",
+      "url": "https://opentelemetry.io/docs/",
+      "category": "docs"
+    },
+    {
+      "id": "jaeger-docs",
+      "url": "https://www.jaegertracing.io/docs/",
+      "category": "docs"
+    },
+    {
+      "id": "istio-docs",
+      "url": "https://istio.io/latest/docs/",
+      "category": "docs"
+    },
+    {
+      "id": "envoy-docs",
+      "url": "https://www.envoyproxy.io/docs/",
+      "category": "docs"
+    },
+    {
+      "id": "linkerd-docs",
+      "url": "https://linkerd.io/2/overview/",
+      "category": "docs"
+    },
+    {
+      "id": "helm-docs",
+      "url": "https://helm.sh/docs/",
+      "category": "docs"
+    },
+    {
+      "id": "argocd-docs",
+      "url": "https://argo-cd.readthedocs.io/",
+      "category": "docs"
+    },
+    {
+      "id": "flux-docs",
+      "url": "https://fluxcd.io/flux/",
+      "category": "docs"
+    },
+    {
+      "id": "tekton-docs",
+      "url": "https://tekton.dev/docs/",
+      "category": "docs"
+    },
+    {
+      "id": "knative-docs",
+      "url": "https://knative.dev/docs/",
+      "category": "docs"
+    },
+    {
+      "id": "cuelang-docs",
+      "url": "https://cuelang.org/docs/",
+      "category": "docs"
+    },
+    {
+      "id": "json-schema",
+      "url": "https://json-schema.org/learn/getting-started-step-by-step",
+      "category": "docs"
+    },
+    {
+      "id": "openapi-spec",
+      "url": "https://swagger.io/specification/",
+      "category": "docs"
+    },
+    {
+      "id": "graphql-spec",
+      "url": "https://graphql.org/learn/",
+      "category": "docs"
+    },
+    {
+      "id": "grpc-docs",
+      "url": "https://grpc.io/docs/",
+      "category": "docs"
+    },
+    {
+      "id": "protobuf-docs",
+      "url": "https://protobuf.dev/",
+      "category": "docs"
+    },
+    {
+      "id": "avro-docs",
+      "url": "https://avro.apache.org/docs/",
+      "category": "docs"
+    },
+    {
+      "id": "thrift-docs",
+      "url": "https://thrift.apache.org/docs/",
+      "category": "docs"
+    },
+    {
+      "id": "bazel-docs",
+      "url": "https://bazel.build/docs",
+      "category": "docs"
+    },
+    {
+      "id": "cmake-docs",
+      "url": "https://cmake.org/documentation/",
+      "category": "docs"
+    },
+    {
+      "id": "maven-docs",
+      "url": "https://maven.apache.org/guides/",
+      "category": "docs"
+    },
+    {
+      "id": "gradle-docs",
+      "url": "https://docs.gradle.org/",
+      "category": "docs"
+    },
+    {
+      "id": "npm-docs",
+      "url": "https://docs.npmjs.com/",
+      "category": "docs"
+    },
+    {
+      "id": "yarn-docs",
+      "url": "https://yarnpkg.com/getting-started",
+      "category": "docs"
+    },
+    {
+      "id": "pnpm-docs",
+      "url": "https://pnpm.io/",
+      "category": "docs"
+    },
+    {
+      "id": "poetry-docs",
+      "url": "https://python-poetry.org/docs/",
+      "category": "docs"
+    },
+    {
+      "id": "pip-docs",
+      "url": "https://pip.pypa.io/en/stable/",
+      "category": "docs"
+    },
+    {
+      "id": "conda-docs",
+      "url": "https://docs.conda.io/",
+      "category": "docs"
+    },
+    {
+      "id": "uv-docs",
+      "url": "https://docs.astral.sh/uv/",
+      "category": "docs"
+    },
+    {
+      "id": "ruff-docs",
+      "url": "https://docs.astral.sh/ruff/",
+      "category": "docs"
+    },
+    {
+      "id": "black-docs",
+      "url": "https://black.readthedocs.io/",
+      "category": "docs"
+    },
+    {
+      "id": "mypy-docs",
+      "url": "https://mypy.readthedocs.io/",
+      "category": "docs"
+    },
+    {
+      "id": "pydantic-docs",
+      "url": "https://docs.pydantic.dev/",
+      "category": "docs"
+    },
+    {
+      "id": "sqlalchemy-docs",
+      "url": "https://docs.sqlalchemy.org/",
+      "category": "docs"
+    },
+    {
+      "id": "alembic-docs",
+      "url": "https://alembic.sqlalchemy.org/",
+      "category": "docs"
+    },
+    {
+      "id": "pandas-docs",
+      "url": "https://pandas.pydata.org/docs/",
+      "category": "docs"
+    },
+    {
+      "id": "numpy-docs",
+      "url": "https://numpy.org/doc/",
+      "category": "docs"
+    },
+    {
+      "id": "scipy-docs",
+      "url": "https://docs.scipy.org/doc/scipy/",
+      "category": "docs"
+    },
+    {
+      "id": "sklearn-docs",
+      "url": "https://scikit-learn.org/stable/",
+      "category": "docs"
+    },
+    {
+      "id": "pytorch-docs",
+      "url": "https://pytorch.org/docs/stable/",
+      "category": "docs"
+    },
+    {
+      "id": "tensorflow-docs",
+      "url": "https://www.tensorflow.org/guide",
+      "category": "docs"
+    },
+    {
+      "id": "jax-docs",
+      "url": "https://docs.jax.dev/en/latest/",
+      "category": "docs"
+    },
+    {
+      "id": "keras-docs",
+      "url": "https://keras.io/guides/",
+      "category": "docs"
+    },
+    {
+      "id": "spacy-docs",
+      "url": "https://spacy.io/usage",
+      "category": "docs"
+    },
+    {
+      "id": "nltk-docs",
+      "url": "https://www.nltk.org/",
+      "category": "docs"
+    },
+    {
+      "id": "gensim-docs",
+      "url": "https://radimrehurek.com/gensim/",
+      "category": "docs"
+    },
+    {
+      "id": "trafilatura-docs",
+      "url": "https://trafilatura.readthedocs.io/",
+      "category": "docs"
+    },
+    {
+      "id": "beautifulsoup-docs",
+      "url": "https://www.crummy.com/software/BeautifulSoup/bs4/doc/",
+      "category": "docs"
+    },
+    {
+      "id": "lxml-docs",
+      "url": "https://lxml.de/",
+      "category": "docs"
+    },
+    {
+      "id": "scrapy-docs",
+      "url": "https://docs.scrapy.org/",
+      "category": "docs"
+    },
+    {
+      "id": "playwright-docs",
+      "url": "https://playwright.dev/docs/intro",
+      "category": "docs"
+    },
+    {
+      "id": "puppeteer-docs",
+      "url": "https://pptr.dev/",
+      "category": "docs"
+    },
+    {
+      "id": "selenium-docs",
+      "url": "https://www.selenium.dev/documentation/",
+      "category": "docs"
+    },
+    {
+      "id": "cypress-docs",
+      "url": "https://docs.cypress.io/",
+      "category": "docs"
+    },
+    {
+      "id": "jest-docs",
+      "url": "https://jestjs.io/docs/getting-started",
+      "category": "docs"
+    },
+    {
+      "id": "vitest-docs",
+      "url": "https://vitest.dev/guide/",
+      "category": "docs"
+    },
+    {
+      "id": "mocha-docs",
+      "url": "https://mochajs.org/",
+      "category": "docs"
+    },
+    {
+      "id": "junit-docs",
+      "url": "https://junit.org/junit5/docs/current/user-guide/",
+      "category": "docs"
+    },
+    {
+      "id": "mockito-docs",
+      "url": "https://javadoc.io/doc/org.mockito/mockito-core/latest/org/mockito/Mockito.html",
+      "category": "docs"
+    },
+    {
+      "id": "aws-pricing-calc",
+      "url": "https://calculator.aws/#/",
+      "category": "pricing"
+    },
+    {
+      "id": "azure-vm-pricing",
+      "url": "https://azure.microsoft.com/en-us/pricing/details/virtual-machines/linux/",
+      "category": "pricing"
+    },
+    {
+      "id": "gcp-compute-pricing",
+      "url": "https://cloud.google.com/compute/all-pricing",
+      "category": "pricing"
+    },
+    {
+      "id": "digitalocean-pricing",
+      "url": "https://www.digitalocean.com/pricing",
+      "category": "pricing"
+    },
+    {
+      "id": "vercel-pricing",
+      "url": "https://vercel.com/pricing",
+      "category": "pricing"
+    },
+    {
+      "id": "netlify-pricing",
+      "url": "https://www.netlify.com/pricing/",
+      "category": "pricing"
+    },
+    {
+      "id": "heroku-pricing",
+      "url": "https://www.heroku.com/pricing",
+      "category": "pricing"
+    },
+    {
+      "id": "supabase-pricing",
+      "url": "https://supabase.com/pricing",
+      "category": "pricing"
+    },
+    {
+      "id": "planetscale-pricing",
+      "url": "https://planetscale.com/pricing",
+      "category": "pricing"
+    },
+    {
+      "id": "datadog-pricing",
+      "url": "https://www.datadoghq.com/pricing/",
+      "category": "pricing"
+    },
+    {
+      "id": "snowflake-pricing",
+      "url": "https://www.snowflake.com/en/pricing-options/",
+      "category": "pricing"
+    },
+    {
+      "id": "mongodb-atlas-pricing",
+      "url": "https://www.mongodb.com/pricing",
+      "category": "pricing"
+    },
+    {
+      "id": "openai-pricing",
+      "url": "https://openai.com/api/pricing/",
+      "category": "pricing"
+    },
+    {
+      "id": "anthropic-pricing",
+      "url": "https://www.anthropic.com/pricing",
+      "category": "pricing"
+    },
+    {
+      "id": "cloudflare-pricing",
+      "url": "https://www.cloudflare.com/plans/",
+      "category": "pricing"
+    },
+    {
+      "id": "stripe-home",
+      "url": "https://stripe.com/",
+      "category": "marketing"
+    },
+    {
+      "id": "notion-home",
+      "url": "https://www.notion.com/",
+      "category": "marketing"
+    },
+    {
+      "id": "linear-home",
+      "url": "https://linear.app/",
+      "category": "marketing"
+    },
+    {
+      "id": "figma-home",
+      "url": "https://www.figma.com/",
+      "category": "marketing"
+    },
+    {
+      "id": "slack-home",
+      "url": "https://slack.com/",
+      "category": "marketing"
+    },
+    {
+      "id": "atlassian-home",
+      "url": "https://www.atlassian.com/",
+      "category": "marketing"
+    },
+    {
+      "id": "gitlab-home",
+      "url": "https://about.gitlab.com/",
+      "category": "marketing"
+    },
+    {
+      "id": "hashicorp-home",
+      "url": "https://www.hashicorp.com/",
+      "category": "marketing"
+    },
+    {
+      "id": "databricks-home",
+      "url": "https://www.databricks.com/",
+      "category": "marketing"
+    },
+    {
+      "id": "elastic-home",
+      "url": "https://www.elastic.co/",
+      "category": "marketing"
+    },
+    {
+      "id": "confluent-home",
+      "url": "https://www.confluent.io/",
+      "category": "marketing"
+    },
+    {
+      "id": "launchdarkly-home",
+      "url": "https://launchdarkly.com/",
+      "category": "marketing"
+    },
+    {
+      "id": "segment-home",
+      "url": "https://segment.com/",
+      "category": "marketing"
+    },
+    {
+      "id": "twilio-home",
+      "url": "https://www.twilio.com/en-us",
+      "category": "marketing"
+    },
+    {
+      "id": "sendgrid-home",
+      "url": "https://sendgrid.com/",
+      "category": "marketing"
+    },
+    {
+      "id": "auth0-home",
+      "url": "https://auth0.com/",
+      "category": "marketing"
+    },
+    {
+      "id": "okta-home",
+      "url": "https://www.okta.com/",
+      "category": "marketing"
+    },
+    {
+      "id": "pagerduty-home",
+      "url": "https://www.pagerduty.com/",
+      "category": "marketing"
+    },
+    {
+      "id": "splunk-home",
+      "url": "https://www.splunk.com/",
+      "category": "marketing"
+    },
+    {
+      "id": "newrelic-home",
+      "url": "https://newrelic.com/",
+      "category": "marketing"
+    },
+    {
+      "id": "openai-blog",
+      "url": "https://openai.com/blog/",
+      "category": "article"
+    },
+    {
+      "id": "anthropic-news",
+      "url": "https://www.anthropic.com/news",
+      "category": "article"
+    },
+    {
+      "id": "google-ai-blog",
+      "url": "https://blog.google/technology/ai/",
+      "category": "article"
+    },
+    {
+      "id": "aws-newsblog",
+      "url": "https://aws.amazon.com/blogs/aws/",
+      "category": "article"
+    },
+    {
+      "id": "azure-blog",
+      "url": "https://azure.microsoft.com/en-us/blog/",
+      "category": "article"
+    },
+    {
+      "id": "kubernetes-blog",
+      "url": "https://kubernetes.io/blog/",
+      "category": "article"
+    },
+    {
+      "id": "docker-blog",
+      "url": "https://www.docker.com/blog/",
+      "category": "article"
+    },
+    {
+      "id": "github-blog",
+      "url": "https://github.blog/",
+      "category": "article"
+    },
+    {
+      "id": "cloudflare-blog",
+      "url": "https://blog.cloudflare.com/",
+      "category": "article"
+    },
+    {
+      "id": "vercel-blog",
+      "url": "https://vercel.com/blog",
+      "category": "article"
+    },
+    {
+      "id": "netlify-blog",
+      "url": "https://www.netlify.com/blog/",
+      "category": "article"
+    },
+    {
+      "id": "hn-front",
+      "url": "https://news.ycombinator.com/",
+      "category": "article"
+    },
+    {
+      "id": "devto-home",
+      "url": "https://dev.to/",
+      "category": "article"
+    },
+    {
+      "id": "infoq-home",
+      "url": "https://www.infoq.com/",
+      "category": "article"
+    },
+    {
+      "id": "martinfowler",
+      "url": "https://martinfowler.com/",
+      "category": "article"
+    },
+    {
+      "id": "wiki-rag",
+      "url": "https://en.wikipedia.org/wiki/Retrieval-augmented_generation",
+      "category": "wiki"
+    },
+    {
+      "id": "wiki-vector",
+      "url": "https://en.wikipedia.org/wiki/Vector_database",
+      "category": "wiki"
+    },
+    {
+      "id": "wiki-embedding",
+      "url": "https://en.wikipedia.org/wiki/Word_embedding",
+      "category": "wiki"
+    },
+    {
+      "id": "wiki-transformer",
+      "url": "https://en.wikipedia.org/wiki/Transformer_(deep_learning_architecture)",
+      "category": "wiki"
+    },
+    {
+      "id": "wiki-bm25",
+      "url": "https://en.wikipedia.org/wiki/Okapi_BM25",
+      "category": "wiki"
+    },
+    {
+      "id": "wiki-hnsw",
+      "url": "https://en.wikipedia.org/wiki/Hierarchical_navigable_small_world",
+      "category": "wiki"
+    },
+    {
+      "id": "wiki-html",
+      "url": "https://en.wikipedia.org/wiki/HTML",
+      "category": "wiki"
+    },
+    {
+      "id": "wiki-dom",
+      "url": "https://en.wikipedia.org/wiki/Document_Object_Model",
+      "category": "wiki"
+    },
+    {
+      "id": "wiki-markdown",
+      "url": "https://en.wikipedia.org/wiki/Markdown",
+      "category": "wiki"
+    },
+    {
+      "id": "wiki-nlp",
+      "url": "https://en.wikipedia.org/wiki/Natural_language_processing",
+      "category": "wiki"
+    },
+    {
+      "id": "awesome-python",
+      "url": "https://github.com/vinta/awesome-python",
+      "category": "hub"
+    },
+    {
+      "id": "awesome-selfhosted",
+      "url": "https://github.com/awesome-selfhosted/awesome-selfhosted",
+      "category": "hub"
+    },
+    {
+      "id": "pypi-home",
+      "url": "https://pypi.org/",
+      "category": "hub"
+    },
+    {
+      "id": "npm-home",
+      "url": "https://www.npmjs.com/",
+      "category": "hub"
+    },
+    {
+      "id": "crates-io",
+      "url": "https://crates.io/",
+      "category": "hub"
+    },
+    {
+      "id": "huggingface-hub",
+      "url": "https://huggingface.co/models",
+      "category": "hub"
+    },
+    {
+      "id": "paperswithcode",
+      "url": "https://paperswithcode.com/",
+      "category": "hub"
+    },
+    {
+      "id": "arxiv-cs-cl",
+      "url": "https://arxiv.org/list/cs.CL/recent",
+      "category": "hub"
+    },
+    {
+      "id": "stackoverflow-python",
+      "url": "https://stackoverflow.com/questions/tagged/python",
+      "category": "hub"
+    },
+    {
+      "id": "reddit-machinelearning",
+      "url": "https://www.reddit.com/r/MachineLearning/",
+      "category": "hub"
+    },
+    {
+      "id": "llamaindex-docs",
+      "url": "https://docs.llamaindex.ai/en/stable/",
+      "category": "docs"
+    },
+    {
+      "id": "haystack-docs",
+      "url": "https://docs.haystack.deepset.ai/docs/intro",
+      "category": "docs"
+    },
+    {
+      "id": "chromadb-docs",
+      "url": "https://docs.trychroma.com/",
+      "category": "docs"
+    },
+    {
+      "id": "weaviate-docs2",
+      "url": "https://weaviate.io/developers/weaviate",
+      "category": "docs"
+    },
+    {
+      "id": "openai-api-ref",
+      "url": "https://platform.openai.com/docs/api-reference",
+      "category": "docs"
+    },
+    {
+      "id": "gemini-docs",
+      "url": "https://ai.google.dev/gemini-api/docs",
+      "category": "docs"
+    },
+    {
+      "id": "go-tour",
+      "url": "https://go.dev/tour/welcome",
+      "category": "docs"
+    },
+    {
+      "id": "java-docs",
+      "url": "https://docs.oracle.com/en/java/",
+      "category": "docs"
+    },
+    {
+      "id": "swift-docs",
+      "url": "https://www.swift.org/documentation/",
+      "category": "docs"
+    },
+    {
+      "id": "kotlin-docs",
+      "url": "https://kotlinlang.org/docs/home.html",
+      "category": "docs"
+    },
+    {
+      "id": "elastic-docs",
+      "url": "https://www.elastic.co/guide/index.html",
+      "category": "docs"
+    },
+    {
+      "id": "metabase-docs",
+      "url": "https://www.metabase.com/docs/latest/",
+      "category": "docs"
+    },
+    {
+      "id": "superset-docs",
+      "url": "https://superset.apache.org/docs/intro",
+      "category": "docs"
+    },
+    {
+      "id": "shopify-api",
+      "url": "https://shopify.dev/docs/api",
+      "category": "docs"
+    },
+    {
+      "id": "salesforce-docs",
+      "url": "https://developer.salesforce.com/docs",
+      "category": "docs"
+    },
+    {
+      "id": "atlassian-rest",
+      "url": "https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/",
+      "category": "docs"
+    },
+    {
+      "id": "github-rest",
+      "url": "https://docs.github.com/en/rest",
+      "category": "docs"
+    },
+    {
+      "id": "gitlab-api",
+      "url": "https://docs.gitlab.com/ee/api/",
+      "category": "docs"
+    },
+    {
+      "id": "bitbucket-api",
+      "url": "https://developer.atlassian.com/cloud/bitbucket/rest/intro/",
+      "category": "docs"
+    },
+    {
+      "id": "notion-help",
+      "url": "https://www.notion.com/help",
+      "category": "docs"
+    },
+    {
+      "id": "figma-help",
+      "url": "https://help.figma.com/hc/en-us",
+      "category": "docs"
+    },
+    {
+      "id": "intercom-help",
+      "url": "https://www.intercom.com/help/en/",
+      "category": "docs"
+    },
+    {
+      "id": "hubspot-knowledge",
+      "url": "https://knowledge.hubspot.com/",
+      "category": "docs"
+    },
+    {
+      "id": "zendesk-help",
+      "url": "https://support.zendesk.com/hc/en-us",
+      "category": "docs"
+    },
+    {
+      "id": "freshdesk-docs",
+      "url": "https://developers.freshdesk.com/api/",
+      "category": "docs"
+    },
+    {
+      "id": "asana-guide",
+      "url": "https://asana.com/guide",
+      "category": "docs"
+    },
+    {
+      "id": "monday-help",
+      "url": "https://support.monday.com/hc/en-us",
+      "category": "docs"
+    },
+    {
+      "id": "airtable-support",
+      "url": "https://support.airtable.com/",
+      "category": "docs"
+    },
+    {
+      "id": "webflow-university",
+      "url": "https://university.webflow.com/",
+      "category": "docs"
+    },
+    {
+      "id": "bbc-tech",
+      "url": "https://www.bbc.com/news/technology",
+      "category": "news"
+    },
+    {
+      "id": "reuters-tech",
+      "url": "https://www.reuters.com/technology/",
+      "category": "news"
+    },
+    {
+      "id": "techcrunch",
+      "url": "https://techcrunch.com/",
+      "category": "news"
+    },
+    {
+      "id": "theverge",
+      "url": "https://www.theverge.com/",
+      "category": "news"
+    },
+    {
+      "id": "arstechnica",
+      "url": "https://arstechnica.com/",
+      "category": "news"
+    },
+    {
+      "id": "wired",
+      "url": "https://www.wired.com/",
+      "category": "news"
+    },
+    {
+      "id": "mit-tech-review",
+      "url": "https://www.technologyreview.com/",
+      "category": "news"
+    },
+    {
+      "id": "ieee-spectrum",
+      "url": "https://spectrum.ieee.org/",
+      "category": "news"
+    },
+    {
+      "id": "acm-queue",
+      "url": "https://queue.acm.org/",
+      "category": "article"
+    },
+    {
+      "id": "acm-dl",
+      "url": "https://dl.acm.org/",
+      "category": "hub"
+    }
+  ]
+}

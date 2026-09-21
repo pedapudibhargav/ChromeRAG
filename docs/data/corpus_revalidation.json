@@ -1,0 +1,246 @@
+{
+  "ok": true,
+  "errors": [],
+  "corpus_urls_listed": 373,
+  "n_fetched": 277,
+  "n_scoreable": 238,
+  "n_thin": 39,
+  "leaderboard": {
+    "chromerag": {
+      "pages_scored": 238,
+      "avg_content_recall": 0.6782,
+      "avg_noise_retention": 0.0053,
+      "avg_f_balanced": 0.7835
+    },
+    "chromerag_coverage": {
+      "pages_scored": 238,
+      "avg_content_recall": 0.7008,
+      "avg_noise_retention": 0.0055,
+      "avg_f_balanced": 0.8004
+    },
+    "chromerag_precision": {
+      "pages_scored": 238,
+      "avg_content_recall": 0.5504,
+      "avg_noise_retention": 0.0054,
+      "avg_f_balanced": 0.6765
+    },
+    "trafilatura": {
+      "pages_scored": 238,
+      "avg_content_recall": 0.6622,
+      "avg_noise_retention": 0.019,
+      "avg_f_balanced": 0.7521
+    },
+    "readability": {
+      "pages_scored": 238,
+      "avg_content_recall": 0.4559,
+      "avg_noise_retention": 0.0156,
+      "avg_f_balanced": 0.5349
+    },
+    "markdownify": {
+      "pages_scored": 238,
+      "avg_content_recall": 0.7018,
+      "avg_noise_retention": 0.2627,
+      "avg_f_balanced": 0.6946
+    },
+    "html2text": {
+      "pages_scored": 238,
+      "avg_content_recall": 0.6937,
+      "avg_noise_retention": 0.2818,
+      "avg_f_balanced": 0.675
+    },
+    "beautifulsoup_text": {
+      "pages_scored": 238,
+      "avg_content_recall": 0.8225,
+      "avg_noise_retention": 0.8297,
+      "avg_f_balanced": 0.2396
+    },
+    "markitdown": {
+      "pages_scored": 238,
+      "avg_content_recall": 0.7017,
+      "avg_noise_retention": 0.2613,
+      "avg_f_balanced": 0.6951
+    }
+  },
+  "thin_kinds": {
+    "not_thin_but_unscoreable": 31,
+    "thin_other": 1,
+    "js_shell": 7
+  },
+  "thin_sample": [
+    {
+      "id": "alembic-docs",
+      "kind": "not_thin_but_unscoreable",
+      "visible_chars": 9388,
+      "visible_words": 1177,
+      "root_marker": null
+    },
+    {
+      "id": "alibaba-cloud-docs",
+      "kind": "not_thin_but_unscoreable",
+      "visible_chars": 829,
+      "visible_words": 101,
+      "root_marker": "id=\"app\""
+    },
+    {
+      "id": "atlassian-confluence",
+      "kind": "not_thin_but_unscoreable",
+      "visible_chars": 1059,
+      "visible_words": 152,
+      "root_marker": "id=\"root\""
+    },
+    {
+      "id": "atlassian-jira",
+      "kind": "not_thin_but_unscoreable",
+      "visible_chars": 1044,
+      "visible_words": 154,
+      "root_marker": "id=\"root\""
+    },
+    {
+      "id": "auth0-docs",
+      "kind": "not_thin_but_unscoreable",
+      "visible_chars": 1415,
+      "visible_words": 199,
+      "root_marker": null
+    },
+    {
+      "id": "bazel-docs",
+      "kind": "not_thin_but_unscoreable",
+      "visible_chars": 5605,
+      "visible_words": 797,
+      "root_marker": null
+    },
+    {
+      "id": "bootstrap-docs",
+      "kind": "thin_other",
+      "visible_chars": 9,
+      "visible_words": 1,
+      "root_marker": null
+    },
+    {
+      "id": "cypress-docs",
+      "kind": "js_shell",
+      "visible_chars": 21,
+      "visible_words": 2,
+      "root_marker": null
+    },
+    {
+      "id": "discord-api",
+      "kind": "not_thin_but_unscoreable",
+      "visible_chars": 2136,
+      "visible_words": 303,
+      "root_marker": null
+    },
+    {
+      "id": "dropbox-api",
+      "kind": "not_thin_but_unscoreable",
+      "visible_chars": 3470,
+      "visible_words": 492,
+      "root_marker": null
+    },
+    {
+      "id": "grafana-docs",
+      "kind": "not_thin_but_unscoreable",
+      "visible_chars": 6549,
+      "visible_words": 944,
+      "root_marker": null
+    },
+    {
+      "id": "hashicorp-nomad",
+      "kind": "not_thin_but_unscoreable",
+      "visible_chars": 4789,
+      "visible_words": 698,
+      "root_marker": "id=\"__next\""
+    },
+    {
+      "id": "hashicorp-terraform",
+      "kind": "not_thin_but_unscoreable",
+      "visible_chars": 3370,
+      "visible_words": 441,
+      "root_marker": "id=\"__next\""
+    },
+    {
+      "id": "hashicorp-vault",
+      "kind": "not_thin_but_unscoreable",
+      "visible_chars": 3375,
+      "visible_words": 492,
+      "root_marker": "id=\"__next\""
+    },
+    {
+      "id": "hubspot-docs",
+      "kind": "not_thin_but_unscoreable",
+      "visible_chars": 1568,
+      "visible_words": 249,
+      "root_marker": null
+    },
+    {
+      "id": "ibm-cloud-docs",
+      "kind": "js_shell",
+      "visible_chars": 272,
+      "visible_words": 46,
+      "root_marker": null
+    },
+    {
+      "id": "jaeger-docs",
+      "kind": "not_thin_but_unscoreable",
+      "visible_chars": 10853,
+      "visible_words": 1222,
+      "root_marker": null
+    },
+    {
+      "id": "kafka-docs",
+      "kind": "not_thin_but_unscoreable",
+      "visible_chars": 904,
+      "visible_words": 107,
+      "root_marker": null
+    },
+    {
+      "id": "mixpanel-docs",
+      "kind": "not_thin_but_unscoreable",
+      "visible_chars": 3600,
+      "visible_words": 569,
+      "root_marker": null
+    },
+    {
+      "id": "nginx-docs",
+      "kind": "not_thin_but_unscoreable",
+      "visible_chars": 3627,
+      "visible_words": 595,
+      "root_marker": null
+    },
+    {
+      "id": "nodejs-docs",
+      "kind": "not_thin_but_unscoreable",
+      "visible_chars": 3001,
+      "visible_words": 417,
+      "root_marker": null
+    },
+    {
+      "id": "numpy-docs",
+      "kind": "not_thin_but_unscoreable",
+      "visible_chars": 1433,
+      "visible_words": 220,
+      "root_marker": null
+    },
+    {
+      "id": "nvidia-cuda",
+      "kind": "not_thin_but_unscoreable",
+      "visible_chars": 3063,
+      "visible_words": 428,
+      "root_marker": null
+    },
+    {
+      "id": "openai-docs",
+      "kind": "js_shell",
+      "visible_chars": 15,
+      "visible_words": 2,
+      "root_marker": "id=\"root\""
+    },
+    {
+      "id": "pagerduty-docs",
+      "kind": "js_shell",
+      "visible_chars": 0,
+      "visible_words": 0,
+      "root_marker": null
+    }
+  ]
+}

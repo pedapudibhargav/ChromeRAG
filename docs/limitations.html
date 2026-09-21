@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Limitations — ChromeRAG</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./assets/site.css" />
+</head>
+<body>
+  <header class="site">
+    <div class="wrap nav">
+      <a class="brand" href="./index.html">Chrome<span>RAG</span></a>
+      <ul class="nav-links">
+        <li><a href="./index.html">Home</a></li>
+        <li><a href="./metrics.html">Metrics</a></li>
+        <li><a href="./results.html">Results</a></li>
+        <li><a href="./tests.html">Tests</a></li>
+        <li><a href="./limitations.html">Limitations</a></li>
+        <li><a href="./quickstart.html">Quickstart</a></li>
+      </ul>
+    </div>
+  </header>
+  <main class="wrap" style="padding:2rem 1.25rem 3rem; max-width:42rem">
+    <h1 style="font-family:var(--font-display)">Honest limitations</h1>
+    <p style="color:var(--muted)">
+      SoftareX-style software papers should state failure modes clearly.
+      ChromeRAG optimizes for RAG ingest quality on real HTML — not for beating every extractor on every page type.
+    </p>
+
+    <h2>JavaScript empty shells</h2>
+    <p>
+      If a site ships a near-empty HTML document and fills content only after JS runs,
+      ChromeRAG will extract little or nothing. It does not launch a browser.
+      Render first (Playwright / your crawler), then call <code>chromerag extract</code>.
+      The CLI and API now emit an explicit <code>WARNING:</code> when input HTML looks like a
+      JS shell or is otherwise thin, so you can verify the pipeline that serves HTML to ChromeRAG
+      (<code>--fail-on-thin</code> exits 3 if you want hard failure).
+    </p>
+
+    <h2>Scoreable filter in benchmarks</h2>
+    <p>
+      Latest public run: <strong>373 listed</strong>, <strong>277 fetched</strong>,
+      <strong>238 scoreable</strong>, <strong>39 thin</strong>.
+      Scoreable means ChromeRAG content recall ≥ 0.05 against DOM main-content anchors.
+      Thin pages are excluded from leaderboard <em>averages</em> so near-zero recall pages
+      do not create a fake “all tools fail” narrative. Revalidation of the 39 thin pages
+      finds ~7 JS-shell-like inputs and ~31 pages that still have visible text but fail the
+      recall gate (layout / weak <code>main</code> anchors)—so “thin” is a hygiene label, not
+      “always an empty SPA.” Every baseline is still scored on that same scoreable set.
+      Separately, <code>chromerag extract</code> warns on JS-shell / thin HTML so callers can
+      verify their fetch pipeline.
+    </p>
+
+    <h2>Heuristic anchors</h2>
+    <p>
+      Recall / noise metrics use structural HTML regions (<code>main</code>/<code>article</code> vs
+      <code>nav</code>/<code>footer</code>), not hand-labeled gold spans. Optional LLM rubric scores
+      are secondary only.
+    </p>
+
+    <h2>Scope</h2>
+    <p>
+      HTML → Markdown for RAG. Not PDF/Office conversion (see MarkItDown). Not a hosted crawl API.
+    </p>
+
+    <p class="note" style="margin-top:1.5rem">
+      Full manuscript wording: <code>papers/softwarex/SOFTWAREX_DRAFT.md</code> ·
+      Word manuscript: <code>papers/softwarex/ChromeRAG_SoftwareX_OSP.docx</code>
+    </p>
+  </main>
+  <footer class="site"><div class="wrap">ChromeRAG documentation</div></footer>
+  <script src="./assets/site.js"></script>
+</body>
+</html>

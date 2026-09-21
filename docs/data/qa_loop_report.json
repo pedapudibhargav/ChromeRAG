@@ -1,0 +1,312 @@
+{
+  "batch": {
+    "pages": [
+      {
+        "id": "aws-ec2-home",
+        "tokens": 981,
+        "stce": true,
+        "stce_rm": 10,
+        "json_ld": 3,
+        "noise_kw": 0
+      },
+      {
+        "id": "aws-ec2-instance-types",
+        "tokens": 680,
+        "stce": true,
+        "stce_rm": 10,
+        "json_ld": 1,
+        "noise_kw": 0
+      },
+      {
+        "id": "aws-ec2-pricing",
+        "tokens": 2255,
+        "stce": true,
+        "stce_rm": 10,
+        "json_ld": 0,
+        "noise_kw": 2
+      },
+      {
+        "id": "aws-lambda-home",
+        "tokens": 1398,
+        "stce": true,
+        "stce_rm": 10,
+        "json_ld": 3,
+        "noise_kw": 0
+      },
+      {
+        "id": "aws-lambda-pricing",
+        "tokens": 12824,
+        "stce": true,
+        "stce_rm": 10,
+        "json_ld": 1,
+        "noise_kw": 0
+      },
+      {
+        "id": "aws-s3-docs",
+        "tokens": 8642,
+        "stce": false,
+        "stce_rm": 0,
+        "json_ld": 1,
+        "noise_kw": 1
+      },
+      {
+        "id": "cloudflare-workers-get-started",
+        "tokens": 1708,
+        "stce": true,
+        "stce_rm": 41,
+        "json_ld": 1,
+        "noise_kw": 0
+      },
+      {
+        "id": "cloudflare-workers-routing",
+        "tokens": 425,
+        "stce": true,
+        "stce_rm": 41,
+        "json_ld": 1,
+        "noise_kw": 0
+      },
+      {
+        "id": "cloudflare-workers",
+        "tokens": 527,
+        "stce": true,
+        "stce_rm": 41,
+        "json_ld": 1,
+        "noise_kw": 0
+      },
+      {
+        "id": "[removed],
+        "tokens": 858,
+        "stce": true,
+        "stce_rm": 1,
+        "json_ld": 0,
+        "noise_kw": 0
+      },
+      {
+        "id": "[removed],
+        "tokens": 34,
+        "stce": false,
+        "stce_rm": 0,
+        "json_ld": 0,
+        "noise_kw": 0
+      },
+      {
+        "id": "[removed],
+        "tokens": 808,
+        "stce": true,
+        "stce_rm": 1,
+        "json_ld": 0,
+        "noise_kw": 0
+      },
+      {
+        "id": "[removed],
+        "tokens": 337,
+        "stce": true,
+        "stce_rm": 1,
+        "json_ld": 0,
+        "noise_kw": 0
+      },
+      {
+        "id": "[removed],
+        "tokens": 1156,
+        "stce": false,
+        "stce_rm": 0,
+        "json_ld": 1,
+        "noise_kw": 0
+      },
+      {
+        "id": "github-docs-actions-about",
+        "tokens": 1759,
+        "stce": true,
+        "stce_rm": 39,
+        "json_ld": 0,
+        "noise_kw": 0
+      },
+      {
+        "id": "github-docs-actions-quickstart",
+        "tokens": 1858,
+        "stce": true,
+        "stce_rm": 42,
+        "json_ld": 0,
+        "noise_kw": 0
+      },
+      {
+        "id": "github-docs-actions",
+        "tokens": 595,
+        "stce": true,
+        "stce_rm": 36,
+        "json_ld": 0,
+        "noise_kw": 0
+      },
+      {
+        "id": "microsoft-azure-docs",
+        "tokens": 140,
+        "stce": false,
+        "stce_rm": 0,
+        "json_ld": 0,
+        "noise_kw": 0
+      },
+      {
+        "id": "microsoft-azure-overview",
+        "tokens": 3449,
+        "stce": false,
+        "stce_rm": 0,
+        "json_ld": 0,
+        "noise_kw": 0
+      },
+      {
+        "id": "nvidia-dgx",
+        "tokens": 2311,
+        "stce": false,
+        "stce_rm": 0,
+        "json_ld": 0,
+        "noise_kw": 0
+      },
+      {
+        "id": "nvidia-h100",
+        "tokens": 2823,
+        "stce": false,
+        "stce_rm": 0,
+        "json_ld": 0,
+        "noise_kw": 0
+      },
+      {
+        "id": "salesforce-product",
+        "tokens": 2688,
+        "stce": false,
+        "stce_rm": 0,
+        "json_ld": 1,
+        "noise_kw": 0
+      },
+      {
+        "id": "stripe-docs-home",
+        "tokens": 33,
+        "stce": false,
+        "stce_rm": 0,
+        "json_ld": 0,
+        "noise_kw": 0
+      },
+      {
+        "id": "stripe-docs-payments",
+        "tokens": 35,
+        "stce": false,
+        "stce_rm": 0,
+        "json_ld": 0,
+        "noise_kw": 0
+      },
+      {
+        "id": "twilio-docs-sms",
+        "tokens": 817,
+        "stce": false,
+        "stce_rm": 0,
+        "json_ld": 1,
+        "noise_kw": 0
+      },
+      {
+        "id": "twilio-docs",
+        "tokens": 1954,
+        "stce": false,
+        "stce_rm": 0,
+        "json_ld": 1,
+        "noise_kw": 0
+      }
+    ],
+    "chrome_active": {
+      "aws.amazon.com": 61,
+      "developers.cloudflare.com": 200,
+      "[removed] 1,
+      "docs.github.com": 56
+    }
+  },
+  "metrics": {
+    "summary": {
+      "chromerag": {
+        "n": 23,
+        "avg_recall": 0.7994,
+        "avg_noise_ret": 0.0019,
+        "avg_fbal": 0.8828,
+        "avg_tokens": 2217.1
+      },
+      "chromerag_precision": {
+        "n": 23,
+        "avg_recall": 0.6878,
+        "avg_noise_ret": 0.0019,
+        "avg_fbal": 0.7946,
+        "avg_tokens": 2011.5
+      },
+      "chromerag_coverage": {
+        "n": 23,
+        "avg_recall": 0.8171,
+        "avg_noise_ret": 0.0019,
+        "avg_fbal": 0.8939,
+        "avg_tokens": 2250.1
+      },
+      "beautifulsoup_text": {
+        "n": 23,
+        "avg_recall": 0.8652,
+        "avg_noise_ret": 0.7589,
+        "avg_fbal": 0.3145,
+        "avg_tokens": 3582.3
+      },
+      "markdownify": {
+        "n": 23,
+        "avg_recall": 0.8025,
+        "avg_noise_ret": 0.2967,
+        "avg_fbal": 0.7292,
+        "avg_tokens": 7016.3
+      },
+      "readability": {
+        "n": 23,
+        "avg_recall": 0.5111,
+        "avg_noise_ret": 0.0,
+        "avg_fbal": 0.5884,
+        "avg_tokens": 1556.7
+      },
+      "trafilatura": {
+        "n": 23,
+        "avg_recall": 0.7433,
+        "avg_noise_ret": 0.0553,
+        "avg_fbal": 0.7959,
+        "avg_tokens": 2033.9
+      },
+      "html2text": {
+        "n": 23,
+        "avg_recall": 0.8013,
+        "avg_noise_ret": 0.3049,
+        "avg_fbal": 0.7228,
+        "avg_tokens": 7040.8
+      }
+    },
+    "failures": [
+      {
+        "id": "[removed],
+        "reason": "chromerag_recall_near_zero",
+        "best_other": [
+          "beautifulsoup_text",
+          0.6286
+        ]
+      },
+      {
+        "id": "stripe-docs-home",
+        "reason": "chromerag_recall_near_zero",
+        "best_other": [
+          "beautifulsoup_text",
+          0.8315
+        ]
+      },
+      {
+        "id": "stripe-docs-payments",
+        "reason": "chromerag_recall_near_zero",
+        "best_other": [
+          "beautifulsoup_text",
+          0.6964
+        ]
+      }
+    ]
+  },
+  "gates": {
+    "min_avg_recall": 0.7,
+    "min_avg_fbal": 0.8,
+    "max_avg_noise_ret": 0.05
+  },
+  "passed": true
+}

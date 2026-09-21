@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Metrics — ChromeRAG</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./assets/site.css" />
+</head>
+<body>
+  <header class="site">
+    <div class="wrap nav">
+      <a class="brand" href="./index.html">Chrome<span>RAG</span></a>
+      <ul class="nav-links">
+        <li><a href="./index.html">Home</a></li>
+        <li><a href="./metrics.html">Metrics</a></li>
+        <li><a href="./results.html">Results</a></li>
+        <li><a href="./tests.html">Tests</a></li>
+        <li><a href="./limitations.html">Limitations</a></li>
+        <li><a href="./quickstart.html">Quickstart</a></li>
+      </ul>
+    </div>
+  </header>
+  <main class="wrap" style="padding:2rem 1.25rem 3rem">
+    <h1 style="font-family:var(--font-display)">QA columns explained</h1>
+    <p class="lead" style="color:var(--muted)">
+      Metrics are computed from HTML structure anchors — not from any single extractor —
+      so ChromeRAG, Trafilatura, Readability, and others can be compared fairly.
+    </p>
+
+    <dl class="metric-def">
+      <dt>Recall (content_recall)</dt>
+      <dd>
+        Fraction of <strong>main-content</strong> text anchors (from <code>main</code> / <code>article</code> /
+        content paragraphs) that still appear in the extractor output.
+        <strong>Higher is better.</strong> Low recall means the tool dropped relevant chunks.
+      </dd>
+
+      <dt>Noise ret (noise_retention)</dt>
+      <dd>
+        Fraction of <strong>chrome</strong> anchors (nav / footer / header / cookie widgets) that still appear
+        in the output. <strong>Lower is better.</strong> High noise retention means template junk will pollute embeddings.
+      </dd>
+
+      <dt>Fbal (f_balanced)</dt>
+      <dd>
+        A composite that rewards keeping content while removing chrome (harmonic-style balance of recall and
+        <code>1 − noise_retention</code>). <strong>Higher is better</strong> for overall RAG ingest quality.
+        Related scores <code>F_precision</code> / <code>F_coverage</code> weight cleanliness or recall more heavily.
+      </dd>
+    </dl>
+
+    <div class="note">
+      We also track token volume and keyword noise hits, but Recall / Noise ret / Fbal are the primary
+      comparison axes against Trafilatura, Readability, markdownify, html2text, and BeautifulSoup.
+    </div>
+
+    <h2>Where results live</h2>
+    <ul>
+      <li><code>data/outputs/corpus_comparison_summary.md</code> — latest multi-URL leaderboard</li>
+      <li><code>data/outputs/corpus_comparison_report.json</code> — per-page scores</li>
+      <li><code>data/outputs/qa_loop_summary.md</code> — closed-loop gate report</li>
+      <li><a href="./results.html">Results page</a> — exported leaderboard for this site</li>
+    </ul>
+  </main>
+  <footer class="site"><div class="wrap">ChromeRAG documentation</div></footer>
+  <script src="./assets/site.js"></script>
+</body>
+</html>

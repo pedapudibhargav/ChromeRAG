@@ -1,0 +1,13 @@
+# Baseline dependency pins for POC benchmarks.
+# Install with default PyPI, or pass --index-url from your local .env mirror if needed.
+beautifulsoup4>=4.12.0,<5
+lxml>=5.0.0,<6
+pydantic>=2.7.0,<3
+pyyaml>=6.0.0,<7
+tiktoken>=0.7.0
+numpy>=1.26.0,<3
+httpx>=0.27.0,<0.29
+markdownify>=0.13.0
+readability-lxml>=0.8.1
+trafilatura>=1.12.0
+html2text>=2024.2.26
