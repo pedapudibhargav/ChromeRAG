@@ -4,8 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ChromeRAG</title>
-  <meta name="description" content="Ingest-time elimination of site template noise for enterprise web RAG." />
-  <!-- Relative assets only — safe for GitHub project pages (/repo/) -->
+  <meta name="description" content="ChromeRAG: ingest-time elimination of site template noise for enterprise web RAG." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet" />
@@ -28,33 +27,34 @@
 
   <main>
     <div class="wrap hero">
-      <h1>Ingest-time elimination of site template noise</h1>
+      <p class="eyebrow">Open-source HTML → RAG Markdown</p>
+      <h1>Chrome<span class="accent">RAG</span></h1>
       <p class="lead">
-        ChromeRAG turns corporate HTML into RAG-ready Markdown: strip nav, footer, and CTA chrome,
-        keep docs and pricing content, inject Schema.org front-matter, and optionally learn
-        site-template patterns before extraction.
+        Ingest-time elimination of site template chrome (nav, footer, CTAs) so vector indexes
+        keep documentation and pricing content — not repeated boilerplate.
       </p>
       <div class="cta-row">
         <a class="btn btn-primary" href="./quickstart.html">Get started</a>
-        <a class="btn btn-ghost" href="./results.html">See benchmark results</a>
+        <a class="btn btn-ghost" href="./results.html">Benchmark results</a>
+        <a class="btn btn-ghost" href="./limitations.html">Limitations</a>
       </div>
     </div>
 
     <section>
       <div class="wrap">
         <h2>What it owns</h2>
-        <div class="grid">
-          <article class="card">
+        <div class="grid feature-grid">
+          <article>
             <h3>HTML → Markdown</h3>
             <p>Pass HTML strings or files. Fetching, Playwright, and rate limits stay in your crawler.</p>
           </article>
-          <article class="card">
-            <h3>Learn → extract</h3>
-            <p>Optional STCE mines repeated chrome across a site, then strips it on every page.</p>
+          <article>
+            <h3>Learn → extract (STCE)</h3>
+            <p>Optional site-chrome mining across a domain, then strip shared nav/footer on every page.</p>
           </article>
-          <article class="card">
+          <article>
             <h3>Precision vs coverage</h3>
-            <p>Choose cleaner vectors or higher content recall with a single priority flag.</p>
+            <p>One priority flag trades cleaner vectors against higher content recall.</p>
           </article>
         </div>
       </div>
@@ -62,10 +62,24 @@
 
     <section>
       <div class="wrap">
-        <h2>Paper</h2>
+        <h2>Public benchmark (honest accounting)</h2>
+        <p>
+          <strong>373</strong> URLs listed · <strong>277</strong> fetched · <strong>238</strong> scoreable ·
+          <strong>39</strong> thin (excluded from means). Coverage mode Fbal <strong>0.800</strong>
+          vs Trafilatura <strong>0.752</strong> and MarkItDown <strong>0.695</strong>.
+          Thin / JS shells warn the caller: render first, then extract.
+        </p>
+        <p><a href="./results.html">Open the leaderboard →</a></p>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <h2>SoftwareX manuscript</h2>
         <p>
           <em>ChromeRAG: Ingest-Time Elimination of Site Template Noise for Enterprise Web RAG</em><br />
-          Package: <code>chromerag</code>
+          Package <code>chromerag</code> · MIT ·
+          <a href="https://github.com/pedapudibhargav/ChromeRAG">github.com/pedapudibhargav/ChromeRAG</a>
         </p>
       </div>
     </section>
@@ -75,8 +89,7 @@
     <div class="wrap">
       Open-source research software ·
       <a href="https://github.com/pedapudibhargav/ChromeRAG">GitHub</a> ·
-      <a href="https://orcid.org/0009-0002-8523-8415">ORCID</a>.
-      Deployed from the <code>gh-pages</code> branch.
+      <a href="https://orcid.org/0009-0002-8523-8415">ORCID</a>
     </div>
   </footer>
   <script src="./assets/site.js"></script>

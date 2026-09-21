@@ -26,8 +26,8 @@
   <main class="wrap" style="padding:2rem 1.25rem 3rem">
     <h1 style="font-family:var(--font-display)">QA columns explained</h1>
     <p class="lead" style="color:var(--muted)">
-      Metrics are computed from HTML structure anchors — not from any single extractor —
-      so ChromeRAG, Trafilatura, Readability, and others can be compared fairly.
+      Metrics use HTML structure anchors — not any single extractor —
+      so ChromeRAG, Trafilatura, Readability, MarkItDown, and others can be compared fairly.
     </p>
 
     <dl class="metric-def">
@@ -35,34 +35,40 @@
       <dd>
         Fraction of <strong>main-content</strong> text anchors (from <code>main</code> / <code>article</code> /
         content paragraphs) that still appear in the extractor output.
-        <strong>Higher is better.</strong> Low recall means the tool dropped relevant chunks.
+        <strong>Higher is better.</strong>
       </dd>
 
       <dt>Noise ret (noise_retention)</dt>
       <dd>
-        Fraction of <strong>chrome</strong> anchors (nav / footer / header / cookie widgets) that still appear
-        in the output. <strong>Lower is better.</strong> High noise retention means template junk will pollute embeddings.
+        Fraction of <strong>chrome</strong> anchors (nav / footer / header / cookie widgets) kept.
+        <strong>Lower is better</strong> for RAG vector hygiene.
       </dd>
 
       <dt>Fbal (f_balanced)</dt>
       <dd>
-        A composite that rewards keeping content while removing chrome (harmonic-style balance of recall and
-        <code>1 − noise_retention</code>). <strong>Higher is better</strong> for overall RAG ingest quality.
-        Related scores <code>F_precision</code> / <code>F_coverage</code> weight cleanliness or recall more heavily.
+        Harmonic-style balance of high recall and low noise
+        (<code>1 − noise_retention</code>). <strong>Higher is better</strong> for overall ingest quality.
       </dd>
     </dl>
 
+    <h2>Scoreable-page gate</h2>
+    <p style="color:var(--muted)">
+      Leaderboard means use pages where ChromeRAG content recall ≥ 0.05 (238 of 277 fetched).
+      Thin pages are excluded from averages so empty shells are not silently mixed into SOTA claims.
+      All baselines are scored on that same scoreable set. Details:
+      <a href="./limitations.html">Limitations</a>.
+    </p>
+
     <div class="note">
-      We also track token volume and keyword noise hits, but Recall / Noise ret / Fbal are the primary
-      comparison axes against Trafilatura, Readability, markdownify, html2text, and BeautifulSoup.
+      Token volume is reported for context but is not the primary claim — MarkItDown can keep more tokens
+      by retaining chrome.
     </div>
 
-    <h2>Where results live</h2>
+    <h2>Published data on this site</h2>
     <ul>
-      <li><code>data/outputs/corpus_comparison_summary.md</code> — latest multi-URL leaderboard</li>
-      <li><code>data/outputs/corpus_comparison_report.json</code> — per-page scores</li>
-      <li><code>data/outputs/qa_loop_summary.md</code> — closed-loop gate report</li>
-      <li><a href="./results.html">Results page</a> — exported leaderboard for this site</li>
+      <li><a href="./data/corpus_comparison_summary.md">corpus_comparison_summary.md</a></li>
+      <li><a href="./data/leaderboard.json">leaderboard.json</a></li>
+      <li><a href="./results.html">Results page</a> — interactive table</li>
     </ul>
   </main>
   <footer class="site"><div class="wrap">ChromeRAG documentation</div></footer>

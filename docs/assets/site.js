@@ -28,7 +28,9 @@
     .then(function (payload) {
       var summary = payload.summary || {};
       var rows = Object.keys(summary).map(function (k) {
-        return { method: k, ...(summary[k] || {}) };
+        var row = Object.assign({}, summary[k] || {});
+        row.method = k;
+        return row;
       });
       rows.sort(function (a, b) {
         return (b.avg_f_balanced || b.avg_fbal || 0) - (a.avg_f_balanced || a.avg_fbal || 0);

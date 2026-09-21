@@ -26,15 +26,16 @@
   <main class="wrap" style="padding:2rem 1.25rem 3rem">
     <h1 style="font-family:var(--font-display)">Benchmark leaderboard</h1>
     <p style="color:var(--muted)">
-      ChromeRAG vs Trafilatura, Readability, MarkItDown, markdownify, html2text, and BeautifulSoup on the public corpus.
-      Scores use the same content/noise anchors for every method.
+      ChromeRAG vs Trafilatura, Readability, MarkItDown, markdownify, html2text, and BeautifulSoup.
+      Same content/noise anchors for every method. Means use the <strong>238 scoreable</strong> pages
+      (of 277 fetched; 373 listed). See <a href="./limitations.html">Limitations</a> for the hygiene gate.
     </p>
     <p id="leaderboard-status">Loading…</p>
     <div id="leaderboard"></div>
-    <div class="note" style="margin-top:1.5rem">
-      Refresh this page after <code>python -m poc.run_corpus_comparison</code> and
-      <code>python -m poc.export_site_results</code>.
-    </div>
+    <p class="note" style="margin-top:1.5rem">
+      Metric definitions: <a href="./metrics.html">Metrics</a>.
+      Raw tables in the repo under <code>docs/data/</code>.
+    </p>
   </main>
   <footer class="site"><div class="wrap">ChromeRAG documentation</div></footer>
   <script src="./assets/site.js"></script>

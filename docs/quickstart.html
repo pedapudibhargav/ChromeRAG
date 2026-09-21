@@ -25,27 +25,36 @@
   </header>
   <main class="wrap" style="padding:2rem 1.25rem 3rem">
     <h1 style="font-family:var(--font-display)">Quickstart</h1>
-    <p style="color:var(--muted)">ChromeRAG extracts HTML files. Use your own crawler (or the POC fetch harness) to download pages.</p>
+    <p style="color:var(--muted)">
+      ChromeRAG extracts HTML files. Fetching and Playwright rendering belong to your crawler —
+      if a page is a JS shell, render first, then extract (see <a href="./limitations.html">Limitations</a>).
+    </p>
 
-    <h2>Install</h2>
-<pre>pip install -e .
-# optional baselines for comparison
+    <h2>Install from GitHub</h2>
+<pre>git clone https://github.com/pedapudibhargav/ChromeRAG.git
+cd ChromeRAG
+python3 -m venv .venv && source .venv/bin/activate
+pip install -e .
+# optional: baselines for comparison
 pip install -e ".[baselines,fetch]"</pre>
 
     <h2>Extract one page</h2>
-<pre>chromerag extract page.html -o out.md --priority balanced --json-meta</pre>
+<pre>chromerag extract page.html -o out.md --priority balanced --json-meta
+# Thin / JS-shell HTML prints WARNING on stderr
+# chromerag extract spa.html -o out.md --fail-on-thin</pre>
 
     <h2>Site corpus: learn then extract</h2>
 <pre>chromerag learn data/raw -o data/chrome_models/site.json --min-pages 3
 chromerag batch data/raw -o data/outputs --chrome-model data/chrome_models/site.json</pre>
 
-    <h2>Compare on ~200 public URLs</h2>
-<pre>python -m poc.run_corpus_comparison
-python -m poc.export_site_results</pre>
+    <h2>Reproduce the public benchmark</h2>
+<pre>python -m poc.run_corpus_comparison --no-fetch   # uses data/raw if present
+python -m poc.export_site_results
+python scripts/revalidate_corpus.py</pre>
 
     <div class="note">
-      Priority <code>precision</code> favors clean text (may drop chunks).
-      <code>coverage</code> favors keeping relevant text (may keep more residual chrome).
+      Priority <code>precision</code> favors clean text.
+      <code>coverage</code> favors keeping relevant text.
       <code>balanced</code> is the default.
     </div>
   </main>

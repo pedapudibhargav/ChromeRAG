@@ -2,7 +2,7 @@
 
 **Target journal:** Elsevier *SoftwareX* (Original Software Publication)  
 **Package:** `chromerag`  
-**Draft status:** Content draft for paste into the **official SoftareX Word/LaTeX template** (mandatory; do not alter template styles). Do not submit this Markdown file as-is.
+**Draft status:** Content draft for paste into the **official SoftwareX Word/LaTeX template** (mandatory; do not alter template styles). Do not submit this Markdown file as-is.
 
 **Authors:** Bhargava Chary Peddapudi (Independent Researcher; ORCID: https://orcid.org/0009-0002-8523-8415)  
 **Corresponding email:** pedapudibhargav@gmail.com
@@ -27,7 +27,7 @@ Enterprise retrieval-augmented generation (RAG) pipelines often index scraped HT
 
 ---
 
-## Code metadata (Table 1 — SoftareX OSP template v6)
+## Code metadata (Table 1 — SoftwareX OSP template v6)
 
 | Nr | Code metadata description | Please fill in this column |
 |----|---------------------------|----------------------------|
@@ -50,7 +50,7 @@ Modern enterprise assistants retrieve over documentation hubs, knowledge bases, 
 
 Prior extractors optimize for news article main-content (Trafilatura, Readability) or general Markdown conversion (MarkItDown, markdownify). They do not jointly provide: (i) learn-then-extract site chrome models across a corporate domain, (ii) Schema.org JSON-LD injected as YAML front-matter for chunk context, and (iii) pricing/spec table linearization for RAG. ChromeRAG targets that gap as **ingest-time, query-agnostic** software—orthogonal to query-time HtmlRAG pruning.
 
-Scientific and engineering discovery increasingly depends on assistants grounded in organizational web corpora. A reusable, CPU-first ingest component that reduces chrome pollution improves retrieval faithfulness without requiring GPU extractors or query-time HTML pruning. SoftareX is an appropriate venue because the contribution is a citable, inspectable toolkit with a clear scope boundary and reproducible evaluation scripts.
+Scientific and engineering discovery increasingly depends on assistants grounded in organizational web corpora. A reusable, CPU-first ingest component that reduces chrome pollution improves retrieval faithfulness without requiring GPU extractors or query-time HTML pruning. SoftwareX is an appropriate venue because the contribution is a citable, inspectable toolkit with a clear scope boundary and reproducible evaluation scripts.
 
 ---
 
@@ -138,7 +138,7 @@ ChromeRAG is intended for practitioners who build corporate RAG corpora from HTM
 
 ### 4.1 Limitations (stated for reviewers)
 
-SoftareX values usable, honestly scoped tools. We therefore state where ChromeRAG does **not** claim SOTA and how evaluation avoids over-claiming.
+SoftwareX values usable, honestly scoped tools. We therefore state where ChromeRAG does **not** claim SOTA and how evaluation avoids over-claiming.
 
 **JavaScript-rendered empty shells.** Many modern docs/marketing sites ship an almost empty HTML shell and fill content in the browser. ChromeRAG is HTML-in / Markdown-out: it does **not** run Playwright or a headless browser. On such pages the extracted Markdown is thin or empty by design, and the API/CLI emits an explicit warning. Callers that need those pages must render first (Playwright, Puppeteer, or a crawl pipeline) and then pass the rendered HTML to ChromeRAG. Claiming high quality on unrendered shells would be fake performance.
 
@@ -154,7 +154,7 @@ SoftareX values usable, honestly scoped tools. We therefore state where ChromeRA
 
 ## 5. Conclusions
 
-ChromeRAG packages ingest-time chrome elimination, optional vector density pruning, schema front-matter, table linearization, and input-quality warnings into a MIT-licensed Python CLI. On 238 scoreable public pages, coverage mode reaches Fbal 0.800 vs Trafilatura 0.752 and MarkItDown 0.695, mainly by cutting chrome retention (~0.005 vs ~0.26). Future work includes page-type adaptive profiles and Chrome Centroid Drift metrics. PyPI publication is intentionally deferred until the GitHub package and SoftareX archive are stable.
+ChromeRAG packages ingest-time chrome elimination, optional vector density pruning, schema front-matter, table linearization, and input-quality warnings into a MIT-licensed Python CLI. On 238 scoreable public pages, coverage mode reaches Fbal 0.800 vs Trafilatura 0.752 and MarkItDown 0.695, mainly by cutting chrome retention (~0.005 vs ~0.26). Future work includes page-type adaptive profiles and Chrome Centroid Drift metrics. PyPI publication is intentionally deferred until the GitHub package and SoftwareX archive are stable.
 
 ---
 
@@ -178,21 +178,21 @@ This research did not receive any specific grant from funding agencies in the pu
 
 ## Declaration of generative AI and AI-assisted technologies in the manuscript preparation process
 
-During the preparation of this work, the author(s) used Cursor (Grok-assisted coding agent) in order to draft software documentation structure, organize related-work notes, and polish manuscript wording. After using this tool/service, the author(s) reviewed and edited the content as needed and take(s) full responsibility for the content of the published article. AI tools used inside the research software (optional ONNX MiniLM for DVDF) are described in Methods / Software description and are not manuscript-writing tools. No generative AI was used to create SoftareX figures; charts are produced from corpus JSON via `scripts/generate_softwarex_figures.py`.
+During the preparation of this work, the author(s) used Cursor (Grok-assisted coding agent) in order to draft software documentation structure, organize related-work notes, and polish manuscript wording. After using this tool/service, the author(s) reviewed and edited the content as needed and take(s) full responsibility for the content of the published article. AI tools used inside the research software (optional ONNX MiniLM for DVDF) are described in Methods / Software description and are not manuscript-writing tools. No generative AI was used to create SoftwareX figures; charts are produced from corpus JSON via `scripts/generate_softwarex_figures.py`.
 
 ---
 
 ## References (starter — expand in template)
 
 1. Barbaresi, A. (2021). Trafilatura: A Web Scraping Library… *ACL System Demonstrations*.
-2. SoftareX Guide for Authors. Elsevier. https://www.sciencedirect.com/journal/softwarex/publish/guide-for-authors
+2. SoftwareX Guide for Authors. Elsevier. https://www.sciencedirect.com/journal/softwarex/publish/guide-for-authors
 3. Related: MarkItDown (Microsoft), readability-lxml, HtmlRAG query-time pruning literature (cite final arXiv versions at submission).
 
 ---
 
 ## Paste checklist before Editorial Manager
 
-- [ ] Official SoftareX **Word or LaTeX template** (mandatory; do not alter styles) — download from the Guide for authors; paste this content in
+- [ ] Official SoftwareX **Word or LaTeX template** (mandatory; do not alter styles) — download from the Guide for authors; paste this content in
 - [ ] Article type: **Original Software Publication**
 - [ ] Public **GitHub** repo with `README.md` + `LICENSE` (not GitLab)
 - [ ] Code metadata table C2 filled with permanent URL / release tag
@@ -201,4 +201,4 @@ During the preparation of this work, the author(s) used Cursor (Grok-assisted co
 - [ ] Competing interests / funding / AI declaration / CRediT sections
 - [ ] Run `python scripts/check_softwarex_draft.py` and `python scripts/revalidate_corpus.py`
 - [ ] Optional graphical abstract (no general-purpose gen-AI cover art without editor permission)
-- [ ] Optional 60–90s screencast linked from README (SoftareX encourages video)
+- [ ] Optional 60–90s screencast linked from README (SoftwareX encourages video)
