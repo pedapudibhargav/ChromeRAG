@@ -15,7 +15,8 @@
 | Schema.org → YAML front-matter | Vector DB / embeddings |
 | Precision / coverage priority knobs | Hosted SaaS API |
 
-**Paper:** *ChromeRAG: Ingest-Time Elimination of Site Template Noise for Enterprise Web RAG*  
+**Paper:** *ChromeRAG: Ingest-Time Elimination of Site Template Noise for Enterprise Web RAG*
+**Release:** [`v0.1.0`](https://github.com/pedapudibhargav/ChromeRAG/tree/v0.1.0)  
 **Author:** [Bhargava Chary Peddapudi](https://orcid.org/0009-0002-8523-8415)
 
 ---
@@ -176,9 +177,9 @@ papers/softwarex/  # SoftwareX manuscript draft
 - Limitations (JS shells / scoreable filter): [docs/limitations.html](docs/limitations.html)
 - Draft self-check: `python scripts/check_softwarex_draft.py`
 
-SoftareX APC (journal OA fee) is paid **only after acceptance**, not at submission.
+SoftwareX APC (journal OA fee) is paid **only after acceptance**, not at submission.
 
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT — see [LICENSE](LICENSE) / [LICENSE.txt](LICENSE.txt) (SoftwareX naming) · also `Licence.txt`.

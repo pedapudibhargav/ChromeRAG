@@ -31,8 +31,8 @@ Enterprise retrieval-augmented generation (RAG) pipelines often index scraped HT
 
 | Nr | Code metadata description | Please fill in this column |
 |----|---------------------------|----------------------------|
-| C1 | Current code version | 0.1.0a1 |
-| C2 | Permanent link to code/repository used for this code version | https://github.com/pedapudibhargav/ChromeRAG |
+| C1 | Current code version | 0.1.0 |
+| C2 | Permanent link to code/repository used for this code version | https://github.com/pedapudibhargav/ChromeRAG/tree/v0.1.0 |
 | C3 | Legal Code License | MIT |
 | C4 | Code versioning system used | git |
 | C5 | Software code languages, tools, and services used | Python ≥3.11, BeautifulSoup4, lxml, Pydantic, optional ONNX Runtime |

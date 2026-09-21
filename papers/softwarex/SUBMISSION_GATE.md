@@ -15,7 +15,7 @@ Against Elsevier SoftareX Guide for Authors (Original Software Publication).
 | 7 | ≤4000 words (abs+body+captions); ≤6 figures | **OK** (~1.5k words; 4 figs **embedded**) |
 | 8 | Figures **embedded in the .docx** (Word path) | **DONE** |
 | 9 | AI declaration + competing interests + funding | **DONE** in draft/docx |
-| 10 | Permanent C2 URL — prefer **release tag** | **PENDING** — create `v0.1.0` |
+| 10 | Permanent C2 URL — prefer **release tag** | **DONE** — `v0.1.0` → https://github.com/pedapudibhargav/ChromeRAG/tree/v0.1.0 |
 
 ## Strongly recommended (peer-review strength)
 
