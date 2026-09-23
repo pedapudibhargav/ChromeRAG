@@ -23,4 +23,4 @@ python scripts/fill_softwarex_docx.py
 - ≤ 4000 words (abstract + body + captions)
 - ≤ 6 figures
 - Highlights: 3–5 bullets, ≤85 characters each (include in EM form / draft)
-- Public GitHub with `README.md` and license file (`LICENSE` / `Licence.txt`)
+- Public GitHub with `README.md` and license file (`LICENSE.txt`)

@@ -1,83 +1,109 @@
 #!/usr/bin/env python3
-"""Embed SoftareX figure PNGs into ChromeRAG_SoftwareX_OSP.docx (stdlib only)."""
+"""Embed SoftareX figures into existing placeholder paragraphs (no new w:p nodes)."""
 
 from __future__ import annotations
 
 import shutil
 import zipfile
 from pathlib import Path
-from xml.etree import ElementTree as ET
+
+from lxml import etree
 
 ROOT = Path(__file__).resolve().parents[1]
 DOCX = ROOT / "papers" / "softwarex" / "ChromeRAG_SoftwareX_OSP.docx"
 FIGS = ROOT / "papers" / "softwarex" / "figures"
+
 W_NS = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
 R_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
 A_NS = "http://schemas.openxmlformats.org/drawingml/2006/main"
 WP_NS = "http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
 PIC_NS = "http://schemas.openxmlformats.org/drawingml/2006/picture"
 REL_NS = "http://schemas.openxmlformats.org/package/2006/relationships"
+CT_NS = "http://schemas.openxmlformats.org/package/2006/content-types"
+W14 = "{http://schemas.microsoft.com/office/word/2010/wordml}"
 
-ET.register_namespace("w", W_NS)
-ET.register_namespace("r", R_NS)
-ET.register_namespace("a", A_NS)
-ET.register_namespace("wp", WP_NS)
-ET.register_namespace("pic", PIC_NS)
-ET.register_namespace("", REL_NS)
+W, R, A, WP, PIC = f"{{{W_NS}}}", f"{{{R_NS}}}", f"{{{A_NS}}}", f"{{{WP_NS}}}", f"{{{PIC_NS}}}"
 
 IMAGES = [
-    ("fig1_fbal.png", "Figure 1. Fbal on 238 scoreable pages."),
-    ("fig2_recall.png", "Figure 2. Content recall on the same scoreable set."),
-    ("fig3_noise.png", "Figure 3. Noise retention (lower is better)."),
-    ("fig4_corpus_gate.png", "Figure 4. Corpus honesty gate: listed → fetched → scoreable / thin."),
+    ("fig1_fbal.png", "Figure 1. Balanced F-score (Fbal) on 238 scoreable pages (higher is better)."),
+    ("fig2_recall.png", "Figure 2. Content recall on the same scoreable set (higher is better)."),
+    ("fig3_noise.png", "Figure 3. Noise retention — chrome/boilerplate kept (lower is better)."),
+    (
+        "fig4_corpus_gate.png",
+        "Figure 4. Corpus honesty gate: listed URLs → fetched HTML → scoreable pages used in means "
+        "(thin/JS shells excluded).",
+    ),
 ]
 
+_NEXT_ID = 0xD000
 
-def _drawing(rid: str, cx: int, cy: int, name: str) -> ET.Element:
-    # Minimal inline drawing
-    drawing = ET.Element(f"{{{W_NS}}}drawing")
-    inline = ET.SubElement(drawing, f"{{{WP_NS}}}inline")
-    inline.set("distT", "0")
-    inline.set("distB", "0")
-    inline.set("distL", "0")
-    inline.set("distR", "0")
-    extent = ET.SubElement(inline, f"{{{WP_NS}}}extent")
-    extent.set("cx", str(cx))
-    extent.set("cy", str(cy))
-    docPr = ET.SubElement(inline, f"{{{WP_NS}}}docPr")
-    docPr.set("id", "1")
-    docPr.set("name", name)
-    graphic = ET.SubElement(inline, f"{{{A_NS}}}graphic")
-    graphicData = ET.SubElement(graphic, f"{{{A_NS}}}graphicData")
-    graphicData.set("uri", "http://schemas.openxmlformats.org/drawingml/2006/picture")
-    pic = ET.SubElement(graphicData, f"{{{PIC_NS}}}pic")
-    nv = ET.SubElement(pic, f"{{{PIC_NS}}}nvPicPr")
-    cNvPr = ET.SubElement(nv, f"{{{PIC_NS}}}cNvPr")
-    cNvPr.set("id", "0")
-    cNvPr.set("name", name)
-    ET.SubElement(nv, f"{{{PIC_NS}}}cNvPicPr")
-    blipFill = ET.SubElement(pic, f"{{{PIC_NS}}}blipFill")
-    blip = ET.SubElement(blipFill, f"{{{A_NS}}}blip")
-    blip.set(f"{{{R_NS}}}embed", rid)
-    stretch = ET.SubElement(blipFill, f"{{{A_NS}}}stretch")
-    ET.SubElement(stretch, f"{{{A_NS}}}fillRect")
-    spPr = ET.SubElement(pic, f"{{{PIC_NS}}}spPr")
-    xfrm = ET.SubElement(spPr, f"{{{A_NS}}}xfrm")
-    off = ET.SubElement(xfrm, f"{{{A_NS}}}off")
-    off.set("x", "0")
-    off.set("y", "0")
-    ext = ET.SubElement(xfrm, f"{{{A_NS}}}ext")
-    ext.set("cx", str(cx))
-    ext.set("cy", str(cy))
-    prst = ET.SubElement(spPr, f"{{{A_NS}}}prstGeom")
-    prst.set("prst", "rect")
-    ET.SubElement(prst, f"{{{A_NS}}}avLst")
+
+def _fresh_hex_id() -> str:
+    global _NEXT_ID
+    _NEXT_ID += 1
+    return f"{_NEXT_ID:08X}"
+
+
+def _para_text(p: etree._Element) -> str:
+    return "".join(t.text or "" for t in p.iter(f"{W}t"))
+
+
+def _drawing(rid: str, cx: int, cy: int, name: str, *, doc_id: int) -> etree._Element:
+    drawing = etree.Element(f"{W}drawing")
+    inline = etree.SubElement(drawing, f"{WP}inline", distT="0", distB="0", distL="0", distR="0")
+    etree.SubElement(inline, f"{WP}extent", cx=str(cx), cy=str(cy))
+    etree.SubElement(inline, f"{WP}docPr", id=str(doc_id), name=name)
+    cNv = etree.SubElement(inline, f"{WP}cNvGraphicFramePr")
+    etree.SubElement(cNv, f"{A}graphicFrameLocks", noChangeAspect="1")
+    graphic = etree.SubElement(inline, f"{A}graphic")
+    graphic_data = etree.SubElement(
+        graphic,
+        f"{A}graphicData",
+        uri="http://schemas.openxmlformats.org/drawingml/2006/picture",
+    )
+    pic = etree.SubElement(graphic_data, f"{PIC}pic")
+    nv = etree.SubElement(pic, f"{PIC}nvPicPr")
+    etree.SubElement(nv, f"{PIC}cNvPr", id=str(doc_id), name=name)
+    etree.SubElement(nv, f"{PIC}cNvPicPr")
+    blip_fill = etree.SubElement(pic, f"{PIC}blipFill")
+    blip = etree.SubElement(blip_fill, f"{A}blip")
+    blip.set(f"{R}embed", rid)
+    stretch = etree.SubElement(blip_fill, f"{A}stretch")
+    etree.SubElement(stretch, f"{A}fillRect")
+    sp_pr = etree.SubElement(pic, f"{PIC}spPr")
+    xfrm = etree.SubElement(sp_pr, f"{A}xfrm")
+    etree.SubElement(xfrm, f"{A}off", x="0", y="0")
+    etree.SubElement(xfrm, f"{A}ext", cx=str(cx), cy=str(cy))
+    prst = etree.SubElement(sp_pr, f"{A}prstGeom", prst="rect")
+    etree.SubElement(prst, f"{A}avLst")
     return drawing
+
+
+def _set_caption(p: etree._Element, text: str) -> None:
+    pPr = p.find(f"{W}pPr")
+    for child in list(p):
+        if child is not pPr:
+            p.remove(child)
+    run = etree.SubElement(p, f"{W}r")
+    rPr = etree.SubElement(run, f"{W}rPr")
+    etree.SubElement(rPr, f"{W}i")
+    t = etree.SubElement(run, f"{W}t")
+    t.text = text
+
+
+def _set_image_para(p: etree._Element, drawing: etree._Element) -> None:
+    pPr = p.find(f"{W}pPr")
+    for child in list(p):
+        if child is not pPr:
+            p.remove(child)
+    run = etree.SubElement(p, f"{W}r")
+    run.append(drawing)
 
 
 def main() -> None:
     if not DOCX.exists():
         raise SystemExit(f"Missing {DOCX}")
+
     work = ROOT / "papers" / "softwarex" / "_docx_embed"
     if work.exists():
         shutil.rmtree(work)
@@ -89,89 +115,91 @@ def main() -> None:
     media.mkdir(parents=True, exist_ok=True)
 
     rels_path = work / "word" / "_rels" / "document.xml.rels"
-    rels = ET.parse(rels_path)
-    rels_root = rels.getroot()
+    rels_tree = etree.parse(str(rels_path))
+    rels_root = rels_tree.getroot()
     existing_ids = [
-        int(r.get("Id", "rId0").replace("rId", "") or 0)
+        int((r.get("Id") or "rId0").replace("rId", "") or 0)
         for r in rels_root
         if (r.get("Id") or "").startswith("rId")
     ]
     next_id = max(existing_ids or [1]) + 1
 
     doc_path = work / "word" / "document.xml"
-    doc = ET.parse(doc_path)
-    body = doc.getroot().find(f"{{{W_NS}}}body")
+    doc_tree = etree.parse(str(doc_path))
+    body = doc_tree.getroot().find(f"{W}body")
     assert body is not None
 
-    # Find Illustrative examples heading; insert figures before Impact
-    paras = list(body.findall(f"{{{W_NS}}}p"))
-    insert_before = None
-    for p in paras:
-        text = "".join(t.text or "" for t in p.iter(f"{{{W_NS}}}t"))
-        if text.strip() == "Impact":
-            insert_before = p
-            break
-    if insert_before is None:
-        raise SystemExit("Could not find Impact heading")
+    by_marker: dict[str, etree._Element] = {}
+    for p in body.findall(f"{W}p"):
+        t = _para_text(p).strip()
+        if t.startswith("__FIG") and t.endswith("__"):
+            by_marker[t] = p
 
-    children = list(body)
-    idx = children.index(insert_before)
-
-    # EMUs: 914400 per inch; ~6.5" wide
     cx, cy = 5943600, 3439800
-
     for i, (fname, caption) in enumerate(IMAGES):
+        n = i + 1
+        img_p = by_marker.get(f"__FIG{n}_IMG__")
+        cap_p = by_marker.get(f"__FIG{n}_CAP__")
+        if img_p is None or cap_p is None:
+            raise SystemExit(f"Missing figure placeholders for figure {n}")
         src = FIGS / fname
         if not src.exists():
-            raise SystemExit(f"Missing figure {src}")
-        dest_name = f"image{i+1}.png"
+            raise SystemExit(f"Missing {src}")
+        dest_name = f"image{n}.png"
         shutil.copy2(src, media / dest_name)
         rid = f"rId{next_id}"
         next_id += 1
-        rel = ET.SubElement(rels_root, f"{{{REL_NS}}}Relationship")
+        rel = etree.SubElement(rels_root, f"{{{REL_NS}}}Relationship")
         rel.set("Id", rid)
         rel.set(
             "Type",
             "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image",
         )
         rel.set("Target", f"media/{dest_name}")
+        _set_image_para(img_p, _drawing(rid, cx, cy if i < 3 else 2376000, fname, doc_id=n))
+        _set_caption(cap_p, caption)
 
-        # figure paragraph
-        p_fig = ET.Element(f"{{{W_NS}}}p")
-        r = ET.SubElement(p_fig, f"{{{W_NS}}}r")
-        r.append(_drawing(rid, cx, cy if i < 3 else 2376000, fname))
-        body.insert(idx, p_fig)
-        idx += 1
-
-        # caption
-        p_cap = ET.Element(f"{{{W_NS}}}p")
-        pPr = ET.SubElement(p_cap, f"{{{W_NS}}}pPr")
-        ps = ET.SubElement(pPr, f"{{{W_NS}}}pStyle")
-        ps.set(f"{{{W_NS}}}val", "Body")
-        run = ET.SubElement(p_cap, f"{{{W_NS}}}r")
-        rPr = ET.SubElement(run, f"{{{W_NS}}}rPr")
-        ET.SubElement(rPr, f"{{{W_NS}}}i")
-        t = ET.SubElement(run, f"{{{W_NS}}}t")
-        t.text = caption
-        body.insert(idx, p_cap)
-        idx += 1
-
-    # Content types for png
     ct_path = work / "[Content_Types].xml"
-    ct = ET.parse(ct_path)
-    ct_root = ct.getroot()
-    CT_NS = "http://schemas.openxmlformats.org/package/2006/content-types"
-    ET.register_namespace("", CT_NS)
-    has_png = any(
-        (el.get("Extension") or "").lower() == "png" for el in ct_root
-    )
-    if not has_png:
-        defn = ET.SubElement(ct_root, f"{{{CT_NS}}}Default")
+    ct_tree = etree.parse(str(ct_path))
+    ct_root = ct_tree.getroot()
+    if not any((el.get("Extension") or "").lower() == "png" for el in ct_root):
+        defn = etree.SubElement(ct_root, f"{{{CT_NS}}}Default")
         defn.set("Extension", "png")
         defn.set("ContentType", "image/png")
-    ct.write(ct_path, encoding="UTF-8", xml_declaration=True)
-    rels.write(rels_path, encoding="UTF-8", xml_declaration=True)
-    doc.write(doc_path, encoding="UTF-8", xml_declaration=True)
+
+    doc_root = doc_tree.getroot()
+    for el in doc_root.iter():
+        for attr in list(el.attrib):
+            local = etree.QName(attr).localname if attr.startswith("{") else attr
+            if local.lower().startswith("rsid"):
+                del el.attrib[attr]
+    for pPr in doc_root.findall(f".//{W}pPr"):
+        pPr.set(f"{W14}paraId", _fresh_hex_id())
+        pPr.set(f"{W14}textId", _fresh_hex_id())
+
+    nsmap = dict(doc_root.nsmap)
+    missing = {
+        k: v
+        for k, v in {"wp": WP_NS, "a": A_NS, "pic": PIC_NS, "r": R_NS}.items()
+        if k not in nsmap or nsmap[k] != v
+    }
+    doc_tree.write(str(doc_path), xml_declaration=True, encoding="UTF-8", standalone=True)
+    text = doc_path.read_text(encoding="utf-8")
+    if text.startswith("<?xml"):
+        text = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n' + text.split("?>", 1)[1].lstrip("\n")
+    if missing:
+        inject = " ".join(f'xmlns:{k}="{v}"' for k, v in missing.items())
+        text = text.replace("<w:document ", f"<w:document {inject} ", 1)
+    doc_path.write_text(text, encoding="utf-8")
+
+    rels_tree.write(str(rels_path), xml_declaration=True, encoding="UTF-8", standalone=True)
+    ct_tree.write(str(ct_path), xml_declaration=True, encoding="UTF-8", standalone=True)
+    for path, uri in ((rels_path, REL_NS), (ct_path, CT_NS)):
+        raw = path.read_text(encoding="utf-8")
+        if raw.startswith("<?xml"):
+            raw = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n' + raw.split("?>", 1)[1].lstrip("\n")
+        raw = raw.replace(f'xmlns:ns0="{uri}"', f'xmlns="{uri}"').replace("<ns0:", "<").replace("</ns0:", "</")
+        path.write_text(raw, encoding="utf-8")
 
     DOCX.unlink()
     with zipfile.ZipFile(DOCX, "w", compression=zipfile.ZIP_DEFLATED) as zf:
@@ -179,7 +207,7 @@ def main() -> None:
             if path.is_file():
                 zf.write(path, path.relative_to(work).as_posix())
     shutil.rmtree(work)
-    print(f"Embedded {len(IMAGES)} figures into {DOCX}")
+    print(f"Embedded {len(IMAGES)} figures into existing placeholders in {DOCX}")
 
 
 if __name__ == "__main__":

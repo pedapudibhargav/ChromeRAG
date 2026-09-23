@@ -1,6 +1,7 @@
 # ChromeRAG
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![PyPI](https://img.shields.io/pypi/v/chromerag.svg)](https://pypi.org/project/chromerag/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE.txt)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/downloads/)
 [![GitHub Pages](https://img.shields.io/badge/docs-GitHub%20Pages-222.svg)](https://pedapudibhargav.github.io/ChromeRAG/)
 
@@ -44,7 +45,7 @@
 
 **Baselines compared:** ChromeRAG (balanced / coverage / precision), Trafilatura, Readability, **MarkItDown**, markdownify, html2text, BeautifulSoup text.
 
-**Corpus:** **373** URLs listed in `poc/corpus_urls.json` across `docs`, `pricing`, `marketing`, `wiki`, `hub`, `news`, `article`, `cloud`. Latest run fetched **277** HTML pages; **238** were scoreable (ChromeRAG recall ≥ 0.05); **39** thin pages are excluded from leaderboard *means* so empty JS shells are not silently averaged into SOTA claims. All baselines are scored on the same scoreable set.
+**Corpus:** **373** URLs listed in `poc/corpus_urls.json` across `docs`, `pricing`, `marketing`, `wiki`, `hub`, `news`, `article`, `cloud`. Latest run fetched **277** HTML pages; **238** were scoreable (DOM content-anchor coverage ≥ 0.05; same fixed cohort for every tool); **39** thin pages are excluded from leaderboard *means* so empty JS shells are not silently averaged into SOTA claims.
 
 **Latest leaderboard (238 scoreable pages):**
 
@@ -62,19 +63,24 @@ Full tables + per-category breakdown: [Results](https://pedapudibhargav.github.i
 
 ---
 
-## Quick start (from source — recommended)
+## Quick start
 
-No PyPI publish required. Install from this repo:
+### From PyPI (recommended)
+
+```bash
+pip install chromerag
+# Optional: ONNX MiniLM density pruning
+# pip install "chromerag[dvdf]"
+```
+
+### From source
 
 ```bash
 git clone https://github.com/pedapudibhargav/ChromeRAG.git
 cd ChromeRAG
 python3 -m venv .venv
 source .venv/bin/activate   # Windows: .venv\Scripts\activate
-
-# Core library + CLI
 pip install -e .
-
 # Optional: comparison baselines + tests
 pip install -e ".[dev,baselines]"
 ```
@@ -184,4 +190,4 @@ SoftwareX APC (journal OA fee) is paid **only after acceptance**, not at submiss
 
 ## License
 
-MIT — see [LICENSE](LICENSE) / [LICENSE.txt](LICENSE.txt) (SoftwareX naming) · also `Licence.txt`.
+MIT — see [LICENSE.txt](LICENSE.txt).

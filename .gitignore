@@ -27,3 +27,15 @@ private/
 # Docx work dirs
 papers/softwarex/_docx_work/
 papers/softwarex/_docx_patch/
+
+# Local manuscript preview / author-only notes (not for public repo)
+papers/softwarex/_preview_osp.html
+papers/softwarex/preview_osp.html
+papers/softwarex/preview_osp_full.png
+papers/softwarex/AUTHOR_NEXT_STEPS.md
+papers/softwarex/PYPI_PUBLISH.md
+papers/softwarex/SOFTWAREX_AGENT_REVIEW_PACK.md
+papers/softwarex/ELSEVIER_EM_DECLARATIONS.md
+papers/softwarex/screencast_stills/
+papers/softwarex/figures/_charts.html
+:memory:.ses
