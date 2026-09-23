@@ -81,6 +81,12 @@ def _funnel_card(listed: int, fetched: int, scoreable: int, thin: int) -> str:
     def row(title: str, n: int, denom: int, color: str, light_text: bool = True) -> str:
         pct = 100.0 * n / denom if denom else 0
         tc = "#fff" if light_text else "#1a1a1a"
+        if pct < 30:  # narrow bar: put the label beside it so it never wraps
+            return f"""
+      <div class="funnel-row narrow">
+        <div class="funnel-bar" style="width:{pct:.1f}%;background:{color}"></div>
+        <div class="funnel-label"><strong>{title}</strong><span>n = {n}</span></div>
+      </div>"""
         return f"""
       <div class="funnel-row">
         <div class="funnel-bar" style="width:{pct:.1f}%;background:{color};color:{tc}">
@@ -91,15 +97,47 @@ def _funnel_card(listed: int, fetched: int, scoreable: int, thin: int) -> str:
 
     return f"""
   <section class="card" id="fig4">
-    <h2>Corpus honesty gate</h2>
-    <p class="note">Listed URLs → fetched HTML → scoreable pages used in means (thin shells excluded)</p>
+    <h2>Benchmark corpus funnel</h2>
+    <p class="note">Listed URLs → fetched HTML → scoreable pages used in means (cohort chosen from input HTML only)</p>
     <div class="funnel">
       {row("Listed URLs in public corpus", listed, listed, "#D9E2EC", light_text=False)}
       {row("Fetched HTML successfully", fetched, listed, "#1B9AAA")}
-      {row("Scoreable (recall ≥ 0.05) — used in means", scoreable, listed, "#0B6E4F")}
-      {row("Thin / JS-shell pages excluded", thin, listed, "#9B2226")}
+      {row("Scoreable (≥ 50 main-content anchors in input DOM) — used in means", scoreable, listed, "#0B6E4F")}
+      {row("Thin / JS-shell pages excluded from means", thin, listed, "#9B2226")}
     </div>
-    <p class="foot">Leaderboard means use scoreable pages only; both counts are reported in the paper.</p>
+    <p class="foot">All-page means (no filter) are reported alongside in the repository.</p>
+  </section>"""
+
+
+def _architecture_card() -> str:
+    stages = [
+        ("HTML in", "string or file; fetching/rendering stays with the caller", "#D9E2EC", False),
+        ("1 · Input-quality gate", "flags thin HTML / JS shells → WARNING + result.warnings", "#5C6770", True),
+        ("2 · Schema harvest", "JSON-LD + Microdata → YAML front-matter (before script strip)", "#3D5A80", True),
+        ("3 · Clean + STCE", "strip scripts/styles; apply learned site-chrome model if given", "#1B9AAA", True),
+        ("4 · Structural + density prune", "nav/footer/cookie heuristics, link/text density, DVDF", "#0B6E4F", True),
+        ("5 · Tables + Markdown", "key-value table linearization, heading-safe Markdown", "#0B6E4F", True),
+        ("Markdown out", "RAG-ready text + front-matter + diagnostics", "#D9E2EC", False),
+    ]
+    rows = "".join(
+        f"""
+      <div class="stage" style="background:{c};color:{'#fff' if light else '#1a1a1a'}">
+        <strong>{t}</strong><span>{d}</span>
+      </div>{'<div class="arrow">↓</div>' if i < len(stages) - 1 else ''}"""
+        for i, (t, d, c, light) in enumerate(stages)
+    )
+    learn = """
+      <div class="side">
+        <strong>chromerag learn</strong>
+        <span>≥3 pages of one site → repeated chrome-like blocks → site_chrome.json</span>
+        <span class="to">feeds stage 3 →</span>
+      </div>"""
+    return f"""
+  <section class="card" id="fig0">
+    <h2>ChromeRAG pipeline</h2>
+    <p class="note">Single-page extraction (left); optional learn-then-extract site model (right)</p>
+    <div class="arch"><div class="stages">{rows}
+    </div>{learn}</div>
   </section>"""
 
 
@@ -116,13 +154,13 @@ def write_html(report: dict) -> Path:
     fbal = [(m, float(summary[m]["avg_f_balanced"])) for m in order if m in summary]
     recall = [(m, float(summary[m]["avg_content_recall"])) for m in order if m in summary]
     noise = [(m, float(summary[m]["avg_noise_retention"])) for m in order if m in summary]
-    n_score = int(report.get("n_scoreable") or 238)
-    note = f"Mean over {n_score} scoreable pages (content recall ≥ 0.05)"
+    n_score = int(report["n_scoreable"])
+    note = f"Mean over {n_score} scoreable pages (same tool-independent cohort for every method)"
     noise_max = max(v for _, v in noise) * 1.15
 
     listed = int(report.get("corpus_urls_listed") or 373)
     fetched = int(report.get("n_fetched") or 277)
-    scoreable = int(report.get("n_scoreable") or 238)
+    scoreable = int(report["n_scoreable"])
     thin = int(report.get("n_thin") or max(fetched - scoreable, 0))
 
     html = f"""<!DOCTYPE html>
@@ -187,10 +225,21 @@ def write_html(report: dict) -> Path:
     font-size: 15px;
   }}
   .funnel-bar span {{ font-size: 14px; opacity: 0.95; }}
+  .funnel-row.narrow {{ display: flex; align-items: center; gap: 16px; }}
+  .funnel-label {{ display: flex; flex-direction: column; gap: 4px; font-size: 15px; }}
+  .funnel-label span {{ font-size: 14px; color: var(--muted); }}
   .foot {{ margin: 12px 0 0; color: var(--muted); font-size: 12px; }}
+  .arch {{ display: grid; grid-template-columns: 1fr 260px; gap: 22px; align-items: center; }}
+  .stage {{ border-radius: 6px; padding: 10px 16px; display: flex; flex-direction: column; gap: 2px; font-size: 15px; }}
+  .stage span {{ font-size: 13px; opacity: 0.95; }}
+  .arrow {{ text-align: center; font-size: 16px; color: var(--muted); line-height: 18px; }}
+  .side {{ border: 2px dashed #1B9AAA; border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; }}
+  .side span {{ font-size: 13px; color: var(--muted); }}
+  .side .to {{ color: #1B9AAA; font-weight: 600; }}
 </style>
 </head>
 <body>
+{_architecture_card()}
 {_hbar_card("fig1", "Balanced F-score (Fbal)", fbal, "Fbal (higher is better)", xmax=1.0, note=note)}
 {_hbar_card("fig2", "Content recall", recall, "Content recall (higher is better)", xmax=1.0, note=note)}
 {_hbar_card("fig3", "Noise retention (chrome / boilerplate kept)", noise, "Noise retention (lower is better)", xmax=noise_max, note=note)}
@@ -224,12 +273,7 @@ def rasterize_with_playwright(html_path: Path) -> bool:
         # Try npx playwright screenshot of full page then crop — weaker fallback
         return rasterize_with_npx(html_path)
 
-    out_map = {
-        "fig1": OUT / "fig1_fbal.png",
-        "fig2": OUT / "fig2_recall.png",
-        "fig3": OUT / "fig3_noise.png",
-        "fig4": OUT / "fig4_corpus_gate.png",
-    }
+    out_map = {fig_id: OUT / name for fig_id, name in OUT_NAMES.items()}
     uri = html_path.resolve().as_uri()
     with sync_playwright() as p:
         browser = p.chromium.launch()
@@ -243,10 +287,59 @@ def rasterize_with_playwright(html_path: Path) -> bool:
     return True
 
 
+CHROME_CANDIDATES = [
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    "google-chrome",
+    "chromium",
+    "chromium-browser",
+]
+
+CARD_HEIGHTS = {"fig0": 640, "fig1": 470, "fig2": 470, "fig3": 470, "fig4": 520}
+OUT_NAMES = {
+    "fig0": "fig0_architecture.png",
+    "fig1": "fig1_fbal.png",
+    "fig2": "fig2_recall.png",
+    "fig3": "fig3_noise.png",
+    "fig4": "fig4_corpus_gate.png",
+}
+
+
 def rasterize_with_npx(html_path: Path) -> bool:
-    """Last resort: serve file and use cursor playwright MCP externally — return False."""
-    print("playwright Python package not installed; trying `python -m playwright` install…", file=sys.stderr)
-    return False
+    """Fallback without Playwright: headless Chrome screenshots, one card per page."""
+    import re
+    import shutil
+
+    chrome = next((c for c in CHROME_CANDIDATES if shutil.which(c) or Path(c).exists()), None)
+    if not chrome:
+        print("Neither playwright nor a Chrome/Chromium binary is available.", file=sys.stderr)
+        return False
+    html = html_path.read_text(encoding="utf-8")
+    head, body = html.split("<body>", 1)
+    cards = {
+        fig_id: section
+        for section, fig_id in re.findall(
+            r'(<section class="card" id="(fig\d)">.*?</section>)', body, re.S
+        )
+    }
+    script = body[body.index("<script>"):]
+    for fig_id, name in OUT_NAMES.items():
+        single = OUT / f"_{fig_id}.html"
+        single.write_text(
+            head.replace("padding: 24px;", "padding: 0;") + "<body style='margin:0'>" + cards[fig_id] + script,
+            encoding="utf-8",
+        )
+        dest = OUT / name
+        subprocess.run(
+            [
+                chrome, "--headless=new", "--disable-gpu", "--hide-scrollbars",
+                "--force-device-scale-factor=3", f"--window-size=1180,{CARD_HEIGHTS[fig_id]}",
+                f"--screenshot={dest}", single.resolve().as_uri(),
+            ],
+            check=True, capture_output=True, timeout=120,
+        )
+        single.unlink()
+        print(f"Wrote {dest} ({dest.stat().st_size} bytes)")
+    return True
 
 
 def main() -> None:
@@ -263,14 +356,7 @@ def main() -> None:
         raise SystemExit(
             "playwright not installed in this venv. HTML source is ready at figures/_charts.html"
         )
-    print("Done. Captions for Word:")
-    print("  Figure 1. Balanced F-score (Fbal) on 238 scoreable pages (higher is better).")
-    print("  Figure 2. Content recall on the same scoreable set (higher is better).")
-    print("  Figure 3. Noise retention — chrome/boilerplate kept (lower is better).")
-    print(
-        "  Figure 4. Corpus honesty gate: listed URLs → fetched HTML → scoreable pages "
-        "(thin/JS shells excluded)."
-    )
+    print("Done. Figures written to", OUT)
 
 
 if __name__ == "__main__":

@@ -2,10 +2,10 @@
 
 Corpus URLs listed: **373**  
 Pages fetched/available: **277**  
-Scoreable (ChromeRAG recall ≥ 0.05): **238**  
-Thin / excluded from means: **39**
+Scoreable (input DOM has ≥ 50 main-content anchors): **250**  
+Thin / excluded from means: **27**
 
-> Thin pages (often unrendered JS shells or failed content regions) are excluded from leaderboard *averages* so empty shells are not silently averaged into SOTA claims. Callers must Playwright-render first, then pass HTML to ChromeRAG. All baselines are still scored on the same scoreable set.
+> The scoreable cohort is defined from the input HTML only (main-content 5-gram anchors), never from any extractor's output, so every tool is averaged over the same tool-independent page set. Thin pages are mostly unrendered JS shells or empty landmarks; callers must render those first. Means over all fetched pages are reported below as well.
 
 ## Baselines
 
@@ -21,15 +21,43 @@ ChromeRAG (balanced / coverage / precision) vs Trafilatura, Readability, MarkItD
 
 | Method | Pages | Recall ↑ | Noise ret ↓ | Fbal ↑ | Avg tokens |
 |---|---:|---:|---:|---:|---:|
-| `chromerag_coverage` | 238 | 0.701 | 0.005 | 0.800 | 3526 |
-| `chromerag` | 238 | 0.678 | 0.005 | 0.783 | 3451 |
-| `trafilatura` | 238 | 0.662 | 0.019 | 0.752 | 2558 |
-| `markitdown` | 238 | 0.702 | 0.261 | 0.695 | 9366 |
-| `markdownify` | 238 | 0.702 | 0.263 | 0.695 | 9320 |
-| `chromerag_precision` | 238 | 0.550 | 0.005 | 0.676 | 2993 |
-| `html2text` | 238 | 0.694 | 0.282 | 0.675 | 9199 |
-| `readability` | 238 | 0.456 | 0.016 | 0.535 | 2113 |
-| `beautifulsoup_text` | 238 | 0.823 | 0.830 | 0.240 | 4622 |
+| `chromerag_coverage` | 250 | 0.691 | 0.007 | 0.791 | 3393 |
+| `chromerag` | 250 | 0.667 | 0.006 | 0.774 | 3319 |
+| `trafilatura` | 250 | 0.640 | 0.012 | 0.740 | 2445 |
+| `markitdown` | 250 | 0.692 | 0.253 | 0.694 | 8766 |
+| `markdownify` | 250 | 0.692 | 0.254 | 0.694 | 8728 |
+| `html2text` | 250 | 0.676 | 0.270 | 0.670 | 8617 |
+| `chromerag_precision` | 250 | 0.525 | 0.007 | 0.651 | 2871 |
+| `readability` | 250 | 0.450 | 0.013 | 0.531 | 2030 |
+| `beautifulsoup_text` | 250 | 0.815 | 0.826 | 0.241 | 4407 |
+
+## All fetched pages (no cohort filter, n=277)
+
+| Method | Pages | Recall ↑ | Noise ret ↓ | Fbal ↑ |
+|---|---:|---:|---:|---:|
+| `chromerag_coverage` | 277 | 0.659 | 0.007 | 0.752 |
+| `chromerag` | 277 | 0.638 | 0.007 | 0.736 |
+| `trafilatura` | 277 | 0.610 | 0.024 | 0.698 |
+| `markitdown` | 277 | 0.661 | 0.244 | 0.661 |
+| `markdownify` | 277 | 0.661 | 0.245 | 0.661 |
+| `html2text` | 277 | 0.646 | 0.260 | 0.639 |
+| `chromerag_precision` | 277 | 0.503 | 0.007 | 0.620 |
+| `readability` | 277 | 0.423 | 0.016 | 0.499 |
+| `beautifulsoup_text` | 277 | 0.775 | 0.797 | 0.232 |
+
+## Paired bootstrap (scoreable pages, 95% CI of mean difference)
+
+| Comparison | Metric | Mean diff | 95% CI |
+|---|---|---:|---:|
+| `chromerag_coverage` − `trafilatura` | f_balanced | +0.051 | [+0.025, +0.081] |
+| `chromerag_coverage` − `trafilatura` | content_recall | +0.051 | [+0.022, +0.079] |
+| `chromerag_coverage` − `trafilatura` | noise_retention | -0.005 | [-0.014, +0.004] |
+| `chromerag` − `trafilatura` | f_balanced | +0.034 | [+0.007, +0.064] |
+| `chromerag` − `trafilatura` | content_recall | +0.027 | [-0.002, +0.055] |
+| `chromerag` − `trafilatura` | noise_retention | -0.005 | [-0.015, +0.003] |
+| `chromerag_coverage` − `markitdown` | f_balanced | +0.097 | [+0.072, +0.120] |
+| `chromerag_coverage` − `markitdown` | content_recall | -0.001 | [-0.023, +0.020] |
+| `chromerag_coverage` − `markitdown` | noise_retention | -0.246 | [-0.269, -0.222] |
 
 ## By page category (ChromeRAG vs Trafilatura vs MarkItDown)
 
@@ -37,10 +65,10 @@ ChromeRAG (balanced / coverage / precision) vs Trafilatura, Readability, MarkItD
 
 | Method | Pages | Recall ↑ | Noise ↓ | Fbal ↑ |
 |---|---:|---:|---:|---:|
-| `chromerag_coverage` | 4 | 0.788 | 0.011 | 0.869 |
-| `trafilatura` | 4 | 0.788 | 0.003 | 0.867 |
-| `chromerag` | 4 | 0.746 | 0.011 | 0.843 |
-| `markitdown` | 4 | 0.785 | 0.341 | 0.697 |
+| `chromerag_coverage` | 6 | 0.778 | 0.007 | 0.867 |
+| `chromerag` | 6 | 0.737 | 0.007 | 0.840 |
+| `trafilatura` | 6 | 0.607 | 0.002 | 0.702 |
+| `markitdown` | 6 | 0.706 | 0.277 | 0.687 |
 
 ### `api_docs_jsonld`
 
@@ -73,19 +101,19 @@ ChromeRAG (balanced / coverage / precision) vs Trafilatura, Readability, MarkItD
 
 | Method | Pages | Recall ↑ | Noise ↓ | Fbal ↑ |
 |---|---:|---:|---:|---:|
-| `chromerag_coverage` | 2 | 0.947 | 0.000 | 0.972 |
-| `chromerag` | 2 | 0.935 | 0.000 | 0.965 |
-| `trafilatura` | 2 | 0.954 | 0.133 | 0.900 |
-| `markitdown` | 2 | 0.932 | 0.482 | 0.666 |
+| `trafilatura` | 1 | 0.909 | 0.000 | 0.952 |
+| `chromerag_coverage` | 1 | 0.894 | 0.000 | 0.944 |
+| `chromerag` | 1 | 0.870 | 0.000 | 0.930 |
+| `markitdown` | 1 | 0.864 | 0.516 | 0.621 |
 
 ### `docs`
 
 | Method | Pages | Recall ↑ | Noise ↓ | Fbal ↑ |
 |---|---:|---:|---:|---:|
-| `chromerag_coverage` | 201 | 0.693 | 0.005 | 0.793 |
-| `chromerag` | 201 | 0.670 | 0.005 | 0.776 |
-| `trafilatura` | 201 | 0.661 | 0.016 | 0.753 |
-| `markitdown` | 201 | 0.692 | 0.259 | 0.691 |
+| `chromerag_coverage` | 212 | 0.682 | 0.007 | 0.783 |
+| `chromerag` | 212 | 0.659 | 0.007 | 0.765 |
+| `trafilatura` | 212 | 0.641 | 0.009 | 0.742 |
+| `markitdown` | 212 | 0.684 | 0.251 | 0.691 |
 
 ### `hub`
 

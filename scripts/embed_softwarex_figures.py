@@ -25,15 +25,39 @@ W14 = "{http://schemas.microsoft.com/office/word/2010/wordml}"
 W, R, A, WP, PIC = f"{{{W_NS}}}", f"{{{R_NS}}}", f"{{{A_NS}}}", f"{{{WP_NS}}}", f"{{{PIC_NS}}}"
 
 IMAGES = [
-    ("fig1_fbal.png", "Figure 1. Balanced F-score (Fbal) on 238 scoreable pages (higher is better)."),
-    ("fig2_recall.png", "Figure 2. Content recall on the same scoreable set (higher is better)."),
-    ("fig3_noise.png", "Figure 3. Noise retention — chrome/boilerplate kept (lower is better)."),
+    (
+        "fig0_architecture.png",
+        "Figure 1. ChromeRAG processing pipeline. The optional site model produced by "
+        "chromerag learn is applied in stage 3.",
+    ),
+    (
+        "fig1_fbal.png",
+        "Figure 2. Balanced F-score (Fbal, higher is better) on the 250 scoreable pages; "
+        "every method is averaged over the same pages.",
+    ),
+    ("fig2_recall.png", "Figure 3. Content recall on the same 250 pages (higher is better)."),
+    (
+        "fig3_noise.png",
+        "Figure 4. Noise retention, the share of navigation/footer anchors kept "
+        "(lower is better), on the same 250 pages.",
+    ),
     (
         "fig4_corpus_gate.png",
-        "Figure 4. Corpus honesty gate: listed URLs → fetched HTML → scoreable pages used in means "
-        "(thin/JS shells excluded).",
+        "Figure 5. Benchmark corpus funnel. The scoreable cohort is selected from the input "
+        "HTML only (at least 50 main-content anchors), never from any extractor's output.",
     ),
 ]
+
+TEXT_WIDTH_EMU = 5943600  # 6.5 in
+
+
+def _png_size(path: Path) -> tuple[int, int]:
+    import struct
+
+    with path.open("rb") as f:
+        head = f.read(24)
+    width, height = struct.unpack(">II", head[16:24])
+    return width, height
 
 _NEXT_ID = 0xD000
 
@@ -135,7 +159,6 @@ def main() -> None:
         if t.startswith("__FIG") and t.endswith("__"):
             by_marker[t] = p
 
-    cx, cy = 5943600, 3439800
     for i, (fname, caption) in enumerate(IMAGES):
         n = i + 1
         img_p = by_marker.get(f"__FIG{n}_IMG__")
@@ -156,7 +179,10 @@ def main() -> None:
             "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image",
         )
         rel.set("Target", f"media/{dest_name}")
-        _set_image_para(img_p, _drawing(rid, cx, cy if i < 3 else 2376000, fname, doc_id=n))
+        px_w, px_h = _png_size(src)
+        cx = TEXT_WIDTH_EMU
+        cy = int(cx * px_h / px_w)
+        _set_image_para(img_p, _drawing(rid, cx, cy, fname, doc_id=n))
         _set_caption(cap_p, caption)
 
     ct_path = work / "[Content_Types].xml"

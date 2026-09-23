@@ -16,6 +16,7 @@ import json
 import sys
 from pathlib import Path
 
+from chromerag import __version__
 from chromerag.batch import BatchPage, learn_chrome, learn_then_extract
 from chromerag.config import ContentPriority, PipelineConfig, Strictness
 from chromerag.extractor import ChromeRAG
@@ -86,6 +87,16 @@ def _load_fixture_dir(raw_dir: Path) -> list[BatchPage]:
     return pages
 
 
+def _missing_chrome_model(path: str | None) -> bool:
+    if path and not Path(path).is_file():
+        sys.stderr.write(
+            f"Chrome model not found: {path}\n"
+            "Create one first with: chromerag learn <html_dir> -o <model.json>\n"
+        )
+        return True
+    return False
+
+
 def cmd_extract(args: argparse.Namespace) -> int:
     path = Path(args.html)
     if not path.exists():
@@ -94,6 +105,8 @@ def cmd_extract(args: argparse.Namespace) -> int:
             "ChromeRAG extracts HTML files only. Fetch pages with your crawler "
             "or: python -m poc.fetch_pages\n"
         )
+        return 2
+    if _missing_chrome_model(args.chrome_model):
         return 2
     html = path.read_text(encoding="utf-8", errors="ignore")
     cfg = _build_config(args)
@@ -110,7 +123,9 @@ def cmd_extract(args: argparse.Namespace) -> int:
         sys.stderr.write(f"WARNING: {warning}\n")
 
     if args.output:
-        Path(args.output).write_text(result.markdown, encoding="utf-8")
+        out_path = Path(args.output)
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        out_path.write_text(result.markdown, encoding="utf-8")
     else:
         sys.stdout.write(result.markdown)
 
@@ -135,6 +150,9 @@ def cmd_extract(args: argparse.Namespace) -> int:
 
 
 def cmd_learn(args: argparse.Namespace) -> int:
+    if not Path(args.html_dir).is_dir():
+        sys.stderr.write(f"Not a directory: {args.html_dir}\n")
+        return 2
     pages = _load_fixture_dir(Path(args.html_dir))
     if len(pages) < 2:
         sys.stderr.write("Need at least 2 HTML pages to learn chrome patterns.\n")
@@ -166,6 +184,11 @@ def cmd_learn(args: argparse.Namespace) -> int:
 
 def cmd_batch(args: argparse.Namespace) -> int:
     """Learn-then-extract (default) or extract with a pre-learned chrome model."""
+    if not Path(args.html_dir).is_dir():
+        sys.stderr.write(f"Not a directory: {args.html_dir}\n")
+        return 2
+    if _missing_chrome_model(args.chrome_model):
+        return 2
     pages = _load_fixture_dir(Path(args.html_dir))
     if not pages:
         sys.stderr.write(f"No HTML fixtures in {args.html_dir}\n")
@@ -238,6 +261,7 @@ def main(argv: list[str] | None = None) -> int:
             "for enterprise web RAG. Pass HTML files — do not use as a crawler."
         ),
     )
+    parser.add_argument("--version", action="version", version=f"chromerag {__version__}")
     sub = parser.add_subparsers(dest="command", required=True)
 
     p_ex = sub.add_parser("extract", help="Extract one HTML file to Markdown")

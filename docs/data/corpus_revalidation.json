@@ -3,97 +3,76 @@
   "errors": [],
   "corpus_urls_listed": 373,
   "n_fetched": 277,
-  "n_scoreable": 238,
-  "n_thin": 39,
+  "n_scoreable": 250,
+  "n_thin": 27,
   "leaderboard": {
     "chromerag": {
-      "pages_scored": 238,
-      "avg_content_recall": 0.6782,
-      "avg_noise_retention": 0.0053,
-      "avg_f_balanced": 0.7835
+      "pages_scored": 250,
+      "avg_content_recall": 0.6675,
+      "avg_noise_retention": 0.0064,
+      "avg_f_balanced": 0.7736
     },
     "chromerag_coverage": {
-      "pages_scored": 238,
-      "avg_content_recall": 0.7008,
-      "avg_noise_retention": 0.0055,
-      "avg_f_balanced": 0.8004
+      "pages_scored": 250,
+      "avg_content_recall": 0.6909,
+      "avg_noise_retention": 0.007,
+      "avg_f_balanced": 0.791
     },
     "chromerag_precision": {
-      "pages_scored": 238,
-      "avg_content_recall": 0.5504,
-      "avg_noise_retention": 0.0054,
-      "avg_f_balanced": 0.6765
+      "pages_scored": 250,
+      "avg_content_recall": 0.5247,
+      "avg_noise_retention": 0.0066,
+      "avg_f_balanced": 0.6515
     },
     "trafilatura": {
-      "pages_scored": 238,
-      "avg_content_recall": 0.6622,
-      "avg_noise_retention": 0.019,
-      "avg_f_balanced": 0.7521
+      "pages_scored": 250,
+      "avg_content_recall": 0.6404,
+      "avg_noise_retention": 0.0118,
+      "avg_f_balanced": 0.7395
     },
     "readability": {
-      "pages_scored": 238,
-      "avg_content_recall": 0.4559,
-      "avg_noise_retention": 0.0156,
-      "avg_f_balanced": 0.5349
+      "pages_scored": 250,
+      "avg_content_recall": 0.4498,
+      "avg_noise_retention": 0.0125,
+      "avg_f_balanced": 0.5312
     },
     "markdownify": {
-      "pages_scored": 238,
-      "avg_content_recall": 0.7018,
-      "avg_noise_retention": 0.2627,
-      "avg_f_balanced": 0.6946
+      "pages_scored": 250,
+      "avg_content_recall": 0.692,
+      "avg_noise_retention": 0.2538,
+      "avg_f_balanced": 0.694
     },
     "html2text": {
-      "pages_scored": 238,
-      "avg_content_recall": 0.6937,
-      "avg_noise_retention": 0.2818,
-      "avg_f_balanced": 0.675
+      "pages_scored": 250,
+      "avg_content_recall": 0.6763,
+      "avg_noise_retention": 0.27,
+      "avg_f_balanced": 0.6702
     },
     "beautifulsoup_text": {
-      "pages_scored": 238,
-      "avg_content_recall": 0.8225,
-      "avg_noise_retention": 0.8297,
-      "avg_f_balanced": 0.2396
+      "pages_scored": 250,
+      "avg_content_recall": 0.8149,
+      "avg_noise_retention": 0.826,
+      "avg_f_balanced": 0.2413
     },
     "markitdown": {
-      "pages_scored": 238,
-      "avg_content_recall": 0.7017,
-      "avg_noise_retention": 0.2613,
-      "avg_f_balanced": 0.6951
+      "pages_scored": 250,
+      "avg_content_recall": 0.6919,
+      "avg_noise_retention": 0.2527,
+      "avg_f_balanced": 0.6944
     }
   },
   "thin_kinds": {
-    "not_thin_but_unscoreable": 31,
+    "not_thin_but_unscoreable": 19,
     "thin_other": 1,
     "js_shell": 7
   },
   "thin_sample": [
-    {
-      "id": "alembic-docs",
-      "kind": "not_thin_but_unscoreable",
-      "visible_chars": 9388,
-      "visible_words": 1177,
-      "root_marker": null
-    },
     {
       "id": "alibaba-cloud-docs",
       "kind": "not_thin_but_unscoreable",
       "visible_chars": 829,
       "visible_words": 101,
       "root_marker": "id=\"app\""
-    },
-    {
-      "id": "atlassian-confluence",
-      "kind": "not_thin_but_unscoreable",
-      "visible_chars": 1059,
-      "visible_words": 152,
-      "root_marker": "id=\"root\""
-    },
-    {
-      "id": "atlassian-jira",
-      "kind": "not_thin_but_unscoreable",
-      "visible_chars": 1044,
-      "visible_words": 154,
-      "root_marker": "id=\"root\""
     },
     {
       "id": "auth0-docs",
@@ -103,10 +82,10 @@
       "root_marker": null
     },
     {
-      "id": "bazel-docs",
+      "id": "azure-architecture",
       "kind": "not_thin_but_unscoreable",
-      "visible_chars": 5605,
-      "visible_words": 797,
+      "visible_chars": 700,
+      "visible_words": 97,
       "root_marker": null
     },
     {
@@ -124,17 +103,24 @@
       "root_marker": null
     },
     {
-      "id": "discord-api",
+      "id": "datadog-docs",
       "kind": "not_thin_but_unscoreable",
-      "visible_chars": 2136,
-      "visible_words": 303,
+      "visible_chars": 43709,
+      "visible_words": 5665,
       "root_marker": null
     },
     {
-      "id": "dropbox-api",
+      "id": "dbt-docs",
       "kind": "not_thin_but_unscoreable",
-      "visible_chars": 3470,
-      "visible_words": 492,
+      "visible_chars": 5042,
+      "visible_words": 789,
+      "root_marker": null
+    },
+    {
+      "id": "envoy-docs",
+      "kind": "not_thin_but_unscoreable",
+      "visible_chars": 5434,
+      "visible_words": 776,
       "root_marker": null
     },
     {
@@ -145,25 +131,11 @@
       "root_marker": null
     },
     {
-      "id": "hashicorp-nomad",
+      "id": "heroku-docs",
       "kind": "not_thin_but_unscoreable",
-      "visible_chars": 4789,
-      "visible_words": 698,
-      "root_marker": "id=\"__next\""
-    },
-    {
-      "id": "hashicorp-terraform",
-      "kind": "not_thin_but_unscoreable",
-      "visible_chars": 3370,
-      "visible_words": 441,
-      "root_marker": "id=\"__next\""
-    },
-    {
-      "id": "hashicorp-vault",
-      "kind": "not_thin_but_unscoreable",
-      "visible_chars": 3375,
-      "visible_words": 492,
-      "root_marker": "id=\"__next\""
+      "visible_chars": 1665,
+      "visible_words": 243,
+      "root_marker": null
     },
     {
       "id": "hubspot-docs",
@@ -194,6 +166,13 @@
       "root_marker": null
     },
     {
+      "id": "microsoft-azure-docs",
+      "kind": "not_thin_but_unscoreable",
+      "visible_chars": 700,
+      "visible_words": 97,
+      "root_marker": null
+    },
+    {
       "id": "mixpanel-docs",
       "kind": "not_thin_but_unscoreable",
       "visible_chars": 3600,
@@ -201,10 +180,10 @@
       "root_marker": null
     },
     {
-      "id": "nginx-docs",
+      "id": "mockito-docs",
       "kind": "not_thin_but_unscoreable",
-      "visible_chars": 3627,
-      "visible_words": 595,
+      "visible_chars": 4550,
+      "visible_words": 592,
       "root_marker": null
     },
     {
@@ -215,6 +194,13 @@
       "root_marker": null
     },
     {
+      "id": "npm-docs",
+      "kind": "not_thin_but_unscoreable",
+      "visible_chars": 5502,
+      "visible_words": 789,
+      "root_marker": null
+    },
+    {
       "id": "numpy-docs",
       "kind": "not_thin_but_unscoreable",
       "visible_chars": 1433,
@@ -222,11 +208,11 @@
       "root_marker": null
     },
     {
-      "id": "nvidia-cuda",
+      "id": "okta-docs",
       "kind": "not_thin_but_unscoreable",
-      "visible_chars": 3063,
-      "visible_words": 428,
-      "root_marker": null
+      "visible_chars": 3640,
+      "visible_words": 567,
+      "root_marker": "id=\"app\""
     },
     {
       "id": "openai-docs",
@@ -240,6 +226,20 @@
       "kind": "js_shell",
       "visible_chars": 0,
       "visible_words": 0,
+      "root_marker": null
+    },
+    {
+      "id": "postgres-docs",
+      "kind": "not_thin_but_unscoreable",
+      "visible_chars": 3716,
+      "visible_words": 488,
+      "root_marker": null
+    },
+    {
+      "id": "pytorch-docs",
+      "kind": "js_shell",
+      "visible_chars": 43,
+      "visible_words": 6,
       "root_marker": null
     }
   ]

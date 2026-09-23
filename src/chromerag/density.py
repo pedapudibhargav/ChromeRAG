@@ -136,11 +136,31 @@ class DensityConfig:
     prefer_main: bool = True
 
 
-def looks_like_noise(tag: Tag, *, max_noise_block_chars: int = 4000) -> bool:
+MAIN_LANDMARK_ATTRS = {"role": "main"}
+
+# A chrome-looking container holding more than this share of the page's visible
+# text is almost always a content wrapper (e.g. class="VPContent has-sidebar").
+MAX_NOISE_PAGE_SHARE = 0.5
+
+
+def looks_like_noise(
+    tag: Tag,
+    *,
+    max_noise_block_chars: int = 4000,
+    page_text_len: int | None = None,
+) -> bool:
     """Heuristic chrome detector with size guards (avoid sticky-subnav disasters)."""
     if not isinstance(tag, Tag) or not tag.name:
         return False
     text_len = len(tag.get_text(" ", strip=True))
+
+    # Never treat the primary content landmark (or a wrapper around it) as chrome.
+    if tag.name == "main" or (tag.get("role") or "").lower() == "main":
+        return False
+    if tag.find("main") or tag.find(attrs=MAIN_LANDMARK_ATTRS):
+        return False
+    if page_text_len and text_len > MAX_NOISE_PAGE_SHARE * page_text_len:
+        return False
 
     if tag.name in STRIP_TAGS:
         # Huge <header>/<nav> sometimes wraps real page content — keep those.
@@ -285,9 +305,14 @@ def prune_noise_subtrees(
 ) -> BeautifulSoup:
     """In-place remove obvious chrome before conversion."""
     body = soup.body or soup
+    page_text_len = len(body.get_text(" ", strip=True))
     for tag in list(body.find_all(True)):
         if not isinstance(tag, Tag) or getattr(tag, "attrs", None) is None:
             continue
-        if looks_like_noise(tag, max_noise_block_chars=max_noise_block_chars):
+        if looks_like_noise(
+            tag,
+            max_noise_block_chars=max_noise_block_chars,
+            page_text_len=page_text_len,
+        ):
             tag.decompose()
     return soup

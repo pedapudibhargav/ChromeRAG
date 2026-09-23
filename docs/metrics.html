@@ -53,9 +53,11 @@
 
     <h2>Scoreable-page gate</h2>
     <p style="color:var(--muted)">
-      Leaderboard means use pages where ChromeRAG content recall ≥ 0.05 (238 of 277 fetched).
-      Thin pages are excluded from averages so empty shells are not silently mixed into SOTA claims.
-      All baselines are scored on that same scoreable set. Details:
+      Leaderboard means use pages whose <em>input</em> HTML has at least 50 main-content 5-gram
+      anchors (250 of 277 fetched). The rule looks only at the input DOM, never at any
+      extractor's output, so every tool is averaged over the same tool-independent set.
+      Means over all 277 fetched pages and paired-bootstrap confidence intervals are in
+      <code>data/corpus_comparison_summary.md</code>. Details:
       <a href="./limitations.html">Limitations</a>.
     </p>
 

@@ -312,7 +312,9 @@ def save_chrome_models(models: dict[str, SiteChromeModel], path: str | Path) -> 
             for key, m in models.items()
         },
     }
-    Path(path).write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
 
 
 def load_chrome_models(path: str | Path) -> dict[str, SiteChromeModel]:

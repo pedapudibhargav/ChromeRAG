@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-"""Revalidate corpus report integrity without re-fetching the web.
+"""Revalidate the corpus benchmark report without re-fetching the web.
 
-Checks that published leaderboard numbers are internally consistent and that
-thin/scoreable accounting matches the honesty rules used in the SoftareX draft.
-Also classifies thin pages via input_quality (JS shell vs other thin HTML).
+Recomputes the scoreable cohort from each page's input-DOM anchor count and every
+method's leaderboard means from the per-page scores, and checks them against the
+report's summary. Uses the local re-run (data/outputs) when present, otherwise the
+published report in docs/data. When raw HTML is available, also classifies the thin
+pages via input_quality (JS shell vs other thin HTML).
 """
 
 from __future__ import annotations
@@ -18,10 +20,15 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from chromerag.input_quality import assess_input_html  # noqa: E402
 
-REPORT = ROOT / "data" / "outputs" / "corpus_comparison_report.json"
+LOCAL_REPORT = ROOT / "data" / "outputs" / "corpus_comparison_report.json"
+PUBLISHED_REPORT = ROOT / "docs" / "data" / "corpus_comparison_report.json"
+REPORT = LOCAL_REPORT if LOCAL_REPORT.exists() else PUBLISHED_REPORT
+MIN_CONTENT_ANCHORS = 50
+METRICS = ("content_recall", "noise_retention", "f_balanced")
 CORPUS = ROOT / "poc" / "corpus_urls.json"
 RAW = ROOT / "data" / "raw"
 OUT = ROOT / "data" / "outputs" / "corpus_revalidation.json"
+OUT.parent.mkdir(parents=True, exist_ok=True)
 
 
 def _fail(msg: str, errors: list[str]) -> None:
@@ -35,6 +42,7 @@ def main() -> int:
         print(f"Missing report: {REPORT}")
         return 2
 
+    print(f"Report:             {REPORT.relative_to(ROOT)}")
     report = json.loads(REPORT.read_text(encoding="utf-8"))
     corpus = json.loads(CORPUS.read_text(encoding="utf-8"))
     listed = len(corpus.get("urls") or [])
@@ -53,8 +61,12 @@ def main() -> int:
 
     if listed < 300:
         _fail(f"Expected ~373 listed URLs, got {listed}", errors)
-    if n_pages != len(raw_html):
+    if raw_html and n_pages != len(raw_html):
         _fail(f"Report pages ({n_pages}) != raw HTML files ({len(raw_html)})", errors)
+    for pid, e in pages.items():
+        expected = int((e.get("anchors") or {}).get("content_ngrams", 0)) >= MIN_CONTENT_ANCHORS
+        if bool(e.get("scoreable")) != expected:
+            _fail(f"{pid}: scoreable flag does not match the input-anchor rule", errors)
     if report.get("n_scoreable") not in (None, n_scoreable) and int(report["n_scoreable"]) != n_scoreable:
         _fail(
             f"report.n_scoreable={report.get('n_scoreable')} != recomputed {n_scoreable}",
@@ -67,14 +79,20 @@ def main() -> int:
         if scored != n_scoreable:
             _fail(f"{method} pages_scored={scored} != scoreable={n_scoreable}", errors)
 
-    # Spot-check Fbal formula ordering: coverage should beat markitdown on Fbal
-    cov = float((summary.get("chromerag_coverage") or {}).get("avg_f_balanced") or 0)
-    traf = float((summary.get("trafilatura") or {}).get("avg_f_balanced") or 0)
-    mid = float((summary.get("markitdown") or {}).get("avg_f_balanced") or 0)
-    if not (cov > traf > 0.5):
-        _fail(f"Unexpected ranking: coverage={cov} trafilatura={traf}", errors)
-    if not (cov > mid):
-        _fail(f"coverage Fbal {cov} should exceed markitdown {mid}", errors)
+    # Recompute every published mean from the per-page scores.
+    for method, stats in summary.items():
+        for metric in METRICS:
+            vals = [
+                float(e["methods"][method][metric])
+                for e in pages.values()
+                if e.get("scoreable") and metric in (e.get("methods", {}).get(method) or {})
+            ]
+            if not vals:
+                continue
+            mean = sum(vals) / len(vals)
+            published = float(stats.get(f"avg_{metric}", -1))
+            if abs(mean - published) > 5e-4:
+                _fail(f"{method} {metric}: recomputed {mean:.4f} != published {published:.4f}", errors)
 
     # Classify thin pages (JS shell vs other)
     thin_ids = [pid for pid, e in pages.items() if not e.get("scoreable")]
@@ -83,7 +101,7 @@ def main() -> int:
     for pid in thin_ids:
         html_path = RAW / f"{pid}.html"
         if not html_path.exists():
-            kinds["missing_html"] += 1
+            kinds["raw_html_not_available"] += 1
             continue
         html = html_path.read_text(encoding="utf-8", errors="ignore")
         iq = assess_input_html(html)

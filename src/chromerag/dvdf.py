@@ -1,7 +1,13 @@
-"""Semantic Vector Density Filtering (DVDF) via ONNX MiniLM.
+"""Density/Vector noise filtering (DVDF).
 
-Query-agnostic: score blocks against pre-baked marketing/boilerplate
-noise anchor phrases. Falls back to density-only when ONNX model is absent.
+Query-agnostic: each candidate block is embedded and scored by cosine
+similarity against pre-baked marketing/boilerplate noise-anchor phrases;
+blocks at or above the threshold are dropped.
+
+The implemented embedding backend is a deterministic 384-d feature-hashing
+(bag-of-hashed-tokens) vector — CPU-only, no model download, reproducible.
+``use_onnx`` is an experimental hook reserved for a sentence-encoder backend;
+in this release it is not wired to a model and always falls back to hashing.
 """
 
 from __future__ import annotations
@@ -40,8 +46,9 @@ def _tokenize(text: str) -> list[str]:
 def _hash_embed(text: str, dim: int = 384) -> np.ndarray:
     """Deterministic bag-of-hashes embedding (no model download).
 
-    Used as a zero-dep fallback so the POC runs before ONNX weights land.
-    Cosine geometry is coarse but sufficient to demonstrate the DVDF API.
+    This is the DVDF backend used by default and in all reported benchmarks.
+    Lexical (not semantic) similarity: it catches near-verbatim boilerplate
+    phrases, not paraphrases.
     """
     vec = np.zeros(dim, dtype=np.float32)
     toks = _tokenize(text)
@@ -105,11 +112,8 @@ class NoiseAnchorIndex:
             return False
 
     def _onnx_embed(self, text: str) -> np.ndarray:
-        # Placeholder path for real MiniLM ONNX graph; hash fallback otherwise.
-        if self._session is None:
-            return _hash_embed(text)
-        # Real wiring depends on exported tokenizer+model I/O names.
-        # Keep hash fallback until assets/all-MiniLM-L6-v2.onnx is vendored.
+        # Experimental hook: tokenizer + model I/O wiring for a sentence encoder
+        # is not part of this release, so hashing is used even when a session loads.
         return _hash_embed(text)
 
     def max_noise_similarity(self, text: str) -> float:

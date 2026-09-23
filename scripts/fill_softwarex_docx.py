@@ -10,6 +10,7 @@ Applies SoftareX Guide-for-Authors hard rules:
 
 from __future__ import annotations
 
+import os
 import re
 import shutil
 import zipfile
@@ -23,7 +24,12 @@ W14_NS = "http://schemas.microsoft.com/office/word/2010/wordml"
 W = f"{{{W_NS}}}"
 W14 = f"{{{W14_NS}}}"
 
-TEMPLATE = Path.home() / "Downloads" / "softwarex-osp-template.docx"
+# Official template: https://legacyfileshare.elsevier.com/promis_misc/softwarex-osp-template.docx
+TEMPLATE = Path(
+    os.environ.get(
+        "SOFTWAREX_TEMPLATE", str(Path.home() / "Downloads" / "softwarex-osp-template.docx")
+    )
+)
 EXPANDED = ROOT / "papers" / "softwarex" / "SOFTWAREX_EXPANDED.md"
 OUT = ROOT / "papers" / "softwarex" / "ChromeRAG_SoftwareX_OSP.docx"
 
@@ -35,18 +41,22 @@ AUTHORS = (
     "ORCID: https://orcid.org/0009-0002-8523-8415); "
     "Corresponding email: pedapudibhargav@gmail.com"
 )
-KEYWORDS = "RAG; HTML extraction; boilerplate removal; vector pollution; Markdown; enterprise search"
+KEYWORDS = (
+    "retrieval-augmented generation; HTML extraction; boilerplate removal; "
+    "web template detection; Markdown; Python"
+)
+BOLD_LEAD, ITALIC_LEAD, LEAD_END = "\x01", "\x02", "\x03"
 
 METADATA = {
-    "C1": "0.1.0",
-    "C2": "https://github.com/pedapudibhargav/ChromeRAG/tree/v0.1.0",
+    "C1": "v0.1.1",
+    "C2": "https://github.com/pedapudibhargav/ChromeRAG/tree/v0.1.1",
     "C3": "MIT",
     "C4": "git",
-    "C5": "Python ≥3.11, BeautifulSoup4, lxml, Pydantic; optional ONNX Runtime",
+    "C5": "Python ≥3.11; BeautifulSoup4, lxml, Pydantic, PyYAML, NumPy, tiktoken",
     "C6": (
-        "macOS / Linux / Windows; pip install chromerag "
-        "(or pip install -e . from the GitHub clone); "
-        "optional extras: [dvdf], [fetch], [baselines], [ui]"
+        "Python ≥3.11 on macOS, Linux or Windows; CPU only. pip install chromerag "
+        "(or pip install -e . from a clone). Optional extras: [baselines] and [dev] "
+        "to reproduce the benchmark and run tests"
     ),
     "C7": "https://pedapudibhargav.github.io/ChromeRAG/ and repository README.md",
     "C8": "pedapudibhargav@gmail.com",
@@ -65,6 +75,7 @@ DECL_SECTIONS = [
     "CRediT author contribution statement",
     "Declaration of competing interest",
     "Funding",
+    "Data availability",
     "Declaration of generative AI and AI-assisted technologies in the manuscript preparation process",
 ]
 
@@ -84,6 +95,9 @@ DECL_FALLBACKS: dict[str, str] = {
         "in the public, commercial, or not-for-profit sectors."
     ),
 }
+
+MONO = "Courier New"
+FIG_MARKER = re.compile(r"^<!--\s*FIG\s*(\d+)\s*-->$")
 
 
 def _fresh_hex_id() -> str:
@@ -106,7 +120,8 @@ def _ensure_ppr(p: etree._Element, style: str) -> etree._Element:
             pPr.remove(el)
     ps = pPr.find(f"{W}pStyle")
     if ps is None:
-        ps = etree.SubElement(pPr, f"{W}pStyle")
+        ps = etree.Element(f"{W}pStyle")
+        pPr.insert(0, ps)  # schema order: pStyle must be the first child of pPr
     ps.set(f"{W}val", style)
     pPr.set(f"{W14}paraId", _fresh_hex_id())
     pPr.set(f"{W14}textId", _fresh_hex_id())
@@ -119,7 +134,19 @@ def _set_para(p: etree._Element, text: str, *, style: str) -> None:
     for child in list(p):
         if child is not pPr:
             p.remove(child)
+    if text[:1] in (BOLD_LEAD, ITALIC_LEAD) and LEAD_END in text:
+        lead, rest = text[1:].split(LEAD_END, 1)
+        _add_run(p, lead, bold=text[0] == BOLD_LEAD, italic=text[0] == ITALIC_LEAD)
+        _add_run(p, rest)
+        return
+    _add_run(p, text)
+
+
+def _add_run(p: etree._Element, text: str, *, bold: bool = False, italic: bool = False) -> None:
     run = etree.SubElement(p, f"{W}r")
+    if bold or italic:
+        rpr = etree.SubElement(run, f"{W}rPr")
+        etree.SubElement(rpr, f"{W}b" if bold else f"{W}i")
     t = etree.SubElement(run, f"{W}t")
     if text[:1].isspace() or text[-1:].isspace() or "  " in text:
         t.set("{http://www.w3.org/XML/1998/namespace}space", "preserve")
@@ -168,6 +195,11 @@ def _parse_expanded(path: Path) -> dict[str, list[tuple[str, str]]]:
             sections[current].append(("h3", line[4:].strip()))
             i += 1
             continue
+        m = FIG_MARKER.match(line.strip())
+        if m:
+            sections[current].append(("fig", m.group(1)))
+            i += 1
+            continue
         if line.startswith("```"):
             buf: list[str] = []
             i += 1
@@ -184,14 +216,11 @@ def _parse_expanded(path: Path) -> dict[str, list[tuple[str, str]]]:
             while i < len(lines) and lines[i].strip().startswith("|"):
                 row = lines[i].strip()
                 if not re.match(r"^\|[-:| ]+\|$", row):
-                    cells = [c.strip() for c in row.strip("|").split("|")]
-                    rows.append(" · ".join(_strip_md(c) for c in cells if c))
+                    cells = [_strip_md(c.strip()) for c in row.strip("|").split("|")]
+                    rows.append("\t".join(cells))
                 i += 1
             if rows:
-                # One Body paragraph per row (keeps SoftareX ≤6 tables budget;
-                # real Word tables are optional polish).
-                for row in rows:
-                    sections[current].append(("p", row))
+                sections[current].append(("table", "\n".join(rows)))
             continue
         if not line.strip() or line.strip() == "---":
             i += 1
@@ -218,7 +247,13 @@ def _parse_expanded(path: Path) -> dict[str, list[tuple[str, str]]]:
                 break
             buf.append(nxt)
             i += 1
-        text = _strip_md(" ".join(x.strip() for x in buf))
+        joined = " ".join(x.strip() for x in buf)
+        lead = re.match(r"^(\*\*|\*)([^*]+?)\1\s+(.*)$", joined)
+        if lead:  # keep run-in heads ("**Title.** text" / "*Stage 1: ...* text")
+            marker = BOLD_LEAD if lead.group(1) == "**" else ITALIC_LEAD
+            text = marker + _strip_md(lead.group(2)) + LEAD_END + " " + _strip_md(lead.group(3))
+        else:
+            text = _strip_md(joined)
         if text:
             sections[current].append(("p", text))
     return sections
@@ -256,18 +291,77 @@ def _clear_until_next_heading(body: etree._Element, heading: etree._Element, sto
         body.remove(p)
 
 
+def _mono_para(text: str) -> etree._Element:
+    """Body-style paragraph whose run uses a monospace font (no style edits)."""
+    p = _new_para(text or " ", style="Body")
+    run = p.find(f"{W}r")
+    rpr = etree.Element(f"{W}rPr")
+    fonts = etree.SubElement(rpr, f"{W}rFonts")
+    for attr in ("ascii", "hAnsi", "cs"):
+        fonts.set(f"{W}{attr}", MONO)
+    etree.SubElement(rpr, f"{W}sz").set(f"{W}val", "18")
+    run.insert(0, rpr)
+    spacing = etree.SubElement(p.find(f"{W}pPr"), f"{W}spacing")
+    spacing.set(f"{W}before", "0")
+    spacing.set(f"{W}after", "0")
+    t = run.find(f"{W}t")
+    t.set("{http://www.w3.org/XML/1998/namespace}space", "preserve")
+    return p
+
+
+def _table(rows: list[list[str]]) -> etree._Element:
+    """Plain bordered Word table (explicit borders; no new table styles)."""
+    tbl = etree.Element(f"{W}tbl")
+    tblPr = etree.SubElement(tbl, f"{W}tblPr")
+    etree.SubElement(tblPr, f"{W}tblW").attrib.update({f"{W}w": "5000", f"{W}type": "pct"})
+    borders = etree.SubElement(tblPr, f"{W}tblBorders")
+    for side in ("top", "left", "bottom", "right", "insideH", "insideV"):
+        etree.SubElement(borders, f"{W}{side}").attrib.update(
+            {f"{W}val": "single", f"{W}sz": "4", f"{W}space": "0", f"{W}color": "808080"}
+        )
+    grid = etree.SubElement(tbl, f"{W}tblGrid")
+    ncols = max(len(r) for r in rows)
+    for _ in range(ncols):
+        etree.SubElement(grid, f"{W}gridCol").set(f"{W}w", str(9000 // ncols))
+    for r_idx, cells in enumerate(rows):
+        tr = etree.SubElement(tbl, f"{W}tr")
+        for c in range(ncols):
+            tc = etree.SubElement(tr, f"{W}tc")
+            tcPr = etree.SubElement(tc, f"{W}tcPr")
+            etree.SubElement(tcPr, f"{W}tcW").attrib.update(
+                {f"{W}w": str(9000 // ncols), f"{W}type": "dxa"}
+            )
+            p = _new_para(cells[c] if c < len(cells) else "", style="Body")
+            if r_idx == 0:
+                rpr = etree.Element(f"{W}rPr")
+                etree.SubElement(rpr, f"{W}b")
+                p.find(f"{W}r").insert(0, rpr)
+            tc.append(p)
+    return tbl
+
+
 def _insert_blocks_after(anchor: etree._Element, blocks: list[tuple[str, str]]) -> etree._Element:
     cur = anchor
     for kind, text in blocks:
         if kind == "h3":
             p = _new_para(text, style="Heading2")
         elif kind == "code":
-            # SoftareX Body; keep code as compact single/multi paras
-            for line_group in text.split("\n\n"):
-                chunk = line_group.replace("\n", " ⏎ ")
-                p = _new_para(chunk, style="Body")
+            for line in text.split("\n"):
+                p = _mono_para(line)
                 cur.addnext(p)
                 cur = p
+            continue
+        elif kind == "table":
+            tbl = _table([row.split("\t") for row in text.split("\n")])
+            cur.addnext(tbl)
+            cur = tbl
+            continue
+        elif kind == "fig":
+            img = _new_para(f"__FIG{text}_IMG__", style="Body")
+            cap = _new_para(f"__FIG{text}_CAP__", style="Body")
+            cur.addnext(img)
+            img.addnext(cap)
+            cur = cap
             continue
         else:
             p = _new_para(text, style="Body")
@@ -284,10 +378,10 @@ def _set_table_metadata(root: etree._Element) -> None:
         cells = first_row.findall(f"{W}tc")
         if len(cells) >= 3:
             hdr = "".join(t.text or "" for t in cells[2].iter(f"{W}t")).strip()
-            if hdr in {"Metadata", "Please fill in this column"} or "fill in" in hdr.lower() or hdr == "Metadata":
+            if "fill in" in hdr.lower():  # restore the template's own header text
                 p = cells[2].find(f"{W}p")
                 if p is not None:
-                    _set_para(p, "Please fill in this column", style="Body")
+                    _set_para(p, "Metadata", style="Body")
     for tr in tbl.findall(f"{W}tr"):
         cells = tr.findall(f"{W}tc")
         if len(cells) < 3:
@@ -405,27 +499,7 @@ def main() -> None:
         blocks = sections.get(section, [])
         if not blocks:
             raise RuntimeError(f"No content for {section} in SOFTWAREX_EXPANDED.md")
-        last = _insert_blocks_after(h, blocks)
-
-        if section == "Illustrative examples":
-            # Place figures after Corpus comparison, before Priority knobs
-            paras_now = list(body.findall(f"{W}p"))
-            knobs = _find_heading(paras_now, "Priority knobs and input-quality warnings")
-            if knobs is not None:
-                insert_after = knobs.getprevious()
-                if insert_after is None:
-                    insert_after = last
-            else:
-                insert_after = last
-            for n in range(1, 5):
-                img = _new_para(f"__FIG{n}_IMG__", style="Body")
-                cap = _new_para(f"__FIG{n}_CAP__", style="Body")
-                insert_after.addnext(img)
-                img.addnext(cap)
-                insert_after = cap
-            # Ensure Priority knobs stays Heading2 after figure insert
-            if knobs is not None:
-                _set_para(knobs, "Priority knobs and input-quality warnings", style="Heading2")
+        _insert_blocks_after(h, blocks)
 
     # Ensure Impact heading style after figure inserts
     impact_h = _find_heading(list(body.findall(f"{W}p")), "Impact")
@@ -577,10 +651,13 @@ def main() -> None:
         "".join(t.text or "" for t in p.iter(f"{W}t")).strip()
         for p in doc.find(f"{W}body").findall(f"{W}p")
     ]
-    words = sum(len(re.findall(r"\b[\w']+\b", t)) for t in texts if t and not t.startswith("__FIG"))
+    counted = [abstract] + [
+        t for sec in MAIN_SECTIONS for k, t in sections.get(sec, []) if k in {"p", "h3"}
+    ]
+    words = sum(len(re.findall(r"\b[\w']+\b", t)) for t in counted)
     figs = sum(1 for t in texts if t.startswith("__FIG") and t.endswith("_IMG__"))
     print(f"Wrote {OUT}")
-    print(f"  approx words in all paras (excl fig markers): {words}")
+    print(f"  words (abstract + five main sections, excl. tables/code/captions): {words}")
     print(f"  fig placeholders: {figs}")
     for needle in MAIN_SECTIONS + DECL_SECTIONS[:1] + ["References"]:
         print(f"  has {needle!r}:", any(t == needle for t in texts))

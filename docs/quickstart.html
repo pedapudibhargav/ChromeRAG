@@ -30,27 +30,30 @@
       if a page is a JS shell, render first, then extract (see <a href="./limitations.html">Limitations</a>).
     </p>
 
-    <h2>Install from GitHub</h2>
+    <h2>Install</h2>
+<pre>pip install chromerag          # Python 3.11+, CPU only
+chromerag --version</pre>
+
+    <h2>From source (tests + benchmark baselines)</h2>
 <pre>git clone https://github.com/pedapudibhargav/ChromeRAG.git
 cd ChromeRAG
 python3 -m venv .venv && source .venv/bin/activate
-pip install -e .
-# optional: baselines for comparison
-pip install -e ".[baselines,fetch]"</pre>
+pip install -e ".[dev,baselines]"
+pytest -q</pre>
 
     <h2>Extract one page</h2>
-<pre>chromerag extract page.html -o out.md --priority balanced --json-meta
-# Thin / JS-shell HTML prints WARNING on stderr
-# chromerag extract spa.html -o out.md --fail-on-thin</pre>
+<pre>chromerag extract examples/site/pricing.html -o out/pricing.md --priority balanced --json-meta
+# Thin / JS-shell HTML prints WARNING on stderr; --fail-on-thin exits 3
+# chromerag extract spa.html -o out/spa.md --fail-on-thin</pre>
 
     <h2>Site corpus: learn then extract</h2>
-<pre>chromerag learn data/raw -o data/chrome_models/site.json --min-pages 3
-chromerag batch data/raw -o data/outputs --chrome-model data/chrome_models/site.json</pre>
+<pre>chromerag learn examples/site -o out/site_chrome.json --min-pages 3
+chromerag batch examples/site -o out/batch --chrome-model out/site_chrome.json</pre>
 
     <h2>Reproduce the public benchmark</h2>
-<pre>python -m poc.run_corpus_comparison --no-fetch   # uses data/raw if present
-python -m poc.export_site_results
-python scripts/revalidate_corpus.py</pre>
+<pre>python scripts/revalidate_corpus.py          # offline: recompute published means
+python -m poc.run_corpus_comparison          # fetch corpus + score all tools (network)
+python -m poc.export_site_results</pre>
 
     <div class="note">
       Priority <code>precision</code> favors clean text.

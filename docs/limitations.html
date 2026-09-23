@@ -43,13 +43,13 @@
     <h2>Scoreable filter in benchmarks</h2>
     <p>
       Latest public run: <strong>373 listed</strong>, <strong>277 fetched</strong>,
-      <strong>238 scoreable</strong>, <strong>39 thin</strong>.
-      Scoreable means ChromeRAG content recall ≥ 0.05 against DOM main-content anchors.
-      Thin pages are excluded from leaderboard <em>averages</em> so near-zero recall pages
-      do not create a fake “all tools fail” narrative. Revalidation of the 39 thin pages
-      finds ~7 JS-shell-like inputs and ~31 pages that still have visible text but fail the
-      recall gate (layout / weak <code>main</code> anchors)—so “thin” is a hygiene label, not
-      “always an empty SPA.” Every baseline is still scored on that same scoreable set.
+      <strong>250 scoreable</strong>, <strong>27 thin</strong>.
+      Scoreable means the <em>input</em> HTML has at least 50 main-content 5-gram anchors; the
+      rule never looks at any extractor's output, so every tool is averaged over the same
+      tool-independent set. Revalidation of the 27 thin pages finds 7 JS-shell-like inputs,
+      1 other thin DOM, and 19 pages with visible text but too few <code>main</code>/<code>article</code>
+      anchors to score—so “thin” is a hygiene label, not “always an empty SPA.” Means over all
+      277 fetched pages are published alongside (ChromeRAG coverage Fbal 0.752, Trafilatura 0.698).
       Separately, <code>chromerag extract</code> warns on JS-shell / thin HTML so callers can
       verify their fetch pipeline.
     </p>

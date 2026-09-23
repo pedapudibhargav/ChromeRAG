@@ -1,120 +1,157 @@
 #!/usr/bin/env python3
-"""SoftareX manuscript format/self-check (no official Elsevier linter exists).
+"""Pre-submission self-check of the SoftwareX OSP manuscript (.docx) and Highlights.
 
-Elsevier SoftareX requires the official Word/LaTeX *template* (styles must not be
-altered). There is no public SoftareX auto-formatter. This script enforces the
-guide-of-authors constraints we can check locally:
-
-  - required section headings present
-  - Highlights 3–5 bullets, each ≤85 chars
-  - approximate word count ≤4000 (abstract+body+captions; excludes refs/metadata)
-  - ≤6 figures referenced
-  - Code metadata C1–C9 mentioned
-  - AI declaration / funding / competing interests present
+Checks the rules stated in the SoftwareX template (v6, March 2026) / Guide for Authors:
+five mandatory sections, filled code-metadata table (C1–C8, GitHub URL), ≤ 4000 words
+(abstract + body + captions), ≤ 6 figures, abstract ≈ 100 words, ≤ 6 keywords,
+declarations, 3–5 highlights of ≤ 85 characters, no leftover template instructions,
+and that every reference is cited.
 
 Usage:
-  python scripts/check_softwarex_draft.py
-  python scripts/check_softwarex_draft.py papers/softwarex/SOFTWAREX_DRAFT.md
+  python scripts/check_softwarex_draft.py [path/to/manuscript.docx]
 """
 
 from __future__ import annotations
 
 import re
 import sys
+import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT = ROOT / "papers" / "softwarex" / "SOFTWAREX_DRAFT.md"
+DEFAULT = ROOT / "papers" / "softwarex" / "ChromeRAG_SoftwareX_OSP.docx"
+HIGHLIGHTS = ROOT / "papers" / "softwarex" / "HIGHLIGHTS.md"
 
-REQUIRED_SECTIONS = [
-    r"Motivation and significance",
-    r"Software description",
-    r"Illustrative examples",
-    r"Impact",
-    r"Conclusions",
+W = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
+MAIN = ["Motivation and significance", "Software description", "Illustrative examples", "Impact", "Conclusions"]
+DECLS = [
+    "CRediT author contribution statement",
+    "Declaration of competing interest",
+    "Funding",
+    "Data availability",
+    "Declaration of generative AI and AI-assisted technologies in the manuscript preparation process",
+    "References",
 ]
-
-REQUIRED_PHRASES = [
-    (r"Code metadata|C1", "Code metadata table (C1–C9)"),
-    (r"Declaration of generative AI", "AI declaration section"),
-    (r"Funding|funding agencies", "Funding statement"),
-    (r"competing interest|Competing interest|nothing to declare", "Competing interests"),
-    (r"CRediT|Author contributions", "CRediT / author contributions"),
-    (r"Playwright|must render|JS shell|JavaScript-rendered", "Honest JS-shell limitation"),
-    (r"scoreable|Scoreable", "Scoreable-page filter disclosure"),
-]
+TEMPLATE_LEFTOVERS = ["For example", "Please fill in", "In this section, we want you", "Reminder:", "(ca. 100 words)"]
 
 
-def _word_count_body(text: str) -> int:
-    # Drop references / metadata tables / checklist tails for SoftareX count approx.
-    cut = re.split(
-        r"^##\s+References|^##\s+Paste checklist|^##\s+Declaration of competing",
-        text,
-        maxsplit=1,
-        flags=re.M | re.I,
-    )[0]
-    # Also drop the code metadata table block roughly
-    cut = re.sub(r"(?s)\| Nr \| Code metadata.*?\| C9 \|.*?\|", " ", cut)
-    words = re.findall(r"[A-Za-z0-9][A-Za-z0-9'-]*", cut)
-    return len(words)
-
-
-def _highlights(text: str) -> list[str]:
-    m = re.search(r"(?is)##\s*Highlights\s*(.*?)(?:\n##\s|\Z)", text)
-    if not m:
-        return []
-    block = m.group(1)
-    return [re.sub(r"^[-*]\s*", "", ln).strip() for ln in block.splitlines() if re.match(r"^[-*]\s+\S", ln)]
+def _words(text: str) -> int:
+    return len(re.findall(r"[A-Za-z0-9][A-Za-z0-9'’.-]*", text))
 
 
 def main() -> int:
+    from lxml import etree
+
     path = Path(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT
-    if not path.exists():
-        print(f"Missing draft: {path}")
-        return 2
-    text = path.read_text(encoding="utf-8")
+    with zipfile.ZipFile(path) as zf:
+        root = etree.fromstring(zf.read("word/document.xml"))
+    body = root.find(f"{W}body")
+    paras = [
+        ("".join(t.text or "" for t in p.iter(f"{W}t")).strip(), p)
+        for p in body.findall(f"{W}p")
+    ]
+    texts = [t for t, _ in paras]
     errors: list[str] = []
     warns: list[str] = []
 
-    for pat in REQUIRED_SECTIONS:
-        if not re.search(pat, text, re.I):
-            errors.append(f"Missing required section matching /{pat}/")
+    for title in MAIN + DECLS:
+        if title not in texts:
+            errors.append(f"Missing section heading: {title}")
 
-    for pat, label in REQUIRED_PHRASES:
-        if not re.search(pat, text, re.I):
-            errors.append(f"Missing: {label}")
+    # Code metadata table
+    tbl = next(root.iter(f"{W}tbl"))
+    meta = {}
+    for tr in tbl.findall(f"{W}tr"):
+        cells = ["".join(t.text or "" for t in tc.iter(f"{W}t")).strip() for tc in tr.findall(f"{W}tc")]
+        if cells and re.fullmatch(r"C\d", cells[0]):
+            meta[cells[0]] = cells[-1]
+    for key in [f"C{i}" for i in range(1, 9)]:
+        if not meta.get(key):
+            errors.append(f"Code metadata {key} is empty")
+    if "github.com" not in meta.get("C2", ""):
+        errors.append("C2 must be a GitHub URL")
 
-    hl = _highlights(text)
-    if not (3 <= len(hl) <= 5):
-        errors.append(f"Highlights must be 3–5 bullets (found {len(hl)})")
-    for h in hl:
-        if len(h) > 85:
-            errors.append(f"Highlight >85 chars ({len(h)}): {h[:60]}…")
+    # Abstract / keywords
+    abstract = texts[texts.index("Abstract") + 1] if "Abstract" in texts else ""
+    kw = texts[texts.index("Keywords") + 1] if "Keywords" in texts else ""
+    n_abs = _words(abstract)
+    n_kw = len([k for k in kw.split(";") if k.strip()])
+    print(f"Abstract words: {n_abs} (template asks ca. 100)")
+    if n_abs > 150:
+        errors.append(f"Abstract too long ({n_abs} words)")
+    elif n_abs > 120:
+        warns.append(f"Abstract is {n_abs} words (template asks ca. 100)")
+    if not 1 <= n_kw <= 6:
+        errors.append(f"Keywords must be 1–6 (found {n_kw})")
 
-    wc = _word_count_body(text)
-    print(f"Approx SoftareX word count (body+abstract): {wc} (limit 4000)")
-    if wc > 4000:
-        errors.append(f"Word count {wc} exceeds SoftareX 4000 limit")
-    elif wc > 3600:
-        warns.append(f"Word count {wc} is close to the 4000 limit")
+    # Word count: abstract + five main sections (body text, captions, tables, code)
+    start = texts.index(MAIN[0]) if MAIN[0] in texts else 0
+    end = texts.index(DECLS[0]) if DECLS[0] in texts else len(texts)
+    body_words = sum(_words(t) for t in texts[start:end] if not t.startswith("__FIG"))
+    table_words = 0
+    for t in body.findall(f"{W}tbl")[1:]:
+        table_words += _words(" ".join(x.text or "" for x in t.iter(f"{W}t")))
+    total = n_abs + body_words + table_words
+    print(f"Words (abstract + main sections + captions + tables): {total} (limit 4000)")
+    if total > 4000:
+        errors.append(f"Word count {total} exceeds 4000")
 
-    fig_refs = re.findall(r"(?i)\b(?:fig(?:ure)?\.?\s*\d+|Fig\.?\s*\d+)\b", text)
-    n_figs = len(set(fig_refs))
-    print(f"Distinct figure references found: {n_figs} (limit 6)")
+    # Figures
+    n_figs = len(list(root.iter("{http://schemas.openxmlformats.org/drawingml/2006/main}blip")))
+    captions = [t for t in texts if re.match(r"^Figure \d+\.", t)]
+    print(f"Embedded figures: {n_figs}; captions: {len(captions)} (limit 6)")
     if n_figs > 6:
-        errors.append(f"More than 6 figures referenced ({n_figs})")
+        errors.append(f"More than 6 figures ({n_figs})")
+    if n_figs != len(captions):
+        errors.append("Figure/caption count mismatch")
+    if any(t.startswith("__FIG") for t in texts):
+        errors.append("Unfilled figure placeholder left in document")
 
-    if "official SoftareX" not in text and "official SoftwareX" not in text and "template" not in text.lower():
-        warns.append("Remind authors: paste into official SoftareX Word/LaTeX template before EM")
+    # Leftover template instructions
+    for t in texts:
+        for bad in TEMPLATE_LEFTOVERS:
+            if bad in t:
+                errors.append(f"Template instruction left in text: {t[:60]!r}")
+
+    # References cited
+    if "References" in texts:
+        refs = [t for t in texts[texts.index("References") + 1 :] if re.match(r"^\d+\.", t)]
+        body_text = " ".join(texts[: texts.index("References")])
+        cited: set[int] = set()
+        for grp in re.findall(r"\[([\d,\s–-]+)\]", body_text):
+            for part in grp.split(","):
+                part = part.strip()
+                if re.fullmatch(r"\d+[–-]\d+", part):
+                    a, b = map(int, re.split(r"[–-]", part))
+                    cited.update(range(a, b + 1))
+                elif part.isdigit():
+                    cited.add(int(part))
+        uncited = [i for i in range(1, len(refs) + 1) if i not in cited]
+        print(f"References: {len(refs)}; uncited: {uncited or 'none'}")
+        if uncited:
+            errors.append(f"References never cited in text: {uncited}")
+        if cited - set(range(1, len(refs) + 1)):
+            errors.append(f"Citations without reference entries: {sorted(cited - set(range(1, len(refs) + 1)))}")
+
+    # Highlights
+    if HIGHLIGHTS.exists():
+        m = re.search(r"```\n(.*?)\n```", HIGHLIGHTS.read_text(encoding="utf-8"), re.S)
+        hl = [h for h in (m.group(1).splitlines() if m else []) if h.strip()]
+        print(f"Highlights: {len(hl)} (max length {max((len(h) for h in hl), default=0)})")
+        if not 3 <= len(hl) <= 5:
+            errors.append(f"Highlights must be 3–5 bullets (found {len(hl)})")
+        errors.extend(f"Highlight > 85 chars: {h}" for h in hl if len(h) > 85)
+    else:
+        errors.append(f"Missing {HIGHLIGHTS}")
 
     for w in warns:
         print(f"WARN: {w}")
+    for e in errors:
+        print(f"FAIL: {e}")
     if errors:
-        for e in errors:
-            print(f"FAIL: {e}")
-        print(f"\n{len(errors)} SoftareX self-check error(s).")
+        print(f"\n{len(errors)} self-check error(s).")
         return 1
-    print("PASS: SoftareX draft self-check OK (still paste into official Elsevier template).")
+    print("PASS: SoftwareX manuscript self-check OK.")
     return 0
 
 

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Configuration reference | Widget Docs</title>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "Configuration reference", "description": "All keys supported in widget.toml.", "datePublished": "2026-01-15"}</script></head>
+<body>
+<header class="site-header"><nav class="top-nav" aria-label="Main"><a href="/">Widget Docs</a> <a href="/getting-started">Getting started</a> <a href="/configuration">Configuration</a> <a href="/pricing">Pricing</a> <a href="/troubleshooting">Troubleshooting</a> <a href="/blog">Blog</a> <a href="/login">Sign in</a></nav></header>
+<div class="cookie-banner" id="cookie-consent"><p>We use cookies to improve your experience. <a href="/privacy">Privacy policy</a> <button>Accept all cookies</button></p></div>
+<main>
+<div class="x7f-strip"><a href="/events">Widget Summit 2026: register now</a> <a href="/community">Join our community</a> <a href="/webinar">Watch the webinar</a></div>
+<article>
+<h1>Configuration reference</h1>
+<p>Configuration lives in widget.toml at the project root. Values can be overridden per environment with WIDGET_ prefixed environment variables.</p>
+<p>The workers key sets the number of parallel stages. The default is the number of CPU cores, and values above 64 are clamped.</p>
+<h2>Reference table</h2>
+<table>
+<tr><th>Key</th><th>Type</th><th>Default</th></tr>
+<tr><td>workers</td><td>integer</td><td>cpu count</td></tr>
+<tr><td>timeout_s</td><td>integer</td><td>300</td></tr>
+<tr><td>retry</td><td>boolean</td><td>true</td></tr>
+</table>
+</article></main>
+<div class="promo-cta"><p>Talk to sales about Widget Enterprise. <a href="/demo">Request a demo</a> <a href="/trial">Start free trial</a></p></div>
+<footer class="site-footer"><p>© Example Widgets Inc. <a href="/terms">Terms of use</a> <a href="/privacy">Privacy policy</a> <a href="/careers">Careers</a> <a href="/twitter">Follow us on Twitter</a> <a href="/newsletter">Subscribe to our newsletter</a></p></footer>
+</body></html>
