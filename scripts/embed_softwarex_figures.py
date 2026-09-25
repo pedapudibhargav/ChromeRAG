@@ -26,25 +26,22 @@ W, R, A, WP, PIC = f"{{{W_NS}}}", f"{{{R_NS}}}", f"{{{A_NS}}}", f"{{{WP_NS}}}", 
 
 IMAGES = [
     (
-        "fig0_architecture.png",
+        "fig1_architecture.png",
         "Figure 1. ChromeRAG processing pipeline. The optional site model produced by "
         "chromerag learn is applied in stage 3.",
     ),
     (
-        "fig1_fbal.png",
-        "Figure 2. Balanced F-score (Fbal, higher is better) on the 250 scoreable pages; "
-        "every method is averaged over the same pages.",
-    ),
-    ("fig2_recall.png", "Figure 3. Content recall on the same 250 pages (higher is better)."),
-    (
-        "fig3_noise.png",
-        "Figure 4. Noise retention, the share of navigation/footer anchors kept "
-        "(lower is better), on the same 250 pages.",
+        "fig2_benchmark.png",
+        "Figure 2. Extraction benchmark on the 242 scoreable pages. (a) Mean content recall "
+        "against mean noise retention; the upper left is better. (b) Cumulative distribution of "
+        "per-page content recall: the shaded band marks near-total content loss (recall below 0.2), "
+        "which affects 25 pages for Trafilatura, 13 for ChromeRAG (coverage) and 1 for MarkItDown.",
     ),
     (
-        "fig4_corpus_gate.png",
-        "Figure 5. Benchmark corpus funnel. The scoreable cohort is selected from the input "
-        "HTML only (at least 50 main-content anchors), never from any extractor's output.",
+        "fig3_retrieval.png",
+        "Figure 3. BM25 retrieval over each tool's ~200-word chunks, 771 known-item queries "
+        "built from the input HTML. (a) Share of queries whose page is in the top five chunks. "
+        "(b) Share of the retrieved top-five text that is navigation, header or footer chrome.",
     ),
 ]
 

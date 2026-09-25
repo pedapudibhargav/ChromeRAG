@@ -50,6 +50,12 @@ def tokenize(text: str) -> list[str]:
     return re.findall(r"[a-z0-9]{3,}", normalize_text(text))
 
 
+def page_key(meta: dict) -> str:
+    """Final (post-redirect) URL, so one page fetched under two ids counts once."""
+    url = str(meta.get("url") or meta.get("requested_url") or meta["id"])
+    return url.split("#", 1)[0].rstrip("/").lower()
+
+
 def char_ngrams(text: str, n: int = 5) -> set[str]:
     """Word 5-grams — stable overlap unit for recall/retention."""
     toks = tokenize(text)

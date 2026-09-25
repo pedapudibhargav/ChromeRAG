@@ -222,8 +222,6 @@ def cmd_batch(args: argparse.Namespace) -> int:
         page_out = out_dir / pid
         page_out.mkdir(parents=True, exist_ok=True)
         (page_out / "chromerag.md").write_text(br.result.markdown, encoding="utf-8")
-        # UI compat alias
-        (page_out / "smart_rag_extractor.md").write_text(br.result.markdown, encoding="utf-8")
         iq = br.result.input_quality or {}
         row = {
             "id": pid,

@@ -14,6 +14,7 @@ build/
 data/raw/
 data/outputs/
 data/chrome_models/
+data/stce_crawl/
 
 # Corp TLS / private tooling (never publish)
 infra/certs/
@@ -40,3 +41,6 @@ papers/softwarex/screencast_stills/
 papers/softwarex/figures/_charts.html
 scripts/_ooxml_write.py
 :memory:.ses
+
+# GitHub Pages build output (scripts/build_docs.sh)
+_site/

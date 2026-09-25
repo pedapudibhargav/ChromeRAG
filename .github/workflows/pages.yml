@@ -1,5 +1,6 @@
-# Run tests and publish the static site to the gh-pages branch.
-# GitHub Pages should be set to: Source = Deploy from a branch → Branch = gh-pages / (root)
+# Test on every push and pull request; on pushes to main, build the one-page site
+# (docs/index.html + docs/data/*.json) and publish it to the gh-pages branch.
+# GitHub Pages setting: Source = Deploy from a branch → Branch = gh-pages / (root).
 
 name: pages
 
@@ -11,7 +12,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: pages-${{ github.ref }}
@@ -47,58 +48,46 @@ jobs:
           chromerag learn examples/site -o out/site_chrome.json --min-pages 3
           chromerag batch examples/site -o out/batch --chrome-model out/site_chrome.json
 
-  test-and-build:
+  build-site:
     needs: test-matrix
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
           cache: pip
-
-      - name: Install package + test extras
+      - name: Install package and test extras
         run: |
           python -m pip install --upgrade pip
-          pip install -e ".[dev,baselines]"
-
-      - name: Build docs + run tests
+          pip install -e ".[dev]"
+      - name: Build site (runs tests, writes _site/)
+        run: bash scripts/build_docs.sh
+      - name: Check site contents
         run: |
-          chmod +x scripts/build_docs.sh
-          ./scripts/build_docs.sh
-
-      - name: Upload site artifact
-        uses: actions/upload-artifact@v4
+          test -f _site/index.html
+          test -f _site/.nojekyll
+          for f in leaderboard corpus_comparison_report retrieval_eval_report stce_summary test_report; do
+            test -f "_site/data/$f.json" || { echo "missing _site/data/$f.json"; exit 1; }
+          done
+      - uses: actions/upload-artifact@v4
         with:
           name: site
-          path: docs/
+          path: _site/
+          include-hidden-files: true
           if-no-files-found: error
 
   deploy-gh-pages:
-    needs: test-and-build
+    needs: build-site
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Download site artifact
-        uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v4
         with:
           name: site
           path: _site
-
-      - name: Ensure Pages marker
-        run: |
-          touch _site/.nojekyll
-          test -f _site/index.html
-          test -f _site/tests.html
-          test -f _site/results.html
-          test -f _site/data/leaderboard.json || test -f _site/data/corpus_comparison_summary.md
-
       - name: Deploy to gh-pages branch
         uses: peaceiris/actions-gh-pages@v4
         with:
@@ -106,4 +95,5 @@ jobs:
           publish_dir: _site
           publish_branch: gh-pages
           force_orphan: true
-          commit_message: "docs: publish site from ${{ github.sha }}"
+          enable_jekyll: false
+          commit_message: "Publish site from ${{ github.sha }}"

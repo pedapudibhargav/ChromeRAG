@@ -25,10 +25,53 @@ from urllib.parse import urlparse
 
 from bs4 import BeautifulSoup, Tag
 
-from chromerag.density import link_density, text_density
-
+from chromerag.density import (
+    MAIN_LANDMARK_ATTRS,
+    MAX_NOISE_PAGE_SHARE,
+    link_density,
+    text_density,
+)
 
 _WS = re.compile(r"\s+")
+
+# A signature matches on tag/id/class, so a class reused by a content wrapper
+# (e.g. CSS-in-JS "css-1a2b3c") can match a block far larger than the one
+# learned. Only strip a match whose size is close to the learned average.
+STCE_SIZE_FACTOR = 3.0
+STCE_SIZE_SLACK_CHARS = 200
+_STCE_APPLY_MAX_CHARS = 4000
+
+# Template chrome repeats its text across pages; content cards that merely
+# share a CSS class do not. A signature is learned only when one text variant
+# (by leading characters) covers at least this share of the pages it appears on.
+STCE_MIN_TEXT_AGREEMENT = 0.5
+_TEXT_KEY_CHARS = 120
+
+# A short block with the same text on every page of a group is template even without
+# chrome-like markup (e.g. "From Wikipedia, the free encyclopedia", "Give Feedback").
+STCE_IDENTICAL_MAX_CHARS = _TEXT_KEY_CHARS
+
+# Two pages of a group whose text overlaps this much (e.g. the same page in several
+# documentation versions) count as one page, or shared content would look like template.
+STCE_NEAR_DUPLICATE_JACCARD = 0.8
+_SHINGLE_WORDS = 5
+_SHINGLE_LIMIT = 4000
+_TAGS = re.compile(r"<(script|style|noscript)\b.*?</\1>|<[^>]+>", re.S | re.I)
+
+
+def _text_key(text: str) -> str:
+    return _WS.sub(" ", text[:_TEXT_KEY_CHARS]).lower()
+
+
+def _page_shingles(html: str) -> set[int]:
+    words = _TAGS.sub(" ", html).lower().split()[:_SHINGLE_LIMIT]
+    return {hash(" ".join(words[i : i + _SHINGLE_WORDS])) for i in range(max(0, len(words) - _SHINGLE_WORDS + 1))}
+
+
+def _near_duplicate(a: set[int], b: set[int]) -> bool:
+    if not a or not b:
+        return False
+    return len(a & b) / len(a | b) >= STCE_NEAR_DUPLICATE_JACCARD
 
 
 @dataclass
@@ -39,6 +82,7 @@ class ChromeSignature:
     frequency: float
     avg_link_density: float
     avg_chars: float
+    text_key: str = ""
 
 
 @dataclass
@@ -95,7 +139,10 @@ def _chrome_like(
     tag: Tag,
     *,
     max_chars: int,
+    marked_only: bool = False,
 ) -> bool:
+    """Chrome-like by markup (class/id/role tokens, CTA phrases) or, unless
+    ``marked_only``, by link density alone."""
     text = tag.get_text(" ", strip=True)
     n = len(text)
     if n == 0 or n > max_chars:
@@ -149,6 +196,8 @@ def _chrome_like(
     )
     if tokens & chrome_tokens or phrase_hits:
         return True
+    if marked_only:
+        return False
     # Repeated chrome is often link-dense and not prose-dense
     if ld >= 0.45 and n < max_chars:
         return True
@@ -180,6 +229,7 @@ def collect_page_signatures(
             continue
         found[sig] = {
             "text": text[:200],
+            "text_key": _text_key(text),
             "chars": len(text),
             "link_density": link_density(tag),
             "chrome_like": _chrome_like(tag, max_chars=max_chars),
@@ -207,8 +257,23 @@ def mine_site_chrome(
       - path_prefix_depth default 1 — keep /docs vs /products models separate
     """
     grouped: dict[str, list[dict[str, dict]]] = defaultdict(list)
+    shingles: dict[str, list[set[int]]] = defaultdict(list)
+    seen: set[tuple[str, str]] = set()
     for url, html in pages:
         key = site_group_key(url, path_prefix_depth=path_prefix_depth)
+        # The same page fetched twice would count twice towards frequency.
+        if url:
+            parsed = urlparse(url)
+            fingerprint = f"{parsed.netloc.lower()}{parsed.path.rstrip('/')}?{parsed.query}"
+        else:
+            fingerprint = hashlib.sha1(html.encode("utf-8", "ignore")).hexdigest()
+        if (key, fingerprint) in seen:
+            continue
+        seen.add((key, fingerprint))
+        page_shingles = _page_shingles(html)
+        if any(_near_duplicate(page_shingles, other) for other in shingles[key]):
+            continue
+        shingles[key].append(page_shingles)
         grouped[key].append(collect_page_signatures(html, max_chars=max_block_chars))
 
     models: dict[str, SiteChromeModel] = {}
@@ -228,6 +293,7 @@ def mine_site_chrome(
         link_acc: dict[str, float] = defaultdict(float)
         char_acc: dict[str, float] = defaultdict(float)
         chrome_votes: dict[str, int] = defaultdict(int)
+        text_variants: dict[str, Counter[str]] = defaultdict(Counter)
 
         for fmap in page_maps:
             for sig, meta in fmap.items():
@@ -236,6 +302,7 @@ def mine_site_chrome(
                 char_acc[sig] += float(meta["chars"])
                 if meta["chrome_like"]:
                     chrome_votes[sig] += 1
+                text_variants[sig][meta.get("text_key", "")] += 1
                 samples.setdefault(sig, meta)
 
         details: list[ChromeSignature] = []
@@ -247,8 +314,14 @@ def mine_site_chrome(
             avg_chars = char_acc[sig] / hits
             if avg_chars > max_block_chars:
                 continue
+            text_agreement = text_variants[sig].most_common(1)[0][1] / hits
+            if text_agreement < STCE_MIN_TEXT_AGREEMENT:
+                continue
+            identical_everywhere = (
+                hits == n and text_agreement == 1.0 and avg_chars <= STCE_IDENTICAL_MAX_CHARS
+            )
             chrome_ratio = chrome_votes[sig] / hits
-            if require_chrome_features and chrome_ratio < 0.5:
+            if require_chrome_features and chrome_ratio < 0.5 and not identical_everywhere:
                 continue
             selected.add(sig)
             details.append(
@@ -259,6 +332,7 @@ def mine_site_chrome(
                     frequency=freq,
                     avg_link_density=link_acc[sig] / hits,
                     avg_chars=avg_chars,
+                    text_key=text_variants[sig].most_common(1)[0][0],
                 )
             )
 
@@ -273,18 +347,43 @@ def mine_site_chrome(
 
 
 def apply_site_chrome(soup: BeautifulSoup, model: SiteChromeModel | None) -> int:
-    """Remove matching chrome blocks in-place. Returns number of nodes removed."""
+    """Remove matching chrome blocks in-place. Returns number of nodes removed.
+
+    A signature match is not enough on its own: the block must also be close to
+    its learned size, must not wrap the main landmark, must not hold most of the
+    page's visible text (same guards as structural pruning), and must either carry
+    the learned text or be marked as chrome on this page (class/id/role tokens or
+    CTA phrases; link density alone is not enough, since link lists can be
+    content). Utility CSS classes ("flex gap-4", "css-1a2b3c", "grid-row") give
+    unrelated blocks the same signature.
+    """
     if model is None or not model.signatures:
         return 0
     body = soup.body or soup
+    page_text_len = len(body.get_text(" ", strip=True))
+    learned = {d.signature: d for d in model.details}
     removed = 0
     for tag in list(body.find_all(["div", "nav", "aside", "header", "footer", "section", "ul"])):
-        if not isinstance(tag, Tag):
+        if not isinstance(tag, Tag) or tag.decomposed:
             continue
         sig = block_signature(tag)
-        if sig and model.should_strip(sig):
-            tag.decompose()
-            removed += 1
+        if not (sig and model.should_strip(sig)):
+            continue
+        if (tag.get("role") or "").lower() == "main":
+            continue
+        if tag.find(["main", "article"]) or tag.find(attrs=MAIN_LANDMARK_ATTRS):
+            continue
+        text_len = len(tag.get_text(" ", strip=True))
+        if page_text_len and text_len > MAX_NOISE_PAGE_SHARE * page_text_len:
+            continue
+        detail = learned.get(sig)
+        if detail is not None and text_len > STCE_SIZE_FACTOR * detail.avg_chars + STCE_SIZE_SLACK_CHARS:
+            continue
+        same_text = bool(detail and detail.text_key) and _text_key(tag.get_text(" ", strip=True)) == detail.text_key
+        if not same_text and not _chrome_like(tag, max_chars=_STCE_APPLY_MAX_CHARS, marked_only=True):
+            continue
+        tag.decompose()
+        removed += 1
     return removed
 
 
@@ -305,6 +404,7 @@ def save_chrome_models(models: dict[str, SiteChromeModel], path: str | Path) -> 
                         "frequency": d.frequency,
                         "avg_link_density": d.avg_link_density,
                         "avg_chars": d.avg_chars,
+                        "text_key": d.text_key,
                     }
                     for d in m.details
                 ],
@@ -329,6 +429,7 @@ def load_chrome_models(path: str | Path) -> dict[str, SiteChromeModel]:
                 frequency=float(d.get("frequency", 0.0)),
                 avg_link_density=float(d.get("avg_link_density", 0.0)),
                 avg_chars=float(d.get("avg_chars", 0.0)),
+                text_key=str(d.get("text_key", "")),
             )
             for d in raw.get("details", [])
         ]

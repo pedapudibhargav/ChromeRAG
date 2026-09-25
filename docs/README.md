@@ -1,21 +1,31 @@
-# ChromeRAG site (GitHub Pages)
+# ChromeRAG site
 
-This folder is a **static** site. Enable GitHub Pages with:
+The public site is a single page, [`index.html`](index.html). It has no build step of its own:
+it loads the published results from [`data/`](data/) at runtime, so the numbers on the page are
+always the ones in the repository.
 
-- Source: Deploy from a branch  
-- Folder: `/docs`
+| File in `data/` | Written by |
+|---|---|
+| `corpus_comparison_report.json`, `corpus_comparison_summary.md` | `python -m poc.run_corpus_comparison` |
+| `leaderboard.json` | `python -m poc.export_site_results` (compact copy of the report summary) |
+| `corpus_revalidation.json` | `python scripts/revalidate_corpus.py` |
+| `retrieval_eval_report.json` | `python -m poc.run_retrieval_eval` |
+| `stce_eval_report.json`, `stce_eval_stce_crawl_report.json` | `python -m poc.run_stce_eval [--raw data/stce_crawl]` |
+| `stce_summary.json` | `python -m poc.export_site_results` (the STCE reports without per-page rows; what the page loads) |
+| `test_report.json` | `scripts/build_docs.sh` (pytest) |
 
-## Routing notes
+## Publishing
 
-GitHub project pages serve under `https://<user>.github.io/<repo>/`. Absolute paths like `/assets/...` break. This site uses **relative** links only (`./assets/...`, `./metrics.html`).
+`.github/workflows/pages.yml` runs the tests, then `scripts/build_docs.sh`, which copies
+`index.html` and the JSON files it loads into `_site/`, and publishes `_site/` to the `gh-pages` branch on
+every push to `main`. In the repository settings, set **Pages → Source: Deploy from a branch →
+Branch: `gh-pages` / (root)**. The site is served at https://pedapudibhargav.github.io/ChromeRAG/.
 
-There is **no** client-side History API router — each page is a real HTML file so refresh and deep links work.
-
-## Updating results
+To preview locally:
 
 ```bash
-python -m poc.run_corpus_comparison
-python -m poc.export_site_results
+bash scripts/build_docs.sh
+python -m http.server -d _site 8000
 ```
 
-That writes `docs/data/leaderboard.json` for `results.html`.
+Links inside the page are relative (`data/...`), so it works under the `/ChromeRAG/` project path.

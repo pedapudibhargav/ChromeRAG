@@ -1,68 +1,68 @@
 {
   "ok": true,
   "errors": [],
-  "corpus_urls_listed": 373,
-  "n_fetched": 277,
-  "n_scoreable": 250,
-  "n_thin": 27,
+  "corpus_urls_listed": 367,
+  "n_fetched": 268,
+  "n_scoreable": 242,
+  "n_thin": 26,
   "leaderboard": {
     "chromerag": {
-      "pages_scored": 250,
-      "avg_content_recall": 0.6675,
-      "avg_noise_retention": 0.0064,
-      "avg_f_balanced": 0.7736
+      "pages_scored": 242,
+      "avg_content_recall": 0.6647,
+      "avg_noise_retention": 0.0065,
+      "avg_f_balanced": 0.771
     },
     "chromerag_coverage": {
-      "pages_scored": 250,
-      "avg_content_recall": 0.6909,
-      "avg_noise_retention": 0.007,
-      "avg_f_balanced": 0.791
+      "pages_scored": 242,
+      "avg_content_recall": 0.6877,
+      "avg_noise_retention": 0.0071,
+      "avg_f_balanced": 0.7882
     },
     "chromerag_precision": {
-      "pages_scored": 250,
-      "avg_content_recall": 0.5247,
+      "pages_scored": 242,
+      "avg_content_recall": 0.5251,
       "avg_noise_retention": 0.0066,
-      "avg_f_balanced": 0.6515
+      "avg_f_balanced": 0.6524
     },
     "trafilatura": {
-      "pages_scored": 250,
-      "avg_content_recall": 0.6404,
-      "avg_noise_retention": 0.0118,
-      "avg_f_balanced": 0.7395
+      "pages_scored": 242,
+      "avg_content_recall": 0.6398,
+      "avg_noise_retention": 0.0122,
+      "avg_f_balanced": 0.7392
     },
     "readability": {
-      "pages_scored": 250,
-      "avg_content_recall": 0.4498,
-      "avg_noise_retention": 0.0125,
-      "avg_f_balanced": 0.5312
+      "pages_scored": 242,
+      "avg_content_recall": 0.4491,
+      "avg_noise_retention": 0.0129,
+      "avg_f_balanced": 0.5307
     },
     "markdownify": {
-      "pages_scored": 250,
-      "avg_content_recall": 0.692,
-      "avg_noise_retention": 0.2538,
-      "avg_f_balanced": 0.694
+      "pages_scored": 242,
+      "avg_content_recall": 0.6909,
+      "avg_noise_retention": 0.2509,
+      "avg_f_balanced": 0.6951
     },
     "html2text": {
-      "pages_scored": 250,
-      "avg_content_recall": 0.6763,
-      "avg_noise_retention": 0.27,
-      "avg_f_balanced": 0.6702
+      "pages_scored": 242,
+      "avg_content_recall": 0.676,
+      "avg_noise_retention": 0.2673,
+      "avg_f_balanced": 0.6718
     },
     "beautifulsoup_text": {
-      "pages_scored": 250,
-      "avg_content_recall": 0.8149,
-      "avg_noise_retention": 0.826,
-      "avg_f_balanced": 0.2413
+      "pages_scored": 242,
+      "avg_content_recall": 0.8145,
+      "avg_noise_retention": 0.824,
+      "avg_f_balanced": 0.243
     },
     "markitdown": {
-      "pages_scored": 250,
-      "avg_content_recall": 0.6919,
-      "avg_noise_retention": 0.2527,
-      "avg_f_balanced": 0.6944
+      "pages_scored": 242,
+      "avg_content_recall": 0.6908,
+      "avg_noise_retention": 0.2498,
+      "avg_f_balanced": 0.6955
     }
   },
   "thin_kinds": {
-    "not_thin_but_unscoreable": 19,
+    "not_thin_but_unscoreable": 18,
     "thin_other": 1,
     "js_shell": 7
   },
@@ -166,13 +166,6 @@
       "root_marker": null
     },
     {
-      "id": "microsoft-azure-docs",
-      "kind": "not_thin_but_unscoreable",
-      "visible_chars": 700,
-      "visible_words": 97,
-      "root_marker": null
-    },
-    {
       "id": "mixpanel-docs",
       "kind": "not_thin_but_unscoreable",
       "visible_chars": 3600,
@@ -240,6 +233,13 @@
       "kind": "js_shell",
       "visible_chars": 43,
       "visible_words": 6,
+      "root_marker": null
+    },
+    {
+      "id": "superset-docs",
+      "kind": "js_shell",
+      "visible_chars": 0,
+      "visible_words": 0,
       "root_marker": null
     }
   ]

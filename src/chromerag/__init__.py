@@ -31,7 +31,7 @@ __all__ = [
     "assess_input_html",
     "InputQualityReport",
 ]
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 __paper__ = (
     "ChromeRAG: Ingest-Time Elimination of Site Template Noise for Enterprise Web RAG"
 )

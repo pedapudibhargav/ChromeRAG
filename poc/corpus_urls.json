@@ -1,5 +1,5 @@
 {
-  "description": "Public web corpus for ChromeRAG multi-tool comparison (373 URLs across docs, pricing, marketing, wiki, hub, news, article).",
+  "description": "Public web corpus for ChromeRAG multi-tool comparison (367 URLs across docs, pricing, marketing, wiki, hub, news, article).",
   "urls": [
     {
       "id": "aws-ec2-home",
@@ -1572,16 +1572,6 @@
       "category": "article"
     },
     {
-      "id": "wiki-rag",
-      "url": "https://en.wikipedia.org/wiki/Retrieval-augmented_generation",
-      "category": "wiki"
-    },
-    {
-      "id": "wiki-vector",
-      "url": "https://en.wikipedia.org/wiki/Vector_database",
-      "category": "wiki"
-    },
-    {
       "id": "wiki-embedding",
       "url": "https://en.wikipedia.org/wiki/Word_embedding",
       "category": "wiki"
@@ -1602,11 +1592,6 @@
       "category": "wiki"
     },
     {
-      "id": "wiki-html",
-      "url": "https://en.wikipedia.org/wiki/HTML",
-      "category": "wiki"
-    },
-    {
       "id": "wiki-dom",
       "url": "https://en.wikipedia.org/wiki/Document_Object_Model",
       "category": "wiki"
@@ -1614,11 +1599,6 @@
     {
       "id": "wiki-markdown",
       "url": "https://en.wikipedia.org/wiki/Markdown",
-      "category": "wiki"
-    },
-    {
-      "id": "wiki-nlp",
-      "url": "https://en.wikipedia.org/wiki/Natural_language_processing",
       "category": "wiki"
     },
     {
@@ -1684,16 +1664,6 @@
     {
       "id": "chromadb-docs",
       "url": "https://docs.trychroma.com/",
-      "category": "docs"
-    },
-    {
-      "id": "weaviate-docs2",
-      "url": "https://weaviate.io/developers/weaviate",
-      "category": "docs"
-    },
-    {
-      "id": "openai-api-ref",
-      "url": "https://platform.openai.com/docs/api-reference",
       "category": "docs"
     },
     {

@@ -10750,221 +10750,6 @@
       },
       "scoreable": true
     },
-    "cloudflare-workers-guide": {
-      "meta": {
-        "id": "cloudflare-workers-guide",
-        "url": "https://developers.cloudflare.com/workers/get-started/guide/",
-        "requested_url": "https://developers.cloudflare.com/workers/get-started/guide/",
-        "category": "docs",
-        "status_code": 200,
-        "signals": {
-          "has_json_ld": true,
-          "has_microdata": false,
-          "has_table": false,
-          "bytes": 202986
-        }
-      },
-      "anchors": {
-        "content_chars": 6007,
-        "noise_chars": 1439,
-        "content_ngrams": 743,
-        "noise_ngrams": 140,
-        "ambiguous_ngrams_removed": 13,
-        "content_sentences": 66
-      },
-      "methods": {
-        "chromerag": {
-          "method": "chromerag",
-          "tokens": 1723,
-          "chars": 6894,
-          "content_recall": 0.6783,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.725,
-          "f_coverage": 0.725,
-          "f_balanced": 0.8083,
-          "anchor_diag": {
-            "content_chars": 6007,
-            "noise_chars": 1439,
-            "content_ngrams": 743,
-            "noise_ngrams": 140,
-            "ambiguous_ngrams_removed": 13,
-            "content_sentences": 66
-          },
-          "notes": ""
-        },
-        "chromerag_coverage": {
-          "method": "chromerag_coverage",
-          "tokens": 1872,
-          "chars": 7489,
-          "content_recall": 0.751,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 1,
-          "noise_per_1k_tokens": 0.534,
-          "f_precision": 0.7904,
-          "f_coverage": 0.7904,
-          "f_balanced": 0.8578,
-          "anchor_diag": {
-            "content_chars": 6007,
-            "noise_chars": 1439,
-            "content_ngrams": 743,
-            "noise_ngrams": 140,
-            "ambiguous_ngrams_removed": 13,
-            "content_sentences": 66
-          },
-          "notes": ""
-        },
-        "chromerag_precision": {
-          "method": "chromerag_precision",
-          "tokens": 1437,
-          "chars": 5748,
-          "content_recall": 0.568,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.6217,
-          "f_coverage": 0.6217,
-          "f_balanced": 0.7245,
-          "anchor_diag": {
-            "content_chars": 6007,
-            "noise_chars": 1439,
-            "content_ngrams": 743,
-            "noise_ngrams": 140,
-            "ambiguous_ngrams_removed": 13,
-            "content_sentences": 66
-          },
-          "notes": ""
-        },
-        "trafilatura": {
-          "method": "trafilatura",
-          "tokens": 1404,
-          "chars": 5619,
-          "content_recall": 0.8223,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 1,
-          "noise_per_1k_tokens": 0.712,
-          "f_precision": 0.8526,
-          "f_coverage": 0.8526,
-          "f_balanced": 0.9025,
-          "anchor_diag": {
-            "content_chars": 6007,
-            "noise_chars": 1439,
-            "content_ngrams": 743,
-            "noise_ngrams": 140,
-            "ambiguous_ngrams_removed": 13,
-            "content_sentences": 66
-          },
-          "notes": ""
-        },
-        "readability": {
-          "method": "readability",
-          "tokens": 1314,
-          "chars": 5259,
-          "content_recall": 0.7066,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 1,
-          "noise_per_1k_tokens": 0.761,
-          "f_precision": 0.7506,
-          "f_coverage": 0.7506,
-          "f_balanced": 0.8281,
-          "anchor_diag": {
-            "content_chars": 6007,
-            "noise_chars": 1439,
-            "content_ngrams": 743,
-            "noise_ngrams": 140,
-            "ambiguous_ngrams_removed": 13,
-            "content_sentences": 66
-          },
-          "notes": ""
-        },
-        "markdownify": {
-          "method": "markdownify",
-          "tokens": 9788,
-          "chars": 39155,
-          "content_recall": 0.7402,
-          "noise_retention": 0.0357,
-          "noise_keyword_total": 4,
-          "noise_per_1k_tokens": 0.409,
-          "f_precision": 0.7763,
-          "f_coverage": 0.7763,
-          "f_balanced": 0.8375,
-          "anchor_diag": {
-            "content_chars": 6007,
-            "noise_chars": 1439,
-            "content_ngrams": 743,
-            "noise_ngrams": 140,
-            "ambiguous_ngrams_removed": 13,
-            "content_sentences": 66
-          },
-          "notes": ""
-        },
-        "html2text": {
-          "method": "html2text",
-          "tokens": 10060,
-          "chars": 40240,
-          "content_recall": 0.7402,
-          "noise_retention": 0.0643,
-          "noise_keyword_total": 4,
-          "noise_per_1k_tokens": 0.398,
-          "f_precision": 0.7725,
-          "f_coverage": 0.7725,
-          "f_balanced": 0.8266,
-          "anchor_diag": {
-            "content_chars": 6007,
-            "noise_chars": 1439,
-            "content_ngrams": 743,
-            "noise_ngrams": 140,
-            "ambiguous_ngrams_removed": 13,
-            "content_sentences": 66
-          },
-          "notes": ""
-        },
-        "beautifulsoup_text": {
-          "method": "beautifulsoup_text",
-          "tokens": 3647,
-          "chars": 14588,
-          "content_recall": 0.8654,
-          "noise_retention": 0.8071,
-          "noise_keyword_total": 3,
-          "noise_per_1k_tokens": 0.823,
-          "f_precision": 0.5098,
-          "f_coverage": 0.5098,
-          "f_balanced": 0.3154,
-          "anchor_diag": {
-            "content_chars": 6007,
-            "noise_chars": 1439,
-            "content_ngrams": 743,
-            "noise_ngrams": 140,
-            "ambiguous_ngrams_removed": 13,
-            "content_sentences": 66
-          },
-          "notes": ""
-        },
-        "markitdown": {
-          "method": "markitdown",
-          "tokens": 9775,
-          "chars": 39103,
-          "content_recall": 0.7402,
-          "noise_retention": 0.0357,
-          "noise_keyword_total": 4,
-          "noise_per_1k_tokens": 0.409,
-          "f_precision": 0.7763,
-          "f_coverage": 0.7763,
-          "f_balanced": 0.8375,
-          "anchor_diag": {
-            "content_chars": 6007,
-            "noise_chars": 1439,
-            "content_ngrams": 743,
-            "noise_ngrams": 140,
-            "ambiguous_ngrams_removed": 13,
-            "content_sentences": 66
-          },
-          "notes": ""
-        }
-      },
-      "scoreable": true
-    },
     "cloudflare-workers-routing": {
       "meta": {
         "id": "cloudflare-workers-routing",
@@ -20419,651 +20204,6 @@
             "noise_ngrams": 53,
             "ambiguous_ngrams_removed": 0,
             "content_sentences": 13
-          },
-          "notes": ""
-        }
-      },
-      "scoreable": true
-    },
-    "github-docs-actions-about": {
-      "meta": {
-        "id": "github-docs-actions-about",
-        "url": "https://docs.github.com/en/actions/get-started/understand-github-actions",
-        "requested_url": "https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions",
-        "category": "api_docs",
-        "status_code": 200,
-        "signals": {
-          "has_json_ld": false,
-          "has_microdata": false,
-          "has_table": false,
-          "bytes": 311857
-        }
-      },
-      "anchors": {
-        "content_chars": 6323,
-        "noise_chars": 476,
-        "content_ngrams": 828,
-        "noise_ngrams": 66,
-        "ambiguous_ngrams_removed": 0,
-        "content_sentences": 61
-      },
-      "methods": {
-        "chromerag": {
-          "method": "chromerag",
-          "tokens": 1759,
-          "chars": 7038,
-          "content_recall": 0.8865,
-          "noise_retention": 0.0303,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.902,
-          "f_coverage": 0.902,
-          "f_balanced": 0.9262,
-          "anchor_diag": {
-            "content_chars": 6323,
-            "noise_chars": 476,
-            "content_ngrams": 828,
-            "noise_ngrams": 66,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 61
-          },
-          "notes": ""
-        },
-        "chromerag_coverage": {
-          "method": "chromerag_coverage",
-          "tokens": 1895,
-          "chars": 7582,
-          "content_recall": 0.9444,
-          "noise_retention": 0.0303,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.9494,
-          "f_coverage": 0.9494,
-          "f_balanced": 0.9569,
-          "anchor_diag": {
-            "content_chars": 6323,
-            "noise_chars": 476,
-            "content_ngrams": 828,
-            "noise_ngrams": 66,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 61
-          },
-          "notes": ""
-        },
-        "chromerag_precision": {
-          "method": "chromerag_precision",
-          "tokens": 1527,
-          "chars": 6110,
-          "content_recall": 0.744,
-          "noise_retention": 0.0303,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.7803,
-          "f_coverage": 0.7803,
-          "f_balanced": 0.842,
-          "anchor_diag": {
-            "content_chars": 6323,
-            "noise_chars": 476,
-            "content_ngrams": 828,
-            "noise_ngrams": 66,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 61
-          },
-          "notes": ""
-        },
-        "trafilatura": {
-          "method": "trafilatura",
-          "tokens": 1613,
-          "chars": 6453,
-          "content_recall": 0.9541,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.9629,
-          "f_coverage": 0.9629,
-          "f_balanced": 0.9765,
-          "anchor_diag": {
-            "content_chars": 6323,
-            "noise_chars": 476,
-            "content_ngrams": 828,
-            "noise_ngrams": 66,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 61
-          },
-          "notes": ""
-        },
-        "readability": {
-          "method": "readability",
-          "tokens": 1497,
-          "chars": 5990,
-          "content_recall": 0.9372,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.9491,
-          "f_coverage": 0.9491,
-          "f_balanced": 0.9676,
-          "anchor_diag": {
-            "content_chars": 6323,
-            "noise_chars": 476,
-            "content_ngrams": 828,
-            "noise_ngrams": 66,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 61
-          },
-          "notes": ""
-        },
-        "markdownify": {
-          "method": "markdownify",
-          "tokens": 7588,
-          "chars": 30355,
-          "content_recall": 0.9191,
-          "noise_retention": 0.4848,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.7945,
-          "f_coverage": 0.7945,
-          "f_balanced": 0.6602,
-          "anchor_diag": {
-            "content_chars": 6323,
-            "noise_chars": 476,
-            "content_ngrams": 828,
-            "noise_ngrams": 66,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 61
-          },
-          "notes": ""
-        },
-        "html2text": {
-          "method": "html2text",
-          "tokens": 7721,
-          "chars": 30885,
-          "content_recall": 0.9191,
-          "noise_retention": 0.4848,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.7945,
-          "f_coverage": 0.7945,
-          "f_balanced": 0.6602,
-          "anchor_diag": {
-            "content_chars": 6323,
-            "noise_chars": 476,
-            "content_ngrams": 828,
-            "noise_ngrams": 66,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 61
-          },
-          "notes": ""
-        },
-        "beautifulsoup_text": {
-          "method": "beautifulsoup_text",
-          "tokens": 3023,
-          "chars": 12094,
-          "content_recall": 0.9614,
-          "noise_retention": 0.8182,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.5176,
-          "f_coverage": 0.5176,
-          "f_balanced": 0.3058,
-          "anchor_diag": {
-            "content_chars": 6323,
-            "noise_chars": 476,
-            "content_ngrams": 828,
-            "noise_ngrams": 66,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 61
-          },
-          "notes": ""
-        },
-        "markitdown": {
-          "method": "markitdown",
-          "tokens": 7577,
-          "chars": 30311,
-          "content_recall": 0.9191,
-          "noise_retention": 0.4848,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.7945,
-          "f_coverage": 0.7945,
-          "f_balanced": 0.6602,
-          "anchor_diag": {
-            "content_chars": 6323,
-            "noise_chars": 476,
-            "content_ngrams": 828,
-            "noise_ngrams": 66,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 61
-          },
-          "notes": ""
-        }
-      },
-      "scoreable": true
-    },
-    "github-docs-actions-quickstart": {
-      "meta": {
-        "id": "github-docs-actions-quickstart",
-        "url": "https://docs.github.com/en/actions/get-started/quickstart",
-        "requested_url": "https://docs.github.com/en/actions/quickstart",
-        "category": "api_docs",
-        "status_code": 200,
-        "signals": {
-          "has_json_ld": false,
-          "has_microdata": false,
-          "has_table": false,
-          "bytes": 355525
-        }
-      },
-      "anchors": {
-        "content_chars": 11738,
-        "noise_chars": 1330,
-        "content_ngrams": 867,
-        "noise_ngrams": 76,
-        "ambiguous_ngrams_removed": 97,
-        "content_sentences": 86
-      },
-      "methods": {
-        "chromerag": {
-          "method": "chromerag",
-          "tokens": 1858,
-          "chars": 7432,
-          "content_recall": 0.8639,
-          "noise_retention": 0.0132,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.886,
-          "f_coverage": 0.886,
-          "f_balanced": 0.9213,
-          "anchor_diag": {
-            "content_chars": 11738,
-            "noise_chars": 1330,
-            "content_ngrams": 867,
-            "noise_ngrams": 76,
-            "ambiguous_ngrams_removed": 97,
-            "content_sentences": 86
-          },
-          "notes": ""
-        },
-        "chromerag_coverage": {
-          "method": "chromerag_coverage",
-          "tokens": 1895,
-          "chars": 7580,
-          "content_recall": 0.887,
-          "noise_retention": 0.0132,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.9053,
-          "f_coverage": 0.9053,
-          "f_balanced": 0.9342,
-          "anchor_diag": {
-            "content_chars": 11738,
-            "noise_chars": 1330,
-            "content_ngrams": 867,
-            "noise_ngrams": 76,
-            "ambiguous_ngrams_removed": 97,
-            "content_sentences": 86
-          },
-          "notes": ""
-        },
-        "chromerag_precision": {
-          "method": "chromerag_precision",
-          "tokens": 1756,
-          "chars": 7024,
-          "content_recall": 0.7889,
-          "noise_retention": 0.0132,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.8219,
-          "f_coverage": 0.8219,
-          "f_balanced": 0.8769,
-          "anchor_diag": {
-            "content_chars": 11738,
-            "noise_chars": 1330,
-            "content_ngrams": 867,
-            "noise_ngrams": 76,
-            "ambiguous_ngrams_removed": 97,
-            "content_sentences": 86
-          },
-          "notes": ""
-        },
-        "trafilatura": {
-          "method": "trafilatura",
-          "tokens": 2032,
-          "chars": 8131,
-          "content_recall": 0.8962,
-          "noise_retention": 0.0132,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.913,
-          "f_coverage": 0.913,
-          "f_balanced": 0.9393,
-          "anchor_diag": {
-            "content_chars": 11738,
-            "noise_chars": 1330,
-            "content_ngrams": 867,
-            "noise_ngrams": 76,
-            "ambiguous_ngrams_removed": 97,
-            "content_sentences": 86
-          },
-          "notes": ""
-        },
-        "readability": {
-          "method": "readability",
-          "tokens": 1637,
-          "chars": 6548,
-          "content_recall": 0.8547,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.8803,
-          "f_coverage": 0.8803,
-          "f_balanced": 0.9216,
-          "anchor_diag": {
-            "content_chars": 11738,
-            "noise_chars": 1330,
-            "content_ngrams": 867,
-            "noise_ngrams": 76,
-            "ambiguous_ngrams_removed": 97,
-            "content_sentences": 86
-          },
-          "notes": ""
-        },
-        "markdownify": {
-          "method": "markdownify",
-          "tokens": 8396,
-          "chars": 33585,
-          "content_recall": 0.8247,
-          "noise_retention": 0.4474,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.7508,
-          "f_coverage": 0.7508,
-          "f_balanced": 0.6618,
-          "anchor_diag": {
-            "content_chars": 11738,
-            "noise_chars": 1330,
-            "content_ngrams": 867,
-            "noise_ngrams": 76,
-            "ambiguous_ngrams_removed": 97,
-            "content_sentences": 86
-          },
-          "notes": ""
-        },
-        "html2text": {
-          "method": "html2text",
-          "tokens": 8562,
-          "chars": 34251,
-          "content_recall": 0.8247,
-          "noise_retention": 0.5,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.7299,
-          "f_coverage": 0.7299,
-          "f_balanced": 0.6226,
-          "anchor_diag": {
-            "content_chars": 11738,
-            "noise_chars": 1330,
-            "content_ngrams": 867,
-            "noise_ngrams": 76,
-            "ambiguous_ngrams_removed": 97,
-            "content_sentences": 86
-          },
-          "notes": ""
-        },
-        "beautifulsoup_text": {
-          "method": "beautifulsoup_text",
-          "tokens": 3424,
-          "chars": 13698,
-          "content_recall": 0.9008,
-          "noise_retention": 0.7895,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.544,
-          "f_coverage": 0.544,
-          "f_balanced": 0.3413,
-          "anchor_diag": {
-            "content_chars": 11738,
-            "noise_chars": 1330,
-            "content_ngrams": 867,
-            "noise_ngrams": 76,
-            "ambiguous_ngrams_removed": 97,
-            "content_sentences": 86
-          },
-          "notes": ""
-        },
-        "markitdown": {
-          "method": "markitdown",
-          "tokens": 8385,
-          "chars": 33540,
-          "content_recall": 0.8247,
-          "noise_retention": 0.4474,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.7508,
-          "f_coverage": 0.7508,
-          "f_balanced": 0.6618,
-          "anchor_diag": {
-            "content_chars": 11738,
-            "noise_chars": 1330,
-            "content_ngrams": 867,
-            "noise_ngrams": 76,
-            "ambiguous_ngrams_removed": 97,
-            "content_sentences": 86
-          },
-          "notes": ""
-        }
-      },
-      "scoreable": true
-    },
-    "github-docs-actions": {
-      "meta": {
-        "id": "github-docs-actions",
-        "url": "https://docs.github.com/en/actions",
-        "requested_url": "https://docs.github.com/en/actions",
-        "category": "api_docs_jsonld",
-        "status_code": 200,
-        "signals": {
-          "has_json_ld": false,
-          "has_microdata": false,
-          "has_table": false,
-          "bytes": 432047
-        }
-      },
-      "anchors": {
-        "content_chars": 1413,
-        "noise_chars": 396,
-        "content_ngrams": 184,
-        "noise_ngrams": 53,
-        "ambiguous_ngrams_removed": 0,
-        "content_sentences": 15
-      },
-      "methods": {
-        "chromerag": {
-          "method": "chromerag",
-          "tokens": 595,
-          "chars": 2381,
-          "content_recall": 0.7391,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.7798,
-          "f_coverage": 0.7798,
-          "f_balanced": 0.85,
-          "anchor_diag": {
-            "content_chars": 1413,
-            "noise_chars": 396,
-            "content_ngrams": 184,
-            "noise_ngrams": 53,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 15
-          },
-          "notes": ""
-        },
-        "chromerag_coverage": {
-          "method": "chromerag_coverage",
-          "tokens": 595,
-          "chars": 2381,
-          "content_recall": 0.7391,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.7798,
-          "f_coverage": 0.7798,
-          "f_balanced": 0.85,
-          "anchor_diag": {
-            "content_chars": 1413,
-            "noise_chars": 396,
-            "content_ngrams": 184,
-            "noise_ngrams": 53,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 15
-          },
-          "notes": ""
-        },
-        "chromerag_precision": {
-          "method": "chromerag_precision",
-          "tokens": 549,
-          "chars": 2197,
-          "content_recall": 0.6467,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.6959,
-          "f_coverage": 0.6959,
-          "f_balanced": 0.7855,
-          "anchor_diag": {
-            "content_chars": 1413,
-            "noise_chars": 396,
-            "content_ngrams": 184,
-            "noise_ngrams": 53,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 15
-          },
-          "notes": ""
-        },
-        "trafilatura": {
-          "method": "trafilatura",
-          "tokens": 426,
-          "chars": 1707,
-          "content_recall": 0.7283,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.7701,
-          "f_coverage": 0.7701,
-          "f_balanced": 0.8428,
-          "anchor_diag": {
-            "content_chars": 1413,
-            "noise_chars": 396,
-            "content_ngrams": 184,
-            "noise_ngrams": 53,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 15
-          },
-          "notes": ""
-        },
-        "readability": {
-          "method": "readability",
-          "tokens": 77,
-          "chars": 310,
-          "content_recall": 0.1576,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.1895,
-          "f_coverage": 0.1895,
-          "f_balanced": 0.2723,
-          "anchor_diag": {
-            "content_chars": 1413,
-            "noise_chars": 396,
-            "content_ngrams": 184,
-            "noise_ngrams": 53,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 15
-          },
-          "notes": ""
-        },
-        "markdownify": {
-          "method": "markdownify",
-          "tokens": 6226,
-          "chars": 24907,
-          "content_recall": 0.7065,
-          "noise_retention": 0.5472,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.6353,
-          "f_coverage": 0.6353,
-          "f_balanced": 0.5519,
-          "anchor_diag": {
-            "content_chars": 1413,
-            "noise_chars": 396,
-            "content_ngrams": 184,
-            "noise_ngrams": 53,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 15
-          },
-          "notes": ""
-        },
-        "html2text": {
-          "method": "html2text",
-          "tokens": 6381,
-          "chars": 25526,
-          "content_recall": 0.7065,
-          "noise_retention": 0.5094,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.6494,
-          "f_coverage": 0.6494,
-          "f_balanced": 0.5791,
-          "anchor_diag": {
-            "content_chars": 1413,
-            "noise_chars": 396,
-            "content_ngrams": 184,
-            "noise_ngrams": 53,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 15
-          },
-          "notes": ""
-        },
-        "beautifulsoup_text": {
-          "method": "beautifulsoup_text",
-          "tokens": 1885,
-          "chars": 7540,
-          "content_recall": 0.7391,
-          "noise_retention": 0.9245,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.2679,
-          "f_coverage": 0.2679,
-          "f_balanced": 0.137,
-          "anchor_diag": {
-            "content_chars": 1413,
-            "noise_chars": 396,
-            "content_ngrams": 184,
-            "noise_ngrams": 53,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 15
-          },
-          "notes": ""
-        },
-        "markitdown": {
-          "method": "markitdown",
-          "tokens": 6217,
-          "chars": 24869,
-          "content_recall": 0.7065,
-          "noise_retention": 0.5472,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.6353,
-          "f_coverage": 0.6353,
-          "f_balanced": 0.5519,
-          "anchor_diag": {
-            "content_chars": 1413,
-            "noise_chars": 396,
-            "content_ngrams": 184,
-            "noise_ngrams": 53,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 15
           },
           "notes": ""
         }
@@ -32029,436 +31169,6 @@
             "noise_ngrams": 324,
             "ambiguous_ngrams_removed": 0,
             "content_sentences": 39
-          },
-          "notes": ""
-        }
-      },
-      "scoreable": true
-    },
-    "microsoft-azure-docs": {
-      "meta": {
-        "id": "microsoft-azure-docs",
-        "url": "https://learn.microsoft.com/en-us/azure/architecture/browse/",
-        "requested_url": "https://learn.microsoft.com/en-us/azure/architecture/browse/",
-        "category": "cloud_docs",
-        "status_code": 200,
-        "signals": {
-          "has_json_ld": false,
-          "has_microdata": true,
-          "has_table": false,
-          "bytes": 19905
-        }
-      },
-      "anchors": {
-        "content_chars": 177,
-        "noise_chars": 422,
-        "content_ngrams": 17,
-        "noise_ngrams": 49,
-        "ambiguous_ngrams_removed": 0,
-        "content_sentences": 1
-      },
-      "methods": {
-        "chromerag": {
-          "method": "chromerag",
-          "tokens": 140,
-          "chars": 561,
-          "content_recall": 1.0,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 1.0,
-          "f_coverage": 1.0,
-          "f_balanced": 1.0,
-          "anchor_diag": {
-            "content_chars": 177,
-            "noise_chars": 422,
-            "content_ngrams": 17,
-            "noise_ngrams": 49,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 1
-          },
-          "notes": ""
-        },
-        "chromerag_coverage": {
-          "method": "chromerag_coverage",
-          "tokens": 140,
-          "chars": 561,
-          "content_recall": 1.0,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 1.0,
-          "f_coverage": 1.0,
-          "f_balanced": 1.0,
-          "anchor_diag": {
-            "content_chars": 177,
-            "noise_chars": 422,
-            "content_ngrams": 17,
-            "noise_ngrams": 49,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 1
-          },
-          "notes": ""
-        },
-        "chromerag_precision": {
-          "method": "chromerag_precision",
-          "tokens": 140,
-          "chars": 561,
-          "content_recall": 1.0,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 1.0,
-          "f_coverage": 1.0,
-          "f_balanced": 1.0,
-          "anchor_diag": {
-            "content_chars": 177,
-            "noise_chars": 422,
-            "content_ngrams": 17,
-            "noise_ngrams": 49,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 1
-          },
-          "notes": ""
-        },
-        "trafilatura": {
-          "method": "trafilatura",
-          "tokens": 81,
-          "chars": 325,
-          "content_recall": 1.0,
-          "noise_retention": 0.2653,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.9326,
-          "f_coverage": 0.9326,
-          "f_balanced": 0.8471,
-          "anchor_diag": {
-            "content_chars": 177,
-            "noise_chars": 422,
-            "content_ngrams": 17,
-            "noise_ngrams": 49,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 1
-          },
-          "notes": ""
-        },
-        "readability": {
-          "method": "readability",
-          "tokens": 63,
-          "chars": 254,
-          "content_recall": 1.0,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 1.0,
-          "f_coverage": 1.0,
-          "f_balanced": 1.0,
-          "anchor_diag": {
-            "content_chars": 177,
-            "noise_chars": 422,
-            "content_ngrams": 17,
-            "noise_ngrams": 49,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 1
-          },
-          "notes": ""
-        },
-        "markdownify": {
-          "method": "markdownify",
-          "tokens": 394,
-          "chars": 1577,
-          "content_recall": 1.0,
-          "noise_retention": 0.449,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.8599,
-          "f_coverage": 0.8599,
-          "f_balanced": 0.7105,
-          "anchor_diag": {
-            "content_chars": 177,
-            "noise_chars": 422,
-            "content_ngrams": 17,
-            "noise_ngrams": 49,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 1
-          },
-          "notes": ""
-        },
-        "html2text": {
-          "method": "html2text",
-          "tokens": 376,
-          "chars": 1506,
-          "content_recall": 1.0,
-          "noise_retention": 0.5102,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.8276,
-          "f_coverage": 0.8276,
-          "f_balanced": 0.6575,
-          "anchor_diag": {
-            "content_chars": 177,
-            "noise_chars": 422,
-            "content_ngrams": 17,
-            "noise_ngrams": 49,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 1
-          },
-          "notes": ""
-        },
-        "beautifulsoup_text": {
-          "method": "beautifulsoup_text",
-          "tokens": 175,
-          "chars": 700,
-          "content_recall": 1.0,
-          "noise_retention": 0.9184,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.3077,
-          "f_coverage": 0.3077,
-          "f_balanced": 0.1509,
-          "anchor_diag": {
-            "content_chars": 177,
-            "noise_chars": 422,
-            "content_ngrams": 17,
-            "noise_ngrams": 49,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 1
-          },
-          "notes": ""
-        },
-        "markitdown": {
-          "method": "markitdown",
-          "tokens": 368,
-          "chars": 1472,
-          "content_recall": 1.0,
-          "noise_retention": 0.449,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.8599,
-          "f_coverage": 0.8599,
-          "f_balanced": 0.7105,
-          "anchor_diag": {
-            "content_chars": 177,
-            "noise_chars": 422,
-            "content_ngrams": 17,
-            "noise_ngrams": 49,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 1
-          },
-          "notes": ""
-        }
-      },
-      "scoreable": false
-    },
-    "microsoft-azure-overview": {
-      "meta": {
-        "id": "microsoft-azure-overview",
-        "url": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/overview",
-        "requested_url": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/overview",
-        "category": "cloud_docs",
-        "status_code": 200,
-        "signals": {
-          "has_json_ld": false,
-          "has_microdata": true,
-          "has_table": false,
-          "bytes": 65076
-        }
-      },
-      "anchors": {
-        "content_chars": 18949,
-        "noise_chars": 629,
-        "content_ngrams": 1819,
-        "noise_ngrams": 64,
-        "ambiguous_ngrams_removed": 18,
-        "content_sentences": 193
-      },
-      "methods": {
-        "chromerag": {
-          "method": "chromerag",
-          "tokens": 3449,
-          "chars": 13796,
-          "content_recall": 0.8697,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.893,
-          "f_coverage": 0.893,
-          "f_balanced": 0.9303,
-          "anchor_diag": {
-            "content_chars": 18949,
-            "noise_chars": 629,
-            "content_ngrams": 1819,
-            "noise_ngrams": 64,
-            "ambiguous_ngrams_removed": 18,
-            "content_sentences": 193
-          },
-          "notes": ""
-        },
-        "chromerag_coverage": {
-          "method": "chromerag_coverage",
-          "tokens": 3532,
-          "chars": 14131,
-          "content_recall": 0.8944,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.9137,
-          "f_coverage": 0.9137,
-          "f_balanced": 0.9443,
-          "anchor_diag": {
-            "content_chars": 18949,
-            "noise_chars": 629,
-            "content_ngrams": 1819,
-            "noise_ngrams": 64,
-            "ambiguous_ngrams_removed": 18,
-            "content_sentences": 193
-          },
-          "notes": ""
-        },
-        "chromerag_precision": {
-          "method": "chromerag_precision",
-          "tokens": 3064,
-          "chars": 12256,
-          "content_recall": 0.7653,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.803,
-          "f_coverage": 0.803,
-          "f_balanced": 0.867,
-          "anchor_diag": {
-            "content_chars": 18949,
-            "noise_chars": 629,
-            "content_ngrams": 1819,
-            "noise_ngrams": 64,
-            "ambiguous_ngrams_removed": 18,
-            "content_sentences": 193
-          },
-          "notes": ""
-        },
-        "trafilatura": {
-          "method": "trafilatura",
-          "tokens": 3316,
-          "chars": 13267,
-          "content_recall": 0.9087,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.9256,
-          "f_coverage": 0.9256,
-          "f_balanced": 0.9522,
-          "anchor_diag": {
-            "content_chars": 18949,
-            "noise_chars": 629,
-            "content_ngrams": 1819,
-            "noise_ngrams": 64,
-            "ambiguous_ngrams_removed": 18,
-            "content_sentences": 193
-          },
-          "notes": ""
-        },
-        "readability": {
-          "method": "readability",
-          "tokens": 3106,
-          "chars": 12425,
-          "content_recall": 0.8664,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.8902,
-          "f_coverage": 0.8902,
-          "f_balanced": 0.9284,
-          "anchor_diag": {
-            "content_chars": 18949,
-            "noise_chars": 629,
-            "content_ngrams": 1819,
-            "noise_ngrams": 64,
-            "ambiguous_ngrams_removed": 18,
-            "content_sentences": 193
-          },
-          "notes": ""
-        },
-        "markdownify": {
-          "method": "markdownify",
-          "tokens": 4323,
-          "chars": 17294,
-          "content_recall": 0.8653,
-          "noise_retention": 0.5156,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.7477,
-          "f_coverage": 0.7477,
-          "f_balanced": 0.6211,
-          "anchor_diag": {
-            "content_chars": 18949,
-            "noise_chars": 629,
-            "content_ngrams": 1819,
-            "noise_ngrams": 64,
-            "ambiguous_ngrams_removed": 18,
-            "content_sentences": 193
-          },
-          "notes": ""
-        },
-        "html2text": {
-          "method": "html2text",
-          "tokens": 4292,
-          "chars": 17169,
-          "content_recall": 0.8659,
-          "noise_retention": 0.5625,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.7241,
-          "f_coverage": 0.7241,
-          "f_balanced": 0.5813,
-          "anchor_diag": {
-            "content_chars": 18949,
-            "noise_chars": 629,
-            "content_ngrams": 1819,
-            "noise_ngrams": 64,
-            "ambiguous_ngrams_removed": 18,
-            "content_sentences": 193
-          },
-          "notes": ""
-        },
-        "beautifulsoup_text": {
-          "method": "beautifulsoup_text",
-          "tokens": 3570,
-          "chars": 14281,
-          "content_recall": 0.9203,
-          "noise_retention": 0.875,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.405,
-          "f_coverage": 0.405,
-          "f_balanced": 0.2201,
-          "anchor_diag": {
-            "content_chars": 18949,
-            "noise_chars": 629,
-            "content_ngrams": 1819,
-            "noise_ngrams": 64,
-            "ambiguous_ngrams_removed": 18,
-            "content_sentences": 193
-          },
-          "notes": ""
-        },
-        "markitdown": {
-          "method": "markitdown",
-          "tokens": 4282,
-          "chars": 17128,
-          "content_recall": 0.8637,
-          "noise_retention": 0.5156,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.7467,
-          "f_coverage": 0.7467,
-          "f_balanced": 0.6207,
-          "anchor_diag": {
-            "content_chars": 18949,
-            "noise_chars": 629,
-            "content_ngrams": 1819,
-            "noise_ngrams": 64,
-            "ambiguous_ngrams_removed": 18,
-            "content_sentences": 193
           },
           "notes": ""
         }
@@ -51600,221 +50310,6 @@
       },
       "scoreable": true
     },
-    "stripe-docs": {
-      "meta": {
-        "id": "stripe-docs",
-        "url": "https://docs.stripe.com/",
-        "requested_url": "https://docs.stripe.com/",
-        "category": "docs",
-        "status_code": 200,
-        "signals": {
-          "has_json_ld": false,
-          "has_microdata": false,
-          "has_table": false,
-          "bytes": 1301324
-        }
-      },
-      "anchors": {
-        "content_chars": 3675,
-        "noise_chars": 162,
-        "content_ngrams": 279,
-        "noise_ngrams": 18,
-        "ambiguous_ngrams_removed": 0,
-        "content_sentences": 10
-      },
-      "methods": {
-        "chromerag": {
-          "method": "chromerag",
-          "tokens": 675,
-          "chars": 2700,
-          "content_recall": 0.7849,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.8202,
-          "f_coverage": 0.8202,
-          "f_balanced": 0.8795,
-          "anchor_diag": {
-            "content_chars": 3675,
-            "noise_chars": 162,
-            "content_ngrams": 279,
-            "noise_ngrams": 18,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 10
-          },
-          "notes": ""
-        },
-        "chromerag_coverage": {
-          "method": "chromerag_coverage",
-          "tokens": 675,
-          "chars": 2700,
-          "content_recall": 0.7849,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.8202,
-          "f_coverage": 0.8202,
-          "f_balanced": 0.8795,
-          "anchor_diag": {
-            "content_chars": 3675,
-            "noise_chars": 162,
-            "content_ngrams": 279,
-            "noise_ngrams": 18,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 10
-          },
-          "notes": ""
-        },
-        "chromerag_precision": {
-          "method": "chromerag_precision",
-          "tokens": 370,
-          "chars": 1481,
-          "content_recall": 0.3656,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.4187,
-          "f_coverage": 0.4187,
-          "f_balanced": 0.5354,
-          "anchor_diag": {
-            "content_chars": 3675,
-            "noise_chars": 162,
-            "content_ngrams": 279,
-            "noise_ngrams": 18,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 10
-          },
-          "notes": ""
-        },
-        "trafilatura": {
-          "method": "trafilatura",
-          "tokens": 349,
-          "chars": 1399,
-          "content_recall": 0.3835,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.4374,
-          "f_coverage": 0.4374,
-          "f_balanced": 0.5544,
-          "anchor_diag": {
-            "content_chars": 3675,
-            "noise_chars": 162,
-            "content_ngrams": 279,
-            "noise_ngrams": 18,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 10
-          },
-          "notes": ""
-        },
-        "readability": {
-          "method": "readability",
-          "tokens": 131,
-          "chars": 527,
-          "content_recall": 0.0717,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.088,
-          "f_coverage": 0.088,
-          "f_balanced": 0.1338,
-          "anchor_diag": {
-            "content_chars": 3675,
-            "noise_chars": 162,
-            "content_ngrams": 279,
-            "noise_ngrams": 18,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 10
-          },
-          "notes": ""
-        },
-        "markdownify": {
-          "method": "markdownify",
-          "tokens": 1758,
-          "chars": 7032,
-          "content_recall": 0.509,
-          "noise_retention": 0.1667,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.5519,
-          "f_coverage": 0.5519,
-          "f_balanced": 0.632,
-          "anchor_diag": {
-            "content_chars": 3675,
-            "noise_chars": 162,
-            "content_ngrams": 279,
-            "noise_ngrams": 18,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 10
-          },
-          "notes": ""
-        },
-        "html2text": {
-          "method": "html2text",
-          "tokens": 1882,
-          "chars": 7531,
-          "content_recall": 0.3907,
-          "noise_retention": 0.1667,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.4371,
-          "f_coverage": 0.4371,
-          "f_balanced": 0.532,
-          "anchor_diag": {
-            "content_chars": 3675,
-            "noise_chars": 162,
-            "content_ngrams": 279,
-            "noise_ngrams": 18,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 10
-          },
-          "notes": ""
-        },
-        "beautifulsoup_text": {
-          "method": "beautifulsoup_text",
-          "tokens": 845,
-          "chars": 3383,
-          "content_recall": 0.8315,
-          "noise_retention": 1.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.0,
-          "f_coverage": 0.0,
-          "f_balanced": 0.0,
-          "anchor_diag": {
-            "content_chars": 3675,
-            "noise_chars": 162,
-            "content_ngrams": 279,
-            "noise_ngrams": 18,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 10
-          },
-          "notes": ""
-        },
-        "markitdown": {
-          "method": "markitdown",
-          "tokens": 1669,
-          "chars": 6678,
-          "content_recall": 0.509,
-          "noise_retention": 0.1667,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.5519,
-          "f_coverage": 0.5519,
-          "f_balanced": 0.632,
-          "anchor_diag": {
-            "content_chars": 3675,
-            "noise_chars": 162,
-            "content_ngrams": 279,
-            "noise_ngrams": 18,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 10
-          },
-          "notes": ""
-        }
-      },
-      "scoreable": true
-    },
     "stripe-home": {
       "meta": {
         "id": "stripe-home",
@@ -52024,221 +50519,6 @@
             "noise_ngrams": 296,
             "ambiguous_ngrams_removed": 0,
             "content_sentences": 119
-          },
-          "notes": ""
-        }
-      },
-      "scoreable": true
-    },
-    "stripe-payments": {
-      "meta": {
-        "id": "stripe-payments",
-        "url": "https://docs.stripe.com/payments",
-        "requested_url": "https://docs.stripe.com/payments",
-        "category": "docs",
-        "status_code": 200,
-        "signals": {
-          "has_json_ld": false,
-          "has_microdata": false,
-          "has_table": false,
-          "bytes": 463155
-        }
-      },
-      "anchors": {
-        "content_chars": 2424,
-        "noise_chars": 192,
-        "content_ngrams": 224,
-        "noise_ngrams": 23,
-        "ambiguous_ngrams_removed": 0,
-        "content_sentences": 25
-      },
-      "methods": {
-        "chromerag": {
-          "method": "chromerag",
-          "tokens": 381,
-          "chars": 1527,
-          "content_recall": 0.6518,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.7006,
-          "f_coverage": 0.7006,
-          "f_balanced": 0.7892,
-          "anchor_diag": {
-            "content_chars": 2424,
-            "noise_chars": 192,
-            "content_ngrams": 224,
-            "noise_ngrams": 23,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 25
-          },
-          "notes": ""
-        },
-        "chromerag_coverage": {
-          "method": "chromerag_coverage",
-          "tokens": 411,
-          "chars": 1646,
-          "content_recall": 0.7321,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.7736,
-          "f_coverage": 0.7736,
-          "f_balanced": 0.8454,
-          "anchor_diag": {
-            "content_chars": 2424,
-            "noise_chars": 192,
-            "content_ngrams": 224,
-            "noise_ngrams": 23,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 25
-          },
-          "notes": ""
-        },
-        "chromerag_precision": {
-          "method": "chromerag_precision",
-          "tokens": 75,
-          "chars": 301,
-          "content_recall": 0.0045,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.0056,
-          "f_coverage": 0.0056,
-          "f_balanced": 0.0089,
-          "anchor_diag": {
-            "content_chars": 2424,
-            "noise_chars": 192,
-            "content_ngrams": 224,
-            "noise_ngrams": 23,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 25
-          },
-          "notes": ""
-        },
-        "trafilatura": {
-          "method": "trafilatura",
-          "tokens": 110,
-          "chars": 441,
-          "content_recall": 0.1027,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.1251,
-          "f_coverage": 0.1251,
-          "f_balanced": 0.1862,
-          "anchor_diag": {
-            "content_chars": 2424,
-            "noise_chars": 192,
-            "content_ngrams": 224,
-            "noise_ngrams": 23,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 25
-          },
-          "notes": ""
-        },
-        "readability": {
-          "method": "readability",
-          "tokens": 56,
-          "chars": 227,
-          "content_recall": 0.0982,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.1198,
-          "f_coverage": 0.1198,
-          "f_balanced": 0.1789,
-          "anchor_diag": {
-            "content_chars": 2424,
-            "noise_chars": 192,
-            "content_ngrams": 224,
-            "noise_ngrams": 23,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 25
-          },
-          "notes": ""
-        },
-        "markdownify": {
-          "method": "markdownify",
-          "tokens": 1345,
-          "chars": 5381,
-          "content_recall": 0.5848,
-          "noise_retention": 0.1304,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.6258,
-          "f_coverage": 0.6258,
-          "f_balanced": 0.6993,
-          "anchor_diag": {
-            "content_chars": 2424,
-            "noise_chars": 192,
-            "content_ngrams": 224,
-            "noise_ngrams": 23,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 25
-          },
-          "notes": ""
-        },
-        "html2text": {
-          "method": "html2text",
-          "tokens": 1345,
-          "chars": 5381,
-          "content_recall": 0.3839,
-          "noise_retention": 0.1304,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.4322,
-          "f_coverage": 0.4322,
-          "f_balanced": 0.5327,
-          "anchor_diag": {
-            "content_chars": 2424,
-            "noise_chars": 192,
-            "content_ngrams": 224,
-            "noise_ngrams": 23,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 25
-          },
-          "notes": ""
-        },
-        "beautifulsoup_text": {
-          "method": "beautifulsoup_text",
-          "tokens": 816,
-          "chars": 3265,
-          "content_recall": 0.6964,
-          "noise_retention": 1.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.0,
-          "f_coverage": 0.0,
-          "f_balanced": 0.0,
-          "anchor_diag": {
-            "content_chars": 2424,
-            "noise_chars": 192,
-            "content_ngrams": 224,
-            "noise_ngrams": 23,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 25
-          },
-          "notes": ""
-        },
-        "markitdown": {
-          "method": "markitdown",
-          "tokens": 1336,
-          "chars": 5346,
-          "content_recall": 0.5848,
-          "noise_retention": 0.1304,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.6258,
-          "f_coverage": 0.6258,
-          "f_balanced": 0.6993,
-          "anchor_diag": {
-            "content_chars": 2424,
-            "noise_chars": 192,
-            "content_ngrams": 224,
-            "noise_ngrams": 23,
-            "ambiguous_ngrams_removed": 0,
-            "content_sentences": 25
           },
           "notes": ""
         }
@@ -55034,221 +53314,6 @@
             "noise_ngrams": 431,
             "ambiguous_ngrams_removed": 0,
             "content_sentences": 26
-          },
-          "notes": ""
-        }
-      },
-      "scoreable": true
-    },
-    "twilio-sms": {
-      "meta": {
-        "id": "twilio-sms",
-        "url": "https://www.twilio.com/docs/messaging",
-        "requested_url": "https://www.twilio.com/docs/sms",
-        "category": "docs",
-        "status_code": 200,
-        "signals": {
-          "has_json_ld": true,
-          "has_microdata": false,
-          "has_table": false,
-          "bytes": 280032
-        }
-      },
-      "anchors": {
-        "content_chars": 5441,
-        "noise_chars": 7763,
-        "content_ngrams": 484,
-        "noise_ngrams": 503,
-        "ambiguous_ngrams_removed": 1,
-        "content_sentences": 59
-      },
-      "methods": {
-        "chromerag": {
-          "method": "chromerag",
-          "tokens": 817,
-          "chars": 3270,
-          "content_recall": 0.5558,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.61,
-          "f_coverage": 0.61,
-          "f_balanced": 0.7145,
-          "anchor_diag": {
-            "content_chars": 5441,
-            "noise_chars": 7763,
-            "content_ngrams": 484,
-            "noise_ngrams": 503,
-            "ambiguous_ngrams_removed": 1,
-            "content_sentences": 59
-          },
-          "notes": ""
-        },
-        "chromerag_coverage": {
-          "method": "chromerag_coverage",
-          "tokens": 828,
-          "chars": 3315,
-          "content_recall": 0.5702,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.6239,
-          "f_coverage": 0.6239,
-          "f_balanced": 0.7263,
-          "anchor_diag": {
-            "content_chars": 5441,
-            "noise_chars": 7763,
-            "content_ngrams": 484,
-            "noise_ngrams": 503,
-            "ambiguous_ngrams_removed": 1,
-            "content_sentences": 59
-          },
-          "notes": ""
-        },
-        "chromerag_precision": {
-          "method": "chromerag_precision",
-          "tokens": 397,
-          "chars": 1590,
-          "content_recall": 0.2273,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.2688,
-          "f_coverage": 0.2688,
-          "f_balanced": 0.3704,
-          "anchor_diag": {
-            "content_chars": 5441,
-            "noise_chars": 7763,
-            "content_ngrams": 484,
-            "noise_ngrams": 503,
-            "ambiguous_ngrams_removed": 1,
-            "content_sentences": 59
-          },
-          "notes": ""
-        },
-        "trafilatura": {
-          "method": "trafilatura",
-          "tokens": 590,
-          "chars": 2362,
-          "content_recall": 0.4814,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 1,
-          "noise_per_1k_tokens": 1.695,
-          "f_precision": 0.5371,
-          "f_coverage": 0.5371,
-          "f_balanced": 0.6499,
-          "anchor_diag": {
-            "content_chars": 5441,
-            "noise_chars": 7763,
-            "content_ngrams": 484,
-            "noise_ngrams": 503,
-            "ambiguous_ngrams_removed": 1,
-            "content_sentences": 59
-          },
-          "notes": ""
-        },
-        "readability": {
-          "method": "readability",
-          "tokens": 103,
-          "chars": 413,
-          "content_recall": 0.0826,
-          "noise_retention": 0.0,
-          "noise_keyword_total": 0,
-          "noise_per_1k_tokens": 0.0,
-          "f_precision": 0.1012,
-          "f_coverage": 0.1012,
-          "f_balanced": 0.1527,
-          "anchor_diag": {
-            "content_chars": 5441,
-            "noise_chars": 7763,
-            "content_ngrams": 484,
-            "noise_ngrams": 503,
-            "ambiguous_ngrams_removed": 1,
-            "content_sentences": 59
-          },
-          "notes": ""
-        },
-        "markdownify": {
-          "method": "markdownify",
-          "tokens": 4992,
-          "chars": 19971,
-          "content_recall": 0.655,
-          "noise_retention": 0.3956,
-          "noise_keyword_total": 3,
-          "noise_per_1k_tokens": 0.601,
-          "f_precision": 0.6442,
-          "f_coverage": 0.6442,
-          "f_balanced": 0.6287,
-          "anchor_diag": {
-            "content_chars": 5441,
-            "noise_chars": 7763,
-            "content_ngrams": 484,
-            "noise_ngrams": 503,
-            "ambiguous_ngrams_removed": 1,
-            "content_sentences": 59
-          },
-          "notes": ""
-        },
-        "html2text": {
-          "method": "html2text",
-          "tokens": 5025,
-          "chars": 20101,
-          "content_recall": 0.655,
-          "noise_retention": 0.3956,
-          "noise_keyword_total": 3,
-          "noise_per_1k_tokens": 0.597,
-          "f_precision": 0.6442,
-          "f_coverage": 0.6442,
-          "f_balanced": 0.6287,
-          "anchor_diag": {
-            "content_chars": 5441,
-            "noise_chars": 7763,
-            "content_ngrams": 484,
-            "noise_ngrams": 503,
-            "ambiguous_ngrams_removed": 1,
-            "content_sentences": 59
-          },
-          "notes": ""
-        },
-        "beautifulsoup_text": {
-          "method": "beautifulsoup_text",
-          "tokens": 2232,
-          "chars": 8930,
-          "content_recall": 0.7066,
-          "noise_retention": 0.8787,
-          "noise_keyword_total": 3,
-          "noise_per_1k_tokens": 1.344,
-          "f_precision": 0.3595,
-          "f_coverage": 0.3595,
-          "f_balanced": 0.207,
-          "anchor_diag": {
-            "content_chars": 5441,
-            "noise_chars": 7763,
-            "content_ngrams": 484,
-            "noise_ngrams": 503,
-            "ambiguous_ngrams_removed": 1,
-            "content_sentences": 59
-          },
-          "notes": ""
-        },
-        "markitdown": {
-          "method": "markitdown",
-          "tokens": 4981,
-          "chars": 19926,
-          "content_recall": 0.655,
-          "noise_retention": 0.3956,
-          "noise_keyword_total": 3,
-          "noise_per_1k_tokens": 0.602,
-          "f_precision": 0.6442,
-          "f_coverage": 0.6442,
-          "f_balanced": 0.6287,
-          "anchor_diag": {
-            "content_chars": 5441,
-            "noise_chars": 7763,
-            "content_ngrams": 484,
-            "noise_ngrams": 503,
-            "ambiguous_ngrams_removed": 1,
-            "content_sentences": 59
           },
           "notes": ""
         }
@@ -59558,162 +57623,162 @@
   },
   "summary": {
     "chromerag": {
-      "pages_scored": 250,
-      "avg_content_recall": 0.6675,
-      "avg_noise_retention": 0.0064,
-      "avg_f_balanced": 0.7736,
-      "avg_f_precision": 0.7047,
-      "avg_f_coverage": 0.7047,
-      "avg_tokens": 3319.452,
-      "avg_noise_per_1k_tokens": 0.0665
+      "pages_scored": 242,
+      "avg_content_recall": 0.6647,
+      "avg_noise_retention": 0.0065,
+      "avg_f_balanced": 0.771,
+      "avg_f_precision": 0.7019,
+      "avg_f_coverage": 0.7019,
+      "avg_tokens": 3382.6694,
+      "avg_noise_per_1k_tokens": 0.0687
     },
     "chromerag_coverage": {
-      "pages_scored": 250,
-      "avg_content_recall": 0.6909,
-      "avg_noise_retention": 0.007,
-      "avg_f_balanced": 0.791,
-      "avg_f_precision": 0.7262,
-      "avg_f_coverage": 0.7262,
-      "avg_tokens": 3392.988,
-      "avg_noise_per_1k_tokens": 0.0726
+      "pages_scored": 242,
+      "avg_content_recall": 0.6877,
+      "avg_noise_retention": 0.0071,
+      "avg_f_balanced": 0.7882,
+      "avg_f_precision": 0.7231,
+      "avg_f_coverage": 0.7231,
+      "avg_tokens": 3456.7934,
+      "avg_noise_per_1k_tokens": 0.0728
     },
     "chromerag_precision": {
-      "pages_scored": 250,
-      "avg_content_recall": 0.5247,
+      "pages_scored": 242,
+      "avg_content_recall": 0.5251,
       "avg_noise_retention": 0.0066,
-      "avg_f_balanced": 0.6515,
-      "avg_f_precision": 0.5673,
-      "avg_f_coverage": 0.5673,
-      "avg_tokens": 2871.4,
-      "avg_noise_per_1k_tokens": 0.0566
+      "avg_f_balanced": 0.6524,
+      "avg_f_precision": 0.5679,
+      "avg_f_coverage": 0.5679,
+      "avg_tokens": 2928.4091,
+      "avg_noise_per_1k_tokens": 0.0585
     },
     "trafilatura": {
-      "pages_scored": 250,
-      "avg_content_recall": 0.6404,
-      "avg_noise_retention": 0.0118,
-      "avg_f_balanced": 0.7395,
-      "avg_f_precision": 0.6737,
-      "avg_f_coverage": 0.6737,
-      "avg_tokens": 2445.376,
-      "avg_noise_per_1k_tokens": 0.2167
+      "pages_scored": 242,
+      "avg_content_recall": 0.6398,
+      "avg_noise_retention": 0.0122,
+      "avg_f_balanced": 0.7392,
+      "avg_f_precision": 0.6732,
+      "avg_f_coverage": 0.6732,
+      "avg_tokens": 2485.5537,
+      "avg_noise_per_1k_tokens": 0.214
     },
     "readability": {
-      "pages_scored": 250,
-      "avg_content_recall": 0.4498,
-      "avg_noise_retention": 0.0125,
-      "avg_f_balanced": 0.5312,
-      "avg_f_precision": 0.4757,
-      "avg_f_coverage": 0.4757,
-      "avg_tokens": 2029.776,
-      "avg_noise_per_1k_tokens": 0.0831
+      "pages_scored": 242,
+      "avg_content_recall": 0.4491,
+      "avg_noise_retention": 0.0129,
+      "avg_f_balanced": 0.5307,
+      "avg_f_precision": 0.475,
+      "avg_f_coverage": 0.475,
+      "avg_tokens": 2064.1446,
+      "avg_noise_per_1k_tokens": 0.0827
     },
     "markdownify": {
-      "pages_scored": 250,
-      "avg_content_recall": 0.692,
-      "avg_noise_retention": 0.2538,
-      "avg_f_balanced": 0.694,
-      "avg_f_precision": 0.6863,
-      "avg_f_coverage": 0.6863,
-      "avg_tokens": 8727.704,
-      "avg_noise_per_1k_tokens": 0.5509
+      "pages_scored": 242,
+      "avg_content_recall": 0.6909,
+      "avg_noise_retention": 0.2509,
+      "avg_f_balanced": 0.6951,
+      "avg_f_precision": 0.6861,
+      "avg_f_coverage": 0.6861,
+      "avg_tokens": 8832.686,
+      "avg_noise_per_1k_tokens": 0.565
     },
     "html2text": {
-      "pages_scored": 250,
-      "avg_content_recall": 0.6763,
-      "avg_noise_retention": 0.27,
-      "avg_f_balanced": 0.6702,
-      "avg_f_precision": 0.6628,
-      "avg_f_coverage": 0.6628,
-      "avg_tokens": 8617.408,
-      "avg_noise_per_1k_tokens": 0.5433
+      "pages_scored": 242,
+      "avg_content_recall": 0.676,
+      "avg_noise_retention": 0.2673,
+      "avg_f_balanced": 0.6718,
+      "avg_f_precision": 0.6632,
+      "avg_f_coverage": 0.6632,
+      "avg_tokens": 8715.2231,
+      "avg_noise_per_1k_tokens": 0.5571
     },
     "beautifulsoup_text": {
-      "pages_scored": 250,
-      "avg_content_recall": 0.8149,
-      "avg_noise_retention": 0.826,
-      "avg_f_balanced": 0.2413,
-      "avg_f_precision": 0.3645,
-      "avg_f_coverage": 0.3645,
-      "avg_tokens": 4406.804,
-      "avg_noise_per_1k_tokens": 0.9017
+      "pages_scored": 242,
+      "avg_content_recall": 0.8145,
+      "avg_noise_retention": 0.824,
+      "avg_f_balanced": 0.243,
+      "avg_f_precision": 0.3658,
+      "avg_f_coverage": 0.3658,
+      "avg_tokens": 4472.1446,
+      "avg_noise_per_1k_tokens": 0.9225
     },
     "markitdown": {
-      "pages_scored": 250,
-      "avg_content_recall": 0.6919,
-      "avg_noise_retention": 0.2527,
-      "avg_f_balanced": 0.6944,
-      "avg_f_precision": 0.6864,
-      "avg_f_coverage": 0.6864,
-      "avg_tokens": 8765.688,
-      "avg_noise_per_1k_tokens": 0.5457
+      "pages_scored": 242,
+      "avg_content_recall": 0.6908,
+      "avg_noise_retention": 0.2498,
+      "avg_f_balanced": 0.6955,
+      "avg_f_precision": 0.6862,
+      "avg_f_coverage": 0.6862,
+      "avg_tokens": 8872.7273,
+      "avg_noise_per_1k_tokens": 0.5595
     }
   },
-  "n_pages": 277,
-  "n_scoreable": 250,
+  "n_pages": 268,
+  "n_scoreable": 242,
   "scoreable_rule": "input DOM content_ngrams >= 50",
   "summary_all_fetched": {
     "chromerag": {
-      "pages_scored": 277,
-      "avg_content_recall": 0.6379,
-      "avg_noise_retention": 0.0068,
-      "avg_f_balanced": 0.7359,
-      "avg_tokens": 3012.6426
+      "pages_scored": 268,
+      "avg_content_recall": 0.6331,
+      "avg_noise_retention": 0.0069,
+      "avg_f_balanced": 0.7314,
+      "avg_tokens": 3071.2873
     },
     "chromerag_coverage": {
-      "pages_scored": 277,
-      "avg_content_recall": 0.6589,
+      "pages_scored": 268,
+      "avg_content_recall": 0.6538,
       "avg_noise_retention": 0.0074,
-      "avg_f_balanced": 0.7516,
-      "avg_tokens": 3079.0108
+      "avg_f_balanced": 0.747,
+      "avg_tokens": 3138.2201
     },
     "chromerag_precision": {
-      "pages_scored": 277,
-      "avg_content_recall": 0.5032,
+      "pages_scored": 268,
+      "avg_content_recall": 0.5011,
       "avg_noise_retention": 0.007,
-      "avg_f_balanced": 0.6201,
-      "avg_tokens": 2606.1625
+      "avg_f_balanced": 0.6185,
+      "avg_tokens": 2658.9254
     },
     "trafilatura": {
-      "pages_scored": 277,
-      "avg_content_recall": 0.6096,
-      "avg_noise_retention": 0.0244,
-      "avg_f_balanced": 0.6978,
-      "avg_tokens": 2237.8556
+      "pages_scored": 268,
+      "avg_content_recall": 0.6067,
+      "avg_noise_retention": 0.0242,
+      "avg_f_balanced": 0.6956,
+      "avg_tokens": 2275.9888
     },
     "readability": {
-      "pages_scored": 277,
-      "avg_content_recall": 0.4232,
-      "avg_noise_retention": 0.0162,
-      "avg_f_balanced": 0.4987,
-      "avg_tokens": 1837.9458
+      "pages_scored": 268,
+      "avg_content_recall": 0.4196,
+      "avg_noise_retention": 0.0168,
+      "avg_f_balanced": 0.4953,
+      "avg_tokens": 1869.8769
     },
     "markdownify": {
-      "pages_scored": 277,
-      "avg_content_recall": 0.6609,
-      "avg_noise_retention": 0.2448,
-      "avg_f_balanced": 0.661,
-      "avg_tokens": 8258.231
+      "pages_scored": 268,
+      "avg_content_recall": 0.6577,
+      "avg_noise_retention": 0.2412,
+      "avg_f_balanced": 0.6608,
+      "avg_tokens": 8368.3582
     },
     "html2text": {
-      "pages_scored": 277,
-      "avg_content_recall": 0.6465,
-      "avg_noise_retention": 0.2598,
-      "avg_f_balanced": 0.6391,
-      "avg_tokens": 8160.3105
+      "pages_scored": 268,
+      "avg_content_recall": 0.644,
+      "avg_noise_retention": 0.2561,
+      "avg_f_balanced": 0.6395,
+      "avg_tokens": 8264.0373
     },
     "beautifulsoup_text": {
-      "pages_scored": 277,
-      "avg_content_recall": 0.7751,
-      "avg_noise_retention": 0.7966,
-      "avg_f_balanced": 0.2317,
-      "avg_tokens": 4072.4043
+      "pages_scored": 268,
+      "avg_content_recall": 0.7727,
+      "avg_noise_retention": 0.7935,
+      "avg_f_balanced": 0.2332,
+      "avg_tokens": 4135.9664
     },
     "markitdown": {
-      "pages_scored": 277,
-      "avg_content_recall": 0.6608,
-      "avg_noise_retention": 0.2438,
-      "avg_f_balanced": 0.6614,
-      "avg_tokens": 8297.5776
+      "pages_scored": 268,
+      "avg_content_recall": 0.6576,
+      "avg_noise_retention": 0.2402,
+      "avg_f_balanced": 0.6612,
+      "avg_tokens": 8409.847
     }
   },
   "paired_bootstrap": [
@@ -59721,143 +57786,113 @@
       "a": "chromerag_coverage",
       "b": "trafilatura",
       "metric": "f_balanced",
-      "n": 250,
-      "mean_diff": 0.0514,
-      "ci_low": 0.0247,
-      "ci_high": 0.0814
+      "n": 242,
+      "mean_diff": 0.049,
+      "ci_low": 0.0214,
+      "ci_high": 0.0787
     },
     {
       "a": "chromerag_coverage",
       "b": "trafilatura",
       "metric": "content_recall",
-      "n": 250,
-      "mean_diff": 0.0505,
-      "ci_low": 0.0218,
-      "ci_high": 0.0789
+      "n": 242,
+      "mean_diff": 0.0479,
+      "ci_low": 0.0212,
+      "ci_high": 0.0755
     },
     {
       "a": "chromerag_coverage",
       "b": "trafilatura",
       "metric": "noise_retention",
-      "n": 250,
-      "mean_diff": -0.0048,
-      "ci_low": -0.0143,
-      "ci_high": 0.0037
+      "n": 242,
+      "mean_diff": -0.0051,
+      "ci_low": -0.0144,
+      "ci_high": 0.0029
     },
     {
       "a": "chromerag",
       "b": "trafilatura",
       "metric": "f_balanced",
-      "n": 250,
-      "mean_diff": 0.034,
-      "ci_low": 0.0071,
-      "ci_high": 0.0638
+      "n": 242,
+      "mean_diff": 0.0318,
+      "ci_low": 0.0045,
+      "ci_high": 0.0607
     },
     {
       "a": "chromerag",
       "b": "trafilatura",
       "metric": "content_recall",
-      "n": 250,
-      "mean_diff": 0.0271,
-      "ci_low": -0.0019,
-      "ci_high": 0.0548
+      "n": 242,
+      "mean_diff": 0.0249,
+      "ci_low": -0.0046,
+      "ci_high": 0.0544
     },
     {
       "a": "chromerag",
       "b": "trafilatura",
       "metric": "noise_retention",
-      "n": 250,
-      "mean_diff": -0.0054,
-      "ci_low": -0.0151,
-      "ci_high": 0.0026
+      "n": 242,
+      "mean_diff": -0.0057,
+      "ci_low": -0.0153,
+      "ci_high": 0.0027
     },
     {
       "a": "chromerag_coverage",
       "b": "markitdown",
       "metric": "f_balanced",
-      "n": 250,
-      "mean_diff": 0.0966,
-      "ci_low": 0.0725,
-      "ci_high": 0.1201
+      "n": 242,
+      "mean_diff": 0.0927,
+      "ci_low": 0.0687,
+      "ci_high": 0.117
     },
     {
       "a": "chromerag_coverage",
       "b": "markitdown",
       "metric": "content_recall",
-      "n": 250,
-      "mean_diff": -0.001,
-      "ci_low": -0.0234,
-      "ci_high": 0.0196
+      "n": 242,
+      "mean_diff": -0.0031,
+      "ci_low": -0.0249,
+      "ci_high": 0.0169
     },
     {
       "a": "chromerag_coverage",
       "b": "markitdown",
       "metric": "noise_retention",
-      "n": 250,
-      "mean_diff": -0.2457,
-      "ci_low": -0.2687,
-      "ci_high": -0.2223
+      "n": 242,
+      "mean_diff": -0.2427,
+      "ci_low": -0.2661,
+      "ci_high": -0.2203
     }
   ],
   "by_category": {
     "api_docs": {
       "chromerag": {
-        "pages": 6,
-        "avg_content_recall": 0.7369,
-        "avg_noise_retention": 0.0072,
-        "avg_f_balanced": 0.8398,
-        "avg_tokens": 1202.1667
+        "pages": 4,
+        "avg_content_recall": 0.6677,
+        "avg_noise_retention": 0.0,
+        "avg_f_balanced": 0.7979,
+        "avg_tokens": 899.0
       },
       "chromerag_coverage": {
-        "pages": 6,
-        "avg_content_recall": 0.7783,
-        "avg_noise_retention": 0.0072,
-        "avg_f_balanced": 0.8667,
-        "avg_tokens": 1262.6667
+        "pages": 4,
+        "avg_content_recall": 0.7096,
+        "avg_noise_retention": 0.0,
+        "avg_f_balanced": 0.8273,
+        "avg_tokens": 946.5
       },
       "trafilatura": {
-        "pages": 6,
-        "avg_content_recall": 0.6067,
-        "avg_noise_retention": 0.0022,
-        "avg_f_balanced": 0.7015,
-        "avg_tokens": 1016.3333
+        "pages": 4,
+        "avg_content_recall": 0.4475,
+        "avg_noise_retention": 0.0,
+        "avg_f_balanced": 0.5733,
+        "avg_tokens": 613.25
       },
       "markitdown": {
-        "pages": 6,
-        "avg_content_recall": 0.7055,
-        "avg_noise_retention": 0.2768,
-        "avg_f_balanced": 0.6866,
-        "avg_tokens": 5620.5
-      }
-    },
-    "api_docs_jsonld": {
-      "chromerag": {
-        "pages": 1,
-        "avg_content_recall": 0.7391,
-        "avg_noise_retention": 0.0,
-        "avg_f_balanced": 0.85,
-        "avg_tokens": 595.0
-      },
-      "chromerag_coverage": {
-        "pages": 1,
-        "avg_content_recall": 0.7391,
-        "avg_noise_retention": 0.0,
-        "avg_f_balanced": 0.85,
-        "avg_tokens": 595.0
-      },
-      "trafilatura": {
-        "pages": 1,
-        "avg_content_recall": 0.7283,
-        "avg_noise_retention": 0.0,
-        "avg_f_balanced": 0.8428,
-        "avg_tokens": 426.0
-      },
-      "markitdown": {
-        "pages": 1,
-        "avg_content_recall": 0.7065,
-        "avg_noise_retention": 0.5472,
-        "avg_f_balanced": 0.5519,
-        "avg_tokens": 6217.0
+        "pages": 4,
+        "avg_content_recall": 0.6222,
+        "avg_noise_retention": 0.1821,
+        "avg_f_balanced": 0.6994,
+        "avg_tokens": 4440.25
       }
     },
     "article": {
@@ -59920,64 +57955,34 @@
         "avg_tokens": 5437.5714
       }
     },
-    "cloud_docs": {
-      "chromerag": {
-        "pages": 1,
-        "avg_content_recall": 0.8697,
-        "avg_noise_retention": 0.0,
-        "avg_f_balanced": 0.9303,
-        "avg_tokens": 3449.0
-      },
-      "chromerag_coverage": {
-        "pages": 1,
-        "avg_content_recall": 0.8944,
-        "avg_noise_retention": 0.0,
-        "avg_f_balanced": 0.9443,
-        "avg_tokens": 3532.0
-      },
-      "trafilatura": {
-        "pages": 1,
-        "avg_content_recall": 0.9087,
-        "avg_noise_retention": 0.0,
-        "avg_f_balanced": 0.9522,
-        "avg_tokens": 3316.0
-      },
-      "markitdown": {
-        "pages": 1,
-        "avg_content_recall": 0.8637,
-        "avg_noise_retention": 0.5156,
-        "avg_f_balanced": 0.6207,
-        "avg_tokens": 4282.0
-      }
-    },
     "docs": {
       "chromerag": {
-        "pages": 212,
-        "avg_content_recall": 0.6592,
-        "avg_noise_retention": 0.0066,
-        "avg_f_balanced": 0.7649,
-        "avg_tokens": 3314.5425
+        "pages": 208,
+        "avg_content_recall": 0.659,
+        "avg_noise_retention": 0.0068,
+        "avg_f_balanced": 0.7642,
+        "avg_tokens": 3360.9952
       },
       "chromerag_coverage": {
-        "pages": 212,
-        "avg_content_recall": 0.6825,
-        "avg_noise_retention": 0.0073,
-        "avg_f_balanced": 0.7826,
-        "avg_tokens": 3383.316
+        "pages": 208,
+        "avg_content_recall": 0.682,
+        "avg_noise_retention": 0.0075,
+        "avg_f_balanced": 0.7817,
+        "avg_tokens": 3430.1779
       },
       "trafilatura": {
-        "pages": 212,
-        "avg_content_recall": 0.6409,
-        "avg_noise_retention": 0.009,
-        "avg_f_balanced": 0.7418,
-        "avg_tokens": 2328.1132
+        "pages": 208,
+        "avg_content_recall": 0.6446,
+        "avg_noise_retention": 0.0091,
+        "avg_f_balanced": 0.745,
+        "avg_tokens": 2361.0913
       },
       "markitdown": {
-        "pages": 212,
-        "avg_content_recall": 0.6838,
-        "avg_noise_retention": 0.2507,
-        "avg_f_balanced": 0.6909,
-        "avg_tokens": 8292.6085
+        "pages": 208,
+        "avg_content_recall": 0.685,
+        "avg_noise_retention": 0.252,
+        "avg_f_balanced": 0.6907,
+        "avg_tokens": 8366.6923
       }
     },
     "hub": {
@@ -60071,8 +58076,8 @@
       }
     }
   },
-  "corpus_urls_listed": 373,
-  "corpus_url_count": 373,
-  "n_fetched": 277,
-  "n_thin": 27
+  "corpus_urls_listed": 367,
+  "corpus_url_count": 367,
+  "n_fetched": 268,
+  "n_thin": 26
 }

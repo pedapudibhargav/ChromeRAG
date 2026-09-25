@@ -12,10 +12,10 @@ import traceback
 from collections import defaultdict
 from pathlib import Path
 
+from chromerag import ChromeRAG, ContentPriority, PipelineConfig
 from poc.baselines import BASELINES
 from poc.fetch_pages import fetch_all
-from poc.metrics import extract_anchors, score_extraction, scores_to_dict
-from chromerag import ChromeRAG, ContentPriority, PipelineConfig
+from poc.metrics import extract_anchors, page_key, score_extraction, scores_to_dict
 
 ROOT = Path(__file__).resolve().parents[1]
 RAW = ROOT / "data" / "raw"
@@ -56,15 +56,20 @@ def _corpus_urls_listed() -> int:
     return len(urls) if isinstance(urls, list) else 0
 
 
-def load_ok_pages() -> list[tuple[str, str, dict]]:
+def load_ok_pages(raw: Path = RAW) -> list[tuple[str, str, dict]]:
     pages = []
-    for meta_path in sorted(RAW.glob("*.meta.json")):
+    seen: set[str] = set()
+    for meta_path in sorted(raw.glob("*.meta.json")):
         if meta_path.name.startswith("_"):
             continue
         meta = json.loads(meta_path.read_text(encoding="utf-8"))
-        html_path = RAW / f"{meta['id']}.html"
+        html_path = raw / f"{meta['id']}.html"
         if not html_path.exists():
             continue
+        key = page_key(meta)
+        if key in seen:
+            continue
+        seen.add(key)
         pages.append(
             (
                 meta["id"],

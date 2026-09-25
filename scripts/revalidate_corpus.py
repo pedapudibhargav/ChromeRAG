@@ -17,8 +17,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT))
 
 from chromerag.input_quality import assess_input_html  # noqa: E402
+from poc.metrics import page_key  # noqa: E402
 
 LOCAL_REPORT = ROOT / "data" / "outputs" / "corpus_comparison_report.json"
 PUBLISHED_REPORT = ROOT / "docs" / "data" / "corpus_comparison_report.json"
@@ -52,17 +54,23 @@ def main() -> int:
     n_thin = n_pages - n_scoreable
     raw_html = list(RAW.glob("*.html"))
     raw_html = [p for p in raw_html if not p.name.startswith("_")]
+    # The harness scores each final URL once, so count unique pages on disk.
+    raw_unique = {
+        page_key(json.loads(p.with_suffix(".meta.json").read_text(encoding="utf-8")))
+        for p in raw_html
+        if p.with_suffix(".meta.json").exists()
+    }
 
     print(f"Corpus URLs listed: {listed}")
     print(f"Report pages:       {n_pages}")
     print(f"Scoreable:          {n_scoreable}")
     print(f"Thin:               {n_thin}")
-    print(f"Raw HTML on disk:   {len(raw_html)}")
+    print(f"Raw HTML on disk:   {len(raw_html)} ({len(raw_unique)} unique pages)")
 
     if listed < 300:
-        _fail(f"Expected ~373 listed URLs, got {listed}", errors)
-    if raw_html and n_pages != len(raw_html):
-        _fail(f"Report pages ({n_pages}) != raw HTML files ({len(raw_html)})", errors)
+        _fail(f"Expected ~367 listed URLs, got {listed}", errors)
+    if raw_unique and n_pages != len(raw_unique):
+        _fail(f"Report pages ({n_pages}) != unique raw pages ({len(raw_unique)})", errors)
     for pid, e in pages.items():
         expected = int((e.get("anchors") or {}).get("content_ngrams", 0)) >= MIN_CONTENT_ANCHORS
         if bool(e.get("scoreable")) != expected:

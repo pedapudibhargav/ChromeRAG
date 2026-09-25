@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "chromerag"
-version = "0.1.1"
+version = "0.1.2"
 description = "ChromeRAG: ingest-time elimination of site template noise for enterprise web RAG."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -51,6 +51,9 @@ baselines = [
   "trafilatura>=1.12.0",
   "markitdown>=0.1.0",
   "html2text>=2024.2.26",
+]
+langchain = [
+  "langchain-core>=0.2",
 ]
 ui = [
   "fastapi>=0.110.0",

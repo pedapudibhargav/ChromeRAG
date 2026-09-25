@@ -14,6 +14,7 @@ import os
 import re
 import shutil
 import zipfile
+from datetime import datetime, timezone
 from pathlib import Path
 
 from lxml import etree
@@ -48,8 +49,8 @@ KEYWORDS = (
 BOLD_LEAD, ITALIC_LEAD, LEAD_END = "\x01", "\x02", "\x03"
 
 METADATA = {
-    "C1": "v0.1.1",
-    "C2": "https://github.com/pedapudibhargav/ChromeRAG/tree/v0.1.1",
+    "C1": "v0.1.2",
+    "C2": "https://github.com/pedapudibhargav/ChromeRAG/tree/v0.1.2",
     "C3": "MIT",
     "C4": "git",
     "C5": "Python ≥3.11; BeautifulSoup4, lxml, Pydantic, PyYAML, NumPy, tiktoken",
@@ -425,6 +426,33 @@ def _write_document(path: Path, tree: etree._ElementTree) -> None:
     path.write_text(text, encoding="utf-8")
 
 
+PAPER_TITLE = "ChromeRAG: Ingest-Time Elimination of Site Template Noise for Enterprise Web RAG"
+PAPER_AUTHOR = "Bhargava Chary Peddapudi"
+
+
+def _set_document_properties(work: Path) -> None:
+    """Replace the template's own metadata (Elsevier staff names, template title, company)."""
+    now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    core = work / "docProps" / "core.xml"
+    if core.exists():
+        xml = core.read_text(encoding="utf-8")
+        for tag, value in (
+            ("dc:title", PAPER_TITLE),
+            ("dc:creator", PAPER_AUTHOR),
+            ("cp:lastModifiedBy", PAPER_AUTHOR),
+            ("dcterms:created", now),
+            ("dcterms:modified", now),
+        ):
+            xml = re.sub(rf"(<{tag}\b[^>]*>)[^<]*(</{tag}>)", rf"\g<1>{value}\g<2>", xml)
+        xml = re.sub(r"<cp:revision>[^<]*</cp:revision>", "<cp:revision>1</cp:revision>", xml)
+        core.write_text(xml, encoding="utf-8")
+    app = work / "docProps" / "app.xml"
+    if app.exists():
+        xml = app.read_text(encoding="utf-8")
+        xml = re.sub(r"<(Company|Manager)>[^<]*</\1>", r"<\1></\1>", xml)
+        app.write_text(xml, encoding="utf-8")
+
+
 def main() -> None:
     if not TEMPLATE.exists():
         raise SystemExit(f"Missing template: {TEMPLATE}")
@@ -636,6 +664,7 @@ def main() -> None:
         pPr.set(f"{W14}textId", _fresh_hex_id())
 
     _write_document(doc_xml, tree)
+    _set_document_properties(work)
     if OUT.exists():
         OUT.unlink()
     with zipfile.ZipFile(OUT, "w", compression=zipfile.ZIP_DEFLATED) as zf:

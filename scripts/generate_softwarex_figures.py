@@ -1,291 +1,47 @@
 #!/usr/bin/env python3
-"""Generate SoftareX figures as HTML (real fonts) + rasterize via Playwright if available.
+"""Render the SoftwareX figures from the published results in docs/data/.
 
-Fallback: writes SVG with Helvetica text (vector; Word can use PNG from screenshots).
-Primary output for Word embed: high-DPI PNG from Chromium screenshot.
+Figures follow Elsevier's artwork guidance: drawn at print size (6.5 in text
+width, sizes in points), sans-serif text of at least 7 pt, no titles inside the
+artwork (captions carry them), vector PDF plus a 600 dpi PNG for Word.
+ChromeRAG is always blue, Trafilatura orange, MarkItDown aqua and Readability
+grey; every series is labelled directly, so colour is never the only cue.
+
+Needs a local Chrome/Chromium (headless) to rasterize the SVGs.
+
+Usage:
+  python scripts/generate_softwarex_figures.py
 """
 
 from __future__ import annotations
 
 import json
+import shutil
 import subprocess
 import sys
 from pathlib import Path
+from xml.sax.saxutils import escape
 
 ROOT = Path(__file__).resolve().parents[1]
-REPORT = ROOT / "data" / "outputs" / "corpus_comparison_report.json"
+DATA = ROOT / "docs" / "data"
 OUT = ROOT / "papers" / "softwarex" / "figures"
-OUT.mkdir(parents=True, exist_ok=True)
 
-LABELS = {
-    "chromerag_coverage": "ChromeRAG (coverage)",
-    "chromerag": "ChromeRAG (balanced)",
-    "chromerag_precision": "ChromeRAG (precision)",
-    "trafilatura": "Trafilatura",
-    "markitdown": "MarkItDown",
-    "readability": "Readability",
+WIDTH = 468  # pt, 6.5 in
+DPI = 600
+FONT = "Arial, Helvetica, sans-serif"
+INK = "#1f1f1d"
+INK_2 = "#52514e"
+MUTED = "#8a8983"
+GRID = "#e4e3df"
+SURFACE = "#ffffff"
+
+METHODS = {
+    "chromerag_coverage": ("ChromeRAG (coverage)", "#2a78d6"),
+    "chromerag": ("ChromeRAG (balanced)", "#86b6ef"),
+    "trafilatura": ("Trafilatura", "#eb6834"),
+    "markitdown": ("MarkItDown", "#1baf7a"),
+    "readability": ("Readability", "#8a8983"),
 }
-
-COLORS = {
-    "chromerag_coverage": "#0B6E4F",
-    "chromerag": "#1B9AAA",
-    "chromerag_precision": "#3D5A80",
-    "trafilatura": "#C47B0A",
-    "markitdown": "#9B2226",
-    "readability": "#5C6770",
-}
-
-
-def _hbar_card(
-    fig_id: str,
-    title: str,
-    series: list[tuple[str, float]],
-    xlabel: str,
-    *,
-    xmax: float,
-    note: str,
-) -> str:
-    rows = []
-    for key, val in series:
-        pct = 100.0 * val / xmax if xmax else 0
-        label = LABELS.get(key, key)
-        color = COLORS.get(key, "#333")
-        rows.append(
-            f"""
-      <div class="row">
-        <div class="ylab">{label}</div>
-        <div class="track">
-          <div class="bar" style="width:{pct:.2f}%;background:{color}"></div>
-          <span class="val">{val:.3f}</span>
-        </div>
-      </div>"""
-        )
-    ticks = "".join(
-        f'<span style="left:{100*f:.0f}%">{xmax*f:.2f}</span>' for f in (0, 0.25, 0.5, 0.75, 1.0)
-    )
-    return f"""
-  <section class="card" id="{fig_id}">
-    <h2>{title}</h2>
-    <p class="note">{note}</p>
-    <div class="chart">
-      {''.join(rows)}
-      <div class="axis">
-        <div class="ticks">{ticks}</div>
-        <div class="xlabel">{xlabel}</div>
-      </div>
-    </div>
-  </section>"""
-
-
-def _funnel_card(listed: int, fetched: int, scoreable: int, thin: int) -> str:
-    def row(title: str, n: int, denom: int, color: str, light_text: bool = True) -> str:
-        pct = 100.0 * n / denom if denom else 0
-        tc = "#fff" if light_text else "#1a1a1a"
-        if pct < 30:  # narrow bar: put the label beside it so it never wraps
-            return f"""
-      <div class="funnel-row narrow">
-        <div class="funnel-bar" style="width:{pct:.1f}%;background:{color}"></div>
-        <div class="funnel-label"><strong>{title}</strong><span>n = {n}</span></div>
-      </div>"""
-        return f"""
-      <div class="funnel-row">
-        <div class="funnel-bar" style="width:{pct:.1f}%;background:{color};color:{tc}">
-          <strong>{title}</strong>
-          <span>n = {n}</span>
-        </div>
-      </div>"""
-
-    return f"""
-  <section class="card" id="fig4">
-    <h2>Benchmark corpus funnel</h2>
-    <p class="note">Listed URLs → fetched HTML → scoreable pages used in means (cohort chosen from input HTML only)</p>
-    <div class="funnel">
-      {row("Listed URLs in public corpus", listed, listed, "#D9E2EC", light_text=False)}
-      {row("Fetched HTML successfully", fetched, listed, "#1B9AAA")}
-      {row("Scoreable (≥ 50 main-content anchors in input DOM) — used in means", scoreable, listed, "#0B6E4F")}
-      {row("Thin / JS-shell pages excluded from means", thin, listed, "#9B2226")}
-    </div>
-    <p class="foot">All-page means (no filter) are reported alongside in the repository.</p>
-  </section>"""
-
-
-def _architecture_card() -> str:
-    stages = [
-        ("HTML in", "string or file; fetching/rendering stays with the caller", "#D9E2EC", False),
-        ("1 · Input-quality gate", "flags thin HTML / JS shells → WARNING + result.warnings", "#5C6770", True),
-        ("2 · Schema harvest", "JSON-LD + Microdata → YAML front-matter (before script strip)", "#3D5A80", True),
-        ("3 · Clean + STCE", "strip scripts/styles; apply learned site-chrome model if given", "#1B9AAA", True),
-        ("4 · Structural + density prune", "nav/footer/cookie heuristics, link/text density, DVDF", "#0B6E4F", True),
-        ("5 · Tables + Markdown", "key-value table linearization, heading-safe Markdown", "#0B6E4F", True),
-        ("Markdown out", "RAG-ready text + front-matter + diagnostics", "#D9E2EC", False),
-    ]
-    rows = "".join(
-        f"""
-      <div class="stage" style="background:{c};color:{'#fff' if light else '#1a1a1a'}">
-        <strong>{t}</strong><span>{d}</span>
-      </div>{'<div class="arrow">↓</div>' if i < len(stages) - 1 else ''}"""
-        for i, (t, d, c, light) in enumerate(stages)
-    )
-    learn = """
-      <div class="side">
-        <strong>chromerag learn</strong>
-        <span>≥3 pages of one site → repeated chrome-like blocks → site_chrome.json</span>
-        <span class="to">feeds stage 3 →</span>
-      </div>"""
-    return f"""
-  <section class="card" id="fig0">
-    <h2>ChromeRAG pipeline</h2>
-    <p class="note">Single-page extraction (left); optional learn-then-extract site model (right)</p>
-    <div class="arch"><div class="stages">{rows}
-    </div>{learn}</div>
-  </section>"""
-
-
-def write_html(report: dict) -> Path:
-    summary = report["summary"]
-    order = [
-        "chromerag_coverage",
-        "chromerag",
-        "trafilatura",
-        "markitdown",
-        "chromerag_precision",
-        "readability",
-    ]
-    fbal = [(m, float(summary[m]["avg_f_balanced"])) for m in order if m in summary]
-    recall = [(m, float(summary[m]["avg_content_recall"])) for m in order if m in summary]
-    noise = [(m, float(summary[m]["avg_noise_retention"])) for m in order if m in summary]
-    n_score = int(report["n_scoreable"])
-    note = f"Mean over {n_score} scoreable pages (same tool-independent cohort for every method)"
-    noise_max = max(v for _, v in noise) * 1.15
-
-    listed = int(report.get("corpus_urls_listed") or 373)
-    fetched = int(report.get("n_fetched") or 277)
-    scoreable = int(report["n_scoreable"])
-    thin = int(report.get("n_thin") or max(fetched - scoreable, 0))
-
-    html = f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8"/>
-<title>ChromeRAG SoftareX figures</title>
-<style>
-  :root {{
-    --ink: #1a1a1a;
-    --muted: #5c6770;
-    --line: #e6e8eb;
-    --font: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  }}
-  * {{ box-sizing: border-box; }}
-  body {{
-    margin: 0; padding: 24px; background: #fff; color: var(--ink);
-    font-family: var(--font);
-  }}
-  .card {{
-    width: 1180px; margin: 0 0 48px; padding: 28px 40px 28px 32px;
-    background: #fff; border: 1px solid #eee;
-  }}
-  h2 {{
-    margin: 0 0 6px; font-size: 22px; font-weight: 650; letter-spacing: -0.01em;
-  }}
-  .note {{ margin: 0 0 18px; color: var(--muted); font-size: 13px; }}
-  .row {{
-    display: grid; grid-template-columns: 230px 1fr; gap: 14px;
-    align-items: center; margin: 0 0 12px;
-  }}
-  .ylab {{
-    text-align: right; font-size: 14px; font-weight: 500; line-height: 1.25;
-  }}
-  .track {{
-    position: relative; height: 34px; background: #f4f6f8; border-radius: 4px;
-    border: 1px solid var(--line); overflow: visible;
-  }}
-  .bar {{
-    height: 100%; border-radius: 3px 0 0 3px; min-width: 2px;
-  }}
-  .val {{
-    position: absolute; top: 50%; transform: translateY(-50%);
-    font-size: 13px; font-weight: 650; color: var(--ink); white-space: nowrap;
-  }}
-  .axis {{ margin: 8px 0 0 244px; }}
-  .ticks {{
-    position: relative; height: 18px; border-top: 1px solid #222; margin-top: 4px;
-  }}
-  .ticks span {{
-    position: absolute; top: 6px; transform: translateX(-50%);
-    font-size: 12px; color: var(--muted);
-  }}
-  .xlabel {{
-    text-align: center; margin-top: 8px; font-size: 13px; font-weight: 500;
-  }}
-  .funnel {{ margin-top: 8px; }}
-  .funnel-row {{ margin: 0 0 14px; }}
-  .funnel-bar {{
-    min-height: 64px; border-radius: 6px; padding: 14px 18px;
-    display: flex; flex-direction: column; gap: 4px;
-    font-size: 15px;
-  }}
-  .funnel-bar span {{ font-size: 14px; opacity: 0.95; }}
-  .funnel-row.narrow {{ display: flex; align-items: center; gap: 16px; }}
-  .funnel-label {{ display: flex; flex-direction: column; gap: 4px; font-size: 15px; }}
-  .funnel-label span {{ font-size: 14px; color: var(--muted); }}
-  .foot {{ margin: 12px 0 0; color: var(--muted); font-size: 12px; }}
-  .arch {{ display: grid; grid-template-columns: 1fr 260px; gap: 22px; align-items: center; }}
-  .stage {{ border-radius: 6px; padding: 10px 16px; display: flex; flex-direction: column; gap: 2px; font-size: 15px; }}
-  .stage span {{ font-size: 13px; opacity: 0.95; }}
-  .arrow {{ text-align: center; font-size: 16px; color: var(--muted); line-height: 18px; }}
-  .side {{ border: 2px dashed #1B9AAA; border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; }}
-  .side span {{ font-size: 13px; color: var(--muted); }}
-  .side .to {{ color: #1B9AAA; font-weight: 600; }}
-</style>
-</head>
-<body>
-{_architecture_card()}
-{_hbar_card("fig1", "Balanced F-score (Fbal)", fbal, "Fbal (higher is better)", xmax=1.0, note=note)}
-{_hbar_card("fig2", "Content recall", recall, "Content recall (higher is better)", xmax=1.0, note=note)}
-{_hbar_card("fig3", "Noise retention (chrome / boilerplate kept)", noise, "Noise retention (lower is better)", xmax=noise_max, note=note)}
-{_funnel_card(listed, fetched, scoreable, thin)}
-<script>
-  // Always place numeric labels just past the end of the colored bar
-  document.querySelectorAll('.row').forEach(row => {{
-    const bar = row.querySelector('.bar');
-    const val = row.querySelector('.val');
-    if (!bar || !val) return;
-    const pct = parseFloat(bar.style.width);
-    val.style.left = 'calc(' + pct + '% + 8px)';
-    val.style.right = 'auto';
-    val.style.color = '#1a1a1a';
-  }});
-</script>
-</body>
-</html>
-"""
-    path = OUT / "_charts.html"
-    path.write_text(html, encoding="utf-8")
-    print(f"Wrote {path}")
-    return path
-
-
-def rasterize_with_playwright(html_path: Path) -> bool:
-    """Screenshot each .card to PNG via Playwright Python API or npx."""
-    try:
-        from playwright.sync_api import sync_playwright  # type: ignore
-    except ImportError:
-        # Try npx playwright screenshot of full page then crop — weaker fallback
-        return rasterize_with_npx(html_path)
-
-    out_map = {fig_id: OUT / name for fig_id, name in OUT_NAMES.items()}
-    uri = html_path.resolve().as_uri()
-    with sync_playwright() as p:
-        browser = p.chromium.launch()
-        page = browser.new_page(viewport={"width": 1200, "height": 900}, device_scale_factor=3)
-        page.goto(uri, wait_until="networkidle")
-        for fig_id, dest in out_map.items():
-            loc = page.locator(f"#{fig_id}")
-            loc.screenshot(path=str(dest), type="png")
-            print(f"Wrote {dest} ({dest.stat().st_size} bytes)")
-        browser.close()
-    return True
-
 
 CHROME_CANDIDATES = [
     "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
@@ -294,70 +50,261 @@ CHROME_CANDIDATES = [
     "chromium-browser",
 ]
 
-CARD_HEIGHTS = {"fig0": 640, "fig1": 470, "fig2": 470, "fig3": 470, "fig4": 520}
-OUT_NAMES = {
-    "fig0": "fig0_architecture.png",
-    "fig1": "fig1_fbal.png",
-    "fig2": "fig2_recall.png",
-    "fig3": "fig3_noise.png",
-    "fig4": "fig4_corpus_gate.png",
-}
+
+def _text(x, y, s, *, size=8, anchor="start", weight="normal", fill=INK, baseline="auto"):
+    return (
+        f'<text x="{x:.1f}" y="{y:.1f}" font-size="{size}" text-anchor="{anchor}" '
+        f'font-weight="{weight}" fill="{fill}" dominant-baseline="{baseline}">{escape(str(s))}</text>'
+    )
 
 
-def rasterize_with_npx(html_path: Path) -> bool:
-    """Fallback without Playwright: headless Chrome screenshots, one card per page."""
-    import re
-    import shutil
+def _svg(height: float, body: list[str]) -> str:
+    return (
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{WIDTH}pt" height="{height}pt" '
+        f'viewBox="0 0 {WIDTH} {height}" font-family="{FONT}">'
+        f'<rect width="{WIDTH}" height="{height}" fill="{SURFACE}"/>' + "".join(body) + "</svg>"
+    )
 
-    chrome = next((c for c in CHROME_CANDIDATES if shutil.which(c) or Path(c).exists()), None)
-    if not chrome:
-        print("Neither playwright nor a Chrome/Chromium binary is available.", file=sys.stderr)
-        return False
-    html = html_path.read_text(encoding="utf-8")
-    head, body = html.split("<body>", 1)
-    cards = {
-        fig_id: section
-        for section, fig_id in re.findall(
-            r'(<section class="card" id="(fig\d)">.*?</section>)', body, re.S
+
+def _hbar(x0, y, length, thickness, color):
+    """Horizontal bar: square at the baseline, 2 pt rounded data end."""
+    r = min(2.0, length / 2, thickness / 2)
+    if length <= 0:
+        return ""
+    return (
+        f'<path d="M{x0:.2f},{y:.2f} h{length - r:.2f} a{r},{r} 0 0 1 {r},{r} '
+        f'v{thickness - 2 * r:.2f} a{r},{r} 0 0 1 -{r},{r} h-{length - r:.2f} z" fill="{color}"/>'
+    )
+
+
+# --------------------------------------------------------------------------- Fig. 1
+def fig_architecture() -> str:
+    stages = [
+        ("1", "Input-quality", "gate", "thin / JS-shell", "warnings"),
+        ("2", "Schema", "harvest", "JSON-LD, Microdata", "→ front-matter"),
+        ("3", "Clean +", "STCE", "strip scripts; apply", "site model"),
+        ("4", "Structural +", "density prune", "landmarks, link", "density, DVDF"),
+        ("5", "Tables +", "Markdown", "key–value rows,", "safe headings"),
+    ]
+    h = 150
+    body: list[str] = [
+        '<defs><marker id="arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5" markerHeight="5" '
+        f'orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 z" fill="{MUTED}"/></marker></defs>'
+    ]
+    io_w, gap = 50, 9
+    box_w = (WIDTH - 2 * io_w - 12 - 6 * gap) / 5
+    top, bh = 14, 74
+    body.append(f'<rect x="6" y="{top}" width="{io_w}" height="{bh}" rx="4" fill="#f3f2ef"/>')
+    body.append(_text(6 + io_w / 2, top + bh / 2 - 5, "HTML", size=9, anchor="middle", weight="bold"))
+    body.append(_text(6 + io_w / 2, top + bh / 2 + 8, "file or string", size=7, anchor="middle", fill=INK_2))
+    x = 6 + io_w + gap
+    centers = []
+    for num, l1, l2, d1, d2 in stages:
+        accent = num == "3"
+        fill = "#eaf2fc" if accent else "#f7f7f5"
+        stroke = "#2a78d6" if accent else "#d6d5d0"
+        body.append(
+            f'<rect x="{x:.1f}" y="{top}" width="{box_w:.1f}" height="{bh}" rx="4" fill="{fill}" '
+            f'stroke="{stroke}" stroke-width="{1.2 if accent else 0.8}"/>'
         )
-    }
-    script = body[body.index("<script>"):]
-    for fig_id, name in OUT_NAMES.items():
-        single = OUT / f"_{fig_id}.html"
-        single.write_text(
-            head.replace("padding: 24px;", "padding: 0;") + "<body style='margin:0'>" + cards[fig_id] + script,
-            encoding="utf-8",
+        cx = x + box_w / 2
+        centers.append(cx)
+        body.append(_text(cx, top + 15, num, size=8, anchor="middle", weight="bold", fill="#2a78d6" if accent else MUTED))
+        body.append(_text(cx, top + 30, l1, size=8.5, anchor="middle", weight="bold"))
+        body.append(_text(cx, top + 41, l2, size=8.5, anchor="middle", weight="bold"))
+        body.append(_text(cx, top + 56, d1, size=7, anchor="middle", fill=INK_2))
+        body.append(_text(cx, top + 66, d2, size=7, anchor="middle", fill=INK_2))
+        body.append(
+            f'<line x1="{x - gap + 1:.1f}" y1="{top + bh / 2}" x2="{x - 1:.1f}" y2="{top + bh / 2}" '
+            f'stroke="{MUTED}" stroke-width="1" marker-end="url(#arr)"/>'
         )
-        dest = OUT / name
-        subprocess.run(
-            [
-                chrome, "--headless=new", "--disable-gpu", "--hide-scrollbars",
-                "--force-device-scale-factor=3", f"--window-size=1180,{CARD_HEIGHTS[fig_id]}",
-                f"--screenshot={dest}", single.resolve().as_uri(),
-            ],
-            check=True, capture_output=True, timeout=120,
+        x += box_w + gap
+    body.append(
+        f'<line x1="{x - gap + 1:.1f}" y1="{top + bh / 2}" x2="{x - 1:.1f}" y2="{top + bh / 2}" '
+        f'stroke="{MUTED}" stroke-width="1" marker-end="url(#arr)"/>'
+    )
+    body.append(f'<rect x="{x:.1f}" y="{top}" width="{io_w}" height="{bh}" rx="4" fill="#f3f2ef"/>')
+    body.append(_text(x + io_w / 2, top + bh / 2 - 5, "Markdown", size=9, anchor="middle", weight="bold"))
+    body.append(_text(x + io_w / 2, top + bh / 2 + 8, "+ diagnostics", size=7, anchor="middle", fill=INK_2))
+
+    # chromerag learn feeds stage 3
+    lw, ly = 150, top + bh + 26
+    lx = centers[2] - lw / 2
+    body.append(
+        f'<rect x="{lx:.1f}" y="{ly}" width="{lw}" height="30" rx="4" fill="{SURFACE}" '
+        f'stroke="#2a78d6" stroke-width="1" stroke-dasharray="3 2"/>'
+    )
+    body.append(_text(centers[2], ly + 12, "chromerag learn (optional)", size=8, anchor="middle", weight="bold"))
+    body.append(_text(centers[2], ly + 23, "≥ 3 pages of one site → site model", size=7, anchor="middle", fill=INK_2))
+    body.append(
+        f'<line x1="{centers[2]:.1f}" y1="{ly - 1}" x2="{centers[2]:.1f}" y2="{top + bh + 2}" '
+        f'stroke="#2a78d6" stroke-width="1" marker-end="url(#arr)"/>'
+    )
+    return _svg(h, body)
+
+
+# --------------------------------------------------------------------------- Fig. 2
+def fig_benchmark(report: dict) -> str:
+    h = 212
+    body: list[str] = []
+    pw = (WIDTH - 30) / 2
+    # (a) recall vs noise retention, means over scoreable pages
+    summary = report["summary"]
+    x0, y0, w, ph = 44, 20, pw - 44, 150
+    xmax, ymin, ymax = 0.3, 0.4, 0.75
+    sx = lambda v: x0 + v / xmax * w  # noqa: E731
+    sy = lambda v: y0 + ph - (v - ymin) / (ymax - ymin) * ph  # noqa: E731
+    body.append(_text(4, 10, "(a)", size=9, weight="bold"))
+    for t in (0.0, 0.1, 0.2, 0.3):
+        body.append(f'<line x1="{sx(t):.1f}" y1="{y0}" x2="{sx(t):.1f}" y2="{y0 + ph}" stroke="{GRID}" stroke-width="0.6"/>')
+        body.append(_text(sx(t), y0 + ph + 10, f"{t:.1f}", size=7, anchor="middle", fill=INK_2))
+    for t in (0.4, 0.5, 0.6, 0.7):
+        body.append(f'<line x1="{x0}" y1="{sy(t):.1f}" x2="{x0 + w}" y2="{sy(t):.1f}" stroke="{GRID}" stroke-width="0.6"/>')
+        body.append(_text(x0 - 4, sy(t) + 2.5, f"{t:.1f}", size=7, anchor="end", fill=INK_2))
+    body.append(_text(x0 + w / 2, y0 + ph + 22, "Noise retention (lower is better)", size=7.5, anchor="middle", fill=INK_2))
+    body.append(
+        f'<text x="12" y="{y0 + ph / 2:.1f}" font-size="7.5" fill="{INK_2}" text-anchor="middle" '
+        f'transform="rotate(-90 12 {y0 + ph / 2:.1f})">Content recall (higher is better)</text>'
+    )
+    body.append(_text(x0 + 4, y0 + 9, "↖ better", size=7, fill=MUTED))
+    leader_x = sx(0.045)  # labels for the cluster near zero noise sit to the right
+    for key, (label, color) in METHODS.items():
+        s = summary[key]
+        cx, cy = sx(s["avg_noise_retention"]), sy(s["avg_content_recall"])
+        if key == "markitdown":
+            body.append(_text(cx, cy - 8, label, size=7, anchor="middle"))
+        else:
+            body.append(f'<line x1="{cx + 4:.1f}" y1="{cy:.1f}" x2="{leader_x - 2:.1f}" y2="{cy:.1f}" stroke="{MUTED}" stroke-width="0.5"/>')
+            body.append(_text(leader_x, cy + 2.5, label, size=7))
+        body.append(f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="3.6" fill="{color}" stroke="{SURFACE}" stroke-width="1.2"/>')
+
+    # (b) per-page recall ECDF: where content gets lost
+    pages = [p for p in report["pages"].values() if p.get("scoreable")]
+    bx0, by0, bw = WIDTH / 2 + 42, 20, pw - 38
+    body.append(_text(WIDTH / 2 + 8, 10, "(b)", size=9, weight="bold"))
+    bsx = lambda v: bx0 + v * bw  # noqa: E731
+    bsy = lambda v: by0 + ph - v * ph  # noqa: E731
+    body.append(f'<rect x="{bsx(0):.1f}" y="{by0}" width="{bsx(0.2) - bsx(0):.1f}" height="{ph}" fill="#f6f5f2"/>')
+    body.append(_text(bsx(0.1), by0 + 9, "recall < 0.2", size=6.5, anchor="middle", fill=MUTED))
+    for t in (0.0, 0.25, 0.5, 0.75, 1.0):
+        body.append(f'<line x1="{bsx(t):.1f}" y1="{by0}" x2="{bsx(t):.1f}" y2="{by0 + ph}" stroke="{GRID}" stroke-width="0.6"/>')
+        body.append(_text(bsx(t), by0 + ph + 10, f"{t:g}", size=7, anchor="middle", fill=INK_2))
+        body.append(f'<line x1="{bx0}" y1="{bsy(t):.1f}" x2="{bx0 + bw}" y2="{bsy(t):.1f}" stroke="{GRID}" stroke-width="0.6"/>')
+        body.append(_text(bx0 - 4, bsy(t) + 2.5, f"{int(t * 100)}%", size=7, anchor="end", fill=INK_2))
+    body.append(_text(bx0 + bw / 2, by0 + ph + 22, "Per-page content recall", size=7.5, anchor="middle", fill=INK_2))
+    body.append(
+        f'<text x="{WIDTH / 2 + 12:.1f}" y="{by0 + ph / 2:.1f}" font-size="7.5" fill="{INK_2}" text-anchor="middle" '
+        f'transform="rotate(-90 {WIDTH / 2 + 12:.1f} {by0 + ph / 2:.1f})">Share of pages (cumulative)</text>'
+    )
+    legend_y = bsy(0.86)
+    for i, key in enumerate(("trafilatura", "chromerag_coverage", "markitdown")):
+        label, color = METHODS[key]
+        vals = sorted(p["methods"][key]["content_recall"] for p in pages)
+        n = len(vals)
+        pts = [f"{bsx(0):.2f},{bsy(0):.2f}"]
+        for j, v in enumerate(vals):
+            pts.append(f"{bsx(v):.2f},{bsy(j / n):.2f}")
+            pts.append(f"{bsx(v):.2f},{bsy((j + 1) / n):.2f}")
+        pts.append(f"{bsx(1):.2f},{bsy(1):.2f}")
+        body.append(
+            f'<polyline points="{" ".join(pts)}" fill="none" stroke="{color}" stroke-width="1.5" '
+            'stroke-linejoin="round" stroke-linecap="round"/>'
         )
-        single.unlink()
-        print(f"Wrote {dest} ({dest.stat().st_size} bytes)")
-    return True
+        ly = legend_y + i * 11
+        body.append(f'<line x1="{bsx(0.24):.1f}" y1="{ly - 2.5}" x2="{bsx(0.30):.1f}" y2="{ly - 2.5}" stroke="{color}" stroke-width="1.8" stroke-linecap="round"/>')
+        body.append(_text(bsx(0.32), ly, label.split(" (")[0], size=7))
+    return _svg(h, body)
+
+
+# --------------------------------------------------------------------------- Fig. 3
+def fig_retrieval(report: dict) -> str:
+    tools = [t for t in METHODS if t in report["tools"]]
+    rows = len(tools)
+    row_h, thick = 20, 10
+    top = 26
+    h = top + rows * row_h + 30
+    body: list[str] = []
+    label_w = 98
+    panels = [
+        ("(a)", "Known-item hit@5 (higher is better)", "hit@5", 1.0, lambda v: f"{v:.3f}", (0, 0.25, 0.5, 0.75, 1.0), lambda t: f"{t:g}"),
+        ("(b)", "Chrome in retrieved context (lower is better)", "context_chrome@5", 0.03, lambda v: f"{v * 100:.1f}%", (0, 0.01, 0.02, 0.03), lambda t: f"{t * 100:.0f}%"),
+    ]
+    pw = (WIDTH - label_w - 20) / 2
+    for pi, (tag, title, metric, vmax, fmt, ticks, tfmt) in enumerate(panels):
+        x0 = label_w + pi * (pw + 20)
+        w = pw - 30
+        body.append(
+            f'<text x="{x0 - (label_w - 4) if pi == 0 else x0:.1f}" y="10" font-size="7.5" fill="{INK_2}">'
+            f'<tspan font-size="9" font-weight="bold" fill="{INK}">{tag}</tspan>'
+            f'<tspan dx="{label_w - 4 - 14 if pi == 0 else 6}">{escape(title)}</tspan></text>'
+        )
+        for t in ticks:
+            x = x0 + t / vmax * w
+            body.append(f'<line x1="{x:.1f}" y1="{top - 4}" x2="{x:.1f}" y2="{top + rows * row_h}" stroke="{GRID}" stroke-width="0.6"/>')
+            body.append(_text(x, top + rows * row_h + 10, tfmt(t), size=7, anchor="middle", fill=INK_2))
+        for i, tool in enumerate(tools):
+            label, color = METHODS[tool]
+            y = top + i * row_h + (row_h - thick) / 2
+            v = report["tools"][tool]["scores"]["all"][metric]
+            length = v / vmax * w
+            body.append(_hbar(x0, y, length, thick, color))
+            body.append(_text(x0 + length + 3, y + thick / 2 + 2.5, fmt(v), size=7))
+            if pi == 0:
+                body.append(_text(label_w - 8, y + thick / 2 + 2.5, label, size=7.5, anchor="end"))
+        body.append(f'<line x1="{x0}" y1="{top - 4}" x2="{x0}" y2="{top + rows * row_h}" stroke="{INK_2}" stroke-width="0.8"/>')
+    return _svg(h, body)
+
+
+# --------------------------------------------------------------------------- output
+def _chrome() -> str:
+    found = next((c for c in CHROME_CANDIDATES if shutil.which(c) or Path(c).exists()), None)
+    if not found:
+        raise SystemExit("A Chrome/Chromium binary is needed to rasterize the figures.")
+    return found
+
+
+def render(name: str, svg: str) -> None:
+    chrome = _chrome()
+    OUT.mkdir(parents=True, exist_ok=True)
+    (OUT / f"{name}.svg").write_text(svg, encoding="utf-8")
+    height_pt = float(svg.split('height="', 1)[1].split("pt", 1)[0])
+    px_w, px_h = round(WIDTH * 4 / 3), round(height_pt * 4 / 3)
+    page = OUT / f"_{name}.html"
+    page.write_text(
+        "<!doctype html><html><head><meta charset='utf-8'><style>"
+        f"@page{{size:{WIDTH}pt {height_pt}pt;margin:0}}html,body{{margin:0;padding:0;background:#fff}}"
+        "svg{display:block}</style></head><body>" + svg + "</body></html>",
+        encoding="utf-8",
+    )
+    common = [chrome, "--headless=new", "--disable-gpu", "--hide-scrollbars", "--no-pdf-header-footer"]
+    scale = DPI / 96
+    subprocess.run(
+        common
+        + [f"--force-device-scale-factor={scale}", f"--window-size={px_w},{px_h}", f"--screenshot={OUT / (name + '.png')}", page.as_uri()],
+        check=True,
+        capture_output=True,
+        timeout=120,
+    )
+    subprocess.run(
+        common + [f"--print-to-pdf={OUT / (name + '.pdf')}", page.as_uri()],
+        check=True,
+        capture_output=True,
+        timeout=120,
+    )
+    page.unlink()
+    print(f"Wrote {name}.svg/.png/.pdf")
 
 
 def main() -> None:
-    report = json.loads(REPORT.read_text(encoding="utf-8"))
-    html_path = write_html(report)
-    ok = rasterize_with_playwright(html_path)
-    if not ok:
-        print(
-            "Open figures/_charts.html in a browser (or Playwright MCP) and screenshot "
-            "#fig1..#fig4 to fig1_fbal.png … fig4_corpus_gate.png at deviceScaleFactor=3, "
-            "then run: python scripts/fill_softwarex_docx.py && python scripts/embed_softwarex_figures.py",
-            file=sys.stderr,
-        )
-        raise SystemExit(
-            "playwright not installed in this venv. HTML source is ready at figures/_charts.html"
-        )
-    print("Done. Figures written to", OUT)
+    corpus = json.loads((DATA / "corpus_comparison_report.json").read_text(encoding="utf-8"))
+    retrieval = json.loads((DATA / "retrieval_eval_report.json").read_text(encoding="utf-8"))
+    for stale in OUT.glob("fig*_*.png"):
+        stale.unlink()
+    render("fig1_architecture", fig_architecture())
+    render("fig2_benchmark", fig_benchmark(corpus))
+    render("fig3_retrieval", fig_retrieval(retrieval))
+    print("Done:", OUT)
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
