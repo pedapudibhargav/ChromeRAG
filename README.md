@@ -5,6 +5,7 @@
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/downloads/)
 [![Tests](https://github.com/pedapudibhargav/ChromeRAG/actions/workflows/pages.yml/badge.svg)](https://github.com/pedapudibhargav/ChromeRAG/actions/workflows/pages.yml)
 [![Results](https://img.shields.io/badge/results-GitHub%20Pages-2a78d6.svg)](https://pedapudibhargav.github.io/ChromeRAG/)
+[![DOI](https://zenodo.org/badge/1378773845.svg)](https://doi.org/10.5281/zenodo.22970289)
 
 **HTML → RAG-ready Markdown** that strips site-template chrome (nav, footer, CTAs, cookie banners) while keeping documentation, pricing tables, and article body text.
 
@@ -227,7 +228,9 @@ papers/softwarex/  # SoftwareX manuscript sources
 
 If you use ChromeRAG, please cite the software (see [`CITATION.cff`](CITATION.cff)):
 
-> B. C. Peddapudi, *ChromeRAG*, version 0.1.2, 2026. https://github.com/pedapudibhargav/ChromeRAG
+> B. C. Peddapudi, *ChromeRAG*, version 0.1.2, Zenodo, 2026. https://doi.org/10.5281/zenodo.22970290
+
+To cite whichever version is latest, use the all-versions DOI [10.5281/zenodo.22970289](https://doi.org/10.5281/zenodo.22970289).
 
 ## License
 

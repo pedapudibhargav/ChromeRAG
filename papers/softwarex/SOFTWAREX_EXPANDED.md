@@ -193,6 +193,6 @@ During the preparation of this work the author used Cursor (with a Grok-based co
 11. J. Tan, Z. Dou, W. Wang, M. Wang, W. Chen, and J.-R. Wen, "HtmlRAG: HTML is Better Than Plain Text for Modeling Retrieved Knowledge in RAG Systems," in *Proc. ACM Web Conf. 2025 (WWW '25)*, 2025, pp. 1733–1746. doi: 10.1145/3696410.3714546.
 12. K. Weinberger, A. Dasgupta, J. Langford, A. Smola, and J. Attenberg, "Feature Hashing for Large Scale Multitask Learning," in *Proc. 26th Int. Conf. Machine Learning (ICML)*, 2009, pp. 1113–1120. doi: 10.1145/1553374.1553516.
 13. N. Reimers and I. Gurevych, "Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks," in *Proc. EMNLP-IJCNLP 2019*, 2019, pp. 3980–3990. doi: 10.18653/v1/D19-1410.
-14. B. C. Peddapudi, *ChromeRAG*, version 0.1.2, GitHub, 2026. [Online]. Available: https://github.com/pedapudibhargav/ChromeRAG/tree/v0.1.2
+14. B. C. Peddapudi, *ChromeRAG*, version 0.1.2, Zenodo, 2026. doi: 10.5281/zenodo.22970290. Source: https://github.com/pedapudibhargav/ChromeRAG/tree/v0.1.2
 
 ---

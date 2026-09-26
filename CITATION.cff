@@ -9,6 +9,14 @@ authors:
 version: 0.1.2
 date-released: "2026-09-24"
 license: MIT
+doi: "10.5281/zenodo.22970289"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.22970289"
+    description: "All versions (concept DOI)"
+  - type: doi
+    value: "10.5281/zenodo.22970290"
+    description: "Version 0.1.2"
 repository-code: "https://github.com/pedapudibhargav/ChromeRAG"
 url: "https://pedapudibhargav.github.io/ChromeRAG/"
 keywords:
