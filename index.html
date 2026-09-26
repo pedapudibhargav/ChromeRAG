@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ChromeRAG</title>
+<meta name="description" content="ChromeRAG converts scraped HTML into RAG-ready Markdown without site chrome. Open benchmark, retrieval evaluation and per-page results.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232a78d6'/%3E%3Cpath d='M9 11h14M9 16h10M9 21h12' stroke='white' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+:root {
+  color-scheme: light;
+  --bg: #fbfbfa;
+  --surface: #ffffff;
+  --surface-2: #f4f3f0;
+  --border: #e4e3df;
+  --ink: #1f1f1d;
+  --ink-2: #52514e;
+  --muted: #7a7973;
+  --accent: #2a78d6;
+  --accent-soft: #eaf2fc;
+  --s-cov: #2a78d6;
+  --s-bal: #86b6ef;
+  --s-traf: #eb6834;
+  --s-mid: #1baf7a;
+  --s-read: #8a8983;
+  --s-other: #c9c8c2;
+  --good: #1a7f37;
+  --bad: #c0362c;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --max: 1040px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #141413; --surface: #1c1c1b; --surface-2: #262624; --border: #34342f;
+    --ink: #f3f2ee; --ink-2: #c3c2b7; --muted: #95948c;
+    --accent: #5598e7; --accent-soft: #1d2b3d;
+    --s-cov: #3987e5; --s-bal: #86b6ef; --s-traf: #d95926; --s-mid: #199e70; --s-read: #8a8983; --s-other: #55544f;
+    --good: #4cc26d; --bad: #f07167;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #141413; --surface: #1c1c1b; --surface-2: #262624; --border: #34342f;
+  --ink: #f3f2ee; --ink-2: #c3c2b7; --muted: #95948c;
+  --accent: #5598e7; --accent-soft: #1d2b3d;
+  --s-cov: #3987e5; --s-bal: #86b6ef; --s-traf: #d95926; --s-mid: #199e70; --s-read: #8a8983; --s-other: #55544f;
+  --good: #4cc26d; --bad: #f07167;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 var(--sans); -webkit-font-smoothing: antialiased; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code, pre, kbd { font-family: var(--mono); font-size: .88em; }
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 20px; }
+header.top { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
+.bar { display: flex; align-items: center; gap: 20px; height: 56px; }
+.brand { display: flex; align-items: center; gap: 9px; font-weight: 700; color: var(--ink); letter-spacing: -.01em; }
+.brand:hover { text-decoration: none; }
+.logo { width: 24px; height: 24px; border-radius: 6px; background: var(--accent); display: grid; place-items: center; }
+.logo svg { width: 14px; height: 14px; }
+nav.links { display: flex; gap: 18px; margin-left: auto; overflow-x: auto; scrollbar-width: none; }
+nav.links a { color: var(--ink-2); font-size: 14px; white-space: nowrap; }
+nav.links a:hover { color: var(--ink); text-decoration: none; }
+.icon-btn { border: 1px solid var(--border); background: var(--surface); color: var(--ink-2); border-radius: 8px; height: 32px; min-width: 32px; padding: 0 8px; cursor: pointer; font: inherit; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; }
+.icon-btn:hover { color: var(--ink); border-color: var(--muted); text-decoration: none; }
+@media (max-width: 760px) { nav.links { display: none; } .bar { gap: 10px; } .brand { margin-right: auto; } }
+
+.hero { padding-top: 72px; padding-bottom: 40px; }
+.eyebrow { color: var(--accent); font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; margin: 0 0 12px; }
+h1 { font-size: clamp(34px, 5.4vw, 54px); line-height: 1.08; letter-spacing: -.025em; margin: 0 0 18px; max-width: 16ch; }
+.lede { font-size: 19px; color: var(--ink-2); max-width: 62ch; margin: 0 0 28px; }
+.cta { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.cmd { display: inline-flex; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 4px 4px 4px 16px; font-family: var(--mono); font-size: 15px; max-width: 100%; }
+.cmd .prompt { color: var(--muted); user-select: none; }
+.btn { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border-radius: 10px; font-weight: 600; font-size: 15px; border: 1px solid var(--border); background: var(--surface); color: var(--ink); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn:hover { text-decoration: none; filter: brightness(.97); }
+.badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+.badge { font-size: 12.5px; color: var(--ink-2); background: var(--surface-2); border-radius: 999px; padding: 3px 10px; }
+
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin: 8px 0 12px; }
+.stat { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px; }
+.stat .label { font-size: 13px; color: var(--ink-2); margin: 0 0 6px; }
+.stat .value { font-size: 34px; font-weight: 650; letter-spacing: -.02em; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.stat .sub { font-size: 13px; color: var(--muted); margin-top: 6px; }
+
+section { padding: 56px 0 8px; }
+h2 { font-size: 28px; letter-spacing: -.02em; margin: 0 0 8px; }
+h3 { font-size: 17px; margin: 28px 0 10px; }
+.section-lede { color: var(--ink-2); max-width: 70ch; margin: 0 0 22px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 20px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 820px) { .grid-2 { grid-template-columns: 1fr; } }
+.muted { color: var(--muted); }
+.small { font-size: 13.5px; }
+
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); padding: 0 8px; }
+.tab { border: 0; background: none; font: inherit; font-size: 14px; color: var(--ink-2); padding: 10px 12px; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); font-weight: 600; }
+.code { position: relative; background: var(--surface-2); border-radius: 0 0 14px 14px; }
+.code pre { margin: 0; padding: 18px 20px; overflow-x: auto; line-height: 1.55; }
+.code .copy { position: absolute; top: 10px; right: 10px; }
+.c { color: var(--muted); }
+
+.pipeline { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.stage { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px; }
+.stage.accent { border-color: var(--accent); background: var(--accent-soft); }
+.stage .n { font-size: 12px; font-weight: 700; color: var(--muted); }
+.stage.accent .n { color: var(--accent); }
+.stage .t { font-weight: 650; margin: 2px 0 6px; line-height: 1.25; }
+.stage .d { font-size: 13px; color: var(--ink-2); }
+@media (max-width: 820px) { .pipeline { grid-template-columns: 1fr; } }
+.learn { margin-top: 10px; border: 1.5px dashed var(--accent); border-radius: 12px; padding: 12px 14px; font-size: 14px; color: var(--ink-2); }
+
+.toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 12px; }
+.seg { display: inline-flex; border: 1px solid var(--border); border-radius: 9px; overflow: hidden; background: var(--surface); }
+.seg button { border: 0; background: none; font: inherit; font-size: 13.5px; padding: 6px 12px; color: var(--ink-2); cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--accent-soft); color: var(--ink); font-weight: 600; }
+select, input[type="search"] { font: inherit; font-size: 14px; color: var(--ink); background: var(--surface); border: 1px solid var(--border); border-radius: 9px; padding: 7px 10px; }
+input[type="search"] { width: min(100%, 380px); }
+
+.table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { padding: 10px 14px; text-align: right; white-space: nowrap; border-bottom: 1px solid var(--border); }
+th:first-child, td:first-child { text-align: left; }
+tbody tr:last-child td { border-bottom: 0; }
+th { font-size: 12.5px; font-weight: 600; color: var(--ink-2); background: var(--surface-2); }
+th[data-sort] { cursor: pointer; user-select: none; }
+th[data-sort]:hover { color: var(--ink); }
+th[aria-sort="descending"]::after { content: " ▾"; color: var(--accent); }
+th[aria-sort="ascending"]::after { content: " ▴"; color: var(--accent); }
+td.num { font-variant-numeric: tabular-nums; }
+tr.ours td:first-child { font-weight: 650; }
+.swatch { display: inline-block; width: 9px; height: 9px; border-radius: 3px; margin-right: 8px; }
+.meter { display: inline-block; vertical-align: middle; width: 70px; height: 6px; background: var(--surface-2); border-radius: 3px; margin-left: 10px; overflow: hidden; }
+.meter i { display: block; height: 100%; border-radius: 3px; }
+
+.bars { display: grid; gap: 10px; }
+.brow { display: grid; grid-template-columns: 160px 1fr 58px; gap: 12px; align-items: center; font-size: 14px; }
+.brow .track { height: 12px; background: var(--surface-2); border-radius: 4px; overflow: hidden; }
+.brow .fill { display: block; height: 100%; border-radius: 0 4px 4px 0; }
+.brow .v { text-align: right; font-variant-numeric: tabular-nums; }
+@media (max-width: 560px) { .brow { grid-template-columns: 110px 1fr 52px; font-size: 13px; } }
+
+.ci { display: grid; gap: 10px; }
+.ci-row { display: grid; grid-template-columns: minmax(170px, 1.2fr) 2fr 170px; gap: 12px; align-items: center; font-size: 14px; }
+.ci-axis { position: relative; height: 18px; }
+.ci-axis .zero { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--muted); }
+.ci-axis .range { position: absolute; top: 7px; height: 4px; background: var(--accent); border-radius: 2px; opacity: .45; }
+.ci-axis .dot { position: absolute; top: 4px; width: 10px; height: 10px; margin-left: -5px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 2px var(--surface); }
+@media (max-width: 640px) { .ci-row { grid-template-columns: 1fr; gap: 2px; } }
+
+.explorer-result { margin-top: 14px; }
+.kv { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; font-size: 13.5px; color: var(--ink-2); margin-bottom: 12px; word-break: break-all; }
+.pill { font-size: 12px; border-radius: 999px; padding: 2px 9px; background: var(--surface-2); color: var(--ink-2); word-break: normal; }
+.pill.ok { background: color-mix(in srgb, var(--good) 14%, transparent); color: var(--good); }
+.pill.bad { background: color-mix(in srgb, var(--bad) 14%, transparent); color: var(--bad); }
+details { border: 1px solid var(--border); border-radius: 12px; background: var(--surface); padding: 12px 16px; }
+details + details { margin-top: 10px; }
+summary { cursor: pointer; font-weight: 600; }
+details pre { overflow-x: auto; margin: 12px 0 0; background: var(--surface-2); padding: 14px 16px; border-radius: 10px; }
+ul.plain { margin: 10px 0 0; padding-left: 18px; }
+ul.plain li { margin: 4px 0; }
+footer { margin-top: 72px; border-top: 1px solid var(--border); padding: 28px 0 48px; color: var(--muted); font-size: 14px; }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; }
+.status { color: var(--muted); font-size: 14px; }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap bar">
+    <a class="brand" href="#top" aria-label="ChromeRAG home">
+      <span class="logo" aria-hidden="true"><svg viewBox="0 0 14 14"><path d="M2 3.5h10M2 7h7M2 10.5h8.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+      ChromeRAG
+    </a>
+    <nav class="links" aria-label="Sections">
+      <a href="#start">Quick start</a>
+      <a href="#how">How it works</a>
+      <a href="#benchmark">Benchmark</a>
+      <a href="#retrieval">Retrieval</a>
+      <a href="#templates">Site templates</a>
+      <a href="#explorer">Page explorer</a>
+      <a href="#cite">Cite</a>
+    </nav>
+    <button class="icon-btn" id="theme" type="button" aria-label="Toggle dark mode">◐</button>
+    <a class="icon-btn" href="https://github.com/pedapudibhargav/ChromeRAG">GitHub</a>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap hero">
+    <p class="eyebrow">Open source · MIT · CPU-only</p>
+    <h1>RAG-ready Markdown, without the site chrome.</h1>
+    <p class="lede">ChromeRAG turns scraped HTML into clean Markdown for retrieval-augmented generation. It strips navigation, cookie banners, calls to action and footers, can learn a site's repeated template from a few pages, keeps Schema.org metadata as front-matter and tables as key–value rows, and warns you when a page is an unrendered JavaScript shell.</p>
+    <div class="cta">
+      <span class="cmd"><span class="prompt">$</span><span id="pip">pip install chromerag</span><button class="icon-btn copy" data-copy="#pip" type="button">Copy</button></span>
+      <a class="btn primary" href="#start">Get started</a>
+      <a class="btn" href="#benchmark">See the benchmark</a>
+    </div>
+    <div class="badges">
+      <span class="badge">Python ≥ 3.11</span>
+      <span class="badge">No model download</span>
+      <span class="badge">Works offline</span>
+      <span class="badge" id="tests-badge">Test suite</span>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="stats" aria-live="polite">
+      <div class="stat"><p class="label">Balanced F-score, public benchmark</p><div class="value" data-stat="fbal">–</div><div class="sub" data-stat="fbal-sub">loading…</div></div>
+      <div class="stat"><p class="label">Retrieval hit@5 (BM25)</p><div class="value" data-stat="hit">–</div><div class="sub" data-stat="hit-sub">loading…</div></div>
+      <div class="stat"><p class="label">Chrome in retrieved context</p><div class="value" data-stat="chrome">–</div><div class="sub" data-stat="chrome-sub">loading…</div></div>
+    </div>
+  </div>
+
+  <section id="start">
+    <div class="wrap">
+      <h2>Quick start</h2>
+      <p class="section-lede">HTML in, Markdown out. ChromeRAG never fetches pages or runs JavaScript: your crawler or headless browser stores the HTML, and ChromeRAG cleans it before chunking and embedding.</p>
+      <div class="card" style="padding:0">
+        <div class="tabs" role="tablist">
+          <button class="tab" role="tab" aria-selected="true" data-tab="cli" type="button">Command line</button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="py" type="button">Python</button>
+        </div>
+        <div class="code" data-panel="cli">
+          <button class="icon-btn copy" data-copy="#code-cli" type="button">Copy</button>
+<pre id="code-cli"><span class="c"># one page → Markdown (front-matter, key–value tables; --json-meta prints diagnostics)</span>
+chromerag extract page.html -o page.md --priority coverage
+
+<span class="c"># learn a site's repeated chrome from ≥ 3 pages, then convert the whole folder</span>
+chromerag learn pages/ -o site.json --min-pages 3
+chromerag batch pages/ -o out/ --chrome-model site.json
+
+<span class="c"># exit code 3 on JavaScript shells, so a pipeline can render them first</span>
+chromerag extract page.html -o page.md --fail-on-thin</pre>
+        </div>
+        <div class="code" data-panel="py" hidden>
+          <button class="icon-btn copy" data-copy="#code-py" type="button">Copy</button>
+<pre id="code-py">from chromerag import ChromeRAG, ContentPriority, PipelineConfig
+
+extractor = ChromeRAG(config=PipelineConfig.from_priority(ContentPriority.COVERAGE))
+result = extractor.extract(html, url="https://docs.example.com/docs/pricing")
+
+result.markdown       <span class="c"># clean Markdown</span>
+result.front_matter   <span class="c"># title, type, dates, breadcrumb from JSON-LD / Microdata</span>
+result.warnings       <span class="c"># e.g. the input looks like a JavaScript-rendered shell</span>
+result.diagnostics    <span class="c"># what was removed, and why</span></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="wrap">
+      <h2>How it works</h2>
+      <p class="section-lede">Five stages, each a small module. Everything is deterministic and runs on CPU; the vector filter uses feature hashing, so there is nothing to download.</p>
+      <div class="pipeline">
+        <div class="stage"><div class="n">1</div><div class="t">Input-quality gate</div><div class="d">Flags thin pages and JavaScript shells before anything is removed.</div></div>
+        <div class="stage"><div class="n">2</div><div class="t">Schema harvest</div><div class="d">JSON-LD and Microdata become YAML front-matter.</div></div>
+        <div class="stage accent"><div class="n">3</div><div class="t">Clean + site template</div><div class="d">Strips scripts; applies a learned site model if you give it one.</div></div>
+        <div class="stage"><div class="n">4</div><div class="t">Structural + density prune</div><div class="d">Landmarks, link density and a lexical boilerplate filter.</div></div>
+        <div class="stage"><div class="n">5</div><div class="t">Tables + Markdown</div><div class="d">Tables become <code>Row n -&gt; header: value</code> lines.</div></div>
+      </div>
+      <div class="learn"><strong style="color:var(--ink)">chromerag learn</strong> (optional) finds blocks that repeat, with the same text, on most pages of a site section and look like chrome. At extraction time a match is removed only if it is close to its learned size and does not hold the page's main content.</div>
+    </div>
+  </section>
+
+  <section id="benchmark">
+    <div class="wrap">
+      <h2>Public benchmark</h2>
+      <p class="section-lede" id="bench-lede">Every tool runs on the same stored HTML. Recall is the share of main-content 5-grams kept, noise retention the share of navigation, header and footer 5-grams kept, and F<sub>bal</sub> their harmonic balance. The scored pages are chosen from the input HTML only, never from any tool's output.</p>
+      <div class="toolbar">
+        <div class="seg" role="group" aria-label="Page set">
+          <button type="button" aria-pressed="true" data-cohort="scoreable">Scoreable pages</button>
+          <button type="button" aria-pressed="false" data-cohort="all">All fetched pages</button>
+        </div>
+        <select id="category" aria-label="Page category"><option value="">All categories</option></select>
+        <span class="status" id="bench-status"></span>
+      </div>
+      <div class="table-wrap">
+        <table id="leaderboard">
+          <thead><tr>
+            <th scope="col">Method</th>
+            <th scope="col" data-sort="avg_content_recall">Recall ↑</th>
+            <th scope="col" data-sort="avg_noise_retention">Noise ret. ↓</th>
+            <th scope="col" data-sort="avg_f_balanced" aria-sort="descending">F<sub>bal</sub> ↑</th>
+            <th scope="col" data-sort="avg_tokens">Avg tokens</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <h3>Is the difference real? Paired bootstrap, 95% CI</h3>
+      <div class="card"><div class="ci" id="ci"></div>
+        <p class="small muted" style="margin:14px 0 0">Mean per-page difference, ChromeRAG coverage minus the baseline, 2,000 resamples. An interval that does not cross the zero line is a significant difference.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="retrieval">
+    <div class="wrap">
+      <h2>Does it help retrieval?</h2>
+      <p class="section-lede">Each tool's output is split into ~200-word chunks and indexed with BM25, as a RAG ingest step would. Queries are page titles, section headings and content passages taken from the input HTML; each has exactly one correct page.</p>
+      <div class="grid-2">
+        <div class="card"><h3 style="margin-top:0">Hit@5 <span class="muted small">higher is better</span></h3><div class="bars" id="ret-hit"></div></div>
+        <div class="card"><h3 style="margin-top:0">Chrome in top-5 context <span class="muted small">lower is better</span></h3><div class="bars" id="ret-chrome"></div></div>
+      </div>
+      <p class="small muted" id="ret-note"></p>
+    </div>
+  </section>
+
+  <section id="templates">
+    <div class="wrap">
+      <h2>Learning a site's template</h2>
+      <p class="section-lede">Site-template chrome elimination (STCE) learns blocks that repeat across pages of one site section. It is evaluated on the benchmark's sites with at least three pages and on a separate crawl of up to 15 pages per documentation site.</p>
+      <div class="table-wrap">
+        <table id="stce">
+          <thead><tr><th scope="col">Page set</th><th scope="col">Sites</th><th scope="col">Scored pages</th><th scope="col">Recall without → with</th><th scope="col">Pages changed</th><th scope="col">Site-repeated text</th></tr></thead>
+          <tbody><tr><td colspan="6" class="muted">loading…</td></tr></tbody>
+        </table>
+      </div>
+      <p class="small muted" id="stce-note"></p>
+    </div>
+  </section>
+
+  <section id="explorer">
+    <div class="wrap">
+      <h2>Page explorer</h2>
+      <p class="section-lede">Every benchmark page with every tool's score, so you can check individual cases instead of trusting the averages.</p>
+      <div class="toolbar">
+        <input type="search" id="page-search" placeholder="Search by site, URL or id, e.g. kubernetes" aria-label="Search benchmark pages" list="page-list" autocomplete="off">
+        <datalist id="page-list"></datalist>
+        <span class="status" id="explorer-status">Loading pages…</span>
+      </div>
+      <div id="explorer-result" class="explorer-result"></div>
+    </div>
+  </section>
+
+  <section id="more">
+    <div class="wrap">
+      <h2>Reproduce, limits and tests</h2>
+      <details open>
+        <summary>Reproduce every number</summary>
+<pre>pip install -e ".[dev,baselines]"
+python scripts/revalidate_corpus.py         <span class="c"># offline: recompute every mean from the published per-page scores</span>
+python -m poc.run_corpus_comparison         <span class="c"># fetch the public URLs and score every tool (network)</span>
+python -m poc.run_retrieval_eval            <span class="c"># BM25 retrieval over each tool's chunks</span>
+python -m poc.crawl_site_groups --fetch     <span class="c"># multi-page crawl for the site-template study (network)</span>
+python -m poc.run_stce_eval --raw data/stce_crawl</pre>
+        <p class="small muted">Live pages change, so a fresh fetch will not match the published numbers exactly. The published per-page scores are in <a href="data/corpus_comparison_report.json">data/corpus_comparison_report.json</a>.</p>
+      </details>
+      <details>
+        <summary>Limitations</summary>
+        <ul class="plain">
+          <li>ChromeRAG does not run JavaScript. It warns about shell pages but cannot recover their content.</li>
+          <li>The benchmark uses structural anchors, not human-labelled spans. Pages without landmarks are under-represented, and extractors that also use landmarks may have an advantage.</li>
+          <li>Most benchmark pages are documentation; other page types are too few for separate conclusions.</li>
+          <li>The boilerplate filter compares lexical hashed vectors, not semantic embeddings, and retrieval is evaluated with BM25 only.</li>
+          <li>Only HTML is handled. Use other converters for PDF and Office files.</li>
+        </ul>
+      </details>
+      <details>
+        <summary>Test suite <span class="muted small" id="tests-summary"></span></summary>
+        <ul class="plain small" id="tests-list"></ul>
+      </details>
+    </div>
+  </section>
+
+  <section id="cite">
+    <div class="wrap">
+      <h2>Cite</h2>
+      <div class="code" style="border-radius:14px">
+        <button class="icon-btn copy" data-copy="#bibtex" type="button">Copy</button>
+<pre id="bibtex">@software{peddapudi_chromerag,
+  author  = {Peddapudi, Bhargava Chary},
+  title   = {ChromeRAG: Ingest-Time Elimination of Site Template Noise for Enterprise Web RAG},
+  url     = {https://github.com/pedapudibhargav/ChromeRAG},
+  license = {MIT},
+  doi     = {10.5281/zenodo.22970289},
+  year    = {2026}
+}</pre>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>ChromeRAG · MIT licence · <a href="https://github.com/pedapudibhargav/ChromeRAG">GitHub</a> · <a href="https://pypi.org/project/chromerag/">PyPI</a> · <a href="https://github.com/pedapudibhargav/ChromeRAG/issues">Issues</a> · <a href="https://doi.org/10.5281/zenodo.22970289">DOI</a></span>
+    <span>Bhargava Chary Peddapudi · <a href="https://orcid.org/0009-0002-8523-8415">ORCID</a></span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var METHODS = {
+    chromerag_coverage: ["ChromeRAG (coverage)", "--s-cov", true],
+    chromerag: ["ChromeRAG (balanced)", "--s-bal", true],
+    chromerag_precision: ["ChromeRAG (precision)", "--s-bal", true],
+    coverage: ["ChromeRAG (coverage)", "--s-cov", true],
+    trafilatura: ["Trafilatura", "--s-traf", false],
+    markitdown: ["MarkItDown", "--s-mid", false],
+    markdownify: ["markdownify", "--s-other", false],
+    html2text: ["html2text", "--s-other", false],
+    readability: ["Readability", "--s-read", false],
+    beautifulsoup_text: ["BeautifulSoup text", "--s-other", false]
+  };
+  function name(k) { return (METHODS[k] || [k])[0]; }
+  function color(k) { return "var(" + (METHODS[k] || [0, "--s-other"])[1] + ")"; }
+  function ours(k) { return !!(METHODS[k] || [])[2]; }
+  function f3(v) { return v == null ? "–" : Number(v).toFixed(3); }
+  function pct(v, d) { return v == null ? "–" : (Number(v) * 100).toFixed(d == null ? 1 : d) + "%"; }
+  function int(v) { return v == null ? "–" : Math.round(v).toLocaleString("en-US"); }
+  function signed(v) { return (v >= 0 ? "+" : "−") + Math.abs(v).toFixed(3); }
+  function el(tag, attrs, html) {
+    var n = document.createElement(tag);
+    for (var k in attrs || {}) n.setAttribute(k, attrs[k]);
+    if (html != null) n.innerHTML = html;
+    return n;
+  }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function getJSON(path) { return fetch(path).then(function (r) { if (!r.ok) throw new Error(path + " " + r.status); return r.json(); }); }
+  function setStat(key, text) { var n = document.querySelector('[data-stat="' + key + '"]'); if (n) n.textContent = text; }
+
+  // theme toggle (the choice is remembered per browser when storage is available)
+  var root = document.documentElement;
+  try { var saved = localStorage.getItem("chromerag-theme"); if (saved) root.setAttribute("data-theme", saved); } catch (e) {}
+  document.getElementById("theme").addEventListener("click", function () {
+    var current = root.getAttribute("data-theme");
+    var dark = current ? current === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+    var next = dark ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("chromerag-theme", next); } catch (e) {}
+  });
+
+  document.querySelectorAll(".copy").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var src = document.querySelector(b.getAttribute("data-copy"));
+      var text = src ? src.innerText : "";
+      var done = function () { b.textContent = "Copied"; setTimeout(function () { b.textContent = "Copy"; }, 1400); };
+      if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, function () {});
+    });
+  });
+
+  document.querySelectorAll(".tab").forEach(function (t) {
+    t.addEventListener("click", function () {
+      document.querySelectorAll(".tab").forEach(function (o) { o.setAttribute("aria-selected", o === t ? "true" : "false"); });
+      document.querySelectorAll("[data-panel]").forEach(function (p) { p.hidden = p.getAttribute("data-panel") !== t.getAttribute("data-tab"); });
+    });
+  });
+
+  // ---------------------------------------------------------------- benchmark
+  var board = null, cohort = "scoreable", category = "", sortKey = "avg_f_balanced", sortDir = -1;
+  function currentSummary() {
+    if (!board) return {};
+    if (category) return (board.by_category || {})[category] || {};
+    return cohort === "all" ? board.summary_all_fetched : board.summary;
+  }
+  function renderBoard() {
+    var summary = currentSummary();
+    var rows = Object.keys(summary).map(function (k) { return Object.assign({ key: k }, summary[k]); });
+    rows.sort(function (a, b) { return sortDir * ((a[sortKey] || 0) - (b[sortKey] || 0)); });
+    var tbody = document.querySelector("#leaderboard tbody");
+    tbody.innerHTML = "";
+    rows.forEach(function (r) {
+      var tr = el("tr", ours(r.key) ? { "class": "ours" } : {});
+      tr.innerHTML =
+        '<td><span class="swatch" style="background:' + color(r.key) + '"></span>' + esc(name(r.key)) + "</td>" +
+        '<td class="num">' + f3(r.avg_content_recall) + "</td>" +
+        '<td class="num">' + f3(r.avg_noise_retention) + "</td>" +
+        '<td class="num">' + f3(r.avg_f_balanced) + '<span class="meter" aria-hidden="true"><i style="width:' + (r.avg_f_balanced || 0) * 100 + "%;background:" + color(r.key) + '"></i></span></td>' +
+        '<td class="num">' + int(r.avg_tokens) + "</td>";
+      tbody.appendChild(tr);
+    });
+    var n = rows.length && (rows[0].pages_scored || rows[0].pages);
+    document.getElementById("bench-status").textContent = n ? n + " pages" + (category ? " in " + category : cohort === "all" ? ", no cohort filter" : ", scoreable") : "";
+    document.querySelectorAll("#leaderboard th[data-sort]").forEach(function (th) {
+      th.setAttribute("aria-sort", th.getAttribute("data-sort") === sortKey ? (sortDir < 0 ? "descending" : "ascending") : "none");
+    });
+  }
+  document.querySelectorAll("#leaderboard th[data-sort]").forEach(function (th) {
+    th.addEventListener("click", function () {
+      var k = th.getAttribute("data-sort");
+      sortDir = k === sortKey ? -sortDir : (k === "avg_noise_retention" || k === "avg_tokens" ? 1 : -1);
+      sortKey = k;
+      renderBoard();
+    });
+  });
+  document.querySelectorAll("[data-cohort]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      cohort = b.getAttribute("data-cohort");
+      category = "";
+      document.getElementById("category").value = "";
+      document.querySelectorAll("[data-cohort]").forEach(function (o) { o.setAttribute("aria-pressed", o === b ? "true" : "false"); });
+      renderBoard();
+    });
+  });
+  document.getElementById("category").addEventListener("change", function (e) { category = e.target.value; renderBoard(); });
+
+  function renderCI(rows) {
+    var mount = document.getElementById("ci");
+    var lo = 0, hi = 0;
+    rows.forEach(function (r) { lo = Math.min(lo, r.ci_low); hi = Math.max(hi, r.ci_high); });
+    var pad = (hi - lo) * 0.08; lo -= pad; hi += pad;
+    var pos = function (v) { return ((v - lo) / (hi - lo)) * 100; };
+    var metricName = { f_balanced: "F_bal", content_recall: "recall", noise_retention: "noise retention" };
+    rows.forEach(function (r) {
+      var row = el("div", { "class": "ci-row" });
+      row.innerHTML =
+        "<span>vs " + esc(name(r.b)) + ' <span class="muted">· ' + esc(metricName[r.metric] || r.metric) + "</span></span>" +
+        '<span class="ci-axis" aria-hidden="true"><span class="zero" style="left:' + pos(0) + '%"></span><span class="range" style="left:' + pos(r.ci_low) + "%;width:" + (pos(r.ci_high) - pos(r.ci_low)) + '%"></span><span class="dot" style="left:' + pos(r.mean_diff) + '%"></span></span>' +
+        '<span class="num small">' + signed(r.mean_diff) + " [" + signed(r.ci_low) + ", " + signed(r.ci_high) + "]</span>";
+      mount.appendChild(row);
+    });
+  }
+
+  var pagesIndex = null;
+  getJSON("data/leaderboard.json").then(function (lb) {
+    board = lb;
+    renderBoard();
+    renderCI((lb.paired_bootstrap || []).filter(function (r) { return r.a === "chromerag_coverage"; }));
+    var s = lb.summary;
+    setStat("fbal", f3(s.chromerag_coverage.avg_f_balanced));
+    setStat("fbal-sub", "Trafilatura " + f3(s.trafilatura.avg_f_balanced) + ", MarkItDown " + f3(s.markitdown.avg_f_balanced) + " on the same " + lb.n_scoreable + " pages");
+    document.getElementById("bench-lede").insertAdjacentText("beforeend", " Corpus: " + lb.corpus_urls_listed + " public URLs, " + lb.n_fetched + " fetched without JavaScript rendering, " + lb.n_scoreable + " scoreable.");
+    return getJSON("data/corpus_comparison_report.json");
+  }).then(function (full) {
+    board.by_category = full.by_category || {};
+    var sel = document.getElementById("category");
+    Object.keys(board.by_category).sort().forEach(function (c) {
+      var first = board.by_category[c][Object.keys(board.by_category[c])[0]] || {};
+      sel.appendChild(el("option", { value: c }, esc(c) + " (" + (first.pages || "?") + ")"));
+    });
+    pagesIndex = full.pages;
+    var list = document.getElementById("page-list");
+    Object.keys(full.pages).sort().forEach(function (id) { list.appendChild(el("option", { value: id }, esc(full.pages[id].meta.url || ""))); });
+    document.getElementById("explorer-status").textContent = Object.keys(full.pages).length + " pages. Pick one from the list or type part of a URL.";
+    showPage("kubernetes-docs") || showPage(Object.keys(full.pages)[0]);
+  }).catch(function () {
+    document.getElementById("bench-status").textContent = "Results not found in data/.";
+    document.getElementById("explorer-status").textContent = "Per-page results not found in data/.";
+  });
+
+  // ---------------------------------------------------------------- retrieval
+  function bars(mountId, rows, key, fmt, max) {
+    var mount = document.getElementById(mountId);
+    rows.forEach(function (r) {
+      var v = r.scores.all[key];
+      var row = el("div", { "class": "brow" });
+      row.innerHTML = "<span>" + esc(name(r.key)) + '</span><span class="track"><span class="fill" style="width:' + Math.max(1, (v / max) * 100) + "%;background:" + color(r.key) + '"></span></span><span class="v">' + fmt(v) + "</span>";
+      mount.appendChild(row);
+    });
+  }
+  getJSON("data/retrieval_eval_report.json").then(function (rep) {
+    var rows = Object.keys(rep.tools).map(function (k) { return Object.assign({ key: k }, rep.tools[k]); });
+    var maxChrome = Math.max.apply(null, rows.map(function (r) { return r.scores.all["context_chrome@5"]; }));
+    bars("ret-hit", rows, "hit@5", f3, 1);
+    bars("ret-chrome", rows, "context_chrome@5", function (v) { return pct(v, 1); }, maxChrome * 1.1);
+    var t = rep.tools, q = rep.n_queries;
+    var nq = Object.keys(q).reduce(function (a, k) { return a + q[k]; }, 0);
+    var more = Math.round((t.markitdown.chunks / t.chromerag_coverage.chunks - 1) * 100);
+    setStat("hit", f3(t.chromerag_coverage.scores.all["hit@5"]));
+    var vsMid = (rep.paired_bootstrap || []).find(function (r) { return r.metric === "hit@5" && /markitdown$/.test(r.comparison); });
+    var same = vsMid && vsMid.ci95[0] <= 0 && vsMid.ci95[1] >= 0;
+    setStat("hit-sub", "MarkItDown " + f3(t.markitdown.scores.all["hit@5"]) + (same ? " (difference not significant)" : "") + " using " + more + "% more chunks; Trafilatura " + f3(t.trafilatura.scores.all["hit@5"]));
+    setStat("chrome", pct(t.chromerag_coverage.scores.all["context_chrome@5"], 1));
+    setStat("chrome-sub", "share of retrieved text that is site chrome; MarkItDown " + pct(t.markitdown.scores.all["context_chrome@5"], 1));
+    var boot = (rep.paired_bootstrap || []).filter(function (r) { return r.metric === "hit@5"; }).map(function (r) {
+      return "vs " + name(r.comparison.split(" - ")[1]) + " " + signed(r.mean_diff) + " [" + signed(r.ci95[0]) + ", " + signed(r.ci95[1]) + "]";
+    }).join("; ");
+    document.getElementById("ret-note").textContent = nq + " queries over " + rep.n_pages + " pages. Index size: " + rows.map(function (r) { return name(r.key) + " " + r.chunks.toLocaleString("en-US"); }).join(", ") + " chunks. Hit@5 difference, ChromeRAG coverage minus baseline, 95% CI: " + boot + ".";
+  }).catch(function () { document.getElementById("ret-note").textContent = "Retrieval results not found in data/."; });
+
+  // ---------------------------------------------------------------- STCE
+  getJSON("data/stce_summary.json").catch(function () { return {}; }).then(function (summary) {
+    var reps = [summary.benchmark || null, summary.crawl || null];
+    var tbody = document.querySelector("#stce tbody");
+    tbody.innerHTML = "";
+    [["Benchmark sites with ≥ 3 pages", reps[0]], ["Documentation crawl, ≤ 15 pages per site", reps[1]]].forEach(function (pair) {
+      var r = pair[1];
+      if (!r) return;
+      var s = r.summary_scoreable;
+      var tr = el("tr");
+      tr.innerHTML = "<td>" + esc(pair[0]) + '</td><td class="num">' + int(Object.keys(r.groups).length) + '</td><td class="num">' + int(r.n_scoreable) +
+        '</td><td class="num">' + f3(s.coverage.content_recall) + " → " + f3(s.coverage_stce.content_recall) +
+        '</td><td class="num">' + int(r.n_pages_changed) + " of " + int(r.n_pages) +
+        '</td><td class="num">' + pct(s.coverage.site_repeated_share, 1) + " → " + pct(s.coverage_stce.site_repeated_share, 1) + "</td>";
+      tbody.appendChild(tr);
+    });
+    if (!tbody.children.length) tbody.innerHTML = '<tr><td colspan="6" class="muted">No site-template results in data/.</td></tr>';
+    var c = reps[1] || reps[0];
+    if (c) {
+      var s = c.summary_scoreable;
+      document.getElementById("stce-note").textContent = "Site-repeated text is the share of a page's output that recurs on at least 80% of the same site's outputs, so it would be embedded once per page. On the same pages, Trafilatura leaves " + pct(s.trafilatura.site_repeated_share, 1) + " and MarkItDown " + pct(s.markitdown.site_repeated_share, 1) + ".";
+    }
+  });
+
+  // ---------------------------------------------------------------- explorer
+  function showPage(id) {
+    var p = pagesIndex && pagesIndex[id];
+    if (!p) return false;
+    var m = p.meta, a = p.anchors;
+    var rows = Object.keys(p.methods).filter(function (k) { return p.methods[k].f_balanced != null; })
+      .sort(function (x, y) { return p.methods[y].f_balanced - p.methods[x].f_balanced; });
+    var html = '<div class="card"><div class="kv"><strong style="color:var(--ink)">' + esc(id) + '</strong><a href="' + esc(m.url) + '" rel="noopener nofollow">' + esc(m.url) + '</a><span class="pill">' + esc(m.category) + "</span>" +
+      (p.scoreable ? '<span class="pill ok">scoreable</span>' : '<span class="pill bad">excluded: too few content anchors</span>') +
+      "<span>" + int(a.content_ngrams) + " content · " + int(a.noise_ngrams) + " noise anchors</span></div>" +
+      '<div class="table-wrap"><table><thead><tr><th>Method</th><th>Recall</th><th>Noise ret.</th><th>F<sub>bal</sub></th><th>Tokens</th></tr></thead><tbody>';
+    rows.forEach(function (k) {
+      var s = p.methods[k];
+      html += "<tr" + (ours(k) ? ' class="ours"' : "") + '><td><span class="swatch" style="background:' + color(k) + '"></span>' + esc(name(k)) + '</td><td class="num">' + f3(s.content_recall) + '</td><td class="num">' + f3(s.noise_retention) + '</td><td class="num">' + f3(s.f_balanced) + '</td><td class="num">' + int(s.tokens) + "</td></tr>";
+    });
+    document.getElementById("explorer-result").innerHTML = html + "</tbody></table></div></div>";
+    return true;
+  }
+  var search = document.getElementById("page-search");
+  search.addEventListener("input", function () {
+    if (!pagesIndex) return;
+    var q = search.value.trim().toLowerCase();
+    if (showPage(q) || q.length < 3) return;
+    var hit = Object.keys(pagesIndex).find(function (id) { return id.indexOf(q) >= 0 || (pagesIndex[id].meta.url || "").toLowerCase().indexOf(q) >= 0; });
+    if (hit) showPage(hit);
+  });
+
+  // ---------------------------------------------------------------- tests
+  getJSON("data/test_report.json").then(function (t) {
+    var tot = t.totals;
+    document.getElementById("tests-badge").textContent = tot.passed + " / " + tot.tests + " tests passing";
+    document.getElementById("tests-summary").textContent = "· " + tot.passed + " passed, " + tot.failed + " failed, run " + String(t.generated_at).slice(0, 10);
+    var list = document.getElementById("tests-list");
+    t.cases.forEach(function (c) {
+      list.appendChild(el("li", {}, '<span class="pill ' + (c.status === "passed" ? "ok" : "bad") + '">' + esc(c.status) + "</span> <code>" + esc(c.classname.split(".").pop()) + "::" + esc(c.name) + "</code>"));
+    });
+  }).catch(function () { document.getElementById("tests-badge").textContent = "Tests run in GitHub Actions"; });
+})();
+</script>
+</body>
+</html>

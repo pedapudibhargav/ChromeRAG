@@ -1,0 +1,138 @@
+{
+  "generated_at": "2026-09-26T03:18:10+00:00",
+  "pytest_exit_code": 0,
+  "totals": {
+    "tests": 25,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 25
+  },
+  "cases": [
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_content_wrapper_with_sidebar_class_is_not_pruned",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_small_sidebar_is_still_pruned",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_learn_creates_missing_output_dir_and_batch_uses_model",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_extract_writes_into_missing_dir",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_missing_chrome_model_is_a_clean_error",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_stce_keeps_match_far_larger_than_learned_block",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_stce_does_not_learn_shared_class_with_different_text",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_stce_counts_a_repeated_url_once",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_stce_learns_identical_short_text_without_chrome_markup",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_stce_keeps_content_that_only_shares_a_utility_class",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_stce_counts_near_duplicate_pages_once",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_stce_keeps_link_list_content_that_only_shares_a_layout_class",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_extractor",
+      "name": "test_version_semver_shape",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_extractor",
+      "name": "test_extract_keeps_main_content_drops_nav",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_extractor",
+      "name": "test_schema_front_matter_before_script_strip",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_extractor",
+      "name": "test_table_linearization",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_extractor",
+      "name": "test_precision_vs_coverage_keeps_core_content",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_extractor",
+      "name": "test_fuse_front_matter_reads_json_ld",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_extractor",
+      "name": "test_empty_html_does_not_crash",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_input_quality",
+      "name": "test_js_shell_triggers_warning",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_input_quality",
+      "name": "test_rich_html_has_no_thin_warning",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_input_quality",
+      "name": "test_extract_result_surfaces_warnings",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_input_quality",
+      "name": "test_empty_html_warns",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_langchain_loader",
+      "name": "test_loader_moves_front_matter_into_metadata",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_langchain_loader",
+      "name": "test_loader_can_skip_javascript_shells",
+      "status": "passed"
+    }
+  ]
+}

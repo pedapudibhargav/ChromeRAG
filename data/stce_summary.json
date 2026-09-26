@@ -1,0 +1,632 @@
+{
+  "benchmark": {
+    "raw": "data/raw",
+    "min_pages": 3,
+    "groups": {
+      "learn.microsoft.com/en-us": {
+        "pages": 7,
+        "signatures": 9
+      },
+      "aws.amazon.com/ec2": {
+        "pages": 3,
+        "signatures": 67
+      },
+      "developers.cloudflare.com/workers": {
+        "pages": 3,
+        "signatures": 197
+      },
+      "docs.digitalocean.com/products": {
+        "pages": 3,
+        "signatures": 13
+      },
+      "docs.github.com/en": {
+        "pages": 6,
+        "signatures": 21
+      },
+      "grafana.com/docs": {
+        "pages": 3,
+        "signatures": 49
+      },
+      "kubernetes.io/docs": {
+        "pages": 4,
+        "signatures": 14
+      },
+      "developer.mozilla.org/en-US": {
+        "pages": 5,
+        "signatures": 30
+      },
+      "docs.python.org/3": {
+        "pages": 4,
+        "signatures": 1
+      },
+      "twilio.com/docs": {
+        "pages": 6,
+        "signatures": 12
+      },
+      "en.wikipedia.org/wiki": {
+        "pages": 4,
+        "signatures": 35
+      }
+    },
+    "n_pages": 49,
+    "n_scoreable": 47,
+    "n_pages_changed": 6,
+    "summary_scoreable": {
+      "coverage": {
+        "content_recall": 0.714,
+        "noise_retention": 0.002,
+        "f_balanced": 0.813,
+        "tokens": 2399.532,
+        "site_repeated_5grams": 5.447,
+        "site_repeated_share": 0.014
+      },
+      "coverage_stce": {
+        "content_recall": 0.714,
+        "noise_retention": 0.002,
+        "f_balanced": 0.813,
+        "tokens": 2397.617,
+        "site_repeated_5grams": 5.021,
+        "site_repeated_share": 0.014
+      },
+      "trafilatura": {
+        "content_recall": 0.689,
+        "noise_retention": 0.001,
+        "f_balanced": 0.786,
+        "tokens": 2098.213,
+        "site_repeated_5grams": 1.511,
+        "site_repeated_share": 0.005
+      },
+      "markitdown": {
+        "content_recall": 0.7,
+        "noise_retention": 0.306,
+        "f_balanced": 0.682,
+        "tokens": 10990.447,
+        "site_repeated_5grams": 1328.894,
+        "site_repeated_share": 0.267
+      }
+    }
+  },
+  "crawl": {
+    "raw": "data/stce_crawl",
+    "min_pages": 3,
+    "groups": {
+      "airflow.apache.org/docs": {
+        "pages": 15,
+        "signatures": 13
+      },
+      "alembic.sqlalchemy.org/en": {
+        "pages": 15,
+        "signatures": 16
+      },
+      "amplitude.com/docs": {
+        "pages": 14,
+        "signatures": 23
+      },
+      "argo-cd.readthedocs.io/en": {
+        "pages": 15,
+        "signatures": 1
+      },
+      "bazel.build/docs": {
+        "pages": 12,
+        "signatures": 33
+      },
+      "black.readthedocs.io/en": {
+        "pages": 15,
+        "signatures": 13
+      },
+      "core.telegram.org/bots": {
+        "pages": 11,
+        "signatures": 11
+      },
+      "cuelang.org/docs": {
+        "pages": 13,
+        "signatures": 24
+      },
+      "developer.hashicorp.com/consul": {
+        "pages": 12,
+        "signatures": 36
+      },
+      "developer.hashicorp.com/nomad": {
+        "pages": 15,
+        "signatures": 36
+      },
+      "developer.hashicorp.com/terraform": {
+        "pages": 15,
+        "signatures": 40
+      },
+      "developer.hashicorp.com/vault": {
+        "pages": 14,
+        "signatures": 37
+      },
+      "developer.mozilla.org/en-US": {
+        "pages": 15,
+        "signatures": 30
+      },
+      "developer.zendesk.com/api-reference": {
+        "pages": 15,
+        "signatures": 6
+      },
+      "developers.cloudflare.com/d1": {
+        "pages": 15,
+        "signatures": 46
+      },
+      "developers.cloudflare.com/pages": {
+        "pages": 15,
+        "signatures": 46
+      },
+      "developers.cloudflare.com/r2": {
+        "pages": 15,
+        "signatures": 56
+      },
+      "developers.cloudflare.com/workers": {
+        "pages": 15,
+        "signatures": 199
+      },
+      "developers.figma.com/docs": {
+        "pages": 15,
+        "signatures": 15
+      },
+      "developers.llamaindex.ai/python": {
+        "pages": 15,
+        "signatures": 12
+      },
+      "developers.notion.com/guides": {
+        "pages": 14,
+        "signatures": 28
+      },
+      "developers.openai.com/api": {
+        "pages": 13,
+        "signatures": 35
+      },
+      "docs.astral.sh/ruff": {
+        "pages": 15,
+        "signatures": 5
+      },
+      "docs.astral.sh/uv": {
+        "pages": 15,
+        "signatures": 1
+      },
+      "docs.aws.amazon.com/AmazonS3": {
+        "pages": 15,
+        "signatures": 1
+      },
+      "docs.celeryq.dev/en": {
+        "pages": 14,
+        "signatures": 2
+      },
+      "docs.cloud.google.com/bigquery": {
+        "pages": 14,
+        "signatures": 32
+      },
+      "docs.cloud.google.com/compute": {
+        "pages": 6,
+        "signatures": 27
+      },
+      "docs.cloud.google.com/kubernetes-engine": {
+        "pages": 10,
+        "signatures": 34
+      },
+      "docs.cloud.google.com/storage": {
+        "pages": 14,
+        "signatures": 32
+      },
+      "docs.databricks.com/aws": {
+        "pages": 9,
+        "signatures": 13
+      },
+      "docs.digitalocean.com/products": {
+        "pages": 15,
+        "signatures": 20
+      },
+      "docs.discord.com/developers": {
+        "pages": 14,
+        "signatures": 21
+      },
+      "docs.djangoproject.com/en": {
+        "pages": 3,
+        "signatures": 29
+      },
+      "docs.docker.com/compose": {
+        "pages": 7,
+        "signatures": 26
+      },
+      "docs.docker.com/engine": {
+        "pages": 10,
+        "signatures": 25
+      },
+      "docs.docker.com/get-started": {
+        "pages": 15,
+        "signatures": 25
+      },
+      "docs.dropboxapi.com/dropbox-api": {
+        "pages": 15,
+        "signatures": 33
+      },
+      "docs.github.com/en": {
+        "pages": 15,
+        "signatures": 32
+      },
+      "docs.gitlab.com/ci": {
+        "pages": 15,
+        "signatures": 29
+      },
+      "docs.gradle.org/current": {
+        "pages": 15,
+        "signatures": 65
+      },
+      "docs.jax.dev/en": {
+        "pages": 15,
+        "signatures": 24
+      },
+      "docs.junit.org/6.1.3": {
+        "pages": 14,
+        "signatures": 15
+      },
+      "docs.langchain.com/oss": {
+        "pages": 15,
+        "signatures": 21
+      },
+      "docs.nvidia.com/deeplearning": {
+        "pages": 15,
+        "signatures": 28
+      },
+      "docs.pinecone.io/guides": {
+        "pages": 15,
+        "signatures": 17
+      },
+      "docs.pytest.org/en": {
+        "pages": 15,
+        "signatures": 9
+      },
+      "docs.python.org/3": {
+        "pages": 13,
+        "signatures": 1
+      },
+      "docs.readthedocs.com/platform": {
+        "pages": 15,
+        "signatures": 11
+      },
+      "docs.scrapy.org/en": {
+        "pages": 15,
+        "signatures": 9
+      },
+      "docs.snowflake.com/en": {
+        "pages": 15,
+        "signatures": 11
+      },
+      "docs.splunk.com/Documentation": {
+        "pages": 9,
+        "signatures": 53
+      },
+      "docs.spring.io/spring-boot": {
+        "pages": 11,
+        "signatures": 27
+      },
+      "docs.sqlalchemy.org/en": {
+        "pages": 15,
+        "signatures": 9
+      },
+      "docs.stripe.com/billing": {
+        "pages": 13,
+        "signatures": 5
+      },
+      "docs.stripe.com/payments": {
+        "pages": 15,
+        "signatures": 12
+      },
+      "docs.umami.is/docs": {
+        "pages": 15,
+        "signatures": 17
+      },
+      "docs.weaviate.io/weaviate": {
+        "pages": 15,
+        "signatures": 20
+      },
+      "elastic.co/docs": {
+        "pages": 14,
+        "signatures": 16
+      },
+      "firebase.google.com/docs": {
+        "pages": 15,
+        "signatures": 30
+      },
+      "flask.palletsprojects.com/en": {
+        "pages": 15,
+        "signatures": 1
+      },
+      "fluxcd.io/flux": {
+        "pages": 14,
+        "signatures": 14
+      },
+      "docs.fly.io/getting-started": {
+        "pages": 6,
+        "signatures": 32
+      },
+      "go.dev/doc": {
+        "pages": 13,
+        "signatures": 21
+      },
+      "grafana.com/docs": {
+        "pages": 12,
+        "signatures": 59
+      },
+      "graphql.org/learn": {
+        "pages": 13,
+        "signatures": 15
+      },
+      "grpc.io/docs": {
+        "pages": 13,
+        "signatures": 19
+      },
+      "helm.sh/docs": {
+        "pages": 14,
+        "signatures": 15
+      },
+      "huggingface.co/docs": {
+        "pages": 14,
+        "signatures": 11
+      },
+      "istio.io/latest": {
+        "pages": 14,
+        "signatures": 11
+      },
+      "jenkins.io/doc": {
+        "pages": 15,
+        "signatures": 4
+      },
+      "jestjs.io/docs": {
+        "pages": 12,
+        "signatures": 24
+      },
+      "keras.io/guides": {
+        "pages": 15,
+        "signatures": 8
+      },
+      "knative.dev/docs": {
+        "pages": 13,
+        "signatures": 19
+      },
+      "kubernetes.io/docs": {
+        "pages": 9,
+        "signatures": 13
+      },
+      "laravel.com/framework": {
+        "pages": 14,
+        "signatures": 23
+      },
+      "learn.microsoft.com/en-us": {
+        "pages": 14,
+        "signatures": 9
+      },
+      "linkerd.io/docs": {
+        "pages": 15,
+        "signatures": 17
+      },
+      "maven.apache.org/guides": {
+        "pages": 15,
+        "signatures": 5
+      },
+      "milvus.io/docs": {
+        "pages": 15,
+        "signatures": 23
+      },
+      "mongodb.com/docs": {
+        "pages": 11,
+        "signatures": 44
+      },
+      "mypy.readthedocs.io/en": {
+        "pages": 15,
+        "signatures": 12
+      },
+      "nextjs.org/docs": {
+        "pages": 15,
+        "signatures": 64
+      },
+      "nginx.org/en": {
+        "pages": 15,
+        "signatures": 6
+      },
+      "nist.gov/cyberframework": {
+        "pages": 13,
+        "signatures": 33
+      },
+      "opentelemetry.io/docs": {
+        "pages": 12,
+        "signatures": 17
+      },
+      "pip.pypa.io/en": {
+        "pages": 15,
+        "signatures": 16
+      },
+      "planetscale.com/docs": {
+        "pages": 15,
+        "signatures": 32
+      },
+      "platform.claude.com/docs": {
+        "pages": 15,
+        "signatures": 20
+      },
+      "plausible.io/docs": {
+        "pages": 14,
+        "signatures": 20
+      },
+      "playwright.dev/docs": {
+        "pages": 15,
+        "signatures": 15
+      },
+      "postgresql.org/docs": {
+        "pages": 7,
+        "signatures": 11
+      },
+      "posthog.com/docs": {
+        "pages": 15,
+        "signatures": 9
+      },
+      "prometheus.io/docs": {
+        "pages": 15,
+        "signatures": 22
+      },
+      "pulumi.com/docs": {
+        "pages": 9,
+        "signatures": 47
+      },
+      "pydantic.dev/docs": {
+        "pages": 6,
+        "signatures": 12
+      },
+      "python-poetry.org/docs": {
+        "pages": 14,
+        "signatures": 16
+      },
+      "qdrant.tech/documentation": {
+        "pages": 15,
+        "signatures": 23
+      },
+      "rabbitmq.com/docs": {
+        "pages": 7,
+        "signatures": 14
+      },
+      "react.dev/learn": {
+        "pages": 15,
+        "signatures": 50
+      },
+      "react.dev/reference": {
+        "pages": 15,
+        "signatures": 43
+      },
+      "redis.io/docs": {
+        "pages": 13,
+        "signatures": 19
+      },
+      "render.com/docs": {
+        "pages": 15,
+        "signatures": 10
+      },
+      "rfc-editor.org/info": {
+        "pages": 14,
+        "signatures": 23
+      },
+      "scikit-learn.org/stable": {
+        "pages": 15,
+        "signatures": 20
+      },
+      "selenium.dev/documentation": {
+        "pages": 14,
+        "signatures": 23
+      },
+      "shopify.dev/docs": {
+        "pages": 15,
+        "signatures": 13
+      },
+      "spacy.io/usage": {
+        "pages": 15,
+        "signatures": 12
+      },
+      "sphinx-doc.org/en": {
+        "pages": 15,
+        "signatures": 4
+      },
+      "supabase.com/docs": {
+        "pages": 15,
+        "signatures": 31
+      },
+      "svelte.dev/docs": {
+        "pages": 14,
+        "signatures": 7
+      },
+      "tailwindcss.com/docs": {
+        "pages": 13,
+        "signatures": 19
+      },
+      "tekton.dev/docs": {
+        "pages": 15,
+        "signatures": 13
+      },
+      "tensorflow.org/guide": {
+        "pages": 15,
+        "signatures": 27
+      },
+      "thrift.apache.org/docs": {
+        "pages": 10,
+        "signatures": 9
+      },
+      "trafilatura.readthedocs.io/en": {
+        "pages": 15,
+        "signatures": 21
+      },
+      "twilio.com/docs": {
+        "pages": 15,
+        "signatures": 13
+      },
+      "typescriptlang.org/docs": {
+        "pages": 15,
+        "signatures": 21
+      },
+      "ubuntu.com/server": {
+        "pages": 15,
+        "signatures": 43
+      },
+      "vercel.com/docs": {
+        "pages": 15,
+        "signatures": 48
+      },
+      "vite.dev/guide": {
+        "pages": 15,
+        "signatures": 29
+      },
+      "vitest.dev/guide": {
+        "pages": 15,
+        "signatures": 23
+      },
+      "vuejs.org/guide": {
+        "pages": 14,
+        "signatures": 21
+      },
+      "webpack.js.org/concepts": {
+        "pages": 14,
+        "signatures": 32
+      },
+      "wiki.archlinux.org/title": {
+        "pages": 11,
+        "signatures": 33
+      }
+    },
+    "n_pages": 1791,
+    "n_scoreable": 1727,
+    "n_pages_changed": 174,
+    "summary_scoreable": {
+      "coverage": {
+        "content_recall": 0.77,
+        "noise_retention": 0.01,
+        "f_balanced": 0.851,
+        "tokens": 3441.624,
+        "site_repeated_5grams": 16.704,
+        "site_repeated_share": 0.031
+      },
+      "coverage_stce": {
+        "content_recall": 0.769,
+        "noise_retention": 0.01,
+        "f_balanced": 0.852,
+        "tokens": 3439.053,
+        "site_repeated_5grams": 16.244,
+        "site_repeated_share": 0.03
+      },
+      "trafilatura": {
+        "content_recall": 0.759,
+        "noise_retention": 0.005,
+        "f_balanced": 0.841,
+        "tokens": 2882.778,
+        "site_repeated_5grams": 10.651,
+        "site_repeated_share": 0.021
+      },
+      "markitdown": {
+        "content_recall": 0.776,
+        "noise_retention": 0.244,
+        "f_balanced": 0.749,
+        "tokens": 8310.069,
+        "site_repeated_5grams": 892.947,
+        "site_repeated_share": 0.349
+      }
+    }
+  }
+}
