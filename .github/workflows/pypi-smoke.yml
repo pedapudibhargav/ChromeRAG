@@ -1,0 +1,43 @@
+# Install the published package from PyPI on clean runners and follow README.md.
+# Runs when a GitHub Release is published, and on demand (Actions → pypi-smoke → Run workflow).
+
+name: pypi-smoke
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "chromerag version to install (empty = latest)"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  readme:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ["3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Wait for PyPI to serve the release
+        if: github.event_name == 'release'
+        shell: bash
+        run: sleep 60
+      - name: README quick start against the PyPI package
+        shell: bash
+        env:
+          PYTHON: python
+        run: |
+          version="${{ github.event.inputs.version }}"
+          if [[ "${{ github.event_name }}" == "release" ]]; then version="${GITHUB_REF_NAME#v}"; fi
+          bash scripts/readme_smoke.sh "$version"
