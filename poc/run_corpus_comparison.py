@@ -120,17 +120,25 @@ def _paired_bootstrap(pages: dict, *, seed: int = 0) -> list[dict]:
     return rows
 
 
-def run(*, fetch: bool = True, limit: int | None = None) -> dict:
+def run(
+    *,
+    fetch: bool = True,
+    limit: int | None = None,
+    raw: Path = RAW,
+    out: Path = OUT,
+    report_name: str = "corpus_comparison",
+    listed: int | None = None,
+) -> dict:
     if fetch:
         print("=== FETCH ===")
         fetch_all(limit=limit)
 
-    pages = load_ok_pages()
+    pages = load_ok_pages(raw)
     if limit is not None:
         pages = pages[:limit]
     if not pages:
         raise SystemExit(
-            f"No fetched HTML in {RAW}. Run without --no-fetch first "
+            f"No fetched HTML in {raw}. Run without --no-fetch first "
             "(network required); published results live in docs/data/."
         )
     print(f"=== COMPARE {len(pages)} pages ===")
@@ -143,7 +151,7 @@ def run(*, fetch: bool = True, limit: int | None = None) -> dict:
 
     for page_id, html, meta in pages:
         content_ng, noise_ng, diag = extract_anchors(html)
-        page_out = OUT / page_id
+        page_out = out / page_id
         page_out.mkdir(parents=True, exist_ok=True)
         entry: dict = {"meta": meta, "anchors": diag, "methods": {}}
 
@@ -260,7 +268,7 @@ def run(*, fetch: bool = True, limit: int | None = None) -> dict:
                 **{f"avg_{k}": round(sum(v) / len(v), 4) for k, v in metrics.items() if v},
             }
     report["by_category"] = cat_summary
-    corpus_listed = _corpus_urls_listed()
+    corpus_listed = listed if listed is not None else _corpus_urls_listed()
     n_thin = sum(1 for e in report["pages"].values() if not e.get("scoreable"))
     report["corpus_urls_listed"] = corpus_listed
     report["corpus_url_count"] = corpus_listed  # permanent alias used in older docs
@@ -268,7 +276,8 @@ def run(*, fetch: bool = True, limit: int | None = None) -> dict:
     report["n_thin"] = n_thin
     report["n_scoreable"] = int(report["n_scoreable"])
 
-    out_json = OUT / "corpus_comparison_report.json"
+    out.mkdir(parents=True, exist_ok=True)
+    out_json = out / f"{report_name}_report.json"
     out_json.write_text(json.dumps(report, indent=2), encoding="utf-8")
 
     lines = [
@@ -355,7 +364,7 @@ def run(*, fetch: bool = True, limit: int | None = None) -> dict:
                 f"{s.get('avg_noise_retention', 0):.3f} | {s.get('avg_f_balanced', 0):.3f} |"
             )
         lines.append("")
-    out_md = OUT / "corpus_comparison_summary.md"
+    out_md = out / f"{report_name}_summary.md"
     out_md.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
     print("\n===== LEADERBOARD =====")

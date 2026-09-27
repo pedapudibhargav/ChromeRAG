@@ -1,0 +1,2093 @@
+{
+  "description": "Landing-page benchmark URLs chosen by poc/landing_corpus.py from each company's homepage links (homepage, first pricing page, first product/solutions pages).",
+  "companies": {
+    "Cloudflare": {
+      "sector": "cloud_infrastructure",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.cloudflare.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.cloudflare.com/plans/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.cloudflare.com/products/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.cloudflare.com/solutions/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.cloudflare.com/solutions/ai/"
+        }
+      ]
+    },
+    "DigitalOcean": {
+      "sector": "cloud_infrastructure",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.digitalocean.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.digitalocean.com/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://docs.digitalocean.com/products"
+        },
+        {
+          "role": "product",
+          "url": "https://www.digitalocean.com/products"
+        },
+        {
+          "role": "product",
+          "url": "https://www.digitalocean.com/solutions"
+        }
+      ]
+    },
+    "Akamai": {
+      "sector": "cloud_infrastructure",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.akamai.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.akamai.com/cloud/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://www.akamai.com/products"
+        },
+        {
+          "role": "product",
+          "url": "https://www.akamai.com/products/akamai-inference-cloud-platform"
+        },
+        {
+          "role": "product",
+          "url": "https://www.akamai.com/products/object-storage"
+        }
+      ]
+    },
+    "Fastly": {
+      "sector": "cloud_infrastructure",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.fastly.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.fastly.com/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://www.fastly.com/products/ai-runtime-control"
+        },
+        {
+          "role": "product",
+          "url": "https://www.fastly.com/products/deliver"
+        },
+        {
+          "role": "product",
+          "url": "https://www.fastly.com/products/secure"
+        }
+      ]
+    },
+    "Vercel": {
+      "sector": "cloud_infrastructure",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://vercel.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://vercel.com/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://vercel.com/products/observability"
+        },
+        {
+          "role": "product",
+          "url": "https://vercel.com/products/previews"
+        },
+        {
+          "role": "product",
+          "url": "https://vercel.com/solutions/marketing-sites"
+        }
+      ]
+    },
+    "Netlify": {
+      "sector": "cloud_infrastructure",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.netlify.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.netlify.com/pricing/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.netlify.com/platform/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.netlify.com/platform/agent-runners/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.netlify.com/platform/core/deploy-previews/"
+        }
+      ]
+    },
+    "Render": {
+      "sector": "cloud_infrastructure",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://render.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://render.com/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://render.com/platform"
+        },
+        {
+          "role": "product",
+          "url": "https://render.com/features/hipaa"
+        }
+      ]
+    },
+    "Hetzner": {
+      "sector": "cloud_infrastructure",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.hetzner.com/"
+        }
+      ]
+    },
+    "OVHcloud": {
+      "sector": "cloud_infrastructure",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://us.ovhcloud.com/"
+        },
+        {
+          "role": "product",
+          "url": "https://us.ovhcloud.com/solutions/use-cases/"
+        },
+        {
+          "role": "product",
+          "url": "https://us.ovhcloud.com/solutions/vmware/comparison/"
+        },
+        {
+          "role": "product",
+          "url": "https://us.ovhcloud.com/enterprise/solutions/datacenter-extension-cloud/"
+        },
+        {
+          "role": "product",
+          "url": "https://us.ovhcloud.com/solutions/"
+        }
+      ]
+    },
+    "Backblaze": {
+      "sector": "cloud_infrastructure",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.backblaze.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.backblaze.com/cloud-storage/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://www.backblaze.com/cloud-storage/industries/ai-ml"
+        },
+        {
+          "role": "product",
+          "url": "https://www.backblaze.com/cloud-storage/solutions/media-workflow"
+        },
+        {
+          "role": "product",
+          "url": "https://www.backblaze.com/cloud-storage/solutions/backup-and-archive"
+        }
+      ]
+    },
+    "GitLab": {
+      "sector": "developer_tools",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://about.gitlab.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://about.gitlab.com/pricing/"
+        },
+        {
+          "role": "product",
+          "url": "https://about.gitlab.com/solutions/code-suggestions/"
+        },
+        {
+          "role": "product",
+          "url": "https://about.gitlab.com/solutions/continuous-integration/"
+        },
+        {
+          "role": "product",
+          "url": "https://about.gitlab.com/solutions/source-code-management/"
+        }
+      ]
+    },
+    "Atlassian": {
+      "sector": "developer_tools",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.atlassian.com/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.atlassian.com/collections/product"
+        },
+        {
+          "role": "product",
+          "url": "https://www.atlassian.com/software/bitbucket/features/pipelines"
+        },
+        {
+          "role": "product",
+          "url": "https://www.atlassian.com/industries/retail"
+        },
+        {
+          "role": "product",
+          "url": "https://www.atlassian.com/industries/telecom"
+        }
+      ]
+    },
+    "JetBrains": {
+      "sector": "developer_tools",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.jetbrains.com/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.jetbrains.com/products/"
+        }
+      ]
+    },
+    "Postman": {
+      "sector": "developer_tools",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.postman.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.postman.com/pricing/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.postman.com/product/integrations/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.postman.com/product/spec-hub/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.postman.com/product/workspaces/"
+        }
+      ]
+    },
+    "Sentry": {
+      "sector": "developer_tools",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://sentry.io/welcome/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://sentry.io/pricing/"
+        },
+        {
+          "role": "product",
+          "url": "https://sentry.io/product/error-monitoring/"
+        },
+        {
+          "role": "product",
+          "url": "https://sentry.io/product/logs/"
+        },
+        {
+          "role": "product",
+          "url": "https://sentry.io/product/seer/"
+        }
+      ]
+    },
+    "Datadog": {
+      "sector": "developer_tools",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.datadoghq.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.datadoghq.com/pricing/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.datadoghq.com/product/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.datadoghq.com/product/infrastructure-monitoring/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.datadoghq.com/product/metrics/"
+        }
+      ]
+    },
+    "New Relic": {
+      "sector": "developer_tools",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://newrelic.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://newrelic.com/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://newrelic.com/platform"
+        },
+        {
+          "role": "product",
+          "url": "https://newrelic.com/platform/application-monitoring"
+        },
+        {
+          "role": "product",
+          "url": "https://newrelic.com/solutions/digital-experience-monitoring"
+        }
+      ]
+    },
+    "PagerDuty": {
+      "sector": "developer_tools",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.pagerduty.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.pagerduty.com/pricing/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.pagerduty.com/platform/operations-cloud/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.pagerduty.com/platform/incident-management/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.pagerduty.com/platform/automation/"
+        }
+      ]
+    },
+    "CircleCI": {
+      "sector": "developer_tools",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://circleci.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://circleci.com/pricing/"
+        },
+        {
+          "role": "product",
+          "url": "https://circleci.com/product/"
+        },
+        {
+          "role": "product",
+          "url": "https://circleci.com/product/demo/"
+        },
+        {
+          "role": "product",
+          "url": "https://circleci.com/product/chunk/"
+        }
+      ]
+    },
+    "HashiCorp": {
+      "sector": "developer_tools",
+      "pages": [],
+      "note": "homepage not fetched"
+    },
+    "Snowflake": {
+      "sector": "data_ai",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.snowflake.com/en/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.snowflake.com/en/product/snowflake-coco/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.snowflake.com/en/product/snowflake-cowork/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.snowflake.com/en/product/platform/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.snowflake.com/en/product/data-engineering/"
+        }
+      ]
+    },
+    "Databricks": {
+      "sector": "data_ai",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.databricks.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.databricks.com/product/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://www.databricks.com/product/startups"
+        },
+        {
+          "role": "product",
+          "url": "https://www.databricks.com/product/data-lakehouse"
+        },
+        {
+          "role": "product",
+          "url": "https://www.databricks.com/product/platform"
+        }
+      ]
+    },
+    "MongoDB": {
+      "sector": "data_ai",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.mongodb.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.mongodb.com/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://www.mongodb.com/products/platform"
+        },
+        {
+          "role": "product",
+          "url": "https://www.mongodb.com/products/platform/atlas-database"
+        },
+        {
+          "role": "product",
+          "url": "https://www.mongodb.com/products/platform/atlas-search"
+        }
+      ]
+    },
+    "Elastic": {
+      "sector": "data_ai",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.elastic.co/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.elastic.co/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://www.elastic.co/platform/autoops"
+        },
+        {
+          "role": "product",
+          "url": "https://www.elastic.co/industries/financial-services"
+        },
+        {
+          "role": "product",
+          "url": "https://www.elastic.co/industries/manufacturing"
+        }
+      ]
+    },
+    "Confluent": {
+      "sector": "data_ai",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.confluent.io/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.confluent.io/confluent-cloud/pricing/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.confluent.io/product/stream/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.confluent.io/product/confluent-connectors/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.confluent.io/product/stream-governance/"
+        }
+      ]
+    },
+    "Pinecone": {
+      "sector": "data_ai",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.pinecone.io/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.pinecone.io/pricing/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.pinecone.io/product/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.pinecone.io/product/nexus/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.pinecone.io/product/database/"
+        }
+      ]
+    },
+    "Cohere": {
+      "sector": "data_ai",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://cohere.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://cohere.com/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://cohere.com/products"
+        },
+        {
+          "role": "product",
+          "url": "https://cohere.com/solutions"
+        },
+        {
+          "role": "product",
+          "url": "https://cohere.com/solutions/model-vault"
+        }
+      ]
+    },
+    "Hugging Face": {
+      "sector": "data_ai",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://huggingface.co/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://huggingface.co/pricing"
+        }
+      ]
+    },
+    "Scale AI": {
+      "sector": "data_ai",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://scale.com/"
+        }
+      ]
+    },
+    "Fivetran": {
+      "sector": "data_ai",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.fivetran.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.fivetran.com/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://www.fivetran.com/pricing/features"
+        }
+      ]
+    },
+    "CrowdStrike": {
+      "sector": "security",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.crowdstrike.com/en-us/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.crowdstrike.com/en-us/pricing/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.crowdstrike.com/en-us/services/experienced-a-breach/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.crowdstrike.com/en-us/platform/quarterly-falcon-platform-release-highlights/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.crowdstrike.com/en-us/products/"
+        }
+      ]
+    },
+    "Okta": {
+      "sector": "security",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.okta.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.okta.com/pricing/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.okta.com/services/training/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.okta.com/products/govern-ai-agent-identity/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.okta.com/solutions/cross-app-access/"
+        }
+      ]
+    },
+    "Palo Alto Networks": {
+      "sector": "security",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.paloaltonetworks.com/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.paloaltonetworks.com/services/education"
+        },
+        {
+          "role": "product",
+          "url": "https://www.paloaltonetworks.com/services/customer-success-tools"
+        },
+        {
+          "role": "product",
+          "url": "https://www.paloaltonetworks.com/products/products-a-z"
+        }
+      ]
+    },
+    "Fortinet": {
+      "sector": "security",
+      "pages": [],
+      "note": "homepage not fetched"
+    },
+    "SentinelOne": {
+      "sector": "security",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.sentinelone.com/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.sentinelone.com/platform/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.sentinelone.com/platform/singularity-xdr-protection/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.sentinelone.com/solutions/industries/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.sentinelone.com/platform/healthcare/"
+        }
+      ]
+    },
+    "1Password": {
+      "sector": "security",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://1password.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://1password.com/pricing/enterprise"
+        },
+        {
+          "role": "product",
+          "url": "https://1password.com/platform"
+        },
+        {
+          "role": "product",
+          "url": "https://1password.com/product/enterprise-password-manager"
+        },
+        {
+          "role": "product",
+          "url": "https://1password.com/product/credential-broker"
+        }
+      ]
+    },
+    "Snyk": {
+      "sector": "security",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://snyk.io/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://snyk.io/plans/"
+        },
+        {
+          "role": "product",
+          "url": "https://snyk.io/platform/"
+        },
+        {
+          "role": "product",
+          "url": "https://snyk.io/platform/deepcode-ai/"
+        },
+        {
+          "role": "product",
+          "url": "https://snyk.io/product/snyk-code/"
+        }
+      ]
+    },
+    "Tenable": {
+      "sector": "security",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.tenable.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.tenable.com/products/tenable-one/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://www.tenable.com/products/tenable-one"
+        },
+        {
+          "role": "product",
+          "url": "https://www.tenable.com/products/ai-exposure"
+        },
+        {
+          "role": "product",
+          "url": "https://www.tenable.com/cloud-security/products/cnapp"
+        }
+      ]
+    },
+    "Rapid7": {
+      "sector": "security",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.rapid7.com/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.rapid7.com/platform/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.rapid7.com/products/command/attack-surface-management-asm/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.rapid7.com/products/command/exposure-management/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.rapid7.com/solutions/vulnerability-management/"
+        }
+      ]
+    },
+    "Proofpoint": {
+      "sector": "security",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.proofpoint.com/us"
+        },
+        {
+          "role": "product",
+          "url": "https://www.proofpoint.com/us/products/collaboration-security-prime"
+        },
+        {
+          "role": "product",
+          "url": "https://www.proofpoint.com/us/products/email-protection"
+        },
+        {
+          "role": "product",
+          "url": "https://www.proofpoint.com/us/products/email-protection/email-fraud-defense"
+        },
+        {
+          "role": "product",
+          "url": "https://www.proofpoint.com/us/products/mitigate-human-risk"
+        }
+      ]
+    },
+    "Salesforce": {
+      "sector": "business_saas",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.salesforce.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.salesforce.com/agentforce/pricing/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.salesforce.com/products/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.salesforce.com/agentforce/use-cases/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.salesforce.com/platform/cloud-data-security/"
+        }
+      ]
+    },
+    "HubSpot": {
+      "sector": "business_saas",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.hubspot.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.hubspot.com/pricing/marketing"
+        },
+        {
+          "role": "product",
+          "url": "https://www.hubspot.com/products/crm"
+        },
+        {
+          "role": "product",
+          "url": "https://www.hubspot.com/products/get-started"
+        },
+        {
+          "role": "product",
+          "url": "https://www.hubspot.com/products/marketing"
+        }
+      ]
+    },
+    "Zendesk": {
+      "sector": "business_saas",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.zendesk.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.zendesk.com/pricing/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.zendesk.com/platform/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.zendesk.com/industries/retail/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.zendesk.com/industries/financial-services/"
+        }
+      ]
+    },
+    "Intercom": {
+      "sector": "business_saas",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.intercom.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.intercom.com/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://www.intercom.com/solutions/technology"
+        },
+        {
+          "role": "product",
+          "url": "https://www.intercom.com/solutions/ecommerce"
+        },
+        {
+          "role": "product",
+          "url": "https://www.intercom.com/solutions/fintech"
+        }
+      ]
+    },
+    "Freshworks": {
+      "sector": "business_saas",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.freshworks.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.freshworks.com/freshservice/pricing/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.freshworks.com/products/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.freshworks.com/platform/ai-capability/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.freshworks.com/services/"
+        }
+      ]
+    },
+    "monday.com": {
+      "sector": "business_saas",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://monday.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://monday.com/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://monday.com/w/use-cases"
+        },
+        {
+          "role": "product",
+          "url": "https://monday.com/w/platform"
+        },
+        {
+          "role": "product",
+          "url": "https://monday.com/features/dashboards"
+        }
+      ]
+    },
+    "Asana": {
+      "sector": "business_saas",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://asana.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://asana.com/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://asana.com/product/ai"
+        },
+        {
+          "role": "product",
+          "url": "https://asana.com/product/service-management"
+        },
+        {
+          "role": "product",
+          "url": "https://asana.com/product/client-management"
+        }
+      ]
+    },
+    "Notion": {
+      "sector": "business_saas",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.notion.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.notion.com/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://www.notion.com/product"
+        },
+        {
+          "role": "product",
+          "url": "https://www.notion.com/product/features"
+        },
+        {
+          "role": "product",
+          "url": "https://www.notion.com/product/dev"
+        }
+      ]
+    },
+    "Airtable": {
+      "sector": "business_saas",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.airtable.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://airtable.com/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://www.airtable.com/platform"
+        },
+        {
+          "role": "product",
+          "url": "https://www.airtable.com/platform/app-building"
+        },
+        {
+          "role": "product",
+          "url": "https://www.airtable.com/platform/ai-agents"
+        }
+      ]
+    },
+    "Miro": {
+      "sector": "business_saas",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://miro.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://miro.com/pricing/"
+        },
+        {
+          "role": "product",
+          "url": "https://miro.com/products/engage/"
+        },
+        {
+          "role": "product",
+          "url": "https://miro.com/products/ai-workflows/"
+        },
+        {
+          "role": "product",
+          "url": "https://miro.com/capabilities/blueprints/"
+        }
+      ]
+    },
+    "Stripe": {
+      "sector": "fintech",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://stripe.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://stripe.com/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://stripe.com/products"
+        },
+        {
+          "role": "product",
+          "url": "https://stripe.com/use-cases/platforms"
+        },
+        {
+          "role": "product",
+          "url": "https://stripe.com/use-cases/in-app-payments"
+        }
+      ]
+    },
+    "Adyen": {
+      "sector": "fintech",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.adyen.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.adyen.com/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://www.adyen.com/industries/retail"
+        }
+      ]
+    },
+    "Square": {
+      "sector": "fintech",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://squareup.com/us/en"
+        },
+        {
+          "role": "pricing",
+          "url": "https://squareup.com/us/en/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://squareup.com/us/en/services"
+        },
+        {
+          "role": "product",
+          "url": "https://squareup.com/us/en/services/switch-to-square"
+        },
+        {
+          "role": "product",
+          "url": "https://squareup.com/us/en/services/home-and-repair"
+        }
+      ]
+    },
+    "PayPal": {
+      "sector": "fintech",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.paypal.com/us/business"
+        },
+        {
+          "role": "product",
+          "url": "https://www.paypal.com/us/business/platforms-and-marketplaces/solutions"
+        },
+        {
+          "role": "product",
+          "url": "https://www.paypal.com/us/advertiser/solutions"
+        }
+      ]
+    },
+    "Wise": {
+      "sector": "fintech",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://wise.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://wise.com/us/pricing/"
+        },
+        {
+          "role": "product",
+          "url": "https://wise.com/us/business/solutions/startups"
+        },
+        {
+          "role": "product",
+          "url": "https://wise.com/platform/"
+        },
+        {
+          "role": "product",
+          "url": "https://wise.com/platform/send/"
+        }
+      ]
+    },
+    "Plaid": {
+      "sector": "fintech",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://plaid.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://plaid.com/pricing/"
+        },
+        {
+          "role": "product",
+          "url": "https://plaid.com/solutions/payments/"
+        },
+        {
+          "role": "product",
+          "url": "https://plaid.com/products/auth/"
+        },
+        {
+          "role": "product",
+          "url": "https://plaid.com/products/identity/"
+        }
+      ]
+    },
+    "Brex": {
+      "sector": "fintech",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.brex.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.brex.com/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://www.brex.com/product/credit-card"
+        },
+        {
+          "role": "product",
+          "url": "https://www.brex.com/product/spend-management"
+        },
+        {
+          "role": "product",
+          "url": "https://www.brex.com/product/travel-expense-management"
+        }
+      ]
+    },
+    "Ramp": {
+      "sector": "fintech",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://ramp.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://ramp.com/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://ramp.com/products"
+        },
+        {
+          "role": "product",
+          "url": "https://ramp.com/platform"
+        }
+      ]
+    },
+    "Chargebee": {
+      "sector": "fintech",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.chargebee.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.chargebee.com/pricing/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.chargebee.com/solutions/industry/gen-ai/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.chargebee.com/features/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.chargebee.com/solutions/usecases/churn-management/"
+        }
+      ]
+    },
+    "Paddle": {
+      "sector": "fintech",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.paddle.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.paddle.com/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://www.paddle.com/solutions/saas-billing"
+        },
+        {
+          "role": "product",
+          "url": "https://www.paddle.com/solutions/web-stores"
+        },
+        {
+          "role": "product",
+          "url": "https://www.paddle.com/solutions/app-studios"
+        }
+      ]
+    },
+    "Slack": {
+      "sector": "communication",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://slack.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://slack.com/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://slack.com/features/channels"
+        },
+        {
+          "role": "product",
+          "url": "https://slack.com/features/huddles"
+        },
+        {
+          "role": "product",
+          "url": "https://slack.com/features/canvas"
+        }
+      ]
+    },
+    "Zoom": {
+      "sector": "communication",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.zoom.com/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.zoom.com/en/products/whats-new/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.zoom.com/en/products/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.zoom.com/en/products/virtual-meetings/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.zoom.com/en/products/team-chat/"
+        }
+      ]
+    },
+    "Twilio": {
+      "sector": "communication",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.twilio.com/en-us"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.twilio.com/en-us/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://www.twilio.com/en-us/products/conversational-ai"
+        },
+        {
+          "role": "product",
+          "url": "https://www.twilio.com/en-us/products/conversational-ai/conversation-memory"
+        },
+        {
+          "role": "product",
+          "url": "https://www.twilio.com/en-us/products/conversational-ai/conversation-orchestrator"
+        }
+      ]
+    },
+    "Dropbox": {
+      "sector": "communication",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.dropbox.com/business"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.dropbox.com/plans"
+        },
+        {
+          "role": "product",
+          "url": "https://www.dropbox.com/business/solutions/sales"
+        },
+        {
+          "role": "product",
+          "url": "https://www.dropbox.com/business/solutions/marketing"
+        },
+        {
+          "role": "product",
+          "url": "https://www.dropbox.com/business/solutions/human-resources"
+        }
+      ]
+    },
+    "Box": {
+      "sector": "communication",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.box.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.box.com/pricing/platform"
+        },
+        {
+          "role": "product",
+          "url": "https://www.box.com/platform"
+        },
+        {
+          "role": "product",
+          "url": "https://www.box.com/industries"
+        },
+        {
+          "role": "product",
+          "url": "https://www.box.com/industries/banking"
+        }
+      ]
+    },
+    "Calendly": {
+      "sector": "communication",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://calendly.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://calendly.com/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://calendly.com/features/mobile-apps"
+        },
+        {
+          "role": "product",
+          "url": "https://calendly.com/features/browser-extensions"
+        },
+        {
+          "role": "product",
+          "url": "https://calendly.com/features/admin-management"
+        }
+      ]
+    },
+    "Docusign": {
+      "sector": "communication",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.docusign.com/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.docusign.com/products/clm"
+        },
+        {
+          "role": "product",
+          "url": "https://www.docusign.com/products/platform/ai"
+        },
+        {
+          "role": "product",
+          "url": "https://www.docusign.com/products/agreement-preparation"
+        },
+        {
+          "role": "product",
+          "url": "https://www.docusign.com/products/platform/agreement-manager"
+        }
+      ]
+    },
+    "Webex": {
+      "sector": "communication",
+      "pages": [],
+      "note": "homepage not fetched"
+    },
+    "RingCentral": {
+      "sector": "communication",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.ringcentral.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.ringcentral.com/pricing/contact-center.html"
+        },
+        {
+          "role": "product",
+          "url": "https://www.ringcentral.com/solutions/small-business"
+        },
+        {
+          "role": "product",
+          "url": "https://www.ringcentral.com/solutions/enterprise-business"
+        },
+        {
+          "role": "product",
+          "url": "https://www.ringcentral.com/products/air-pro.html"
+        }
+      ]
+    },
+    "Vonage": {
+      "sector": "communication",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.vonage.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.vonage.com/communications-apis/pricing/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.vonage.com/communications-apis/messages/features/rcs/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.vonage.com/communications-apis/messages/features/whatsapp/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.vonage.com/communications-apis/video/features/"
+        }
+      ]
+    },
+    "Shopify": {
+      "sector": "commerce_marketing",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.shopify.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.shopify.com/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://www.shopify.com/solutions/b2b/enterprise"
+        }
+      ]
+    },
+    "BigCommerce": {
+      "sector": "commerce_marketing",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.bigcommerce.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.bigcommerce.com/pricing/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.bigcommerce.com/product/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.bigcommerce.com/product/store-design/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.bigcommerce.com/solutions/b2b-ecommerce-platform/"
+        }
+      ]
+    },
+    "Mailchimp": {
+      "sector": "commerce_marketing",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://mailchimp.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://mailchimp.com/pricing/marketing/"
+        },
+        {
+          "role": "product",
+          "url": "https://mailchimp.com/solutions/marketing-tools-restaurants/"
+        },
+        {
+          "role": "product",
+          "url": "https://mailchimp.com/solutions/marketing-tools-hotels/"
+        },
+        {
+          "role": "product",
+          "url": "https://mailchimp.com/solutions/marketing-tools-nonprofits/"
+        }
+      ]
+    },
+    "Klaviyo": {
+      "sector": "commerce_marketing",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.klaviyo.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.klaviyo.com/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://www.klaviyo.com/platform"
+        },
+        {
+          "role": "product",
+          "url": "https://www.klaviyo.com/solutions/ai"
+        },
+        {
+          "role": "product",
+          "url": "https://www.klaviyo.com/solutions/marketing-automation"
+        }
+      ]
+    },
+    "Semrush": {
+      "sector": "commerce_marketing",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.semrush.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.semrush.com/pricing/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.semrush.com/features/keyword-research/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.semrush.com/features/competitor-analysis/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.semrush.com/features/ai-visibility/"
+        }
+      ]
+    },
+    "Hootsuite": {
+      "sector": "commerce_marketing",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.hootsuite.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.hootsuite.com/plans"
+        },
+        {
+          "role": "product",
+          "url": "https://www.hootsuite.com/platform/integrations"
+        },
+        {
+          "role": "product",
+          "url": "https://www.hootsuite.com/industries"
+        },
+        {
+          "role": "product",
+          "url": "https://www.hootsuite.com/industries/financial-services"
+        }
+      ]
+    },
+    "Canva": {
+      "sector": "commerce_marketing",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.canva.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.canva.com/pricing/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.canva.com/features/background-remover/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.canva.com/features/image-enhancer/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.canva.com/features/ai-photo-editing/"
+        }
+      ]
+    },
+    "Webflow": {
+      "sector": "commerce_marketing",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://webflow.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://webflow.com/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://webflow.com/feature/design"
+        },
+        {
+          "role": "product",
+          "url": "https://webflow.com/feature/edit-content"
+        },
+        {
+          "role": "product",
+          "url": "https://webflow.com/feature/interactions-animations"
+        }
+      ]
+    },
+    "Squarespace": {
+      "sector": "commerce_marketing",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.squarespace.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.squarespace.com/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://www.squarespace.com/services"
+        },
+        {
+          "role": "product",
+          "url": "https://www.squarespace.com/solutions/creative-services"
+        },
+        {
+          "role": "product",
+          "url": "https://www.squarespace.com/solutions/professional-services"
+        }
+      ]
+    },
+    "Wix": {
+      "sector": "commerce_marketing",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.wix.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.wix.com/plans"
+        },
+        {
+          "role": "product",
+          "url": "https://www.wix.com/features/main"
+        },
+        {
+          "role": "product",
+          "url": "https://www.wix.com/features/email-marketing"
+        }
+      ]
+    },
+    "Siemens": {
+      "sector": "industrial",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.siemens.com/en-us/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.siemens.com/en-us/products/tia-portal/eigen-engineering-agent/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.siemens.com/en-us/products/building-x/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.siemens.com/en-us/products/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.siemens.com/en-us/products/electrification-x/"
+        }
+      ]
+    },
+    "Schneider Electric": {
+      "sector": "industrial",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.se.com/us/en/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.se.com/us/en/work/services/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.se.com/us/en/work/services/spare-parts-management/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.se.com/us/en/work/solutions/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.se.com/us/en/work/solutions/local/federal-government/"
+        }
+      ]
+    },
+    "ABB": {
+      "sector": "industrial",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.abb.com/global/en"
+        }
+      ]
+    },
+    "Honeywell": {
+      "sector": "industrial",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.honeywell.com/us/en"
+        },
+        {
+          "role": "product",
+          "url": "https://www.honeywell.com/us/en/industries/buildings"
+        },
+        {
+          "role": "product",
+          "url": "https://www.honeywell.com/us/en/industries/chemicals-materials"
+        },
+        {
+          "role": "product",
+          "url": "https://www.honeywell.com/us/en/industries/data-centers"
+        },
+        {
+          "role": "product",
+          "url": "https://www.honeywell.com/us/en/industries/healthcare"
+        }
+      ]
+    },
+    "Caterpillar": {
+      "sector": "industrial",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.caterpillar.com/en.html"
+        }
+      ]
+    },
+    "Maersk": {
+      "sector": "industrial",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.maersk.com/"
+        }
+      ]
+    },
+    "DHL": {
+      "sector": "industrial",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.dhl.com/us-en/home.html"
+        }
+      ]
+    },
+    "3M": {
+      "sector": "industrial",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.3m.com/"
+        }
+      ]
+    },
+    "Bosch": {
+      "sector": "industrial",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.bosch.com/"
+        }
+      ]
+    },
+    "Philips": {
+      "sector": "industrial",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.philips.com/global"
+        },
+        {
+          "role": "product",
+          "url": "https://www.philips.com/healthcare/solutions"
+        },
+        {
+          "role": "product",
+          "url": "https://www.philips.com/healthcare/services"
+        }
+      ]
+    },
+    "Pfizer": {
+      "sector": "healthcare_finance_consumer",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.pfizer.com/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.pfizer.com/products"
+        },
+        {
+          "role": "product",
+          "url": "https://www.pfizer.com/products/how-drugs-are-made/branded-versus-generics"
+        },
+        {
+          "role": "product",
+          "url": "https://www.pfizer.com/products/how-drugs-are-made/biologics-and-biosimilars"
+        },
+        {
+          "role": "product",
+          "url": "https://www.pfizer.com/products/how-drugs-are-made/commitment-to-quality"
+        }
+      ]
+    },
+    "Novartis": {
+      "sector": "healthcare_finance_consumer",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.novartis.com/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.novartis.com/about/products"
+        }
+      ]
+    },
+    "Medtronic": {
+      "sector": "healthcare_finance_consumer",
+      "pages": [],
+      "note": "homepage not fetched"
+    },
+    "Unilever": {
+      "sector": "healthcare_finance_consumer",
+      "pages": [],
+      "note": "homepage not fetched"
+    },
+    "Nestle": {
+      "sector": "healthcare_finance_consumer",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.nestle.com/"
+        }
+      ]
+    },
+    "Visa": {
+      "sector": "healthcare_finance_consumer",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.visa.com/en-us"
+        }
+      ]
+    },
+    "Mastercard": {
+      "sector": "healthcare_finance_consumer",
+      "pages": [],
+      "note": "homepage not fetched"
+    },
+    "American Express": {
+      "sector": "healthcare_finance_consumer",
+      "pages": [],
+      "note": "homepage not fetched"
+    },
+    "Allianz": {
+      "sector": "healthcare_finance_consumer",
+      "pages": [],
+      "note": "homepage not fetched"
+    },
+    "Accenture": {
+      "sector": "healthcare_finance_consumer",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.accenture.com/en"
+        },
+        {
+          "role": "product",
+          "url": "https://www.accenture.com/en/services"
+        },
+        {
+          "role": "product",
+          "url": "https://www.accenture.com/en/services/ai-data"
+        },
+        {
+          "role": "product",
+          "url": "https://www.accenture.com/en/services/cloud"
+        },
+        {
+          "role": "product",
+          "url": "https://www.accenture.com/en/services/customer-service"
+        }
+      ]
+    }
+  }
+}

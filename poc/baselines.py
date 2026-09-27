@@ -4,14 +4,7 @@ from __future__ import annotations
 
 from typing import Callable
 
-import tiktoken
-
-
-def estimate_tokens(text: str) -> int:
-    try:
-        return len(tiktoken.get_encoding("cl100k_base").encode(text))
-    except Exception:
-        return max(1, len(text) // 4)
+from chromerag.extractor import estimate_tokens  # noqa: F401  (characters / 4, offline)
 
 
 def baseline_beautifulsoup(html: str) -> str:

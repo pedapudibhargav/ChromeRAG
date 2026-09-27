@@ -1,0 +1,16 @@
+{
+  "usd": 1.144135,
+  "calls": 1320,
+  "by_model": {
+    "gpt-5.6-luna": {
+      "usd": 0.975417,
+      "tokens_in": 3950024,
+      "tokens_out": 247211
+    },
+    "text-embedding-3-small": {
+      "usd": 0.168715,
+      "tokens_in": 8435728,
+      "tokens_out": 0
+    }
+  }
+}

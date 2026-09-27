@@ -5,6 +5,7 @@ Uses public registries / sites. Optional SSL_EXTRA_CA env for local TLS intercep
 
 from __future__ import annotations
 
+import functools
 import json
 import os
 import re
@@ -57,6 +58,7 @@ HEADERS = {
 }
 
 
+@functools.cache
 def _ssl_verify() -> str | bool:
     """Use system CAs; optionally append SSL_EXTRA_CA if set in the environment."""
     extra = os.environ.get("SSL_EXTRA_CA")
@@ -67,9 +69,11 @@ def _ssl_verify() -> str | bool:
     ]
     system = next((p for p in system_candidates if p and p.exists()), None)
     if extra and Path(extra).exists() and system:
-        combined = Path(tempfile.gettempdir()) / "chromerag-ca-bundle.crt"
-        combined.write_bytes(system.read_bytes() + b"\n" + Path(extra).read_bytes())
-        return str(combined)
+        # Built once per process (cached), so parallel fetchers never rewrite it mid-read.
+        fd, name = tempfile.mkstemp(prefix="chromerag-ca-", suffix=".crt")
+        with os.fdopen(fd, "wb") as fh:
+            fh.write(system.read_bytes() + b"\n" + Path(extra).read_bytes())
+        return name
     if system:
         return str(system)
     return True

@@ -53,7 +53,7 @@ METADATA = {
     "C2": "https://github.com/pedapudibhargav/ChromeRAG/tree/v0.1.2",
     "C3": "MIT",
     "C4": "git",
-    "C5": "Python ≥3.11; BeautifulSoup4, lxml, Pydantic, PyYAML, NumPy, tiktoken",
+    "C5": "Python ≥3.11; BeautifulSoup4, lxml, PyYAML, NumPy",
     "C6": (
         "Python ≥3.11 on macOS, Linux or Windows; CPU only. pip install chromerag "
         "(or pip install -e . from a clone). Optional extras: [baselines] and [dev] "

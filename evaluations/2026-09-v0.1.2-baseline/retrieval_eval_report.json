@@ -1,0 +1,464 @@
+{
+  "n_pages": 242,
+  "chunk_words": 200,
+  "n_queries": {
+    "heading": 330,
+    "passage": 329,
+    "title": 112
+  },
+  "tools": {
+    "chromerag_coverage": {
+      "chunks": 2553,
+      "indexed_words": 499985,
+      "scores": {
+        "heading": {
+          "context_chrome@5": 0.002,
+          "hit@1": 0.8,
+          "hit@5": 0.927,
+          "mrr@5": 0.858
+        },
+        "all": {
+          "context_chrome@5": 0.001,
+          "hit@1": 0.877,
+          "hit@5": 0.949,
+          "mrr@5": 0.909
+        },
+        "passage": {
+          "context_chrome@5": 0.001,
+          "hit@1": 0.948,
+          "hit@5": 0.964,
+          "mrr@5": 0.954
+        },
+        "title": {
+          "context_chrome@5": 0.002,
+          "hit@1": 0.893,
+          "hit@5": 0.973,
+          "mrr@5": 0.927
+        }
+      }
+    },
+    "chromerag": {
+      "chunks": 2501,
+      "indexed_words": 489226,
+      "scores": {
+        "heading": {
+          "context_chrome@5": 0.002,
+          "hit@1": 0.824,
+          "hit@5": 0.924,
+          "mrr@5": 0.867
+        },
+        "all": {
+          "context_chrome@5": 0.001,
+          "hit@1": 0.888,
+          "hit@5": 0.947,
+          "mrr@5": 0.913
+        },
+        "passage": {
+          "context_chrome@5": 0.001,
+          "hit@1": 0.951,
+          "hit@5": 0.96,
+          "mrr@5": 0.955
+        },
+        "title": {
+          "context_chrome@5": 0.001,
+          "hit@1": 0.893,
+          "hit@5": 0.973,
+          "mrr@5": 0.927
+        }
+      }
+    },
+    "trafilatura": {
+      "chunks": 1949,
+      "indexed_words": 361925,
+      "scores": {
+        "heading": {
+          "context_chrome@5": 0.006,
+          "hit@1": 0.767,
+          "hit@5": 0.885,
+          "mrr@5": 0.814
+        },
+        "all": {
+          "context_chrome@5": 0.005,
+          "hit@1": 0.86,
+          "hit@5": 0.922,
+          "mrr@5": 0.885
+        },
+        "passage": {
+          "context_chrome@5": 0.004,
+          "hit@1": 0.939,
+          "hit@5": 0.948,
+          "mrr@5": 0.943
+        },
+        "title": {
+          "context_chrome@5": 0.006,
+          "hit@1": 0.902,
+          "hit@5": 0.955,
+          "mrr@5": 0.921
+        }
+      }
+    },
+    "markitdown": {
+      "chunks": 3907,
+      "indexed_words": 1157586,
+      "scores": {
+        "heading": {
+          "context_chrome@5": 0.029,
+          "hit@1": 0.785,
+          "hit@5": 0.921,
+          "mrr@5": 0.838
+        },
+        "all": {
+          "context_chrome@5": 0.026,
+          "hit@1": 0.892,
+          "hit@5": 0.964,
+          "mrr@5": 0.92
+        },
+        "passage": {
+          "context_chrome@5": 0.019,
+          "hit@1": 0.991,
+          "hit@5": 1.0,
+          "mrr@5": 0.995
+        },
+        "title": {
+          "context_chrome@5": 0.035,
+          "hit@1": 0.92,
+          "hit@5": 0.982,
+          "mrr@5": 0.943
+        }
+      }
+    },
+    "readability": {
+      "chunks": 1701,
+      "indexed_words": 315234,
+      "scores": {
+        "heading": {
+          "context_chrome@5": 0.005,
+          "hit@1": 0.573,
+          "hit@5": 0.706,
+          "mrr@5": 0.625
+        },
+        "all": {
+          "context_chrome@5": 0.006,
+          "hit@1": 0.684,
+          "hit@5": 0.774,
+          "mrr@5": 0.718
+        },
+        "passage": {
+          "context_chrome@5": 0.007,
+          "hit@1": 0.726,
+          "hit@5": 0.781,
+          "mrr@5": 0.747
+        },
+        "title": {
+          "context_chrome@5": 0.006,
+          "hit@1": 0.884,
+          "hit@5": 0.955,
+          "mrr@5": 0.91
+        }
+      }
+    }
+  },
+  "dense": {
+    "model": "text-embedding-3-small",
+    "tools": {
+      "chromerag_coverage": {
+        "chunks": 2553,
+        "indexed_words": 499985,
+        "scores": {
+          "heading": {
+            "context_chrome@5": 0.001,
+            "hit@1": 0.63,
+            "hit@5": 0.755,
+            "mrr@5": 0.677
+          },
+          "all": {
+            "context_chrome@5": 0.001,
+            "hit@1": 0.637,
+            "hit@5": 0.772,
+            "mrr@5": 0.687
+          },
+          "passage": {
+            "context_chrome@5": 0.001,
+            "hit@1": 0.55,
+            "hit@5": 0.729,
+            "mrr@5": 0.616
+          },
+          "title": {
+            "context_chrome@5": 0.001,
+            "hit@1": 0.911,
+            "hit@5": 0.946,
+            "mrr@5": 0.926
+          }
+        }
+      },
+      "chromerag": {
+        "chunks": 2501,
+        "indexed_words": 489226,
+        "scores": {
+          "heading": {
+            "context_chrome@5": 0.001,
+            "hit@1": 0.621,
+            "hit@5": 0.748,
+            "mrr@5": 0.669
+          },
+          "all": {
+            "context_chrome@5": 0.001,
+            "hit@1": 0.637,
+            "hit@5": 0.777,
+            "mrr@5": 0.69
+          },
+          "passage": {
+            "context_chrome@5": 0.001,
+            "hit@1": 0.556,
+            "hit@5": 0.748,
+            "mrr@5": 0.629
+          },
+          "title": {
+            "context_chrome@5": 0.001,
+            "hit@1": 0.92,
+            "hit@5": 0.946,
+            "mrr@5": 0.932
+          }
+        }
+      },
+      "trafilatura": {
+        "chunks": 1949,
+        "indexed_words": 361925,
+        "scores": {
+          "heading": {
+            "context_chrome@5": 0.004,
+            "hit@1": 0.624,
+            "hit@5": 0.764,
+            "mrr@5": 0.677
+          },
+          "all": {
+            "context_chrome@5": 0.005,
+            "hit@1": 0.633,
+            "hit@5": 0.786,
+            "mrr@5": 0.691
+          },
+          "passage": {
+            "context_chrome@5": 0.004,
+            "hit@1": 0.544,
+            "hit@5": 0.751,
+            "mrr@5": 0.621
+          },
+          "title": {
+            "context_chrome@5": 0.008,
+            "hit@1": 0.92,
+            "hit@5": 0.955,
+            "mrr@5": 0.935
+          }
+        }
+      },
+      "markitdown": {
+        "chunks": 3907,
+        "indexed_words": 1157586,
+        "scores": {
+          "heading": {
+            "context_chrome@5": 0.025,
+            "hit@1": 0.612,
+            "hit@5": 0.733,
+            "mrr@5": 0.656
+          },
+          "all": {
+            "context_chrome@5": 0.024,
+            "hit@1": 0.626,
+            "hit@5": 0.748,
+            "mrr@5": 0.673
+          },
+          "passage": {
+            "context_chrome@5": 0.017,
+            "hit@1": 0.538,
+            "hit@5": 0.684,
+            "mrr@5": 0.595
+          },
+          "title": {
+            "context_chrome@5": 0.037,
+            "hit@1": 0.929,
+            "hit@5": 0.982,
+            "mrr@5": 0.95
+          }
+        }
+      },
+      "readability": {
+        "chunks": 1701,
+        "indexed_words": 315234,
+        "scores": {
+          "heading": {
+            "context_chrome@5": 0.006,
+            "hit@1": 0.548,
+            "hit@5": 0.667,
+            "mrr@5": 0.591
+          },
+          "all": {
+            "context_chrome@5": 0.006,
+            "hit@1": 0.593,
+            "hit@5": 0.719,
+            "mrr@5": 0.64
+          },
+          "passage": {
+            "context_chrome@5": 0.006,
+            "hit@1": 0.526,
+            "hit@5": 0.687,
+            "mrr@5": 0.589
+          },
+          "title": {
+            "context_chrome@5": 0.009,
+            "hit@1": 0.92,
+            "hit@5": 0.964,
+            "mrr@5": 0.936
+          }
+        }
+      }
+    },
+    "paired_bootstrap": [
+      {
+        "comparison": "chromerag_coverage - chromerag",
+        "metric": "hit@5",
+        "mean_diff": -0.005,
+        "ci95": [
+          -0.017,
+          0.005
+        ]
+      },
+      {
+        "comparison": "chromerag_coverage - chromerag",
+        "metric": "context_chrome@5",
+        "mean_diff": 0.0,
+        "ci95": [
+          -0.0,
+          0.0
+        ]
+      },
+      {
+        "comparison": "chromerag_coverage - trafilatura",
+        "metric": "hit@5",
+        "mean_diff": -0.014,
+        "ci95": [
+          -0.04,
+          0.011
+        ]
+      },
+      {
+        "comparison": "chromerag_coverage - trafilatura",
+        "metric": "context_chrome@5",
+        "mean_diff": -0.004,
+        "ci95": [
+          -0.006,
+          -0.002
+        ]
+      },
+      {
+        "comparison": "chromerag_coverage - markitdown",
+        "metric": "hit@5",
+        "mean_diff": 0.023,
+        "ci95": [
+          -0.003,
+          0.049
+        ]
+      },
+      {
+        "comparison": "chromerag_coverage - markitdown",
+        "metric": "context_chrome@5",
+        "mean_diff": -0.023,
+        "ci95": [
+          -0.026,
+          -0.02
+        ]
+      },
+      {
+        "comparison": "chromerag_coverage - readability",
+        "metric": "hit@5",
+        "mean_diff": 0.053,
+        "ci95": [
+          0.024,
+          0.083
+        ]
+      },
+      {
+        "comparison": "chromerag_coverage - readability",
+        "metric": "context_chrome@5",
+        "mean_diff": -0.005,
+        "ci95": [
+          -0.008,
+          -0.003
+        ]
+      }
+    ]
+  },
+  "paired_bootstrap": [
+    {
+      "comparison": "chromerag_coverage - chromerag",
+      "metric": "hit@5",
+      "mean_diff": 0.003,
+      "ci95": [
+        0.0,
+        0.007
+      ]
+    },
+    {
+      "comparison": "chromerag_coverage - chromerag",
+      "metric": "context_chrome@5",
+      "mean_diff": 0.0,
+      "ci95": [
+        -0.0,
+        0.0
+      ]
+    },
+    {
+      "comparison": "chromerag_coverage - trafilatura",
+      "metric": "hit@5",
+      "mean_diff": 0.027,
+      "ci95": [
+        0.003,
+        0.053
+      ]
+    },
+    {
+      "comparison": "chromerag_coverage - trafilatura",
+      "metric": "context_chrome@5",
+      "mean_diff": -0.004,
+      "ci95": [
+        -0.006,
+        -0.003
+      ]
+    },
+    {
+      "comparison": "chromerag_coverage - markitdown",
+      "metric": "hit@5",
+      "mean_diff": -0.014,
+      "ci95": [
+        -0.035,
+        0.006
+      ]
+    },
+    {
+      "comparison": "chromerag_coverage - markitdown",
+      "metric": "context_chrome@5",
+      "mean_diff": -0.025,
+      "ci95": [
+        -0.028,
+        -0.021
+      ]
+    },
+    {
+      "comparison": "chromerag_coverage - readability",
+      "metric": "hit@5",
+      "mean_diff": 0.175,
+      "ci95": [
+        0.133,
+        0.217
+      ]
+    },
+    {
+      "comparison": "chromerag_coverage - readability",
+      "metric": "context_chrome@5",
+      "mean_diff": -0.005,
+      "ci95": [
+        -0.007,
+        -0.003
+      ]
+    }
+  ]
+}

@@ -15,7 +15,6 @@ from __future__ import annotations
 
 from typing import Any
 
-import tiktoken
 from bs4 import Tag
 
 from chromerag.config import PipelineConfig, Strictness, infer_page_type
@@ -35,12 +34,13 @@ from chromerag.site_chrome import SiteChromeModel, apply_site_chrome, site_group
 from chromerag.tables import replace_tables_with_linearized
 
 
-def estimate_tokens(text: str, encoding: str = "cl100k_base") -> int:
-    try:
-        enc = tiktoken.get_encoding(encoding)
-        return len(enc.encode(text))
-    except Exception:
-        return max(1, len(text) // 4)
+def estimate_tokens(text: str) -> int:
+    """Approximate token count (characters / 4), computed offline.
+
+    Exact tokenizers such as tiktoken download their vocabulary on first use, which
+    would make ChromeRAG reach the network and behave differently on offline machines.
+    """
+    return max(1, len(text) // 4)
 
 
 class ChromeRAG:
