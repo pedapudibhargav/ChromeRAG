@@ -23,4 +23,16 @@ python -m poc.run_wcxb_eval --split dev --out evaluations/2026-10-v0.1.3/wcxb_de
 |------|--------|------:|--------|--------|
 | G1 | median ms/page | 78.0 | ≤45 | FAIL |
 | G2 | WCXB dev F1 | 0.754 | ≥0.79 | FAIL |
-| G11 | pytest | 28 pass | all pass | PASS |
+## WP1 — Speed (identical output)
+
+### Commands
+```bash
+python -m pytest -q -p no:cacheprovider
+python -m poc.golden --check
+python -m poc.bench_speed --label wp1
+```
+
+### Results
+- **pytest:** 29 passed; golden check zero changes
+- **speed_wp1.json:** chromerag_coverage median **74.4 ms/page** (baseline 78.0 ms, ~5% faster)
+- **G1:** NOT MET (need ≤45 ms with identical output; deferred str(tag) approximation — broke golden)

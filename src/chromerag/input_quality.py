@@ -27,6 +27,7 @@ _ROOT_MARKERS = (
     "data-reactroot",
     "ng-version=",
 )
+_SKIP_TAGS = frozenset({"script", "style", "noscript", "svg", "template"})
 
 
 @dataclass
@@ -55,6 +56,15 @@ class InputQualityReport:
         }
 
 
+def _visible_text_from_soup(soup: BeautifulSoup) -> tuple[str, int]:
+    """Count visible text and script characters from an already-parsed tree."""
+    script_chars = sum(len(s.get_text() or "") for s in soup.find_all("script"))
+    work = BeautifulSoup(str(soup), "lxml")
+    for t in work(["script", "style", "noscript", "svg", "template"]):
+        t.decompose()
+    text = re.sub(r"\s+", " ", work.get_text(" ", strip=True)).strip()
+    return text, script_chars
+
 def _visible_text(html: str) -> tuple[str, int]:
     soup = BeautifulSoup(html, "lxml")
     for t in soup(["script", "style", "noscript", "svg", "template"]):
@@ -65,23 +75,11 @@ def _visible_text(html: str) -> tuple[str, int]:
     return text, script_chars
 
 
-def assess_input_html(html: str) -> InputQualityReport:
-    """Return warnings when HTML looks like an unrendered JS shell or is otherwise thin."""
-    if not html or not html.strip():
-        return InputQualityReport(
-            is_thin=True,
-            likely_js_shell=False,
-            visible_chars=0,
-            visible_words=0,
-            script_chars=0,
-            noscript_hint=False,
-            warnings=[
-                "Empty HTML input. ChromeRAG needs a full HTML document string/file. "
-                "If this came from a crawler, verify the fetch pipeline."
-            ],
-        )
-
-    text, script_chars = _visible_text(html)
+def _report_from_metrics(
+    html: str,
+    text: str,
+    script_chars: int,
+) -> InputQualityReport:
     words = [w for w in re.findall(r"[A-Za-z0-9]{2,}", text)]
     visible_chars = len(text)
     visible_words = len(words)
@@ -122,3 +120,26 @@ def assess_input_html(html: str) -> InputQualityReport:
         root_marker=root_marker,
         warnings=warnings,
     )
+
+
+def assess_input_html(html: str, soup: BeautifulSoup | None = None) -> InputQualityReport:
+    """Return warnings when HTML looks like an unrendered JS shell or is otherwise thin."""
+    if not html or not html.strip():
+        return InputQualityReport(
+            is_thin=True,
+            likely_js_shell=False,
+            visible_chars=0,
+            visible_words=0,
+            script_chars=0,
+            noscript_hint=False,
+            warnings=[
+                "Empty HTML input. ChromeRAG needs a full HTML document string/file. "
+                "If this came from a crawler, verify the fetch pipeline."
+            ],
+        )
+
+    if soup is not None:
+        text, script_chars = _visible_text_from_soup(soup)
+    else:
+        text, script_chars = _visible_text(html)
+    return _report_from_metrics(html, text, script_chars)

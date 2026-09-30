@@ -19,6 +19,7 @@ from bs4 import Tag
 
 from chromerag.config import PipelineConfig, Strictness, infer_page_type
 from chromerag.density import (
+    ElementCache,
     candidate_blocks,
     parse_html,
     prune_noise_subtrees,
@@ -108,11 +109,9 @@ class ChromeRAG:
             if cfg.enable_dvdf:
                 self.noise_index = NoiseAnchorIndex(threshold=cfg.dvdf_threshold)
 
-        # 0) Input quality — warn on JS shells / thin HTML (caller must render)
-        input_quality = assess_input_html(html)
-
-        # 1) Parse — keep <script> so JSON-LD is visible
+        # 0–1) Parse once, then input quality from the same tree
         soup = parse_html(html)
+        input_quality = assess_input_html(html, soup=soup)
 
         # 2) Schema BEFORE stripping scripts (JSON-LD is inside script tags)
         front: dict[str, Any] = {}
@@ -121,6 +120,8 @@ class ChromeRAG:
 
         # 3) Hard clean
         strip_non_content_tags(soup)
+
+        elem_cache = ElementCache()
 
         # 4) STCE — site-learned chrome (only if model provided)
         stce_removed = 0
@@ -136,12 +137,12 @@ class ChromeRAG:
                 stce_removed = apply_site_chrome(soup, self.site_chrome)
 
         # 5) Structural chrome
-        prune_noise_subtrees(soup, max_noise_block_chars=cfg.max_noise_block_chars)
+        prune_noise_subtrees(soup, max_noise_block_chars=cfg.max_noise_block_chars, cache=elem_cache)
 
         # 6) Density + DVDF
         density_cfg = cfg.density_config()
-        blocks = candidate_blocks(soup, density_cfg)
-        scored = score_blocks(blocks, density_cfg)
+        blocks = candidate_blocks(soup, density_cfg, cache=elem_cache)
+        scored = score_blocks(blocks, density_cfg, cache=elem_cache)
         if self.noise_index is not None:
             scored = self.noise_index.apply(scored)
 
@@ -152,9 +153,12 @@ class ChromeRAG:
         drop_tags = ["p", "li"]
         if cfg.strictness == Strictness.AGGRESSIVE:
             drop_tags = ["p", "li", "div", "section"]
-        for tag in list(soup.find_all(drop_tags)):
-            if not isinstance(tag, Tag):
-                continue
+        decompose_candidates = [
+            tag
+            for tag in soup.find_all(drop_tags)
+            if isinstance(tag, Tag)
+        ]
+        for tag in decompose_candidates:
             text = tag.get_text(" ", strip=True)
             if text not in rejected_texts:
                 continue
@@ -177,11 +181,12 @@ class ChromeRAG:
         md = front_matter_yaml(front) + body_md if front else body_md
 
         kept = sum(1 for b in scored if b.keep)
+        token_est = estimate_tokens(md)
         warnings = list(input_quality.warnings)
         # Also warn when extraction itself collapsed despite non-thin input.
         if (
             not input_quality.is_thin
-            and estimate_tokens(md) < 40
+            and token_est < 40
             and kept <= 1
         ):
             warnings.append(
@@ -195,7 +200,7 @@ class ChromeRAG:
             n_blocks_in=len(scored),
             n_blocks_kept=kept,
             n_tables=n_tables,
-            tokens_estimate=estimate_tokens(md),
+            tokens_estimate=token_est,
             method="chromerag",
             warnings=warnings,
             input_quality=input_quality.as_dict(),

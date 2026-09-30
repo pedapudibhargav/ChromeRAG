@@ -1,0 +1,33 @@
+{
+  "label": "wp1",
+  "tools": {
+    "chromerag_coverage": {
+      "median_ms_per_page": 74.386,
+      "p95_ms_per_page": 368.252,
+      "pages_per_second": 13.443,
+      "n_pages": 200,
+      "passes": 3
+    },
+    "trafilatura": {
+      "median_ms_per_page": 33.534,
+      "p95_ms_per_page": 156.845,
+      "pages_per_second": 29.82,
+      "n_pages": 200,
+      "passes": 3
+    },
+    "markitdown": {
+      "median_ms_per_page": 39.466,
+      "p95_ms_per_page": 103.111,
+      "pages_per_second": 25.338,
+      "n_pages": 200,
+      "passes": 3
+    },
+    "readability": {
+      "median_ms_per_page": 29.967,
+      "p95_ms_per_page": 102.248,
+      "pages_per_second": 33.37,
+      "n_pages": 200,
+      "passes": 3
+    }
+  }
+}

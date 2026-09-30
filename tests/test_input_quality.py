@@ -2,8 +2,29 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
+import pytest
+
 from chromerag import ChromeRAG
-from chromerag.input_quality import assess_input_html
+from chromerag.density import parse_html
+from chromerag.input_quality import _visible_text, _visible_text_from_soup, assess_input_html
+
+FIXTURES = Path(__file__).parent / "fixtures"
+
+
+@pytest.fixture
+def docs_html() -> str:
+    return (FIXTURES / "docs_page.html").read_text(encoding="utf-8")
+
+
+def test_visible_text_matches_legacy_on_fixtures(docs_html: str) -> None:
+    legacy_text, legacy_script = _visible_text(docs_html)
+    soup = parse_html(docs_html)
+    new_text, new_script = _visible_text_from_soup(soup)
+    assert new_text == legacy_text
+    assert new_script == legacy_script
+    assert assess_input_html(docs_html).visible_chars == assess_input_html(docs_html, soup=soup).visible_chars
 
 
 def test_js_shell_triggers_warning() -> None:
