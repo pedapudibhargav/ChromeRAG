@@ -1,0 +1,260 @@
+{
+  "description": "Fresh companies, fixed on 2026-09-29 before any extraction change. NEVER used for tuning. Fetch and score once at the end of the work (poc.landing_corpus --companies poc/landing_companies_fresh.json).",
+  "companies": [
+    {
+      "name": "Vultr",
+      "sector": "cloud_infrastructure",
+      "homepage": "https://www.vultr.com/"
+    },
+    {
+      "name": "Scaleway",
+      "sector": "cloud_infrastructure",
+      "homepage": "https://www.scaleway.com/"
+    },
+    {
+      "name": "Fly.io",
+      "sector": "cloud_infrastructure",
+      "homepage": "https://fly.io/"
+    },
+    {
+      "name": "Cloudinary",
+      "sector": "cloud_infrastructure",
+      "homepage": "https://cloudinary.com/"
+    },
+    {
+      "name": "Supabase",
+      "sector": "cloud_infrastructure",
+      "homepage": "https://supabase.com/"
+    },
+    {
+      "name": "LaunchDarkly",
+      "sector": "developer_tools",
+      "homepage": "https://launchdarkly.com/"
+    },
+    {
+      "name": "Dynatrace",
+      "sector": "developer_tools",
+      "homepage": "https://www.dynatrace.com/"
+    },
+    {
+      "name": "Splunk",
+      "sector": "developer_tools",
+      "homepage": "https://www.splunk.com/"
+    },
+    {
+      "name": "Sumo Logic",
+      "sector": "developer_tools",
+      "homepage": "https://www.sumologic.com/"
+    },
+    {
+      "name": "Figma",
+      "sector": "developer_tools",
+      "homepage": "https://www.figma.com/"
+    },
+    {
+      "name": "Cockroach Labs",
+      "sector": "data_ai",
+      "homepage": "https://www.cockroachlabs.com/"
+    },
+    {
+      "name": "Redis",
+      "sector": "data_ai",
+      "homepage": "https://redis.io/"
+    },
+    {
+      "name": "Couchbase",
+      "sector": "data_ai",
+      "homepage": "https://www.couchbase.com/"
+    },
+    {
+      "name": "Algolia",
+      "sector": "data_ai",
+      "homepage": "https://www.algolia.com/"
+    },
+    {
+      "name": "Cloudera",
+      "sector": "data_ai",
+      "homepage": "https://www.cloudera.com/"
+    },
+    {
+      "name": "Qlik",
+      "sector": "data_ai",
+      "homepage": "https://www.qlik.com/"
+    },
+    {
+      "name": "Tableau",
+      "sector": "data_ai",
+      "homepage": "https://www.tableau.com/"
+    },
+    {
+      "name": "Zscaler",
+      "sector": "security",
+      "homepage": "https://www.zscaler.com/"
+    },
+    {
+      "name": "Check Point",
+      "sector": "security",
+      "homepage": "https://www.checkpoint.com/"
+    },
+    {
+      "name": "Sophos",
+      "sector": "security",
+      "homepage": "https://www.sophos.com/"
+    },
+    {
+      "name": "Bitwarden",
+      "sector": "security",
+      "homepage": "https://bitwarden.com/"
+    },
+    {
+      "name": "Cisco",
+      "sector": "security",
+      "homepage": "https://www.cisco.com/"
+    },
+    {
+      "name": "ServiceNow",
+      "sector": "business_saas",
+      "homepage": "https://www.servicenow.com/"
+    },
+    {
+      "name": "Workday",
+      "sector": "business_saas",
+      "homepage": "https://www.workday.com/"
+    },
+    {
+      "name": "Smartsheet",
+      "sector": "business_saas",
+      "homepage": "https://www.smartsheet.com/"
+    },
+    {
+      "name": "ClickUp",
+      "sector": "business_saas",
+      "homepage": "https://clickup.com/"
+    },
+    {
+      "name": "Zuora",
+      "sector": "business_saas",
+      "homepage": "https://www.zuora.com/"
+    },
+    {
+      "name": "SAP",
+      "sector": "business_saas",
+      "homepage": "https://www.sap.com/"
+    },
+    {
+      "name": "Oracle",
+      "sector": "business_saas",
+      "homepage": "https://www.oracle.com/"
+    },
+    {
+      "name": "Klarna",
+      "sector": "fintech",
+      "homepage": "https://www.klarna.com/"
+    },
+    {
+      "name": "Marqeta",
+      "sector": "fintech",
+      "homepage": "https://www.marqeta.com/"
+    },
+    {
+      "name": "Xero",
+      "sector": "fintech",
+      "homepage": "https://www.xero.com/"
+    },
+    {
+      "name": "Bill",
+      "sector": "fintech",
+      "homepage": "https://www.bill.com/"
+    },
+    {
+      "name": "Gusto",
+      "sector": "fintech",
+      "homepage": "https://gusto.com/"
+    },
+    {
+      "name": "Rippling",
+      "sector": "fintech",
+      "homepage": "https://www.rippling.com/"
+    },
+    {
+      "name": "Deel",
+      "sector": "fintech",
+      "homepage": "https://www.deel.com/"
+    },
+    {
+      "name": "Red Hat",
+      "sector": "communication",
+      "homepage": "https://www.redhat.com/"
+    },
+    {
+      "name": "SUSE",
+      "sector": "communication",
+      "homepage": "https://www.suse.com/"
+    },
+    {
+      "name": "Canonical",
+      "sector": "communication",
+      "homepage": "https://canonical.com/"
+    },
+    {
+      "name": "Adobe",
+      "sector": "commerce_marketing",
+      "homepage": "https://www.adobe.com/"
+    },
+    {
+      "name": "Autodesk",
+      "sector": "commerce_marketing",
+      "homepage": "https://www.autodesk.com/"
+    },
+    {
+      "name": "Intuit",
+      "sector": "commerce_marketing",
+      "homepage": "https://www.intuit.com/"
+    },
+    {
+      "name": "Toast",
+      "sector": "commerce_marketing",
+      "homepage": "https://pos.toasttab.com/"
+    },
+    {
+      "name": "Rockwell Automation",
+      "sector": "industrial",
+      "homepage": "https://www.rockwellautomation.com/"
+    },
+    {
+      "name": "Emerson",
+      "sector": "industrial",
+      "homepage": "https://www.emerson.com/"
+    },
+    {
+      "name": "Johnson Controls",
+      "sector": "industrial",
+      "homepage": "https://www.johnsoncontrols.com/"
+    },
+    {
+      "name": "GE Aerospace",
+      "sector": "industrial",
+      "homepage": "https://www.geaerospace.com/"
+    },
+    {
+      "name": "Roche",
+      "sector": "healthcare_finance_consumer",
+      "homepage": "https://www.roche.com/"
+    },
+    {
+      "name": "Johnson & Johnson",
+      "sector": "healthcare_finance_consumer",
+      "homepage": "https://www.jnj.com/"
+    },
+    {
+      "name": "Procter & Gamble",
+      "sector": "healthcare_finance_consumer",
+      "homepage": "https://us.pg.com/"
+    },
+    {
+      "name": "Deloitte",
+      "sector": "healthcare_finance_consumer",
+      "homepage": "https://www.deloitte.com/"
+    }
+  ]
+}
