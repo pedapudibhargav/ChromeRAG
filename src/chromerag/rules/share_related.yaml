@@ -1,0 +1,21 @@
+- id: share.social
+  action: drop
+  scope: inside_root
+  match:
+    - {class_token: "share"}
+    - {class_token: "social"}
+  max_chars: 1500
+  risk: safe
+  evidence: "Trafilatura _SHARE_SOCIAL_ID_CLASS_TOKENS (Apache-2.0)"
+  fixture: tests/rules/share_social.html
+
+- id: share.related
+  action: drop
+  scope: inside_root
+  match:
+    - {class_token: "related"}
+    - {class_token: "related-posts"}
+  max_chars: 1500
+  risk: guarded
+  evidence: "Trafilatura related-post vocabulary (Apache-2.0)"
+  fixture: tests/rules/share_related.html

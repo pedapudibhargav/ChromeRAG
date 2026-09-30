@@ -1,0 +1,30 @@
+- id: consent.onetrust
+  action: drop
+  scope: anywhere
+  match:
+    - {id: "^onetrust-"}
+    - {class_token: "ot-sdk-container"}
+  max_chars: 6000
+  risk: safe
+  evidence: "OneTrust vendor DOM; common consent manager"
+  fixture: tests/rules/consent_onetrust.html
+
+- id: consent.cookiebot
+  action: drop
+  scope: anywhere
+  match:
+    - {id: "CybotCookiebotDialog"}
+  max_chars: 6000
+  risk: safe
+  evidence: "Cookiebot vendor documentation"
+  fixture: tests/rules/consent_cookiebot.html
+
+- id: consent.osano
+  action: drop
+  scope: anywhere
+  match:
+    - {class_regex: "osano-cm-"}
+  max_chars: 6000
+  risk: safe
+  evidence: "Osano consent manager class prefix"
+  fixture: tests/rules/consent_osano.html

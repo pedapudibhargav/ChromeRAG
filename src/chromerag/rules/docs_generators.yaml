@@ -1,0 +1,10 @@
+- id: docs.docusaurus.footer
+  action: drop
+  scope: inside_root
+  match:
+    - {class_token: "theme-doc-footer"}
+    - {class_token: "pagination-nav"}
+  max_chars: 2500
+  risk: guarded
+  evidence: "Docusaurus theme-doc-footer / pagination-nav class tokens"
+  fixture: tests/rules/docs_docusaurus_footer.html

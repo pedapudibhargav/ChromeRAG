@@ -64,6 +64,7 @@ class PipelineConfig:
     enable_tables: bool = True
     enable_dvdf: bool = True
     enable_stce: bool = True  # applied only when a SiteChromeModel is provided
+    enable_rules: bool = True
     inject_heading_paths: bool = False
 
     # Density

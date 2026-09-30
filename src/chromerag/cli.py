@@ -29,6 +29,7 @@ def _build_config(args: argparse.Namespace) -> PipelineConfig:
         enable_schema=not getattr(args, "no_schema", False),
         enable_tables=not getattr(args, "no_tables", False),
         enable_stce=not getattr(args, "no_stce", False),
+        enable_rules=not getattr(args, "no_rules", False),
         inject_heading_paths=getattr(args, "heading_paths", False),
     )
     if getattr(args, "priority", None):
@@ -55,6 +56,7 @@ def _add_shared_flags(p: argparse.ArgumentParser) -> None:
     p.add_argument("--no-schema", action="store_true")
     p.add_argument("--no-tables", action="store_true")
     p.add_argument("--no-stce", action="store_true")
+    p.add_argument("--no-rules", action="store_true")
     p.add_argument("--heading-paths", action="store_true")
 
 
@@ -121,6 +123,14 @@ def cmd_extract(args: argparse.Namespace) -> int:
 
     for warning in result.warnings:
         sys.stderr.write(f"WARNING: {warning}\n")
+
+    if getattr(args, "explain", False):
+        removed = result.diagnostics.get("removed") or []
+        for item in removed:
+            sys.stderr.write(f"removed {item['rule']}: {item['chars']} chars\n")
+        total = result.diagnostics.get("removed_total", 0)
+        if total:
+            sys.stderr.write(f"removed total: {total} chars ({result.diagnostics.get('removed_rules', 0)} rules)\n")
 
     if args.output:
         out_path = Path(args.output)
@@ -268,6 +278,7 @@ def main(argv: list[str] | None = None) -> int:
     p_ex.add_argument("--url", help="Canonical URL (for page-type + STCE group)")
     p_ex.add_argument("--chrome-model", help="Path to learned chrome JSON from `chromerag learn`")
     p_ex.add_argument("--json-meta", action="store_true")
+    p_ex.add_argument("--explain", action="store_true", help="Print removed rule ids to stderr")
     p_ex.add_argument(
         "--fail-on-thin",
         action="store_true",
