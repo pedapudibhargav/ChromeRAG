@@ -192,7 +192,13 @@ def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--plan", action="store_true")
     p.add_argument("--fetch", action="store_true")
+    p.add_argument("--companies", type=Path, default=COMPANIES, help="Company list JSON")
+    p.add_argument("--raw-dir", type=Path, default=RAW, help="Output directory for fetched HTML")
     args = p.parse_args()
+    global COMPANIES, RAW  # noqa: PLW0603
+    COMPANIES = args.companies
+    RAW = args.raw_dir
+    RAW.mkdir(parents=True, exist_ok=True)
     if not (args.plan or args.fetch):
         p.error("pass --plan and/or --fetch")
     if args.plan:

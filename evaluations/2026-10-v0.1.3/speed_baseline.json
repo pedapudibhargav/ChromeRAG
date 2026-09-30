@@ -1,0 +1,33 @@
+{
+  "label": "baseline",
+  "tools": {
+    "chromerag_coverage": {
+      "median_ms_per_page": 77.956,
+      "p95_ms_per_page": 382.614,
+      "pages_per_second": 12.828,
+      "n_pages": 200,
+      "passes": 3
+    },
+    "trafilatura": {
+      "median_ms_per_page": 33.101,
+      "p95_ms_per_page": 152.243,
+      "pages_per_second": 30.211,
+      "n_pages": 200,
+      "passes": 3
+    },
+    "markitdown": {
+      "median_ms_per_page": 40.609,
+      "p95_ms_per_page": 100.347,
+      "pages_per_second": 24.625,
+      "n_pages": 200,
+      "passes": 3
+    },
+    "readability": {
+      "median_ms_per_page": 29.591,
+      "p95_ms_per_page": 100.329,
+      "pages_per_second": 33.794,
+      "n_pages": 200,
+      "passes": 3
+    }
+  }
+}

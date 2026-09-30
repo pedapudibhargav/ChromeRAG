@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Hidden content test</title></head>
+<body>
+  <main>
+    <h1>Visible guide</h1>
+    <p>This paragraph is visible and should appear in the extracted Markdown output.</p>
+    <div style="display: none">
+      <p>Hidden promo: Sign up now for 50 percent off enterprise plans today only.</p>
+    </div>
+    <p hidden>Hidden attribute text that should not dominate the output.</p>
+    <div aria-hidden="true" class="modal"><p>Modal overlay marketing copy.</p></div>
+    <section>
+      <h2>Configuration</h2>
+      <p>Set the environment variable API_KEY before running the client in production mode.</p>
+    </section>
+  </main>
+</body>
+</html>

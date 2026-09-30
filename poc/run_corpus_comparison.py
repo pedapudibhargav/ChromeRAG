@@ -56,13 +56,15 @@ def _corpus_urls_listed() -> int:
     return len(urls) if isinstance(urls, list) else 0
 
 
-def load_ok_pages(raw: Path = RAW) -> list[tuple[str, str, dict]]:
+def load_ok_pages(raw: Path = RAW, *, companies: set[str] | None = None) -> list[tuple[str, str, dict]]:
     pages = []
     seen: set[str] = set()
     for meta_path in sorted(raw.glob("*.meta.json")):
         if meta_path.name.startswith("_"):
             continue
         meta = json.loads(meta_path.read_text(encoding="utf-8"))
+        if companies is not None and meta.get("company") not in companies:
+            continue
         html_path = raw / f"{meta['id']}.html"
         if not html_path.exists():
             continue
@@ -128,12 +130,13 @@ def run(
     out: Path = OUT,
     report_name: str = "corpus_comparison",
     listed: int | None = None,
+    companies: set[str] | None = None,
 ) -> dict:
     if fetch:
         print("=== FETCH ===")
         fetch_all(limit=limit)
 
-    pages = load_ok_pages(raw)
+    pages = load_ok_pages(raw, companies=companies)
     if limit is not None:
         pages = pages[:limit]
     if not pages:

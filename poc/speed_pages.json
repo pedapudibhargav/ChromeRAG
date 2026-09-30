@@ -1,0 +1,804 @@
+{
+  "pages": [
+    {
+      "id": "adobe-pdf",
+      "path": "data/raw/adobe-pdf.html"
+    },
+    {
+      "id": "airflow-docs",
+      "path": "data/raw/airflow-docs.html"
+    },
+    {
+      "id": "alembic-docs",
+      "path": "data/raw/alembic-docs.html"
+    },
+    {
+      "id": "alibaba-cloud-docs",
+      "path": "data/raw/alibaba-cloud-docs.html"
+    },
+    {
+      "id": "amplitude-docs",
+      "path": "data/raw/amplitude-docs.html"
+    },
+    {
+      "id": "ansible-docs",
+      "path": "data/raw/ansible-docs.html"
+    },
+    {
+      "id": "anthropic-docs",
+      "path": "data/raw/anthropic-docs.html"
+    },
+    {
+      "id": "apache-httpd",
+      "path": "data/raw/apache-httpd.html"
+    },
+    {
+      "id": "arch-wiki",
+      "path": "data/raw/arch-wiki.html"
+    },
+    {
+      "id": "argocd-docs",
+      "path": "data/raw/argocd-docs.html"
+    },
+    {
+      "id": "arxiv-abs-htmlrag",
+      "path": "data/raw/arxiv-abs-htmlrag.html"
+    },
+    {
+      "id": "arxiv-html-htmlrag",
+      "path": "data/raw/arxiv-html-htmlrag.html"
+    },
+    {
+      "id": "aspnet-core",
+      "path": "data/raw/aspnet-core.html"
+    },
+    {
+      "id": "atlassian-confluence",
+      "path": "data/raw/atlassian-confluence.html"
+    },
+    {
+      "id": "atlassian-jira",
+      "path": "data/raw/atlassian-jira.html"
+    },
+    {
+      "id": "auth0-docs",
+      "path": "data/raw/auth0-docs.html"
+    },
+    {
+      "id": "avro-docs",
+      "path": "data/raw/avro-docs.html"
+    },
+    {
+      "id": "awesome-python",
+      "path": "data/raw/awesome-python.html"
+    },
+    {
+      "id": "awesome-selfhosted",
+      "path": "data/raw/awesome-selfhosted.html"
+    },
+    {
+      "id": "aws-bedrock",
+      "path": "data/raw/aws-bedrock.html"
+    },
+    {
+      "id": "aws-ec2-home",
+      "path": "data/raw/aws-ec2-home.html"
+    },
+    {
+      "id": "aws-ec2-instance-types",
+      "path": "data/raw/aws-ec2-instance-types.html"
+    },
+    {
+      "id": "aws-ec2-pricing",
+      "path": "data/raw/aws-ec2-pricing.html"
+    },
+    {
+      "id": "aws-eks",
+      "path": "data/raw/aws-eks.html"
+    },
+    {
+      "id": "aws-lambda-home",
+      "path": "data/raw/aws-lambda-home.html"
+    },
+    {
+      "id": "aws-lambda-pricing",
+      "path": "data/raw/aws-lambda-pricing.html"
+    },
+    {
+      "id": "aws-rds",
+      "path": "data/raw/aws-rds.html"
+    },
+    {
+      "id": "aws-s3-docs",
+      "path": "data/raw/aws-s3-docs.html"
+    },
+    {
+      "id": "aws-sagemaker",
+      "path": "data/raw/aws-sagemaker.html"
+    },
+    {
+      "id": "azure-aks",
+      "path": "data/raw/azure-aks.html"
+    },
+    {
+      "id": "azure-architecture",
+      "path": "data/raw/azure-architecture.html"
+    },
+    {
+      "id": "azure-blob",
+      "path": "data/raw/azure-blob.html"
+    },
+    {
+      "id": "azure-blog",
+      "path": "data/raw/azure-blog.html"
+    },
+    {
+      "id": "azure-functions",
+      "path": "data/raw/azure-functions.html"
+    },
+    {
+      "id": "azure-overview",
+      "path": "data/raw/azure-overview.html"
+    },
+    {
+      "id": "azure-pricing",
+      "path": "data/raw/azure-pricing.html"
+    },
+    {
+      "id": "azure-vm-pricing",
+      "path": "data/raw/azure-vm-pricing.html"
+    },
+    {
+      "id": "bazel-docs",
+      "path": "data/raw/bazel-docs.html"
+    },
+    {
+      "id": "beautifulsoup-docs",
+      "path": "data/raw/beautifulsoup-docs.html"
+    },
+    {
+      "id": "black-docs",
+      "path": "data/raw/black-docs.html"
+    },
+    {
+      "id": "bootstrap-docs",
+      "path": "data/raw/bootstrap-docs.html"
+    },
+    {
+      "id": "box-api",
+      "path": "data/raw/box-api.html"
+    },
+    {
+      "id": "cdk-aws",
+      "path": "data/raw/cdk-aws.html"
+    },
+    {
+      "id": "celery-docs",
+      "path": "data/raw/celery-docs.html"
+    },
+    {
+      "id": "chef-docs",
+      "path": "data/raw/chef-docs.html"
+    },
+    {
+      "id": "cloudflare-d1",
+      "path": "data/raw/cloudflare-d1.html"
+    },
+    {
+      "id": "cloudflare-home",
+      "path": "data/raw/cloudflare-home.html"
+    },
+    {
+      "id": "cloudflare-pages",
+      "path": "data/raw/cloudflare-pages.html"
+    },
+    {
+      "id": "cloudflare-r2",
+      "path": "data/raw/cloudflare-r2.html"
+    },
+    {
+      "id": "cloudflare-workers-get-started",
+      "path": "data/raw/cloudflare-workers-get-started.html"
+    },
+    {
+      "id": "cloudflare-workers-guide",
+      "path": "data/raw/cloudflare-workers-guide.html"
+    },
+    {
+      "id": "cloudflare-workers-routing",
+      "path": "data/raw/cloudflare-workers-routing.html"
+    },
+    {
+      "id": "cloudflare-workers",
+      "path": "data/raw/cloudflare-workers.html"
+    },
+    {
+      "id": "cmake-docs",
+      "path": "data/raw/cmake-docs.html"
+    },
+    {
+      "id": "conda-docs",
+      "path": "data/raw/conda-docs.html"
+    },
+    {
+      "id": "cuelang-docs",
+      "path": "data/raw/cuelang-docs.html"
+    },
+    {
+      "id": "cypress-docs",
+      "path": "data/raw/cypress-docs.html"
+    },
+    {
+      "id": "databricks-docs",
+      "path": "data/raw/databricks-docs.html"
+    },
+    {
+      "id": "datadog-docs",
+      "path": "data/raw/datadog-docs.html"
+    },
+    {
+      "id": "dbt-docs",
+      "path": "data/raw/dbt-docs.html"
+    },
+    {
+      "id": "debian-docs",
+      "path": "data/raw/debian-docs.html"
+    },
+    {
+      "id": "digitalocean-docs",
+      "path": "data/raw/digitalocean-docs.html"
+    },
+    {
+      "id": "digitalocean-droplets",
+      "path": "data/raw/digitalocean-droplets.html"
+    },
+    {
+      "id": "digitalocean-k8s",
+      "path": "data/raw/digitalocean-k8s.html"
+    },
+    {
+      "id": "digitalocean-spaces",
+      "path": "data/raw/digitalocean-spaces.html"
+    },
+    {
+      "id": "discord-api",
+      "path": "data/raw/discord-api.html"
+    },
+    {
+      "id": "django-docs",
+      "path": "data/raw/django-docs.html"
+    },
+    {
+      "id": "docker-blog",
+      "path": "data/raw/docker-blog.html"
+    },
+    {
+      "id": "docker-compose",
+      "path": "data/raw/docker-compose.html"
+    },
+    {
+      "id": "docker-docs",
+      "path": "data/raw/docker-docs.html"
+    },
+    {
+      "id": "docker-engine",
+      "path": "data/raw/docker-engine.html"
+    },
+    {
+      "id": "docker-get-started",
+      "path": "data/raw/docker-get-started.html"
+    },
+    {
+      "id": "dotnet-docs",
+      "path": "data/raw/dotnet-docs.html"
+    },
+    {
+      "id": "dropbox-api",
+      "path": "data/raw/dropbox-api.html"
+    },
+    {
+      "id": "elastic-cloud",
+      "path": "data/raw/elastic-cloud.html"
+    },
+    {
+      "id": "elasticsearch-docs",
+      "path": "data/raw/elasticsearch-docs.html"
+    },
+    {
+      "id": "envoy-docs",
+      "path": "data/raw/envoy-docs.html"
+    },
+    {
+      "id": "fastapi-docs",
+      "path": "data/raw/fastapi-docs.html"
+    },
+    {
+      "id": "figma-api",
+      "path": "data/raw/figma-api.html"
+    },
+    {
+      "id": "firebase-docs",
+      "path": "data/raw/firebase-docs.html"
+    },
+    {
+      "id": "flask-docs",
+      "path": "data/raw/flask-docs.html"
+    },
+    {
+      "id": "flux-docs",
+      "path": "data/raw/flux-docs.html"
+    },
+    {
+      "id": "fly-docs",
+      "path": "data/raw/fly-docs.html"
+    },
+    {
+      "id": "gcp-bigquery",
+      "path": "data/raw/gcp-bigquery.html"
+    },
+    {
+      "id": "gcp-compute",
+      "path": "data/raw/gcp-compute.html"
+    },
+    {
+      "id": "gcp-functions",
+      "path": "data/raw/gcp-functions.html"
+    },
+    {
+      "id": "gcp-gke",
+      "path": "data/raw/gcp-gke.html"
+    },
+    {
+      "id": "gcp-pricing",
+      "path": "data/raw/gcp-pricing.html"
+    },
+    {
+      "id": "gcp-storage",
+      "path": "data/raw/gcp-storage.html"
+    },
+    {
+      "id": "gensim-docs",
+      "path": "data/raw/gensim-docs.html"
+    },
+    {
+      "id": "github-actions-about",
+      "path": "data/raw/github-actions-about.html"
+    },
+    {
+      "id": "github-actions-quickstart",
+      "path": "data/raw/github-actions-quickstart.html"
+    },
+    {
+      "id": "github-actions",
+      "path": "data/raw/github-actions.html"
+    },
+    {
+      "id": "github-codespaces",
+      "path": "data/raw/github-codespaces.html"
+    },
+    {
+      "id": "github-copilot",
+      "path": "data/raw/github-copilot.html"
+    },
+    {
+      "id": "github-docs-actions-about",
+      "path": "data/raw/github-docs-actions-about.html"
+    },
+    {
+      "id": "github-docs-actions-quickstart",
+      "path": "data/raw/github-docs-actions-quickstart.html"
+    },
+    {
+      "id": "github-docs-actions",
+      "path": "data/raw/github-docs-actions.html"
+    },
+    {
+      "id": "github-packages",
+      "path": "data/raw/github-packages.html"
+    },
+    {
+      "id": "gitlab-ci",
+      "path": "data/raw/gitlab-ci.html"
+    },
+    {
+      "id": "1password-00",
+      "path": "data/landing_raw/1password-00.html"
+    },
+    {
+      "id": "1password-01",
+      "path": "data/landing_raw/1password-01.html"
+    },
+    {
+      "id": "1password-02",
+      "path": "data/landing_raw/1password-02.html"
+    },
+    {
+      "id": "1password-03",
+      "path": "data/landing_raw/1password-03.html"
+    },
+    {
+      "id": "1password-04",
+      "path": "data/landing_raw/1password-04.html"
+    },
+    {
+      "id": "3m-00",
+      "path": "data/landing_raw/3m-00.html"
+    },
+    {
+      "id": "abb-00",
+      "path": "data/landing_raw/abb-00.html"
+    },
+    {
+      "id": "accenture-00",
+      "path": "data/landing_raw/accenture-00.html"
+    },
+    {
+      "id": "accenture-01",
+      "path": "data/landing_raw/accenture-01.html"
+    },
+    {
+      "id": "accenture-02",
+      "path": "data/landing_raw/accenture-02.html"
+    },
+    {
+      "id": "accenture-03",
+      "path": "data/landing_raw/accenture-03.html"
+    },
+    {
+      "id": "accenture-04",
+      "path": "data/landing_raw/accenture-04.html"
+    },
+    {
+      "id": "adyen-00",
+      "path": "data/landing_raw/adyen-00.html"
+    },
+    {
+      "id": "adyen-01",
+      "path": "data/landing_raw/adyen-01.html"
+    },
+    {
+      "id": "adyen-02",
+      "path": "data/landing_raw/adyen-02.html"
+    },
+    {
+      "id": "airtable-00",
+      "path": "data/landing_raw/airtable-00.html"
+    },
+    {
+      "id": "airtable-01",
+      "path": "data/landing_raw/airtable-01.html"
+    },
+    {
+      "id": "airtable-02",
+      "path": "data/landing_raw/airtable-02.html"
+    },
+    {
+      "id": "airtable-03",
+      "path": "data/landing_raw/airtable-03.html"
+    },
+    {
+      "id": "airtable-04",
+      "path": "data/landing_raw/airtable-04.html"
+    },
+    {
+      "id": "akamai-00",
+      "path": "data/landing_raw/akamai-00.html"
+    },
+    {
+      "id": "akamai-01",
+      "path": "data/landing_raw/akamai-01.html"
+    },
+    {
+      "id": "akamai-02",
+      "path": "data/landing_raw/akamai-02.html"
+    },
+    {
+      "id": "akamai-03",
+      "path": "data/landing_raw/akamai-03.html"
+    },
+    {
+      "id": "akamai-04",
+      "path": "data/landing_raw/akamai-04.html"
+    },
+    {
+      "id": "asana-00",
+      "path": "data/landing_raw/asana-00.html"
+    },
+    {
+      "id": "asana-01",
+      "path": "data/landing_raw/asana-01.html"
+    },
+    {
+      "id": "asana-02",
+      "path": "data/landing_raw/asana-02.html"
+    },
+    {
+      "id": "asana-03",
+      "path": "data/landing_raw/asana-03.html"
+    },
+    {
+      "id": "asana-04",
+      "path": "data/landing_raw/asana-04.html"
+    },
+    {
+      "id": "atlassian-00",
+      "path": "data/landing_raw/atlassian-00.html"
+    },
+    {
+      "id": "atlassian-01",
+      "path": "data/landing_raw/atlassian-01.html"
+    },
+    {
+      "id": "atlassian-02",
+      "path": "data/landing_raw/atlassian-02.html"
+    },
+    {
+      "id": "atlassian-03",
+      "path": "data/landing_raw/atlassian-03.html"
+    },
+    {
+      "id": "atlassian-04",
+      "path": "data/landing_raw/atlassian-04.html"
+    },
+    {
+      "id": "backblaze-00",
+      "path": "data/landing_raw/backblaze-00.html"
+    },
+    {
+      "id": "backblaze-01",
+      "path": "data/landing_raw/backblaze-01.html"
+    },
+    {
+      "id": "backblaze-02",
+      "path": "data/landing_raw/backblaze-02.html"
+    },
+    {
+      "id": "backblaze-03",
+      "path": "data/landing_raw/backblaze-03.html"
+    },
+    {
+      "id": "backblaze-04",
+      "path": "data/landing_raw/backblaze-04.html"
+    },
+    {
+      "id": "bigcommerce-00",
+      "path": "data/landing_raw/bigcommerce-00.html"
+    },
+    {
+      "id": "bigcommerce-01",
+      "path": "data/landing_raw/bigcommerce-01.html"
+    },
+    {
+      "id": "bigcommerce-02",
+      "path": "data/landing_raw/bigcommerce-02.html"
+    },
+    {
+      "id": "bigcommerce-03",
+      "path": "data/landing_raw/bigcommerce-03.html"
+    },
+    {
+      "id": "bigcommerce-04",
+      "path": "data/landing_raw/bigcommerce-04.html"
+    },
+    {
+      "id": "bosch-00",
+      "path": "data/landing_raw/bosch-00.html"
+    },
+    {
+      "id": "box-00",
+      "path": "data/landing_raw/box-00.html"
+    },
+    {
+      "id": "box-01",
+      "path": "data/landing_raw/box-01.html"
+    },
+    {
+      "id": "box-02",
+      "path": "data/landing_raw/box-02.html"
+    },
+    {
+      "id": "box-03",
+      "path": "data/landing_raw/box-03.html"
+    },
+    {
+      "id": "box-04",
+      "path": "data/landing_raw/box-04.html"
+    },
+    {
+      "id": "brex-00",
+      "path": "data/landing_raw/brex-00.html"
+    },
+    {
+      "id": "brex-01",
+      "path": "data/landing_raw/brex-01.html"
+    },
+    {
+      "id": "brex-02",
+      "path": "data/landing_raw/brex-02.html"
+    },
+    {
+      "id": "brex-03",
+      "path": "data/landing_raw/brex-03.html"
+    },
+    {
+      "id": "brex-04",
+      "path": "data/landing_raw/brex-04.html"
+    },
+    {
+      "id": "calendly-00",
+      "path": "data/landing_raw/calendly-00.html"
+    },
+    {
+      "id": "calendly-01",
+      "path": "data/landing_raw/calendly-01.html"
+    },
+    {
+      "id": "calendly-02",
+      "path": "data/landing_raw/calendly-02.html"
+    },
+    {
+      "id": "calendly-03",
+      "path": "data/landing_raw/calendly-03.html"
+    },
+    {
+      "id": "calendly-04",
+      "path": "data/landing_raw/calendly-04.html"
+    },
+    {
+      "id": "canva-00",
+      "path": "data/landing_raw/canva-00.html"
+    },
+    {
+      "id": "canva-01",
+      "path": "data/landing_raw/canva-01.html"
+    },
+    {
+      "id": "canva-02",
+      "path": "data/landing_raw/canva-02.html"
+    },
+    {
+      "id": "canva-03",
+      "path": "data/landing_raw/canva-03.html"
+    },
+    {
+      "id": "canva-04",
+      "path": "data/landing_raw/canva-04.html"
+    },
+    {
+      "id": "caterpillar-00",
+      "path": "data/landing_raw/caterpillar-00.html"
+    },
+    {
+      "id": "chargebee-00",
+      "path": "data/landing_raw/chargebee-00.html"
+    },
+    {
+      "id": "chargebee-01",
+      "path": "data/landing_raw/chargebee-01.html"
+    },
+    {
+      "id": "chargebee-02",
+      "path": "data/landing_raw/chargebee-02.html"
+    },
+    {
+      "id": "chargebee-03",
+      "path": "data/landing_raw/chargebee-03.html"
+    },
+    {
+      "id": "chargebee-04",
+      "path": "data/landing_raw/chargebee-04.html"
+    },
+    {
+      "id": "circleci-00",
+      "path": "data/landing_raw/circleci-00.html"
+    },
+    {
+      "id": "circleci-01",
+      "path": "data/landing_raw/circleci-01.html"
+    },
+    {
+      "id": "circleci-02",
+      "path": "data/landing_raw/circleci-02.html"
+    },
+    {
+      "id": "circleci-03",
+      "path": "data/landing_raw/circleci-03.html"
+    },
+    {
+      "id": "circleci-04",
+      "path": "data/landing_raw/circleci-04.html"
+    },
+    {
+      "id": "cloudflare-00",
+      "path": "data/landing_raw/cloudflare-00.html"
+    },
+    {
+      "id": "cloudflare-01",
+      "path": "data/landing_raw/cloudflare-01.html"
+    },
+    {
+      "id": "cloudflare-02",
+      "path": "data/landing_raw/cloudflare-02.html"
+    },
+    {
+      "id": "cloudflare-03",
+      "path": "data/landing_raw/cloudflare-03.html"
+    },
+    {
+      "id": "cloudflare-04",
+      "path": "data/landing_raw/cloudflare-04.html"
+    },
+    {
+      "id": "cohere-00",
+      "path": "data/landing_raw/cohere-00.html"
+    },
+    {
+      "id": "cohere-01",
+      "path": "data/landing_raw/cohere-01.html"
+    },
+    {
+      "id": "cohere-02",
+      "path": "data/landing_raw/cohere-02.html"
+    },
+    {
+      "id": "cohere-03",
+      "path": "data/landing_raw/cohere-03.html"
+    },
+    {
+      "id": "cohere-04",
+      "path": "data/landing_raw/cohere-04.html"
+    },
+    {
+      "id": "confluent-00",
+      "path": "data/landing_raw/confluent-00.html"
+    },
+    {
+      "id": "confluent-01",
+      "path": "data/landing_raw/confluent-01.html"
+    },
+    {
+      "id": "confluent-02",
+      "path": "data/landing_raw/confluent-02.html"
+    },
+    {
+      "id": "confluent-03",
+      "path": "data/landing_raw/confluent-03.html"
+    },
+    {
+      "id": "confluent-04",
+      "path": "data/landing_raw/confluent-04.html"
+    },
+    {
+      "id": "crowdstrike-00",
+      "path": "data/landing_raw/crowdstrike-00.html"
+    },
+    {
+      "id": "crowdstrike-01",
+      "path": "data/landing_raw/crowdstrike-01.html"
+    },
+    {
+      "id": "crowdstrike-02",
+      "path": "data/landing_raw/crowdstrike-02.html"
+    },
+    {
+      "id": "crowdstrike-03",
+      "path": "data/landing_raw/crowdstrike-03.html"
+    },
+    {
+      "id": "crowdstrike-04",
+      "path": "data/landing_raw/crowdstrike-04.html"
+    },
+    {
+      "id": "databricks-00",
+      "path": "data/landing_raw/databricks-00.html"
+    },
+    {
+      "id": "databricks-01",
+      "path": "data/landing_raw/databricks-01.html"
+    },
+    {
+      "id": "databricks-02",
+      "path": "data/landing_raw/databricks-02.html"
+    }
+  ]
+}
