@@ -45,3 +45,5 @@ scripts/_ooxml_write.py
 
 # GitHub Pages build output (scripts/build_docs.sh)
 _site/
+data/wcxb/
+data/landing_fresh_raw/
