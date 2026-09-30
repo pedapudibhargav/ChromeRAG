@@ -1,0 +1,7 @@
+# Third-party attributions
+
+## Trafilatura (Apache-2.0)
+
+Content-root candidate token vocabulary in `src/chromerag/content_root.py` is adapted from
+Trafilatura's `BODY_XPATH` selectors in `trafilatura/xpaths.py`.
+https://github.com/adbar/trafilatura

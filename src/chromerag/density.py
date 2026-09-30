@@ -283,13 +283,17 @@ def candidate_blocks(
     cfg: DensityConfig | None = None,
     *,
     cache: ElementCache | None = None,
+    content_root: Tag | None = None,
 ) -> list[Tag]:
     cfg = cfg or DensityConfig()
     root: Tag | BeautifulSoup = soup
     if cfg.prefer_main:
-        main = soup.find("main") or soup.find("article") or soup.find(attrs={"role": "main"})
-        if main and isinstance(main, Tag):
-            root = main
+        if content_root is not None:
+            root = content_root
+        else:
+            main = soup.find("main") or soup.find("article") or soup.find(attrs={"role": "main"})
+            if main and isinstance(main, Tag):
+                root = main
 
     blocks: list[Tag] = []
     for tag in root.find_all(True):

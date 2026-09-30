@@ -68,7 +68,12 @@ def element_to_markdown(el: Tag) -> str:
     return f"{text}\n\n" if text else ""
 
 
-def soup_to_markdown(soup: BeautifulSoup, *, inject_heading_paths: bool = False) -> str:
+def soup_to_markdown(
+    soup: BeautifulSoup,
+    *,
+    inject_heading_paths: bool = False,
+    content_root: Tag | None = None,
+) -> str:
     """Convert cleaned soup to Markdown.
 
     When inject_heading_paths=True, each non-heading block is prefixed with its
@@ -77,7 +82,7 @@ def soup_to_markdown(soup: BeautifulSoup, *, inject_heading_paths: bool = False)
       paragraph text...
     """
     root = soup.body or soup
-    main = root.find("main") or root.find("article") or root
+    main = content_root or root.find("main") or root.find("article") or root
     parts: list[str] = []
     seen: set[int] = set()
     heading_stack: list[tuple[int, str]] = []  # (level, text)
