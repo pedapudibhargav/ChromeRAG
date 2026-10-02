@@ -30,21 +30,18 @@ class TreeEnsemble:
     max_depth: int
 
     def raw_score(self, X: np.ndarray) -> np.ndarray:
+        """Sum of leaf values over all trees; every (row, tree) pair advances one level per step."""
         n = X.shape[0]
-        score = np.full(n, self.baseline, dtype=np.float64)
-        rows = np.arange(n)
-        for root in self.roots:
-            node = np.full(n, root, dtype=np.int32)
-            for _ in range(self.max_depth + 1):
-                feat = self.feature[node]
-                internal = feat >= 0
-                if not internal.any():
-                    break
-                go_left = X[rows, np.where(internal, feat, 0)] <= self.threshold[node]
-                nxt = np.where(go_left, self.left[node], self.right[node])
-                node = np.where(internal, nxt, node)
-            score += self.value[node]
-        return score
+        rows = np.arange(n)[:, None]
+        node = np.broadcast_to(self.roots[None, :], (n, len(self.roots))).copy()
+        for _ in range(self.max_depth + 1):
+            feat = self.feature[node]
+            internal = feat >= 0
+            if not internal.any():
+                break
+            go_left = X[rows, np.where(internal, feat, 0)] <= self.threshold[node]
+            node = np.where(internal, np.where(go_left, self.left[node], self.right[node]), node)
+        return self.baseline + self.value[node].sum(axis=1)
 
     def predict_proba(self, X: np.ndarray) -> np.ndarray:
         return 1.0 / (1.0 + np.exp(-self.raw_score(X)))

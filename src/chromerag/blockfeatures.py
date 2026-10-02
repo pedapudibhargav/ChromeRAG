@@ -100,31 +100,51 @@ def _tag_group(name: str) -> str:
     return name if name in _TAG_GROUPS else "other"
 
 
-_NESTED_BLOCKS = ("div", "section", "article", "p", "ul", "ol", "li", "table", "pre", "blockquote", "dl", "form",
-                  *_HEADINGS)
+_NESTED_BLOCKS = frozenset(
+    {"div", "section", "article", "p", "ul", "ol", "li", "table", "pre", "blockquote", "dl", "form", *_HEADINGS}
+)
 
 
-def _is_text_container(tag: Tag, stats: TreeStats) -> bool:
-    """A div/section/span that holds only inline content (its own text), no nested blocks."""
-    return stats.text_len(tag) >= 20 and tag.find(_NESTED_BLOCKS) is None
+def _descendant_flags(body: Tag) -> tuple[set[int], set[int], set[int]]:
+    """Ids of elements that contain a nested block, a list item, or a table (one pass, O(n))."""
+    has_block: set[int] = set()
+    has_li: set[int] = set()
+    has_table: set[int] = set()
+    for node in reversed(list(body.descendants)):
+        if not isinstance(node, Tag):
+            continue
+        parent = node.parent
+        if parent is None:
+            continue
+        pid = id(parent)
+        name = node.name
+        if name in _NESTED_BLOCKS or id(node) in has_block:
+            has_block.add(pid)
+        if name == "li" or id(node) in has_li:
+            has_li.add(pid)
+        if name == "table" or id(node) in has_table:
+            has_table.add(pid)
+    return has_block, has_li, has_table
 
 
 def find_blocks(body: Tag, stats: TreeStats) -> list[Block]:
     """Blocks of ``body`` in document order. A block is never listed together with one inside it."""
     blocks: list[Block] = []
+    has_block, has_li, has_table = _descendant_flags(body)
 
     def walk(node: Tag) -> None:
         for child in node.children:
             if not isinstance(child, Tag):
                 continue
             name = child.name
+            cid = id(child)
             take = False
             if name in _LEAF_TAGS:
-                take = not (name == "li" and child.find("li")) and not (
-                    name in ("p", "blockquote", "li") and child.find("table")
+                take = not (name == "li" and cid in has_li) and not (
+                    name in ("p", "blockquote", "li") and cid in has_table
                 )
-            elif name in _CONTAINER_TAGS and _is_text_container(child, stats):
-                take = True
+            elif name in _CONTAINER_TAGS:
+                take = stats.text_len(child) >= 20 and cid not in has_block
             if take:
                 text = child.get_text(" ", strip=True)
                 if text:
@@ -134,6 +154,18 @@ def find_blocks(body: Tag, stats: TreeStats) -> list[Block]:
 
     walk(body)
     return blocks
+
+
+def _inline_counts(tag: Tag) -> tuple[int, int]:
+    """(number of links, characters of emphasised text) below ``tag``, in one walk."""
+    links = emph = 0
+    for node in tag.descendants:
+        if isinstance(node, Tag):
+            if node.name == "a":
+                links += 1
+            elif node.name in ("strong", "b", "em", "i"):
+                emph += len(node.get_text(" ", strip=True))
+    return links, emph
 
 
 def _bucket(word: str, n: int) -> int:
@@ -245,9 +277,9 @@ def block_features(
         row[_IDX["tag_" + _tag_group(tag.name)]] = 1.0
         for name, value in _text_features(block.text).items():
             row[_IDX[name]] = value
-        emph = sum(len(e.get_text(" ", strip=True)) for e in tag.find_all(("strong", "b", "em", "i")))
+        n_links, emph = _inline_counts(tag)
         row[_IDX["link_density"]] = link_dens[i]
-        row[_IDX["n_links"]] = float(min(50, len(tag.find_all("a"))))
+        row[_IDX["n_links"]] = float(min(50, n_links))
         row[_IDX["emphasis_frac"]] = min(1.0, emph / max(1, chars[i]))
         row[_IDX["idx_frac"]] = i / max(1, n - 1)
         row[_IDX["chars_before_frac"]] = cum[i] / total_chars
