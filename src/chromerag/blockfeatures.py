@@ -402,3 +402,55 @@ def block_features(
         if b is not None:
             box[i] = ids.setdefault(id(b), len(ids))
     return out, box
+
+
+_INLINE = frozenset(
+    {"a", "span", "b", "strong", "em", "i", "u", "small", "code", "abbr", "mark", "sup", "sub", "br", "time",
+     "label", "cite", "q", "s", "del", "ins", "font", "big", "kbd", "var", "samp", "wbr", "bdi", "bdo"}
+)
+_LOOSE_HOSTS = frozenset(
+    {"div", "section", "article", "main", "li", "td", "th", "dd", "blockquote", "body", "form", "aside", "header",
+     "footer", "nav", "figure", "details", "summary", "fieldset"}
+)
+LOOSE_MIN_CHARS = 12
+
+
+def wrap_loose_text(body: Tag) -> int:
+    """Wrap runs of text that sit next to block elements into ``<p>`` so they become blocks.
+
+    ``<div>Price: $5 <p>Details</p></div>`` has text that no paragraph, list item or text-only div
+    owns. Without this step such text never reaches the classifier or the output.
+    """
+    soup = None
+    for node in body.parents:
+        soup = node
+    made = 0
+    hosts = [body, *[t for t in body.find_all(_LOOSE_HOSTS) if isinstance(t, Tag)]]
+    for host in hosts:
+        if host.attrs is None:
+            continue
+        kids = list(host.children)
+        if not any(isinstance(k, Tag) and k.name in _NESTED_BLOCKS for k in kids):
+            continue  # all inline: the host is itself a text block
+        run: list = []
+
+        def flush() -> None:
+            nonlocal made
+            if run and len("".join(n.get_text() if isinstance(n, Tag) else str(n) for n in run).strip()) >= LOOSE_MIN_CHARS:
+                wrapper = (soup or body).new_tag("p")
+                run[0].insert_before(wrapper)
+                for n in run:
+                    wrapper.append(n.extract())
+                made += 1
+            run.clear()
+
+        for kid in kids:
+            inline = (isinstance(kid, Tag) and kid.name in _INLINE) or (
+                not isinstance(kid, Tag) and type(kid).__name__ == "NavigableString"
+            )
+            if inline:
+                run.append(kid)
+            else:
+                flush()
+        flush()
+    return made

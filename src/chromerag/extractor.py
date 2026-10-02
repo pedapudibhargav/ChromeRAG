@@ -22,7 +22,7 @@ from typing import Any
 import numpy as np
 from bs4 import BeautifulSoup, Tag
 
-from chromerag.blockfeatures import block_features, find_blocks
+from chromerag.blockfeatures import block_features, find_blocks, wrap_loose_text
 from chromerag.config import (
     PipelineConfig,
     Strictness,
@@ -126,12 +126,12 @@ class ChromeRAG:
 
     def _drop_by_classifier(
         self, soup: BeautifulSoup, body: Tag, content_root: Any, cfg: PipelineConfig
-    ) -> tuple[int, int]:
+    ) -> tuple[int, int, dict[str, float]]:
         """Remove blocks the learned classifier scores below ``cfg.lbc_threshold``."""
         stats = TreeStats(body)
         blocks = find_blocks(body, stats)
         if len(blocks) < LBC_MIN_BLOCKS:
-            return len(blocks), len(blocks)  # too little page to judge: the model never saw pages like this
+            return len(blocks), len(blocks), {}  # too little page to judge: the model never saw pages like this
         root = content_root if isinstance(content_root, Tag) else None
         X, box = block_features(blocks, body, stats, root)
         chars = np.array([len(b.text) for b in blocks])
@@ -145,7 +145,16 @@ class ChromeRAG:
             else:
                 kept += 1
                 seen.add(key)
-        return len(blocks), kept
+        # What the model expects of its own output, from its probabilities: a page with many
+        # blocks near 0.5 gets a low expected F1 and deserves a look.
+        words = np.maximum(np.array([len(b.text.split()) for b in blocks], dtype=np.float64), 1.0)
+        kept_mask = np.array([b.tag.attrs is not None for b in blocks])
+        tp = float((words * proba)[kept_mask].sum())
+        ref = float((words * proba).sum())
+        out_words = float(words[kept_mask].sum())
+        exp_p, exp_r = tp / max(out_words, 1.0), tp / max(ref, 1.0)
+        exp_f = 2 * exp_p * exp_r / max(exp_p + exp_r, 1e-9)
+        return len(blocks), kept, {"expected_precision": exp_p, "expected_recall": exp_r, "expected_f1": exp_f}
 
     def _noise_index(self, cfg: PipelineConfig) -> NoiseAnchorIndex | None:
         if not cfg.enable_dvdf:
@@ -219,14 +228,17 @@ class ChromeRAG:
             cache=elem_cache,
             stats=stats or TreeStats(body),
         )
+        if self._capture is not None or (cfg.enable_lbc and self.lbc_model is not None):
+            wrap_loose_text(body)  # text between blocks becomes blocks, so the classifier sees it
         if self._capture is not None:  # training hook: hand over the cleaned page and stop
             self._capture(soup, content_root if isinstance(content_root, Tag) else None)
             raise StopExtraction
         use_lbc = cfg.enable_lbc and self.lbc_model is not None
         scored: list[BlockScore] = []
         lbc_in = lbc_kept = 0
+        lbc_conf: dict[str, float] = {}
         if use_lbc:
-            lbc_in, lbc_kept = self._drop_by_classifier(soup, body, content_root, cfg)
+            lbc_in, lbc_kept, lbc_conf = self._drop_by_classifier(soup, body, content_root, cfg)
             if cfg.lbc_whole_page:
                 content_root = body
         else:
@@ -278,6 +290,7 @@ class ChromeRAG:
             "content_priority": cfg.content_priority.value,
             "page_type": cfg.page_type.value,
             "content_root": root_label,
+            "lbc": lbc_conf,
             "removed": [{"rule": h.rule_id, "chars": h.chars} for h in rule_hits[:50]],
             "removed_total": sum(rule_totals.values()),
             "removed_rules": len(rule_totals),

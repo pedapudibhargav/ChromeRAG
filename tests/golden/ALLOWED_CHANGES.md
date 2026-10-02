@@ -23,3 +23,6 @@ Performance work (single-pass statistics, cached densities) is output-identical:
 11. **Markdown order** follows the document (depth first); it used to be breadth first.
 12. **Layout tables** are unwrapped; nested layout tables no longer repeat their text.
 13. **Wrappers** — a page-wide `<form>`, unclosed `<button>` or large `<noscript>` is unwrapped instead of dropped; content after a stray `</html>` is adopted into `<body>`; large hidden blocks of running text are kept.
+
+14. **Loose text** — runs of text between block elements are wrapped in `<p>` so they reach the classifier and the output.
+15. **Confidence** — `diagnostics["lbc"]` reports the model's expected precision, recall and F1 for the page.

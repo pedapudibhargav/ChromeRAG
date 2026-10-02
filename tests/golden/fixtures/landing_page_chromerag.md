@@ -2,6 +2,8 @@
 title: Acme Platform — Enterprise Cloud
 ---
 
+# Build faster on Acme Platform
+
 Deploy globally with one API. Scale from startup to enterprise without re-architecting.
 
 ## Why teams choose Acme
