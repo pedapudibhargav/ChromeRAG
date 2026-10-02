@@ -61,7 +61,7 @@ rm -rf _site
 mkdir -p _site/data
 cp docs/index.html _site/index.html
 # The page needs only these; full per-page STCE reports stay in the repository.
-for f in leaderboard corpus_comparison_report retrieval_eval_report stce_summary test_report; do
+for f in leaderboard corpus_comparison_report retrieval_eval_report stce_summary test_report final_results; do
   cp "docs/data/$f.json" _site/data/
 done
 cp docs/robots.txt docs/sitemap.xml _site/

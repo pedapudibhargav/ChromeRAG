@@ -7,7 +7,7 @@
 [![Results](https://img.shields.io/badge/results-GitHub%20Pages-2a78d6.svg)](https://pedapudibhargav.github.io/ChromeRAG/)
 [![DOI](https://zenodo.org/badge/1378773845.svg)](https://doi.org/10.5281/zenodo.22970289)
 
-**HTML → RAG-ready Markdown.** A small learned filter (plus optional site-template learning) removes navigation, footers, CTAs, cookie banners, related links and comment threads, and keeps article text, documentation and pricing tables. Pure NumPy inference: no GPU, no model download, about 30 ms per page. A drop-in alternative to Trafilatura, Readability and MarkItDown when the pages are documentation, marketing or product pages as well as articles.
+**HTML → RAG-ready Markdown.** A small learned filter (plus optional site-template learning) removes navigation, footers, CTAs, cookie banners, related links and comment threads, and keeps article text, documentation and pricing tables. Pure NumPy inference: no GPU, no model download, about 36 ms per page. A drop-in alternative to Trafilatura, Readability and MarkItDown when the pages are documentation, marketing or product pages as well as articles.
 
 > Built for **enterprise RAG ingest**, **LLM chunking**, **vector indexing**, and **boilerplate / noise removal** from scraped HTML — not for pixel-perfect web archiving.
 
@@ -149,10 +149,13 @@ score reaches the threshold of the chosen priority: `coverage` 0.30, `balanced` 
 
 * The model is a 150 KB array file (`src/chromerag/assets/lbc_stage1.npz`) evaluated with NumPy
   only; scikit-learn is needed to retrain, not to run.
-* It was trained on human-reviewed pages (WCXB dev). Numbers on pages from sites the model never
-  saw (5-fold, site-grouped cross-validation, word-level F1): coverage 0.846, balanced 0.845,
-  precision 0.833, Trafilatura 0.818, Readability 0.700, MarkItDown 0.513
-  (`evaluations/2026-10-v0.1.3/wcxb_dev_cv.json`). The held-out WCXB test split has not been used.
+* It was trained on human-reviewed pages (WCXB development split, 1,495 pages). On the 511 held-out
+  WCXB test pages (run once, after the code was frozen) word-level F1 is **0.902** (`balanced`;
+  `coverage` 0.900, `precision` 0.887) against Trafilatura 0.860, Readability 0.763 and MarkItDown 0.540:
+  +0.043 [+0.027, +0.059] over Trafilatura, with large gains on forum, product and collection pages and a tie
+  on articles and documentation. Cross-validated development numbers are 0.852 / 0.851 / 0.837 against 0.818.
+  On company landing pages a blind LLM judge preferred ChromeRAG to Trafilatura on 70% of 100 held-out and
+  fresh pages and to MarkItDown on 87%. Everything is in `evaluations/2026-10-v0.1.3/` and on the site.
 * Link targets are no longer written by default (`PipelineConfig(include_links=True)` or
   `--links` brings back `[text](url)`), repeated blocks are written once, and the Markdown now
   follows document order.

@@ -67,7 +67,7 @@ jobs:
         run: |
           test -f _site/index.html
           test -f _site/.nojekyll
-          for f in leaderboard corpus_comparison_report retrieval_eval_report stce_summary test_report; do
+          for f in leaderboard corpus_comparison_report retrieval_eval_report stce_summary test_report final_results; do
             test -f "_site/data/$f.json" || { echo "missing _site/data/$f.json"; exit 1; }
           done
       - uses: actions/upload-artifact@v4

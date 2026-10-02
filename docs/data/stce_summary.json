@@ -50,29 +50,29 @@
     },
     "n_pages": 49,
     "n_scoreable": 47,
-    "n_pages_changed": 6,
+    "n_pages_changed": 8,
     "summary_scoreable": {
       "coverage": {
-        "content_recall": 0.714,
+        "content_recall": 0.776,
         "noise_retention": 0.002,
-        "f_balanced": 0.813,
-        "tokens": 2399.532,
-        "site_repeated_5grams": 5.447,
-        "site_repeated_share": 0.014
+        "f_balanced": 0.868,
+        "tokens": 2240.745,
+        "site_repeated_5grams": 1.511,
+        "site_repeated_share": 0.005
       },
       "coverage_stce": {
-        "content_recall": 0.714,
+        "content_recall": 0.778,
         "noise_retention": 0.002,
-        "f_balanced": 0.813,
-        "tokens": 2397.617,
-        "site_repeated_5grams": 5.021,
-        "site_repeated_share": 0.014
+        "f_balanced": 0.87,
+        "tokens": 2235.234,
+        "site_repeated_5grams": 1.511,
+        "site_repeated_share": 0.005
       },
       "trafilatura": {
         "content_recall": 0.689,
         "noise_retention": 0.001,
         "f_balanced": 0.786,
-        "tokens": 2098.213,
+        "tokens": 2099.128,
         "site_repeated_5grams": 1.511,
         "site_repeated_share": 0.005
       },
@@ -80,7 +80,7 @@
         "content_recall": 0.7,
         "noise_retention": 0.306,
         "f_balanced": 0.682,
-        "tokens": 10990.447,
+        "tokens": 10991.511,
         "site_repeated_5grams": 1328.894,
         "site_repeated_share": 0.267
       }
@@ -593,23 +593,23 @@
     },
     "n_pages": 1791,
     "n_scoreable": 1727,
-    "n_pages_changed": 174,
+    "n_pages_changed": 314,
     "summary_scoreable": {
       "coverage": {
-        "content_recall": 0.77,
+        "content_recall": 0.805,
         "noise_retention": 0.01,
-        "f_balanced": 0.851,
-        "tokens": 3441.624,
-        "site_repeated_5grams": 16.704,
-        "site_repeated_share": 0.031
+        "f_balanced": 0.876,
+        "tokens": 2654.825,
+        "site_repeated_5grams": 12.558,
+        "site_repeated_share": 0.021
       },
       "coverage_stce": {
-        "content_recall": 0.769,
-        "noise_retention": 0.01,
-        "f_balanced": 0.852,
-        "tokens": 3439.053,
-        "site_repeated_5grams": 16.244,
-        "site_repeated_share": 0.03
+        "content_recall": 0.805,
+        "noise_retention": 0.009,
+        "f_balanced": 0.877,
+        "tokens": 2648.474,
+        "site_repeated_5grams": 12.318,
+        "site_repeated_share": 0.021
       },
       "trafilatura": {
         "content_recall": 0.759,

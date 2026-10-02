@@ -280,6 +280,21 @@ result.diagnostics    <span class="c"># what was removed, and why</span></pre>
     </div>
   </section>
 
+  <section id="wcxb">
+    <div class="wrap">
+      <h2>Human-reviewed benchmark (WCXB)</h2>
+      <p class="section-lede">Word-level F1 against human-reviewed main content on <a href="https://arxiv.org/abs/2605.21097">WCXB</a>, seven page types. <strong>Test</strong>: 511 held-out pages, the model trained on development pages only and scored once after freezing the code. <strong>Development</strong>: five-fold cross-validation grouped by site, so no page is scored by a model that saw its site.</p>
+      <div class="toolbar">
+        <div class="seg" role="group" aria-label="Split">
+          <button type="button" aria-pressed="true" data-wsplit="wcxb_test">Test (511 pages)</button>
+          <button type="button" aria-pressed="false" data-wsplit="wcxb_dev_cv">Development (1,495 pages, cross-validated)</button>
+        </div>
+      </div>
+      <div class="card"><div class="table-scroll"><table id="wcxb-table"></table></div></div>
+      <p class="small muted" id="wcxb-note"></p>
+    </div>
+  </section>
+
   <section id="benchmark">
     <div class="wrap">
       <h2>Public benchmark</h2>
@@ -463,6 +478,32 @@ python -m poc.run_stce_eval --raw data/stce_crawl</pre>
       document.querySelectorAll("[data-panel]").forEach(function (p) { p.hidden = p.getAttribute("data-panel") !== t.getAttribute("data-tab"); });
     });
   });
+
+  // ---------------------------------------------------------------- WCXB
+  getJSON("data/final_results.json").then(function (fin) {
+    var tools = [["chromerag_coverage", "ChromeRAG coverage"], ["chromerag", "ChromeRAG balanced"], ["chromerag_precision", "ChromeRAG precision"], ["trafilatura", "Trafilatura"], ["readability", "Readability"], ["markitdown", "MarkItDown"]];
+    var types = ["all", "article", "documentation", "service", "forum", "product", "collection", "listing"];
+    var table = document.getElementById("wcxb-table"), note = document.getElementById("wcxb-note");
+    function draw(key) {
+      var data = fin[key].means, b = fin[key].bootstrap_vs_trafilatura;
+      var html = "<thead><tr><th>Page type</th><th class='num'>Pages</th>" + tools.map(function (t) { return "<th class='num'>" + t[1] + "</th>"; }).join("") + "</tr></thead><tbody>";
+      types.forEach(function (ty) {
+        var row = data[ty], best = Math.max.apply(null, tools.map(function (t) { return row[t[0]] ? row[t[0]].f1 : 0; }));
+        html += "<tr><td>" + (ty === "all" ? "<strong>All pages</strong>" : ty) + "</td><td class='num'>" + row.n + "</td>" + tools.map(function (t) {
+          var v = row[t[0]] ? row[t[0]].f1 : null; return "<td class='num'>" + (v == null ? "–" : (v === best ? "<strong>" + f3(v) + "</strong>" : f3(v))) + "</td>"; }).join("") + "</tr>";
+      });
+      table.innerHTML = html + "</tbody>";
+      var c = b.chromerag;
+      note.textContent = "Balanced − Trafilatura, all pages: " + signed(c[0]) + " F1 (95% CI " + signed(c[1]) + " to " + signed(c[2]) + ", paired bootstrap over pages). Best score per row in bold.";
+    }
+    document.querySelectorAll("[data-wsplit]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        document.querySelectorAll("[data-wsplit]").forEach(function (o) { o.setAttribute("aria-pressed", o === btn ? "true" : "false"); });
+        draw(btn.getAttribute("data-wsplit"));
+      });
+    });
+    draw("wcxb_test");
+  }).catch(function () { var n = document.getElementById("wcxb"); if (n) n.hidden = true; });
 
   // ---------------------------------------------------------------- benchmark
   var board = null, cohort = "scoreable", category = "", sortKey = "avg_f_balanced", sortDir = -1;

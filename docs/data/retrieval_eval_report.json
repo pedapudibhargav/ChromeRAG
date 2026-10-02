@@ -2,91 +2,91 @@
   "n_pages": 242,
   "chunk_words": 200,
   "n_queries": {
-    "heading": 330,
-    "passage": 329,
+    "heading": 331,
+    "passage": 330,
     "title": 112
   },
   "tools": {
     "chromerag_coverage": {
-      "chunks": 2553,
-      "indexed_words": 499985,
+      "chunks": 2010,
+      "indexed_words": 373000,
       "scores": {
         "heading": {
-          "context_chrome@5": 0.002,
-          "hit@1": 0.8,
-          "hit@5": 0.927,
-          "mrr@5": 0.858
+          "context_chrome@5": 0.005,
+          "hit@1": 0.795,
+          "hit@5": 0.924,
+          "mrr@5": 0.848
         },
         "all": {
-          "context_chrome@5": 0.001,
-          "hit@1": 0.877,
-          "hit@5": 0.949,
-          "mrr@5": 0.909
+          "context_chrome@5": 0.005,
+          "hit@1": 0.872,
+          "hit@5": 0.947,
+          "mrr@5": 0.904
         },
         "passage": {
-          "context_chrome@5": 0.001,
-          "hit@1": 0.948,
-          "hit@5": 0.964,
-          "mrr@5": 0.954
+          "context_chrome@5": 0.004,
+          "hit@1": 0.945,
+          "hit@5": 0.967,
+          "mrr@5": 0.955
         },
         "title": {
-          "context_chrome@5": 0.002,
-          "hit@1": 0.893,
-          "hit@5": 0.973,
-          "mrr@5": 0.927
+          "context_chrome@5": 0.004,
+          "hit@1": 0.884,
+          "hit@5": 0.955,
+          "mrr@5": 0.916
         }
       }
     },
     "chromerag": {
-      "chunks": 2501,
-      "indexed_words": 489226,
+      "chunks": 1712,
+      "indexed_words": 314428,
       "scores": {
         "heading": {
-          "context_chrome@5": 0.002,
-          "hit@1": 0.824,
-          "hit@5": 0.924,
-          "mrr@5": 0.867
+          "context_chrome@5": 0.001,
+          "hit@1": 0.795,
+          "hit@5": 0.912,
+          "mrr@5": 0.845
         },
         "all": {
           "context_chrome@5": 0.001,
-          "hit@1": 0.888,
-          "hit@5": 0.947,
-          "mrr@5": 0.913
+          "hit@1": 0.863,
+          "hit@5": 0.935,
+          "mrr@5": 0.894
         },
         "passage": {
           "context_chrome@5": 0.001,
-          "hit@1": 0.951,
-          "hit@5": 0.96,
-          "mrr@5": 0.955
+          "hit@1": 0.942,
+          "hit@5": 0.961,
+          "mrr@5": 0.951
         },
         "title": {
-          "context_chrome@5": 0.001,
-          "hit@1": 0.893,
-          "hit@5": 0.973,
-          "mrr@5": 0.927
+          "context_chrome@5": 0.0,
+          "hit@1": 0.83,
+          "hit@5": 0.929,
+          "mrr@5": 0.872
         }
       }
     },
     "trafilatura": {
-      "chunks": 1949,
-      "indexed_words": 361925,
+      "chunks": 1950,
+      "indexed_words": 362191,
       "scores": {
         "heading": {
           "context_chrome@5": 0.006,
-          "hit@1": 0.767,
-          "hit@5": 0.885,
-          "mrr@5": 0.814
+          "hit@1": 0.761,
+          "hit@5": 0.879,
+          "mrr@5": 0.809
         },
         "all": {
-          "context_chrome@5": 0.005,
-          "hit@1": 0.86,
-          "hit@5": 0.922,
-          "mrr@5": 0.885
+          "context_chrome@5": 0.006,
+          "hit@1": 0.856,
+          "hit@5": 0.921,
+          "mrr@5": 0.882
         },
         "passage": {
-          "context_chrome@5": 0.004,
-          "hit@1": 0.939,
-          "hit@5": 0.948,
+          "context_chrome@5": 0.005,
+          "hit@1": 0.936,
+          "hit@5": 0.952,
           "mrr@5": 0.943
         },
         "title": {
@@ -98,29 +98,29 @@
       }
     },
     "markitdown": {
-      "chunks": 3907,
-      "indexed_words": 1157586,
+      "chunks": 3909,
+      "indexed_words": 1159195,
       "scores": {
         "heading": {
           "context_chrome@5": 0.029,
-          "hit@1": 0.785,
+          "hit@1": 0.779,
           "hit@5": 0.921,
-          "mrr@5": 0.838
+          "mrr@5": 0.834
         },
         "all": {
           "context_chrome@5": 0.026,
-          "hit@1": 0.892,
+          "hit@1": 0.889,
           "hit@5": 0.964,
-          "mrr@5": 0.92
+          "mrr@5": 0.918
         },
         "passage": {
-          "context_chrome@5": 0.019,
-          "hit@1": 0.991,
+          "context_chrome@5": 0.018,
+          "hit@1": 0.988,
           "hit@5": 1.0,
-          "mrr@5": 0.995
+          "mrr@5": 0.994
         },
         "title": {
-          "context_chrome@5": 0.035,
+          "context_chrome@5": 0.036,
           "hit@1": 0.92,
           "hit@5": 0.982,
           "mrr@5": 0.943
@@ -128,32 +128,32 @@
       }
     },
     "readability": {
-      "chunks": 1701,
-      "indexed_words": 315234,
+      "chunks": 1702,
+      "indexed_words": 315600,
       "scores": {
         "heading": {
           "context_chrome@5": 0.005,
-          "hit@1": 0.573,
-          "hit@5": 0.706,
-          "mrr@5": 0.625
+          "hit@1": 0.571,
+          "hit@5": 0.701,
+          "mrr@5": 0.622
         },
         "all": {
           "context_chrome@5": 0.006,
           "hit@1": 0.684,
-          "hit@5": 0.774,
-          "mrr@5": 0.718
+          "hit@5": 0.775,
+          "mrr@5": 0.719
         },
         "passage": {
           "context_chrome@5": 0.007,
-          "hit@1": 0.726,
-          "hit@5": 0.781,
-          "mrr@5": 0.747
+          "hit@1": 0.73,
+          "hit@5": 0.788,
+          "mrr@5": 0.751
         },
         "title": {
           "context_chrome@5": 0.006,
           "hit@1": 0.884,
           "hit@5": 0.955,
-          "mrr@5": 0.91
+          "mrr@5": 0.911
         }
       }
     }
@@ -162,73 +162,73 @@
     {
       "comparison": "chromerag_coverage - chromerag",
       "metric": "hit@5",
-      "mean_diff": 0.003,
+      "mean_diff": 0.012,
       "ci95": [
-        0.0,
-        0.007
+        0.002,
+        0.021
       ]
     },
     {
       "comparison": "chromerag_coverage - chromerag",
       "metric": "context_chrome@5",
-      "mean_diff": 0.0,
+      "mean_diff": 0.004,
       "ci95": [
-        -0.0,
-        0.0
-      ]
-    },
-    {
-      "comparison": "chromerag_coverage - trafilatura",
-      "metric": "hit@5",
-      "mean_diff": 0.027,
-      "ci95": [
-        0.003,
-        0.053
-      ]
-    },
-    {
-      "comparison": "chromerag_coverage - trafilatura",
-      "metric": "context_chrome@5",
-      "mean_diff": -0.004,
-      "ci95": [
-        -0.006,
-        -0.003
-      ]
-    },
-    {
-      "comparison": "chromerag_coverage - markitdown",
-      "metric": "hit@5",
-      "mean_diff": -0.014,
-      "ci95": [
-        -0.035,
+        0.002,
         0.006
       ]
     },
     {
+      "comparison": "chromerag_coverage - trafilatura",
+      "metric": "hit@5",
+      "mean_diff": 0.026,
+      "ci95": [
+        0.001,
+        0.051
+      ]
+    },
+    {
+      "comparison": "chromerag_coverage - trafilatura",
+      "metric": "context_chrome@5",
+      "mean_diff": -0.001,
+      "ci95": [
+        -0.004,
+        0.002
+      ]
+    },
+    {
+      "comparison": "chromerag_coverage - markitdown",
+      "metric": "hit@5",
+      "mean_diff": -0.017,
+      "ci95": [
+        -0.037,
+        0.003
+      ]
+    },
+    {
       "comparison": "chromerag_coverage - markitdown",
       "metric": "context_chrome@5",
-      "mean_diff": -0.025,
+      "mean_diff": -0.021,
       "ci95": [
-        -0.028,
-        -0.021
+        -0.025,
+        -0.017
       ]
     },
     {
       "comparison": "chromerag_coverage - readability",
       "metric": "hit@5",
-      "mean_diff": 0.175,
+      "mean_diff": 0.172,
       "ci95": [
-        0.133,
-        0.217
+        0.13,
+        0.216
       ]
     },
     {
       "comparison": "chromerag_coverage - readability",
       "metric": "context_chrome@5",
-      "mean_diff": -0.005,
+      "mean_diff": -0.001,
       "ci95": [
-        -0.007,
-        -0.003
+        -0.004,
+        0.002
       ]
     }
   ]
