@@ -26,3 +26,5 @@ Performance work (single-pass statistics, cached densities) is output-identical:
 
 14. **Loose text** — runs of text between block elements are wrapped in `<p>` so they reach the classifier and the output.
 15. **Confidence** — `diagnostics["lbc"]` reports the model's expected precision, recall and F1 for the page.
+
+16. **Corpus refresh** — `awesome-python` and `awesome-selfhosted` in `data/raw` were re-fetched by the 2026-10-02 corpus run (live pages change); their hashes changed, the code did not.

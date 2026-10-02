@@ -157,18 +157,18 @@
       "id": "awesome-python",
       "source": "raw",
       "hashes": {
-        "chromerag_coverage": "a4fc8df84e13ce31d9c9b84d6365da98a3fc7112758deaacbe3f5182079403c6",
-        "chromerag": "b8ca1ca7c6e6824d5b798f67cbbd5ecd9d71b8c984693817c3c3b1e07153e1d3",
-        "chromerag_precision": "c73446e291ea6875f39c0ba81e5510285862e63fba5ae7b606232f16f1627a83"
+        "chromerag_coverage": "5936099b65bb1e66ebc34715994ffb28c15c3b20effd5cfd4c875277c5adac09",
+        "chromerag": "15117bd96539d9dcde954c5f19cb259cc5346c3b0a1da8167f949447fa4d1843",
+        "chromerag_precision": "d42e4f2fadfb89863d7a6d99d2184d064143b0edb07b8d9def3c91b84ff0dfef"
       }
     },
     {
       "id": "awesome-selfhosted",
       "source": "raw",
       "hashes": {
-        "chromerag_coverage": "76c24db40d215c25aaa2866b695042847ff60421cad7257db9dd474335427df2",
-        "chromerag": "4f28ba27797b697208af66664b68397f16107080f78c8a805a345ef13145c401",
-        "chromerag_precision": "4f28ba27797b697208af66664b68397f16107080f78c8a805a345ef13145c401"
+        "chromerag_coverage": "46b2178a8c75445bf60a26b7de72e1435755b6171889c009f3335c5c3ff75be5",
+        "chromerag": "d40580f2e2efbb7f49d4ffad63ed87c5539871d5edc681520a9c1f9e211cf68f",
+        "chromerag_precision": "d40580f2e2efbb7f49d4ffad63ed87c5539871d5edc681520a9c1f9e211cf68f"
       }
     },
     {
