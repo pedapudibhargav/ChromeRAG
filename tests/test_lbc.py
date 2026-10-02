@@ -89,9 +89,10 @@ def test_link_targets_are_off_by_default_and_available() -> None:
 
 
 def test_content_after_a_stray_closing_html_tag_is_kept() -> None:
+    para = ("The report explains how the new pricing applies to teams that run more than ten projects, "
+            "and why the change takes effect in the next billing cycle. ")
     html = ("<html><body><header><p>Site</p></header></body></html>"
-            "<div><p>The report explains how the new pricing applies to teams that run more than ten "
-            "projects, and why the change takes effect in the next billing cycle.</p></div>")
+            f"<div><p>{para * 3}</p></div></body></html>")
     assert "billing cycle" in ChromeRAG(config=PipelineConfig(enable_lbc=False)).extract(html).markdown
 
 

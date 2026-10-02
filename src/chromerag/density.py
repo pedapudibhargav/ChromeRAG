@@ -246,9 +246,29 @@ def text_density(tag: Tag, stats: TreeStats | None = None) -> float:
 
 def parse_html(html: str) -> BeautifulSoup:
     """Parse only — keep scripts so JSON-LD can be harvested."""
-    soup = BeautifulSoup(html, "lxml")
+    soup = BeautifulSoup(_drop_early_end_tags(html), "lxml")
     _adopt_trailing_content(soup)
     return soup
+
+
+_END_TAG = re.compile(r"</(body|html)\s*>", re.I)
+
+
+def _drop_early_end_tags(html: str) -> str:
+    """Remove ``</body>``/``</html>`` that are followed by more page content.
+
+    Depending on the libxml2 version, lxml either drops everything after an early ``</html>`` or
+    keeps it outside ``<body>``. Taking the early end tags out gives the same tree everywhere.
+    """
+    matches = list(_END_TAG.finditer(html))
+    if len(matches) < 3:  # a normal page has exactly one of each
+        return html
+    tail = html[matches[0].end() :]
+    if len(re.sub(r"<[^>]*>|\s+", "", tail)) < 200:
+        return html
+    last = {m.group(1).lower(): m.start() for m in matches}
+    keep = set(last.values())
+    return _END_TAG.sub(lambda m: m.group(0) if m.start() in keep else "", html)
 
 
 def _adopt_trailing_content(soup: BeautifulSoup) -> None:
