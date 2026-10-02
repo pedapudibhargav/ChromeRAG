@@ -111,6 +111,32 @@ Learn-then-extract from Python: `chromerag.learn_then_extract(pages)` or
 
 ---
 
+## Learned block filter (unreleased, 0.1.3)
+
+Version 0.1.3 replaces the hand-set density thresholds with a small learned model. The page is
+cleaned as before (tags, hidden nodes, rules, site chrome, obvious navigation), then split into
+*blocks* (paragraphs, headings, list items, quotes, tables, text-only divs). Each block is
+described by about 500 numbers (its text, its place in the tree, the names of its ancestors, the
+heading above it, its neighbours) and scored by gradient-boosted trees. A block is kept when its
+score reaches the threshold of the chosen priority: `coverage` 0.30, `balanced` 0.50,
+`precision` 0.70.
+
+* The model is a 150 KB array file (`src/chromerag/assets/lbc_stage1.npz`) evaluated with NumPy
+  only; scikit-learn is needed to retrain, not to run.
+* It was trained on human-reviewed pages (WCXB dev). Numbers on pages from sites the model never
+  saw (5-fold, site-grouped cross-validation, word-level F1): coverage 0.845, balanced 0.842,
+  precision 0.831, Trafilatura 0.818, Readability 0.700, MarkItDown 0.513
+  (`evaluations/2026-10-v0.1.3/wcxb_dev_cv.json`). The held-out WCXB test split has not been used.
+* Link targets are no longer written by default (`PipelineConfig(include_links=True)` or
+  `--links` brings back `[text](url)`), repeated blocks are written once, and the Markdown now
+  follows document order.
+* Switch it off with `PipelineConfig(enable_lbc=False)` to get the 0.1.2 density filter.
+
+Retrain: `python -m poc.lbc_data` then `python -m poc.train_lbc --fit-all --out-dir src/chromerag/assets`
+(needs scikit-learn, WCXB in `data/wcxb/`).
+
+---
+
 ## Results
 
 All numbers below are recomputed from the files in [`docs/data/`](docs/data/) and shown, with a

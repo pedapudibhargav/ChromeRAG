@@ -80,6 +80,7 @@ class PipelineConfig:
 
     # Learned block classifier: drop blocks whose content probability is below this
     lbc_threshold: float = 0.50
+    lbc_drop_repeats: bool = True  # drop a block whose text already appeared earlier on the page
     lbc_whole_page: bool = True  # classify blocks outside the detected content root too
 
     # DVDF

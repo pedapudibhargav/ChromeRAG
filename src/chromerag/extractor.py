@@ -137,11 +137,14 @@ class ChromeRAG:
         chars = np.array([len(b.text) for b in blocks])
         proba = self.lbc_model.predict(X.astype("float64"), chars, box)
         kept = 0
+        seen: set[str] = set()
         for block, p in zip(blocks, proba, strict=True):
-            if p < cfg.lbc_threshold:
+            key = " ".join(block.text.lower().split())
+            if p < cfg.lbc_threshold or (cfg.lbc_drop_repeats and len(key) >= 30 and key in seen):
                 block.tag.decompose()
             else:
                 kept += 1
+                seen.add(key)
         return len(blocks), kept
 
     def _noise_index(self, cfg: PipelineConfig) -> NoiseAnchorIndex | None:
