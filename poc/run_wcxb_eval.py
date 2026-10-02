@@ -22,6 +22,7 @@ BASELINE_PATH = ROOT / "evaluations" / "2026-09-v0.1.2-baseline" / "wcxb_dev_v01
 TOOL_CHROMERAG = {
     "chromerag_coverage": ContentPriority.COVERAGE,
     "chromerag": ContentPriority.BALANCED,
+    "chromerag_precision": ContentPriority.PRECISION,
 }
 TOOL_BASELINES = ("trafilatura", "markitdown", "readability")
 
@@ -146,7 +147,7 @@ def main() -> None:
     parser.add_argument("--split", default="dev", choices=["dev", "test", "heldout", "all"])
     parser.add_argument(
         "--tools",
-        default="chromerag_coverage,chromerag,trafilatura,markitdown,readability",
+        default="chromerag_coverage,chromerag,chromerag_precision,trafilatura,markitdown,readability",
         help="Comma-separated tool names",
     )
     parser.add_argument("--out", type=Path, default=EVAL_DIR / "wcxb_dev_wp0.json")
