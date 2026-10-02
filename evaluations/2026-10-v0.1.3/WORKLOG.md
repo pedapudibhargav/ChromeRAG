@@ -233,3 +233,21 @@ dense hit@5 +0.010 [−0.024, +0.047] (tie), chrome −0.007 [−0.011, −0.004
 
 Documentation corpus (data/raw, not held out), BM25, 242 pages: coverage hit@5 0.940, Trafilatura 0.921, MarkItDown
 0.964, Readability 0.776; chrome in context 0.002 / 0.006 / 0.025 / 0.006.
+
+### Second judge run: stratified WCXB test sample (2026-10-02)
+
+105 WCXB test pages (15 per page type, seed 7), ChromeRAG balanced against three baselines, 384 judgements, same
+model, prompt and blinding; position consistency 83% (69 repeated pairs). Cost $0.298; total OpenAI spend $1.681.
+
+| vs | ChromeRAG wins | baseline wins | net win rate [95% CI] | content (1-5) ours / theirs | chrome-free (1-5) ours / theirs |
+|---|---|---|---|---|---|
+| Trafilatura | 56% | 42% | +0.14 [−0.05, +0.33] | 4.15 / 3.70 | 3.90 / 4.11 |
+| MarkItDown | 83% | 17% | +0.66 [+0.51, +0.79] | 4.08 / 3.25 | 4.41 / 1.23 |
+
+By page type (ChromeRAG wins / baseline wins, 15 pages each), vs Trafilatura: article 40% / 60%, documentation 33% /
+67%, listing 33% / 53%, collection 73% / 27%, service 73% / 27%, product 67% / 33%, forum 73% / 27%.
+Reading: on the mixed WCXB sample the judge's preference over Trafilatura is not significant (the interval includes
+zero); it favours ChromeRAG on forum, product, collection and service pages and Trafilatura on articles,
+documentation and listings. This agrees with the F1 ties on articles and documentation, and it is the more
+conservative of the two judge results (the landing-page sample, 70% vs 28%, is marketing pages only).
+The coverage of all evaluation sets is in `EVALUATION_COVERAGE.md` and `evaluation_domains.csv`.

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Blind extraction rating</title>
+<style>
+:root{--bg:#fbfbfa;--panel:#fff;--line:#dedcd6;--ink:#1f1f1d;--mut:#6b6a65;--acc:#2a78d6;--ok:#1a7f37}
+@media (prefers-color-scheme:dark){:root{--bg:#161615;--panel:#1f1f1d;--line:#37362f;--ink:#ececea;--mut:#9a9992;--acc:#6aa7f0;--ok:#4cc072}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,Segoe UI,Roboto,sans-serif}
+header{position:sticky;top:0;z-index:5;background:var(--panel);border-bottom:1px solid var(--line);padding:8px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+header h1{font-size:15px;margin:0}.sp{flex:1}.pill{background:var(--bg);border:1px solid var(--line);border-radius:99px;padding:2px 10px;font-size:12px;color:var(--mut)}
+button{font:inherit;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:6px;padding:5px 10px;cursor:pointer}button.pri{background:var(--acc);border-color:var(--acc);color:#fff}button:disabled{opacity:.4}
+main{padding:12px 14px;display:grid;gap:12px}
+.src{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden}.src .bar{display:flex;gap:8px;align-items:center;padding:6px 10px;border-bottom:1px solid var(--line)}
+.src .bar a{color:var(--acc);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:50vw}
+iframe,.srcview{width:100%;height:42vh;border:0;background:#fff}.srcview{background:var(--panel);color:var(--ink);overflow:auto;white-space:pre-wrap;font:11px/1.35 ui-monospace,Menlo,monospace;padding:8px}
+.cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}@media(max-width:1100px){.cols{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.col{background:var(--panel);border:1px solid var(--line);border-radius:8px;display:flex;flex-direction:column;min-height:0}
+.col.best{outline:2px solid var(--ok)}.col h2{margin:0;padding:6px 10px;font-size:14px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.txt{height:46vh;overflow:auto;padding:8px 10px;white-space:pre-wrap;word-break:break-word;font:12.5px/1.45 ui-monospace,Menlo,monospace}
+.rate{padding:8px 10px;border-top:1px solid var(--line);display:grid;gap:6px}.rate label{display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:12px;color:var(--mut)}
+.stars{display:flex;gap:3px}.stars button{padding:1px 7px;font-size:12px}.stars button.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.foot{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.foot textarea{flex:1;min-width:200px;height:34px;font:inherit;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:4px 8px}
+.hint{color:var(--mut);font-size:12px}.saved{color:var(--ok);font-size:12px}
+</style></head><body>
+<header><h1>Blind extraction rating</h1><span class="pill" id="prog">–</span><span class="pill" id="type">–</span><span class="sp"></span>
+<button id="prev">← Prev</button><button id="next">Next →</button><button class="pri" id="export">Finish &amp; export</button></header>
+<main>
+<section class="src"><div class="bar"><b>Original page</b><button data-v="render" class="pri">Rendered</button><button data-v="source">HTML source</button><a id="orig" target="_blank" rel="noopener"></a></div>
+<iframe id="frame" sandbox="" title="original page"></iframe><div class="srcview" id="srcview" hidden></div></section>
+<section class="cols" id="cols"></section>
+<section class="foot"><span class="hint">Keys: <b>1–4</b> pick best (A–D), <b>0</b> = none/tie, <b>←/→</b> navigate. Score each output: content kept (5 = everything useful) and chrome left (5 = no menus/footers/cookie text).</span>
+<textarea id="note" placeholder="Optional note"></textarea><button id="skip">Can't judge (skip)</button><span class="saved" id="saved"></span></section>
+</main>
+<script>
+const $=s=>document.querySelector(s);let items=[],cur=0,state=null,view="render";
+const api=(p,o)=>fetch(p,o).then(r=>r.json());
+async function init(){items=await api("/api/items");const first=items.findIndex(i=>!i.done);cur=first<0?0:first;await load()}
+function emptyState(){return{best:null,scores:{A:{},B:{},C:{},D:{}},note:"",skipped:false}}
+async function load(){const id=items[cur].id;const d=await api("/api/item/"+id);state=d.rating?{best:d.rating.best,scores:Object.assign(emptyState().scores,d.rating.scores),note:d.rating.note||"",skipped:d.rating.skipped}:emptyState();
+ $("#prog").textContent=`Page ${cur+1} of ${items.length} · rated ${items.filter(i=>i.done).length}`;$("#type").textContent=d.type;
+ $("#orig").textContent=d.url;$("#orig").href=d.url;$("#frame").src="/html/"+id;$("#srcview").textContent="";$("#srcview").dataset.id=id;$("#note").value=state.note;setView(view);
+ const c=$("#cols");c.innerHTML="";for(const L of "ABCD"){const o=d.outputs[L];const col=document.createElement("div");col.className="col";col.id="col"+L;
+  col.innerHTML=`<h2><span>Output ${L}</span><span class="hint">${o.words} words</span></h2><div class="txt"></div><div class="rate"><label>Content kept <span class="stars" data-k="content" data-l="${L}"></span></label><label>Chrome left out <span class="stars" data-k="chrome" data-l="${L}"></span></label><button class="pickb" data-l="${L}">Best: ${L}</button></div>`;
+  col.querySelector(".txt").textContent=o.text;c.appendChild(col)}
+ paint();document.querySelectorAll(".stars").forEach(s=>{for(let n=1;n<=5;n++){const b=document.createElement("button");b.textContent=n;b.onclick=()=>{state.scores[s.dataset.l][s.dataset.k]=n;paint();save()};s.appendChild(b)}});paint();
+ document.querySelectorAll(".pickb").forEach(b=>b.onclick=()=>pick(b.dataset.l))}
+function paint(){for(const L of "ABCD"){const col=$("#col"+L);if(!col)continue;col.classList.toggle("best",state.best===L);
+  col.querySelectorAll(".stars").forEach(s=>{[...s.children].forEach((b,i)=>b.classList.toggle("on",state.scores[L][s.dataset.k]===i+1))})}}
+function pick(L){state.best=L;state.skipped=false;paint();save()}
+let t;function save(){clearTimeout(t);t=setTimeout(async()=>{state.note=$("#note").value;await api("/api/rate",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:items[cur].id,...state})});
+ items[cur].done=!!(state.best!==null||state.skipped)||Object.values(state.scores).some(s=>s.content||s.chrome);$("#saved").textContent="saved";setTimeout(()=>$("#saved").textContent="",900);$("#prog").textContent=`Page ${cur+1} of ${items.length} · rated ${items.filter(i=>i.done).length}`},150)}
+function setView(v){view=v;document.querySelectorAll("[data-v]").forEach(b=>b.classList.toggle("pri",b.dataset.v===v));$("#frame").hidden=v!=="render";$("#srcview").hidden=v!=="source";
+ if(v==="source"&&!$("#srcview").textContent){fetch("/source/"+items[cur].id).then(r=>r.text()).then(t=>$("#srcview").textContent=t)}}
+document.querySelectorAll("[data-v]").forEach(b=>b.onclick=()=>setView(b.dataset.v));
+$("#note").addEventListener("input",save);
+$("#skip").onclick=()=>{state.skipped=true;state.best=null;save()};
+const go=d=>{const n=cur+d;if(n>=0&&n<items.length){cur=n;load()}};$("#prev").onclick=()=>go(-1);$("#next").onclick=()=>go(1);
+$("#export").onclick=async()=>{const r=await fetch("/api/export");if(r.status===409){const e=await r.json();if(!confirm(e.error+"\nExport anyway?"))return;location.href="/api/export?force=1"}else location.href="/api/export"};
+document.addEventListener("keydown",e=>{if(e.target.tagName==="TEXTAREA")return;if("1234".includes(e.key)&&e.key)pick("ABCD"[+e.key-1]);else if(e.key==="0"){state.best="none";paint();save()}else if(e.key==="ArrowRight")go(1);else if(e.key==="ArrowLeft")go(-1)});
+init();
+</script></body></html>
