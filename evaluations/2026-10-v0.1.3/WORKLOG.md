@@ -157,3 +157,39 @@ pages); speed median ~29 ms/page vs Trafilatura ~31 ms (`poc/bench_speed.py`).
 
 The robustness fixes (wrappers, tables, hidden text, order, links) account for most of the gain over 0.1.2;
 the learned filter adds +0.024 / +0.028 / +0.043 on top.
+
+---
+
+## FINAL: WCXB test split (run once, 2026-10-02, commit 2d436bb tagged `freeze-0.1.3`)
+
+Model trained on all of WCXB dev (`src/chromerag/assets/lbc_stage1.npz`), thresholds fixed beforehand
+(0.30 / 0.50 / 0.70). 511 held-out pages, no crashes. Per-page file: `FINAL/wcxb_test.json`.
+Command: `python -m poc.run_wcxb_eval --split test --final`.
+
+| WCXB test (511) | coverage | balanced | precision | Trafilatura | Readability | MarkItDown |
+|---|---|---|---|---|---|---|
+| all | 0.900 | **0.902** | 0.887 | 0.860 | 0.763 | 0.540 |
+| article (257) | 0.945 | 0.954 | 0.957 | 0.952 | 0.926 | 0.643 |
+| documentation (42) | 0.954 | 0.956 | 0.946 | 0.934 | 0.872 | 0.615 |
+| service (59) | 0.846 | 0.844 | 0.833 | 0.817 | 0.612 | 0.471 |
+| forum (51) | 0.868 | 0.867 | 0.839 | 0.717 | 0.616 | 0.443 |
+| product (28) | 0.853 | 0.874 | 0.861 | 0.724 | 0.527 | 0.335 |
+| collection (34) | 0.799 | 0.795 | 0.714 | 0.626 | 0.450 | 0.284 |
+| listing (40) | 0.789 | 0.760 | 0.676 | 0.722 | 0.439 | 0.386 |
+
+Precision / recall / with / without (all pages): coverage 0.870 / 0.958 / 0.827 / 0.097; balanced 0.894 / 0.936 /
+0.798 / 0.077; precision 0.905 / 0.899 / 0.752 / 0.065; Trafilatura 0.890 / 0.868 / 0.720 / 0.083; Readability
+0.872 / 0.757 / 0.552 / 0.089; MarkItDown 0.410 / 0.989 / 0.768 / 0.967.
+
+Paired bootstrap (5,000 resamples) of page-level F1 differences: balanced − Trafilatura **+0.043 [+0.027, +0.059]**;
+coverage +0.040 [+0.024, +0.056]; precision +0.027 [+0.011, +0.045]; balanced − Readability +0.140 [+0.115, +0.165].
+By type, balanced − Trafilatura: forum +0.150 [+0.091, +0.217], product +0.150 [+0.069, +0.243], collection +0.169
+[+0.080, +0.264]; article +0.001 [−0.007, +0.009], documentation +0.022 [−0.016, +0.058], service +0.026 [−0.013,
++0.067], listing +0.038 [−0.067, +0.153] (ties). Snippets: with +0.078 [+0.051, +0.105], without −0.005 [−0.023,
++0.011] (no difference in contamination).
+
+Published numbers for the same split (WCXB paper, different Trafilatura configuration, not re-run here): rs-trafilatura
+0.903, Trafilatura 0.841. ChromeRAG balanced is 0.902 on the same pages under this repository's scorer.
+
+Dev-to-test consistency: balanced 0.851 (CV on dev) vs 0.902 (test); Trafilatura 0.818 vs 0.860. The test split is
+easier for every system; the gap to Trafilatura is the same size (+0.033 dev, +0.043 test).
