@@ -10,10 +10,37 @@
   "license": "https://spdx.org/licenses/MIT",
   "programmingLanguage": "Python",
   "runtimePlatform": "Python 3.11+",
-  "operatingSystem": ["Linux", "macOS", "Windows"],
+  "operatingSystem": [
+    "Linux",
+    "macOS",
+    "Windows"
+  ],
   "applicationCategory": "Text mining",
-  "keywords": ["retrieval-augmented generation", "HTML extraction", "boilerplate removal", "main content extraction", "web template detection", "Markdown", "LLM data preparation"],
-  "softwareRequirements": ["beautifulsoup4", "lxml", "numpy", "pyyaml"],
-  "author": [{"@type": "Person", "givenName": "Bhargava Chary", "familyName": "Peddapudi", "@id": "https://orcid.org/0009-0002-8523-8415"}],
-  "isAccessibleForFree": true
+  "keywords": [
+    "retrieval-augmented generation",
+    "HTML extraction",
+    "boilerplate removal",
+    "main content extraction",
+    "web template detection",
+    "Markdown",
+    "LLM data preparation"
+  ],
+  "softwareRequirements": [
+    "beautifulsoup4",
+    "lxml",
+    "numpy",
+    "pyyaml"
+  ],
+  "author": [
+    {
+      "@type": "Person",
+      "givenName": "Bhargava Chary",
+      "familyName": "Peddapudi",
+      "@id": "https://orcid.org/0009-0002-8523-8415"
+    }
+  ],
+  "isAccessibleForFree": true,
+  "version": "0.1.4",
+  "softwareVersion": "0.1.4",
+  "dateModified": "2026-10-02"
 }

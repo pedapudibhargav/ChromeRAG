@@ -65,7 +65,7 @@ class PipelineConfig:
     enable_dvdf: bool = True
     enable_stce: bool = True  # applied only when a SiteChromeModel is provided
     enable_rules: bool = True
-    enable_lbc: bool = True  # learned block classifier (needs assets/lbc_model.npz)
+    enable_lbc: bool = True  # learned block classifier (needs assets/lbc_stage1.npz)
     inject_heading_paths: bool = False
     include_links: bool = False  # write [text](url); off keeps link text only
 

@@ -1,0 +1,7 @@
+include LICENSE.txt NOTICE CHANGELOG.md CITATION.cff codemeta.json README.md
+graft tests/fixtures
+graft tests/rules
+graft tests/golden
+graft examples
+recursive-include src/chromerag/assets *.npz *.json *.txt
+recursive-include src/chromerag/rules *.yaml

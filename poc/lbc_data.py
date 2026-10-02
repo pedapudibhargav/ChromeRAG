@@ -5,12 +5,13 @@ For each page: clean it with the normal pipeline, list its blocks, describe each
 content when most of its word trigrams occur in the reference (short blocks: the whole word
 sequence occurs in it). Rows are weighted by word count because the benchmark scores words.
 
-  python -m poc.lbc_data --split dev --out /tmp/cr/lbc_dev.npz
+  python -m poc.lbc_data --split dev --out data/outputs/lbc/lbc_dev.npz
 """
 
 from __future__ import annotations
 
 import argparse
+from pathlib import Path
 import zlib
 from concurrent.futures import ProcessPoolExecutor
 
@@ -92,6 +93,7 @@ def build(split: str, out: str) -> None:
     fold = np.concatenate([np.full(len(r[4]), r[8], dtype=np.int8) for r in results])
     types = np.array([r[1] for r in results])
     ids = np.array([r[0] for r in results])
+    Path(out).parent.mkdir(parents=True, exist_ok=True)
     np.savez_compressed(out, X=X, y=y, w=w, page=page, half=halves, types=types, ids=ids, chars=chars, box=box, fold=fold)
     print(f"{len(results)} pages, {len(y)} blocks, {y.mean():.3f} positive, {X.shape[1]} features -> {out}")
 
@@ -99,7 +101,7 @@ def build(split: str, out: str) -> None:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--split", default="dev")
-    ap.add_argument("--out", default="/tmp/cr/lbc_dev.npz")
+    ap.add_argument("--out", default="data/outputs/lbc/lbc_dev.npz")
     a = ap.parse_args()
     build(a.split, a.out)
 

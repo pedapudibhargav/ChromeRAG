@@ -63,8 +63,26 @@ def _text_key(text: str) -> str:
     return _WS.sub(" ", text[:_TEXT_KEY_CHARS]).lower()
 
 
+_SHINGLE_INPUT_CHARS = 600_000
+
+
+def _visible_words(html: str) -> list[str]:
+    """Words of the page text, in linear time (script, style and noscript bodies are dropped by the parser)."""
+    html = html[:_SHINGLE_INPUT_CHARS]
+    try:
+        from lxml import etree
+
+        root = etree.fromstring(html.encode("utf-8", "ignore"), etree.HTMLParser(recover=True, encoding="utf-8"))
+        if root is not None:
+            etree.strip_elements(root, "script", "style", "noscript", with_tail=False)
+            return " ".join(root.itertext()).lower().split()
+    except Exception:  # noqa: BLE001 - fall back to a crude tag strip
+        pass
+    return re.sub(r"<[^>]*>", " ", html).lower().split()
+
+
 def _page_shingles(html: str) -> set[int]:
-    words = _TAGS.sub(" ", html).lower().split()[:_SHINGLE_LIMIT]
+    words = _visible_words(html)[:_SHINGLE_LIMIT]
     return {hash(" ".join(words[i : i + _SHINGLE_WORDS])) for i in range(max(0, len(words) - _SHINGLE_WORDS + 1))}
 
 

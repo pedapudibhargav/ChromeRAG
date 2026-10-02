@@ -1,12 +1,12 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
-title: "ChromeRAG: Ingest-Time Elimination of Site Template Noise for Enterprise Web RAG"
+title: "ChromeRAG: A Learned Boilerplate Filter for Web RAG Ingestion"
 type: software
 authors:
   - family-names: Peddapudi
     given-names: Bhargava Chary
     orcid: "https://orcid.org/0009-0002-8523-8415"
-version: 0.1.3
+version: 0.1.4
 date-released: "2026-10-02"
 license: MIT
 doi: "10.5281/zenodo.22970289"

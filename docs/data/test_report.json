@@ -1,14 +1,19 @@
 {
-  "generated_at": "2026-09-25T15:34:38+00:00",
+  "generated_at": "2026-10-02T22:06:33+00:00",
   "pytest_exit_code": 0,
   "totals": {
-    "tests": 25,
+    "tests": 70,
     "failed": 0,
     "errors": 0,
-    "skipped": 0,
-    "passed": 25
+    "skipped": 1,
+    "passed": 69
   },
   "cases": [
+    {
+      "classname": "",
+      "name": "tests.test_llamaindex_reader",
+      "status": "skipped"
+    },
     {
       "classname": "tests.test_cli_and_stce",
       "name": "test_content_wrapper_with_sidebar_class_is_not_pruned",
@@ -105,6 +110,16 @@
       "status": "passed"
     },
     {
+      "classname": "tests.test_golden",
+      "name": "test_golden_check",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_input_quality",
+      "name": "test_visible_text_matches_legacy_on_fixtures",
+      "status": "passed"
+    },
+    {
       "classname": "tests.test_input_quality",
       "name": "test_js_shell_triggers_warning",
       "status": "passed"
@@ -132,6 +147,216 @@
     {
       "classname": "tests.test_langchain_loader",
       "name": "test_loader_can_skip_javascript_shells",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_blocks_are_listed_in_document_order_without_nesting",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_feature_matrix_shape_and_box_ids",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_shipped_model_matches_feature_count",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_model_scores_prose_above_chrome",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_extraction_keeps_article_and_drops_page_furniture",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_classifier_can_be_switched_off",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_link_targets_are_off_by_default_and_available",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_content_after_a_stray_closing_html_tag_is_kept",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_page_wide_form_does_not_swallow_the_article",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_layout_table_is_unwrapped_not_duplicated",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_offline",
+      "name": "test_extract_learn_and_batch_work_offline",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_offline",
+      "name": "test_token_estimate_is_deterministic",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_robustness",
+      "name": "test_per_call_config_uses_inferred_type_per_url",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_robustness",
+      "name": "test_hidden_nodes_removed_from_output",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_robustness",
+      "name": "test_skip_link_removed",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_robustness",
+      "name": "test_content_root_in_diagnostics",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_robustness",
+      "name": "test_very_deep_nesting_does_not_crash",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_robustness",
+      "name": "test_batch_survives_one_failing_page",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_robustness",
+      "name": "test_non_utf8_bytes_are_decoded_with_the_declared_charset",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_robustness",
+      "name": "test_learn_is_fast_on_unclosed_script_tags",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_robustness",
+      "name": "test_output_is_deterministic",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_ids_unique_and_documented",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[consent.onetrust]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[consent.cookiebot]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[consent.osano]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[docs.docusaurus.footer]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[share.social]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[share.related]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_text_outside_rule_scope_is_kept",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_class_token_is_a_whole_class_name",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html>\\n<html lang=\"en\">\\n<head><meta charset=\"utf-8\"><title>Docs \\u2014 Getting Started</title></head>\\n<body>\\n  <div id=\"onetrust-consent-sdk\" class=\"ot-sdk-container\">\\n    <p>We use cookies to improve your experience. Accept all cookies or manage preferences.</p>\\n    <button>Accept All</button>\\n  </div>\\n  <main>\\n    <article>\\n      <h1>Getting started</h1>\\n      <p>Install the CLI with pip and authenticate using your API token from the dashboard.</p>\\n      <p>Run your first deployment with a single command after configuring your project directory.</p>\\n    </article>\\n  </main>\\n</body>\\n</html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html>\\n<html lang=\"en\">\\n<head>\\n  <meta charset=\"utf-8\" />\\n  <title>Acme Cloud Docs</title>\\n  <script type=\"application/ld+json\">\\n  {\\n    \"@context\": \"https://schema.org\",\\n    \"@type\": \"TechArticle\",\\n    \"headline\": \"Bandwidth limits and SLA\",\\n    \"description\": \"Enterprise bandwidth caps and uptime SLA.\"\\n  }\\n  </script>\\n</head>\\n<body>\\n  <header>\\n    <nav>\\n      <a href=\"/\">Home</a>\\n      <a href=\"/pricing\">Pricing</a>\\n      <a href=\"/docs\">Docs</a>\\n      <a href=\"/login\">Sign in</a>\\n    </nav>\\n  </header>\\n  <main>\\n    <article>\\n      <h1>Bandwidth limits and SLA</h1>\\n      <p>\\n        Dedicated servers include 10 Gbps unmetered bandwidth in the primary region.\\n        Burst above commit is billed per GB. The contractual monthly uptime SLA is 99.99 percent.\\n      </p>\\n      <h2>Pricing matrix</h2>\\n      <table>\\n        <thead><tr><th>SKU</th><th>Cores</th><th>Monthly</th></tr></thead>\\n        <tbody>\\n          <tr><td>srv.large</td><td>8</td><td>120</td></tr>\\n          <tr><td>srv.xlarge</td><td>16</td><td>220</td></tr>\\n        </tbody>\\n      </table>\\n    </article>\\n  </main>\\n  <footer>\\n    <p>Copyright Acme Cloud. Privacy Policy. Cookie Settings. Follow us on Twitter LinkedIn.</p>\\n    <a href=\"/careers\">Careers</a>\\n    <a href=\"/legal\">Legal</a>\\n  </footer>\\n</body>\\n</html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html>\\n<html lang=\"en\">\\n<head><meta charset=\"utf-8\"><title>Hidden content test</title></head>\\n<body>\\n  <main>\\n    <h1>Visible guide</h1>\\n    <p>This paragraph is visible and should appear in the extracted Markdown output.</p>\\n    <div style=\"display: none\">\\n      <p>Hidden promo: Sign up now for 50 percent off enterprise plans today only.</p>\\n    </div>\\n    <p hidden>Hidden attribute text that should not dominate the output.</p>\\n    <div aria-hidden=\"true\" class=\"modal\"><p>Modal overlay marketing copy.</p></div>\\n    <section>\\n      <h2>Configuration</h2>\\n      <p>Set the environment variable API_KEY before running the client in production mode.</p>\\n    </section>\\n  </main>\\n</body>\\n</html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html>\\n<html lang=\"en\">\\n<head><meta charset=\"utf-8\"><title>Acme Platform \\u2014 Enterprise Cloud</title></head>\\n<body>\\n  <header class=\"site-header\">\\n    <nav><a href=\"/\">Home</a><a href=\"/pricing\">Pricing</a><a href=\"/login\">Sign in</a></nav>\\n  </header>\\n  <main>\\n    <section class=\"hero\">\\n      <h1>Build faster on Acme Platform</h1>\\n      <p>Deploy globally with one API. Scale from startup to enterprise without re-architecting.</p>\\n      <a class=\"btn cta\" href=\"/signup\">Get started for free</a>\\n    </section>\\n    <section class=\"features\">\\n      <h2>Why teams choose Acme</h2>\\n      <ul>\\n        <li><strong>Edge compute</strong> \\u2014 sub-10ms latency in 40 regions worldwide.</li>\\n        <li><strong>Managed databases</strong> \\u2014 Postgres, Redis, and object storage with automatic backups.</li>\\n        <li><strong>Security</strong> \\u2014 SOC 2 Type II, encryption at rest and in transit.</li>\\n      </ul>\\n    </section>\\n  </main>\\n  <footer><p>\\xa9 Acme Corp. Privacy \\xb7 Terms</p></footer>\\n</body>\\n</html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><div id=\"CybotCookiebotDialog\"><p data-chrome=\"Cookiebot consent banner text should be removed.\">Cookiebot consent banner text should be removed.</p><p>Manage your preferences and choose which categories you allow us to use on this website at any time.</p></div><p data-keep=\"Keep this Cookiebot documentation paragraph about OAuth scopes.\">Keep this Cookiebot documentation paragraph about OAuth scopes.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><div id=\"onetrust-consent-sdk\"><p data-chrome=\"We use cookies on this site for analytics purposes.\">We use cookies on this site for analytics purposes.</p><p>Manage your preferences and choose which categories you allow us to use on this website at any time.</p></div><p data-keep=\"Keep this documentation paragraph about API authentication tokens.\">Keep this documentation paragraph about API authentication tokens.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><div class=\"osano-cm-dialog\"><p data-chrome=\"Osano consent preferences dialog.\">Osano consent preferences dialog.</p><p>Manage your preferences and choose which categories you allow us to use on this website at any time.</p></div><p data-keep=\"Keep this Osano integration guide paragraph about webhook events.\">Keep this Osano integration guide paragraph about webhook events.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><p data-keep=\"Keep this Docusaurus documentation paragraph about configuration options.\">Keep this Docusaurus documentation paragraph about configuration options.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p><div class=\"theme-doc-footer\"><p data-chrome=\"Edit this page on GitHub and tell us what was unclear in this guide.\">Edit this page on GitHub and tell us what was unclear in this guide.</p><p>Last updated by the documentation team.</p></div></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><div class=\"related-posts\"><p data-chrome=\"Related: Another article you might like from our blog archive.\">Related: Another article you might like from our blog archive.</p><p>Manage your preferences and choose which categories you allow us to use on this website at any time.</p></div><p data-keep=\"Keep this related-content paragraph describing API rate limits for enterprise tenants.\">Keep this related-content paragraph describing API rate limits for enterprise tenants.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><div class=\"social\"><p data-chrome=\"Share on Twitter Facebook LinkedIn\">Share on Twitter Facebook LinkedIn</p><p>Manage your preferences and choose which categories you allow us to use on this website at any time.</p></div><p data-keep=\"Keep this article paragraph about quarterly revenue growth and product roadmap updates.\">Keep this article paragraph about quarterly revenue growth and product roadmap updates.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<html><body>\\n<main><p>Fish &amp; chips &lt;b&gt; \"quoted\" 'single' <a href=\"/x?a=1&b=2\">link &amp; <a>nested</a></a></p>\\n<div class='x \"y\"' data-k=\"a'b&quot;c\" hidden data-empty=\"\">  spaced   <br>text<img src=a.png alt=\"\">\\n<pre>  raw\\n text </pre></div><a href=\"#\"></a><a></a><!-- gone --><span>\\xe9 \\xfc \\u4f60\\u597d &nbsp; nbsp</span>\\n<table><tr><td>1</td><td>2</td></tr></table></main><footer>foot <b>er</b></footer>\\n</body></html>]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_stay_valid_for_later_tags_when_visited_tag_is_removed",
       "status": "passed"
     }
   ]

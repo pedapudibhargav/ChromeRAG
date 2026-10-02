@@ -1,7 +1,7 @@
 """Learned block classifier: gradient-boosted trees evaluated with numpy only.
 
 The model is trained offline (``poc/train_lbc.py``) on human-reviewed pages and stored as flat
-arrays in ``assets/lbc_model.npz``. Prediction needs no machine-learning library.
+arrays in ``assets/lbc_stage1.npz``. Prediction needs no machine-learning library.
 """
 
 from __future__ import annotations

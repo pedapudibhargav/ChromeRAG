@@ -1,11 +1,27 @@
 {
-  "title": "ChromeRAG: HTML to RAG-ready Markdown with a learned boilerplate filter",
+  "title": "ChromeRAG: A Learned Boilerplate Filter for Web RAG Ingestion",
   "description": "ChromeRAG converts scraped HTML into Markdown for retrieval-augmented generation. A small learned model (NumPy-only inference) scores each text block and removes site chrome; site-template learning removes repeated navigation and promotions across a site's pages.",
   "upload_type": "software",
   "license": "MIT",
-  "creators": [{"name": "Peddapudi, Bhargava Chary", "orcid": "0009-0002-8523-8415"}],
-  "keywords": ["retrieval-augmented generation", "HTML extraction", "boilerplate removal", "main content extraction", "web template detection", "Markdown"],
+  "creators": [
+    {
+      "name": "Peddapudi, Bhargava Chary",
+      "orcid": "0009-0002-8523-8415"
+    }
+  ],
+  "keywords": [
+    "retrieval-augmented generation",
+    "HTML extraction",
+    "boilerplate removal",
+    "main content extraction",
+    "web template detection",
+    "Markdown"
+  ],
   "related_identifiers": [
-    {"relation": "isSupplementTo", "identifier": "https://github.com/pedapudibhargav/ChromeRAG", "scheme": "url"}
+    {
+      "relation": "isSupplementTo",
+      "identifier": "https://github.com/pedapudibhargav/ChromeRAG",
+      "scheme": "url"
+    }
   ]
 }

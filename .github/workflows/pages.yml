@@ -40,6 +40,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -e ".[dev]"
+          ruff check src tests
           pytest -q
       - name: README quick start
         run: |

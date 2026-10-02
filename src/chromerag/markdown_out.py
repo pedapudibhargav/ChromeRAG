@@ -152,7 +152,7 @@ def soup_to_markdown(
                     "blockquote",
                 }
             ]
-            text = re.sub(r"\s+", " ", node.get_text(" ", strip=True)).strip()
+            text = re.sub(r"\s+", " ", node.get_text(" ", strip=True)).strip() if not child_blocks else ""
             if text and len(child_blocks) == 0 and id(node) not in seen:
                 if inject_heading_paths and heading_stack:
                     path = " > ".join(t for _, t in heading_stack)

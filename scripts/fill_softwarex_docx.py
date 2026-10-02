@@ -49,8 +49,8 @@ KEYWORDS = (
 BOLD_LEAD, ITALIC_LEAD, LEAD_END = "\x01", "\x02", "\x03"
 
 METADATA = {
-    "C1": "v0.1.3",
-    "C2": "https://github.com/pedapudibhargav/ChromeRAG/tree/v0.1.3",
+    "C1": "v0.1.4",
+    "C2": "https://github.com/pedapudibhargav/ChromeRAG/tree/v0.1.4",
     "C3": "MIT",
     "C4": "git",
     "C5": "Python ≥3.11; BeautifulSoup4, lxml, PyYAML, NumPy",

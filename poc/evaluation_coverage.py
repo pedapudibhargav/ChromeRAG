@@ -46,8 +46,10 @@ def main() -> None:
     add(f"Fresh companies ({len(fresh)})", "fetched after the freeze, scored once", [pg["url"] for c in fresh.values() for pg in c["pages"]], "sectors: " + ", ".join(sorted({c['sector'] for c in fresh.values()})))
     docs = [m.get("url", "") for _, _, m in load_ok_pages(DOCS_RAW)]
     add("Documentation/pricing/article corpus", "anchor benchmark and BM25 retrieval (development; 242 scoreable)", docs, "documentation 208 of 242 scoreable pages")
-    crawl = list((ROOT / "data" / "stce_crawl").glob("*.meta.json"))
-    add("STCE crawl", "site-template learning study", [json.loads(p.read_text()).get("url", "") for p in crawl], "up to 15 same-section pages per documentation site")
+    crawl = json.loads((ROOT / "data" / "outputs" / "stce_eval_stce_crawl_report.json").read_text())
+    pages = crawl["pages"]
+    pages = list(pages.values()) if isinstance(pages, dict) else pages
+    lines.append(f"| STCE crawl | site-template learning study | {crawl['n_pages']} | {len(crawl['groups'])} site groups | up to 15 same-section pages per documentation site |")
     j1 = json.loads((EV / "FINAL" / "llm_judge_final.json").read_text())
     j1_pages = {r["id"] for r in j1["judgements"]}
     p2 = EV / "FINAL" / "llm_judge_wcxb_test.json"

@@ -47,3 +47,6 @@ scripts/_ooxml_write.py
 _site/
 data/wcxb/
 data/landing_fresh_raw/
+
+# blind human-rating app: third-party pages and ratings stay local
+data/human_eval/

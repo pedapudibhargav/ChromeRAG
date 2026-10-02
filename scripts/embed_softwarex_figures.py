@@ -49,8 +49,8 @@ IMAGES = [
     ),
     (
         "fig5_judge.png",
-        "Figure 5. Blind pairwise judgement by a language model of ChromeRAG against Trafilatura and MarkItDown: "
-        "100 held-out and fresh landing pages (coverage mode) and 105 stratified WCXB test pages (balanced mode); grey marks ties.",
+        "Figure 5. Pairwise judgement by one language model, tool names hidden, of ChromeRAG against Trafilatura and MarkItDown: "
+        "100 landing pages (coverage mode) and 72 WCXB test pages absent from the development folder (balanced mode); grey marks ties.",
     ),
 ]
 

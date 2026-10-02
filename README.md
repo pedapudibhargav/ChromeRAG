@@ -161,8 +161,21 @@ score reaches the threshold of the chosen priority: `coverage` 0.30, `balanced` 
   follows document order.
 * Switch it off with `PipelineConfig(enable_lbc=False)` to get the 0.1.2 density filter.
 
-Retrain: `python -m poc.lbc_data` then `python -m poc.train_lbc --fit-all --out-dir src/chromerag/assets`
-(needs scikit-learn, WCXB in `data/wcxb/`).
+Retrain (needs `pip install -e ".[train]"` and WCXB in `data/wcxb/`):
+
+```bash
+python -m poc.lbc_data --split dev                      # block table -> data/outputs/lbc/lbc_dev.npz
+python -m poc.train_lbc --fit-all --out-dir src/chromerag/assets
+python -m poc.run_wcxb_eval --split dev --out /tmp/wcxb_dev.json   # sanity check (in-sample after --fit-all)
+```
+
+**WCXB data.** Get WCXB v1.0 (CC-BY-4.0, https://arxiv.org/abs/2605.21097) into `data/wcxb/{dev,test}/{ground-truth/*.json,html/*.html.gz}`.
+`python -m poc.run_wcxb_eval --split dev|test [--final] --out FILE` scores the tools (the test split needs `--final`; always pass
+`--out`, the default overwrites a tracked file). The public `dev/` folder contains 139 files that WCXB's metadata assigns to
+the test split (`poc/wcxb_leaked_ids.json`); `load_split("test", drop_leaked=True)` drops them, and the paper reports test
+results without them. Scores are computed on the Markdown body with ChromeRAG's YAML front-matter removed; the benchmark's
+own script on raw default output gives 0.869 (372 clean test pages), and 0.904 with `enable_schema=False`.
+
 
 ---
 

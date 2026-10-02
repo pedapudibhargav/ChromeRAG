@@ -10,7 +10,7 @@ Every page set, how many pages and domains it has, and what it was used for. Dom
 | Landing heldout companies (47) | held-out, scored once | 185 | 42 | marketing: homepage, pricing, product pages chosen from homepage links before any extractor ran |
 | Fresh companies (51) | fetched after the freeze, scored once | 196 | 47 | sectors: business_saas, cloud_infrastructure, commerce_marketing, communication, data_ai, developer_tools, fintech, healthcare_finance_consumer, industrial, security |
 | Documentation/pricing/article corpus | anchor benchmark and BM25 retrieval (development; 242 scoreable) | 268 | 186 | documentation 208 of 242 scoreable pages |
-| STCE crawl | site-template learning study | 1931 | 120 | up to 15 same-section pages per documentation site |
+| STCE crawl | site-template learning study | 1791 | 125 site groups | up to 15 same-section pages per documentation site |
 | Judge sample: WCXB test | LLM judge, 15 per page type | 105 | 102 | 384 judgements, three baselines |
 
 ## Judge samples

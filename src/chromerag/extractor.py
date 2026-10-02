@@ -49,6 +49,7 @@ from chromerag.rules_engine import DEFAULT_INDEX, RuleHit, RuleIndex
 from chromerag.schema_fusion import fuse_front_matter
 from chromerag.site_chrome import SiteChromeModel, apply_site_chrome, site_group_key
 from chromerag.tables import replace_tables_with_linearized, unwrap_layout_tables
+from chromerag.textio import decode_html
 from chromerag.treestats import TreeStats
 
 
@@ -329,7 +330,9 @@ class ChromeRAG:
         meta = {"front": front, "input_quality": input_quality, "body_words": body_words}
         return md, meta, result
 
-    def extract(self, html: str, url: str | None = None) -> ExtractResult:
+    def extract(self, html: str | bytes, url: str | None = None) -> ExtractResult:
+        if not isinstance(html, str):
+            html = decode_html(html)
         cfg = _resolve_cfg(self.config, url, html)
         md, meta, result = self._extract_core(html, url, cfg)
         body_words = int(meta["body_words"])
@@ -375,5 +378,5 @@ class ChromeRAG:
         return result
 
     def extract_file(self, path: str, url: str | None = None) -> ExtractResult:
-        with open(path, encoding="utf-8", errors="ignore") as f:
+        with open(path, "rb") as f:
             return self.extract(f.read(), url=url)

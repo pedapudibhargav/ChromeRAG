@@ -33,9 +33,10 @@ class BatchPage:
 class BatchResult:
     page_id: str | None
     url: str | None
-    result: ExtractResult
+    result: ExtractResult | None
     chrome_group: str | None
     stce_applied: bool
+    error: str | None = None  # set when this page could not be extracted; the rest of the batch still runs
 
 
 def learn_chrome(
@@ -98,7 +99,14 @@ def learn_then_extract(
             else None
         )
         extractor = ChromeRAG(config=cfg, site_chrome=model)
-        result = extractor.extract(page.html, url=page.url)
+        try:
+            result = extractor.extract(page.html, url=page.url)
+        except Exception as exc:  # noqa: BLE001 - one bad page must not stop the batch
+            results.append(
+                BatchResult(page.page_id, page.url, None, model.group_key if model else None, False,
+                            error=f"{type(exc).__name__}: {str(exc)[:200]}")
+            )
+            continue
         results.append(
             BatchResult(
                 page_id=page.page_id,

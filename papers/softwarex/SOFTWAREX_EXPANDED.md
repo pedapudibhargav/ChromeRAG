@@ -1,7 +1,7 @@
 # ChromeRAG: A Learned Boilerplate Filter for Web RAG Ingestion
 
 **Target journal:** Elsevier *SoftwareX* (Original Software Publication)  
-**Package:** `chromerag` (v0.1.3)  
+**Package:** `chromerag` (v0.1.4)  
 **Draft status:** Source text for `scripts/fill_softwarex_docx.py`, which fills the official SoftwareX OSP Word template (v6, March 2026). Do not submit this Markdown file as-is.
 
 **Authors:** Bhargava Chary Peddapudi (Independent Researcher; ORCID: https://orcid.org/0009-0002-8523-8415)  
@@ -31,7 +31,7 @@ Web pages indexed for retrieval-augmented generation (RAG) carry navigation, coo
 
 ### Software architecture
 
-ChromeRAG is a small Python package (`src/chromerag`, about 4,000 lines) built on BeautifulSoup/lxml and NumPy. Each document passes through six stages (Fig. 1). A pytest suite of 64 tests covers the pipeline, the learned filter, the rule index, golden-output regression fixtures, the CLI, STCE and the LangChain loader; continuous integration runs on Linux (Python 3.11 to 3.14), macOS and Windows.
+ChromeRAG is a small Python package (`src/chromerag`, about 4,000 lines) built on BeautifulSoup/lxml and NumPy. Each document passes through six stages (Fig. 1). A pytest suite of 69 tests covers the pipeline, the learned filter, the rule index, golden-output regression fixtures, the CLI, STCE and the LangChain loader; continuous integration runs on Linux (Python 3.11 to 3.14), macOS and Windows.
 
 <!-- FIG 1 -->
 
@@ -102,7 +102,7 @@ WCXB [10] has 2,008 pages in seven page types, with human-reviewed main content.
 
 *Development results* come from five-fold cross-validation grouped by host: F1 is 0.852 (`coverage`), 0.851 (`balanced`) and 0.837 (`precision`) against 0.818 for Trafilatura. Features and thresholds were chosen on these folds, so they are development estimates. Replacing the 0.1.2 density filter by the learned filter raises F1 from 0.822, 0.817 and 0.790 to these values; most of the gain over 0.1.2 (0.749) comes from fixing whole-page losses (wrappers, hidden blocks, nested layout tables that repeated text, breadth-first output order, link targets counted as words).
 
-*Test results* were produced once, after the code, model and thresholds were frozen (git tag `freeze-0.1.3`). No test label was used for fitting or for choosing thresholds, but an audit afterwards found that 139 of the 511 test pages are also in the public `dev/` folder with identical HTML (26 of 28 product and 25 of 34 collection pages), most likely a packaging error in the release (its metadata lists 1,358 development pages), so the shipped model was trained on them. The primary test result therefore uses the 372 test pages absent from `dev/` (Table 2, Fig. 2); on all 511 pages the F1 values are 0.902, 0.860, 0.763 and 0.540 for ChromeRAG, Trafilatura, Readability and MarkItDown, reported for comparability only. On the 345 test pages from domains absent from `dev/`, ChromeRAG scores 0.903 and Trafilatura 0.874 (+0.029, 95% CI [+0.012, +0.046]).
+*Test results* were produced once, after the code, model and thresholds were frozen (git tag `freeze-0.1.3`). Release 0.1.4 (the version described here) changes only robustness and packaging; its per-page scores on all 511 test pages are identical to those of the frozen release. No test label was used for fitting or for choosing thresholds, but an audit afterwards found that 139 of the 511 test pages are also in the public `dev/` folder with identical HTML (26 of 28 product and 25 of 34 collection pages), most likely a packaging error in the release (its metadata lists 1,358 development pages), so the shipped model was trained on them. The primary test result therefore uses the 372 test pages absent from `dev/` (Table 2, Fig. 2); on all 511 pages the F1 values are 0.902, 0.860, 0.763 and 0.540 for ChromeRAG, Trafilatura, Readability and MarkItDown, reported for comparability only. On the 345 test pages from domains absent from `dev/`, ChromeRAG scores 0.903 and Trafilatura 0.874 (+0.029, 95% CI [+0.012, +0.046]).
 
 Table 2. Word-level F1 on the 372 WCXB test pages absent from the development folder (ChromeRAG in `balanced` mode; product and collection have only 2 and 9 such pages).
 
@@ -215,7 +215,7 @@ During the preparation of this work the author used Cursor (with a Grok-based co
 16. J. Alarte, J. Silva, and S. Tamarit, "What Web Template Extractor Should I Use? A Benchmarking and Comparison for Five Template Extractors," *ACM Trans. Web*, vol. 13, no. 2, Art. 9, 2019. doi: 10.1145/3316810.
 17. J. Tan, Z. Dou, W. Wang, M. Wang, W. Chen, and J.-R. Wen, "HtmlRAG: HTML is Better Than Plain Text for Modeling Retrieved Knowledge in RAG Systems," in *Proc. ACM Web Conf. 2025 (WWW '25)*, 2025, pp. 1733–1746. doi: 10.1145/3696410.3714546.
 18. K. Weinberger, A. Dasgupta, J. Langford, A. Smola, and J. Attenberg, "Feature Hashing for Large Scale Multitask Learning," in *Proc. 26th Int. Conf. Machine Learning (ICML)*, 2009, pp. 1113–1120. doi: 10.1145/1553374.1553516.
-19. B. C. Peddapudi, *ChromeRAG*, version 0.1.3, Zenodo, 2026. doi: 10.5281/zenodo.23107381 (all versions: 10.5281/zenodo.22970289). Source: https://github.com/pedapudibhargav/ChromeRAG
+19. B. C. Peddapudi, *ChromeRAG*, version 0.1.4, Zenodo, 2026. doi: 10.5281/zenodo.22970289 (all versions). Source: https://github.com/pedapudibhargav/ChromeRAG
 20. N. Reimers and I. Gurevych, "Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks," in *Proc. EMNLP-IJCNLP 2019*, 2019, pp. 3980–3990. doi: 10.18653/v1/D19-1410.
 
 ---

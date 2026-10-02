@@ -4,12 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "chromerag"
-version = "0.1.3"
+version = "0.1.4"
 description = "HTML to RAG-ready Markdown: a learned boilerplate filter that removes site chrome (navigation, footers, cookie banners, related links, comments) and keeps article, documentation and pricing content. Pure NumPy inference, no model download."
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
-license-files = ["LICENSE.txt"]
+license-files = ["LICENSE.txt", "NOTICE"]
 authors = [{ name = "Bhargava Chary Peddapudi", email = "pedapudibhargav@gmail.com" }]
 keywords = [
   "rag",
@@ -59,6 +59,9 @@ baselines = [
   "markitdown>=0.1.0",
   "html2text>=2024.2.26",
 ]
+train = [
+  "scikit-learn>=1.4,<1.6",
+]
 langchain = [
   "langchain-core>=0.2",
 ]
@@ -92,3 +95,11 @@ where = ["src"]
 
 [tool.setuptools.package-data]
 chromerag = ["assets/*.json", "assets/*.txt", "assets/*.npz", "rules/*.yaml"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B"]
+ignore = ["E501", "B905", "B023", "B007"]

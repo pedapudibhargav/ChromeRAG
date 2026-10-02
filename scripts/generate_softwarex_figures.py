@@ -174,9 +174,10 @@ def fig_wcxb_test(final: dict) -> str:
         if row == "all":
             body.append(f'<rect x="4" y="{y - row_h / 2 + 1:.1f}" width="{WIDTH - 8}" height="{row_h - 2}" fill="#f6f5f2"/>')
         body.append(_text(label_w, y + 2.5, names[row], size=7.5, anchor="end", weight="bold" if row == "all" else "normal"))
-        for key in DOT_TOOLS:
+        for key in DOT_TOOLS[1:] + DOT_TOOLS[:1]:  # ChromeRAG last so it is never hidden
             v = means[row][key]["f1"]
-            body.append(f'<circle cx="{sx(v):.1f}" cy="{y:.1f}" r="3.4" fill="{METHODS[key][1]}" stroke="{SURFACE}" stroke-width="0.9"/>')
+            ring = (key == "chromerag")
+            body.append(f'<circle cx="{sx(v):.1f}" cy="{y:.1f}" r="{4.2 if ring else 3.2}" fill="{METHODS[key][1]}" stroke="{"#1f1f1d" if ring else SURFACE}" stroke-width="{1.1 if ring else 0.9}"/>')
         v = means[row]["chromerag"]["f1"]
         body.append(_text(sx(v), y - 6, f"{v:.2f}", size=6.5, anchor="middle", fill="#2a78d6"))
     return _svg(h, body)
@@ -212,7 +213,7 @@ def fig_frontier(final: dict) -> str:
         label, color = METHODS[key]
         p, r = dev[key]["p"], dev[key]["r"]
         body.append(f'<circle cx="{sx(r):.1f}" cy="{sy(p):.1f}" r="4" fill="{color}" stroke="{SURFACE}" stroke-width="1"/>')
-        body.append(_text(sx(r) + 7, sy(p) + 2.5, label, size=7.5))
+        body.append(_text(sx(r) - 7, sy(p) + 12, label, size=7.5, anchor="end") if key == "trafilatura" else _text(sx(r) + 7, sy(p) + 2.5, label, size=7.5))
     body.append(_text(x0 + w + 8, y0 + 12, "ChromeRAG:", size=7.5, weight="bold", fill="#2a78d6"))
     body.append(_text(x0 + w + 8, y0 + 23, "threshold 0.15 to 0.90", size=7, fill=INK_2))
     body.append(_text(x0 + w + 8, y0 + 34, "(coverage 0.30,", size=7, fill=INK_2))
@@ -264,11 +265,11 @@ def fig_retrieval(report: dict) -> str:
 def fig_judge(final: dict) -> str:
     rows = [("Landing pages (100)", "vs Trafilatura", final["judge"]["all:trafilatura"], "#eb6834"),
             ("Landing pages (100)", "vs MarkItDown", final["judge"]["all:markitdown"], "#1baf7a"),
-            ("WCXB test (105)", "vs Trafilatura", final["judge_wcxb_test"]["all:trafilatura"], "#eb6834"),
-            ("WCXB test (105)", "vs MarkItDown", final["judge_wcxb_test"]["all:markitdown"], "#1baf7a")]
-    h, top, label_w = 112, 22, 128
+            ("WCXB test (72)", "vs Trafilatura", final["judge_wcxb_test_deduplicated"]["summary"]["all:trafilatura"], "#eb6834"),
+            ("WCXB test (72)", "vs MarkItDown", final["judge_wcxb_test_deduplicated"]["summary"]["all:markitdown"], "#1baf7a")]
+    h, top, label_w = 124, 22, 128
     x0, w = label_w + 6, WIDTH - label_w - 20
-    body: list[str] = [_text(x0, 10, "Blind pairwise LLM judge: share of pages preferred (grey = tie)", size=7.5, fill=INK_2)]
+    body: list[str] = [_text(x0, 10, "Pairwise LLM judge (one model, tool names hidden): share of pages preferred (grey = tie)", size=7.5, fill=INK_2)]
     for i, (group, label, r, other) in enumerate(rows):
         y = top + i * 20
         body.append(_text(label_w, y + 9, f"{group}, {label}", size=7, anchor="end"))
@@ -279,7 +280,7 @@ def fig_judge(final: dict) -> str:
             if r[key] >= 0.08:
                 body.append(_text(x + seg / 2, y + 9.5, f"{r[key] * 100:.0f}%", size=7, anchor="middle", fill="#ffffff" if key != "ties" else INK))
             x += seg
-    body.append(f'<rect x="{x0}" y="{top + 84}" width="8" height="8" fill="#2a78d6"/>' + _text(x0 + 12, top + 91, "ChromeRAG preferred", size=7))
+    body.append(f'<rect x="{x0}" y="{top + 88}" width="8" height="8" fill="#2a78d6"/>' + _text(x0 + 12, top + 95, "ChromeRAG preferred", size=7))
     return _svg(h, body)
 
 

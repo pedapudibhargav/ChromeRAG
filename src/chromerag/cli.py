@@ -21,6 +21,7 @@ from chromerag.batch import BatchPage, learn_chrome, learn_then_extract
 from chromerag.config import ContentPriority, PipelineConfig, Strictness
 from chromerag.extractor import ChromeRAG
 from chromerag.site_chrome import load_chrome_models, save_chrome_models
+from chromerag.textio import decode_html
 
 
 def _build_config(args: argparse.Namespace) -> PipelineConfig:
@@ -30,6 +31,7 @@ def _build_config(args: argparse.Namespace) -> PipelineConfig:
         enable_tables=not getattr(args, "no_tables", False),
         enable_stce=not getattr(args, "no_stce", False),
         enable_rules=not getattr(args, "no_rules", False),
+        enable_lbc=not getattr(args, "no_lbc", False),
         inject_heading_paths=getattr(args, "heading_paths", False),
         include_links=getattr(args, "links", False),
     )
@@ -58,6 +60,7 @@ def _add_shared_flags(p: argparse.ArgumentParser) -> None:
     p.add_argument("--no-tables", action="store_true")
     p.add_argument("--no-stce", action="store_true")
     p.add_argument("--no-rules", action="store_true")
+    p.add_argument("--no-lbc", action="store_true", help="use the 0.1.2 density filter instead of the learned block filter")
     p.add_argument("--heading-paths", action="store_true")
     p.add_argument("--links", action="store_true", help="keep link targets as [text](url)")
 
@@ -73,7 +76,7 @@ def _load_fixture_dir(raw_dir: Path) -> list[BatchPage]:
             continue
         pages.append(
             BatchPage(
-                html=html_path.read_text(encoding="utf-8", errors="ignore"),
+                html=decode_html(html_path.read_bytes()),
                 url=meta.get("url"),
                 page_id=meta["id"],
             )
@@ -83,7 +86,7 @@ def _load_fixture_dir(raw_dir: Path) -> list[BatchPage]:
         for html_path in sorted(raw_dir.glob("*.html")):
             pages.append(
                 BatchPage(
-                    html=html_path.read_text(encoding="utf-8", errors="ignore"),
+                    html=decode_html(html_path.read_bytes()),
                     url=None,
                     page_id=html_path.stem,
                 )
@@ -112,7 +115,7 @@ def cmd_extract(args: argparse.Namespace) -> int:
         return 2
     if _missing_chrome_model(args.chrome_model):
         return 2
-    html = path.read_text(encoding="utf-8", errors="ignore")
+    html = decode_html(path.read_bytes())
     cfg = _build_config(args)
     model = None
     if args.chrome_model and not args.no_stce:
@@ -229,8 +232,14 @@ def cmd_batch(args: argparse.Namespace) -> int:
         save_chrome_models(models, args.save_chrome)
 
     summary = []
+    failed = 0
     for br in results:
         pid = br.page_id or "page"
+        if br.result is None:
+            failed += 1
+            sys.stderr.write(f"ERROR {pid}: {br.error}\n")
+            summary.append({"id": pid, "url": br.url, "error": br.error})
+            continue
         page_out = out_dir / pid
         page_out.mkdir(parents=True, exist_ok=True)
         (page_out / "chromerag.md").write_text(br.result.markdown, encoding="utf-8")
@@ -260,6 +269,9 @@ def cmd_batch(args: argparse.Namespace) -> int:
             sys.stderr.write(f"WARNING [{pid}]: {warning}\n")
 
     (out_dir / "batch_summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
+    if failed:
+        sys.stderr.write(f"{failed} of {len(results)} pages failed; see batch_summary.json\n")
+        return 1
     return 0
 
 

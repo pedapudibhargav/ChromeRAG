@@ -5,3 +5,9 @@
 Content-root candidate token vocabulary in `src/chromerag/content_root.py` is adapted from
 Trafilatura's `BODY_XPATH` selectors in `trafilatura/xpaths.py`.
 https://github.com/adbar/trafilatura
+
+## WCXB (CC-BY-4.0)
+
+The evaluation scripts in `poc/` read the Web Content Extraction Benchmark (M. Foley, arXiv:2605.21097,
+https://arxiv.org/abs/2605.21097, licensed CC-BY-4.0). The model in `src/chromerag/assets/` was trained on pages and
+human-reviewed labels from its development folder. The benchmark data itself is not redistributed here.

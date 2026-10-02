@@ -282,3 +282,15 @@ Found while preparing the paper (a reviewer-style check of the split):
   1,791 pages, 314 changed, 0.876 -> 0.877, repeated 5-grams per page 12.6 -> 12.3; 13 pages lose more than 0.05 recall.
 * Heuristic-only ablation and speed table: see the earlier sections; speed bench 36 / 30 / 30 / 37 ms (ChromeRAG /
   Trafilatura / Readability / MarkItDown), p95 108 vs 147 ms, Apple M4 Pro 48 GB, Python 3.14.7.
+
+### Corrections (2026-10-02, after the audits)
+
+* The first dev cross-validation tables above (0.846 / 0.845 / 0.833, bootstrap +0.028) are from before the final model
+  features; the final cross-validated numbers are 0.852 / 0.851 / 0.837 (`wcxb_dev_cv.json`, bootstrap +0.029 / +0.028 / +0.016).
+* Documentation-corpus BM25 hit@5 (coverage) is 0.947 in the final rerun; 0.940 above is the first run.
+* Audit result: scored on the benchmark's own script, ChromeRAG's raw default output (with YAML front-matter) gives 0.869
+  on the 372 clean test pages and 0.904 with `enable_schema=False`; the paper reports the front-matter-stripped score and says so.
+* LLM judge on the landing pages by subsample: held-out 62% vs 36% (Trafilatura), 80% vs 20% (MarkItDown); fresh 78% vs 20%
+  and 94% vs 4%. WCXB sample without duplicates (72 pages): Readability 68% vs 28% (49 / 20 pairs).
+* Clean test definition: ids absent from the public dev/ folder (`poc/wcxb_leaked_ids.json`, 139 ids) leaves 372 pages
+  (an earlier URL-based filter gave 373).

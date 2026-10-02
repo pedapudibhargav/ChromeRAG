@@ -32,6 +32,7 @@ N_CLASS_BUCKETS = 192
 N_TEXT_BUCKETS = 64
 N_SECTION_BUCKETS = 96
 MAX_ANCESTORS = 8
+MAX_ANCESTOR_WALK = 120  # ancestors looked at per block; keeps pathological nesting linear
 
 _STOPWORDS = frozenset(
     "the of and to in a is that for it as with was on be by this are at from or an have not but they his her "
@@ -133,27 +134,28 @@ def find_blocks(body: Tag, stats: TreeStats) -> list[Block]:
     blocks: list[Block] = []
     has_block, has_li, has_table = _descendant_flags(body)
 
-    def walk(node: Tag) -> None:
-        for child in node.children:
-            if not isinstance(child, Tag):
-                continue
-            name = child.name
-            cid = id(child)
-            take = False
-            if name in _LEAF_TAGS:
-                take = not (name == "li" and cid in has_li) and not (
-                    name in ("p", "blockquote", "li") and cid in has_table
-                )
-            elif name in _CONTAINER_TAGS:
-                take = stats.text_len(child) >= 20 and cid not in has_block
-            if take:
-                text = child.get_text(" ", strip=True)
-                if text:
-                    blocks.append(Block(child, text))
-                continue
-            walk(child)
-
-    walk(body)
+    # Depth-first in document order with an explicit stack: nesting depth is not limited by recursion.
+    stack = [iter(body.children)]
+    while stack:
+        child = next(stack[-1], None)
+        if child is None:
+            stack.pop()
+            continue
+        if not isinstance(child, Tag):
+            continue
+        name = child.name
+        cid = id(child)
+        take = False
+        if name in _LEAF_TAGS:
+            take = not (name == "li" and cid in has_li) and not (name in ("p", "blockquote", "li") and cid in has_table)
+        elif name in _CONTAINER_TAGS:
+            take = stats.text_len(child) >= 20 and cid not in has_block
+        if take:
+            text = child.get_text(" ", strip=True)
+            if text:
+                blocks.append(Block(child, text))
+            continue
+        stack.append(iter(child.children))
     return blocks
 
 
@@ -310,7 +312,7 @@ def block_features(
         words = _name_words(tag)
         named = 0
         for parent in tag.parents:
-            if parent is top:
+            if parent is top or depth >= MAX_ANCESTOR_WALK:
                 break
             depth += 1
             pname = parent.name
