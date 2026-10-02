@@ -284,7 +284,7 @@ papers/softwarex/  # SoftwareX manuscript sources
 
 If you use ChromeRAG, please cite the software (see [`CITATION.cff`](CITATION.cff)):
 
-> B. C. Peddapudi, *ChromeRAG*, version 0.1.3, Zenodo, 2026. https://doi.org/10.5281/zenodo.22970289 (all versions)
+> B. C. Peddapudi, *ChromeRAG*, version 0.1.3, Zenodo, 2026. https://doi.org/10.5281/zenodo.23107381
 
 To cite whichever version is latest, use the all-versions DOI [10.5281/zenodo.22970289](https://doi.org/10.5281/zenodo.22970289).
 
