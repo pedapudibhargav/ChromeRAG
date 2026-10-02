@@ -193,3 +193,43 @@ Published numbers for the same split (WCXB paper, different Trafilatura configur
 
 Dev-to-test consistency: balanced 0.851 (CV on dev) vs 0.902 (test); Trafilatura 0.818 vs 0.860. The test split is
 easier for every system; the gap to Trafilatura is the same size (+0.033 dev, +0.043 test).
+
+## FINAL: landing held-out, fresh companies, judge, dense retrieval (run once, 2026-10-02, after the freeze)
+
+Anchor metric (recall of `<main>`/`<article>` 5-grams, retention of nav/footer anchors, F_bal). Reports in `FINAL/`.
+
+| | pages | coverage | balanced | precision | Trafilatura | MarkItDown | Readability |
+|---|---|---|---|---|---|---|---|
+| landing held-out companies | 177 | **0.759** | 0.717 | 0.628 | 0.680 | 0.723 | 0.512 |
+| fresh companies (51, fetched 2026-10-02) | 178 | **0.780** | 0.744 | 0.667 | 0.649 | 0.741 | 0.567 |
+
+The anchor metric rewards recall and cannot see chrome inside `<main>`; MarkItDown and the other converters keep
+22-26% of the nav/footer anchors while ChromeRAG keeps 0.0-0.1%.
+
+Blind pairwise LLM judge (`gpt-5.6-luna`, 100 pages: 50 held-out + 50 fresh; ChromeRAG coverage output vs
+baseline, front matter removed, 20% of pairs repeated with positions swapped, 83% same verdict):
+
+| vs | ChromeRAG wins | baseline wins | ties | net win rate [95% CI] | content (1-5) ours / theirs | chrome-free (1-5) ours / theirs |
+|---|---|---|---|---|---|---|
+| Trafilatura | 70% | 28% | 2% | +0.42 [+0.24, +0.59] | 4.40 / 3.48 | 3.96 / 4.65 |
+| MarkItDown | 87% | 12% | 1% | +0.75 [+0.61, +0.87] | 4.25 / 2.30 | 4.58 / 1.18 |
+
+The judge prefers ChromeRAG overall because it keeps much more content; Trafilatura leaves less chrome (4.65 vs 3.96).
+Cost $0.203; total OpenAI spend $1.383 of the $2.10 budget.
+
+Retrieval on the fresh companies (178 pages, 668 known-item queries, chunks of about 200 words):
+
+| | BM25 hit@5 | chrome in top-5 | dense (`text-embedding-3-small`) hit@5 |
+|---|---|---|---|
+| ChromeRAG coverage | 0.916 | 0.001 | 0.708 |
+| ChromeRAG balanced | 0.889 | 0.001 | 0.723 |
+| Trafilatura | 0.832 | 0.011 | 0.698 |
+| MarkItDown | 0.949 | 0.023 | 0.701 |
+| Readability | 0.760 | 0.008 | 0.645 |
+
+Paired bootstrap, coverage − Trafilatura, BM25 hit@5 +0.084 [+0.045, +0.123], chrome −0.010 [−0.014, −0.006];
+dense hit@5 +0.010 [−0.024, +0.047] (tie), chrome −0.007 [−0.011, −0.004]. MarkItDown retrieves slightly better with BM25
+(+0.033) because it keeps everything, with 23 times more chrome in the retrieved context.
+
+Documentation corpus (data/raw, not held out), BM25, 242 pages: coverage hit@5 0.940, Trafilatura 0.921, MarkItDown
+0.964, Readability 0.776; chrome in context 0.002 / 0.006 / 0.025 / 0.006.

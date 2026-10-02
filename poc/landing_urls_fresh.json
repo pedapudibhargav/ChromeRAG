@@ -1,0 +1,1044 @@
+{
+  "description": "Landing-page benchmark URLs chosen by poc/landing_corpus.py from each company's homepage links (homepage, first pricing page, first product/solutions pages).",
+  "companies": {
+    "Vultr": {
+      "sector": "cloud_infrastructure",
+      "pages": [],
+      "note": "homepage not fetched"
+    },
+    "Scaleway": {
+      "sector": "cloud_infrastructure",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.scaleway.com/en/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.scaleway.com/en/pricing/"
+        }
+      ]
+    },
+    "Fly.io": {
+      "sector": "cloud_infrastructure",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://fly.io/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://fly.io/pricing/"
+        }
+      ]
+    },
+    "Cloudinary": {
+      "sector": "cloud_infrastructure",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://cloudinary.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://cloudinary.com/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://cloudinary.com/products/video"
+        },
+        {
+          "role": "product",
+          "url": "https://cloudinary.com/products/image"
+        },
+        {
+          "role": "product",
+          "url": "https://cloudinary.com/products/digital_asset_management"
+        }
+      ]
+    },
+    "Supabase": {
+      "sector": "cloud_infrastructure",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://supabase.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://supabase.com/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://supabase.com/features"
+        },
+        {
+          "role": "product",
+          "url": "https://supabase.com/solutions/ai-builders"
+        },
+        {
+          "role": "product",
+          "url": "https://supabase.com/solutions/no-code"
+        }
+      ]
+    },
+    "LaunchDarkly": {
+      "sector": "developer_tools",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://launchdarkly.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://launchdarkly.com/pricing/"
+        },
+        {
+          "role": "product",
+          "url": "https://launchdarkly.com/platform/code-control/"
+        },
+        {
+          "role": "product",
+          "url": "https://launchdarkly.com/platform/agent-control/"
+        },
+        {
+          "role": "product",
+          "url": "https://launchdarkly.com/how-it-works/platform/"
+        }
+      ]
+    },
+    "Dynatrace": {
+      "sector": "developer_tools",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.dynatrace.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.dynatrace.com/pricing/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.dynatrace.com/platform/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.dynatrace.com/solutions/ai-observability/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.dynatrace.com/platform/application-observability/"
+        }
+      ]
+    },
+    "Splunk": {
+      "sector": "developer_tools",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.splunk.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.splunk.com/en_us/products/pricing.html"
+        },
+        {
+          "role": "product",
+          "url": "https://www.splunk.com/en_us/products/platform.html"
+        },
+        {
+          "role": "product",
+          "url": "https://www.splunk.com/en_us/solutions/splunk-artificial-intelligence.html"
+        },
+        {
+          "role": "product",
+          "url": "https://www.splunk.com/en_us/products/federated-search.html"
+        }
+      ]
+    },
+    "Sumo Logic": {
+      "sector": "developer_tools",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.sumologic.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.sumologic.com/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://www.sumologic.com/solutions/dojo-ai"
+        },
+        {
+          "role": "product",
+          "url": "https://www.sumologic.com/platform"
+        },
+        {
+          "role": "product",
+          "url": "https://www.sumologic.com/solutions/ai-ml-powered"
+        }
+      ]
+    },
+    "Figma": {
+      "sector": "developer_tools",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.figma.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.figma.com/pricing/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.figma.com/solutions/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.figma.com/solutions/ai-website-generator/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.figma.com/solutions/ai-design-generator/"
+        }
+      ]
+    },
+    "Cockroach Labs": {
+      "sector": "data_ai",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.cockroachlabs.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.cockroachlabs.com/pricing/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.cockroachlabs.com/product/continuum/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.cockroachlabs.com/product/platform/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.cockroachlabs.com/product/aegis/"
+        }
+      ]
+    },
+    "Redis": {
+      "sector": "data_ai",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://redis.io/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://redis.io/pricing/"
+        },
+        {
+          "role": "product",
+          "url": "https://redis.io/solutions/flex/"
+        },
+        {
+          "role": "product",
+          "url": "https://redis.io/solutions/caching/"
+        },
+        {
+          "role": "product",
+          "url": "https://redis.io/solutions/messaging/"
+        }
+      ]
+    },
+    "Couchbase": {
+      "sector": "data_ai",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.couchbase.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.couchbase.com/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://www.couchbase.com/products/ai-services/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.couchbase.com/products/capella/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.couchbase.com/products/vector-search/"
+        }
+      ]
+    },
+    "Algolia": {
+      "sector": "data_ai",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.algolia.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.algolia.com/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://www.algolia.com/products"
+        },
+        {
+          "role": "product",
+          "url": "https://www.algolia.com/products/ai-search"
+        },
+        {
+          "role": "product",
+          "url": "https://www.algolia.com/products/ai-recommendations"
+        }
+      ]
+    },
+    "Cloudera": {
+      "sector": "data_ai",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.cloudera.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.cloudera.com/products/pricing.html"
+        },
+        {
+          "role": "product",
+          "url": "https://www.cloudera.com/products/anywhere-cloud.html"
+        },
+        {
+          "role": "product",
+          "url": "https://www.cloudera.com/products/cloudera-data-platform.html"
+        },
+        {
+          "role": "product",
+          "url": "https://www.cloudera.com/products/enterprise-ai.html"
+        }
+      ]
+    },
+    "Qlik": {
+      "sector": "data_ai",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.qlik.com/us"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.qlik.com/us/pricing/data-integration"
+        },
+        {
+          "role": "product",
+          "url": "https://www.qlik.com/us/products/technology/amazon-web-services"
+        },
+        {
+          "role": "product",
+          "url": "https://www.qlik.com/us/products/technology/qlik-microsoft-azure-migration"
+        },
+        {
+          "role": "product",
+          "url": "https://www.qlik.com/us/products/technology/sap"
+        }
+      ]
+    },
+    "Tableau": {
+      "sector": "data_ai",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.tableau.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.tableau.com/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://www.tableau.com/products/tableau"
+        },
+        {
+          "role": "product",
+          "url": "https://www.tableau.com/products/tableau-next"
+        },
+        {
+          "role": "product",
+          "url": "https://www.tableau.com/products/tableau-semantics"
+        }
+      ]
+    },
+    "Zscaler": {
+      "sector": "security",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.zscaler.com/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.zscaler.com/industries"
+        }
+      ]
+    },
+    "Check Point": {
+      "sector": "security",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.checkpoint.com/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.checkpoint.com/products/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.checkpoint.com/solutions/agentic-exposure-validation/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.checkpoint.com/solutions/ai-factory-ai-datacenter-security/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.checkpoint.com/solutions/ai-discovery-and-visibility/"
+        }
+      ]
+    },
+    "Sophos": {
+      "sector": "security",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.sophos.com/en-us"
+        },
+        {
+          "role": "product",
+          "url": "https://www.sophos.com/en-us/products/contact-request"
+        },
+        {
+          "role": "product",
+          "url": "https://www.sophos.com/en-us/products/incident-response-services/emergency-response"
+        },
+        {
+          "role": "product",
+          "url": "https://www.sophos.com/en-us/products/sophos-fusion"
+        },
+        {
+          "role": "product",
+          "url": "https://www.sophos.com/en-us/solutions/ai-cybersecurity"
+        }
+      ]
+    },
+    "Bitwarden": {
+      "sector": "security",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://bitwarden.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://bitwarden.com/pricing/business/"
+        },
+        {
+          "role": "product",
+          "url": "https://bitwarden.com/products/business/"
+        },
+        {
+          "role": "product",
+          "url": "https://bitwarden.com/products/enterprise/"
+        },
+        {
+          "role": "product",
+          "url": "https://bitwarden.com/products/secrets-manager/"
+        }
+      ]
+    },
+    "Cisco": {
+      "sector": "security",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.cisco.com/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.cisco.com/site/us/en/solutions/artificial-intelligence/frontier-model-defense.html"
+        },
+        {
+          "role": "product",
+          "url": "https://www.cisco.com/site/us/en/solutions/cisco-validated/index.html"
+        },
+        {
+          "role": "product",
+          "url": "https://www.cisco.com/site/us/en/solutions/artificial-intelligence/agentic-ops/cisco-cloud-control/index.html"
+        },
+        {
+          "role": "product",
+          "url": "https://www.cisco.com/site/us/en/solutions/artificial-intelligence/agentic-ops/ai-canvas/index.html"
+        }
+      ]
+    },
+    "ServiceNow": {
+      "sector": "business_saas",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.servicenow.com/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.servicenow.com/products/ai-agents.html"
+        },
+        {
+          "role": "product",
+          "url": "https://www.servicenow.com/products/itsm.html"
+        },
+        {
+          "role": "product",
+          "url": "https://www.servicenow.com/products/ai-control-tower.html"
+        },
+        {
+          "role": "product",
+          "url": "https://www.servicenow.com/products/it-operations-management.html"
+        }
+      ]
+    },
+    "Workday": {
+      "sector": "business_saas",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.workday.com/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.workday.com/en-us/solutions/role/enterprise-hr/overview.html"
+        },
+        {
+          "role": "product",
+          "url": "https://www.workday.com/en-us/products/human-capital-management/overview.html"
+        },
+        {
+          "role": "product",
+          "url": "https://www.workday.com/en-us/products/human-capital-management/human-resource-management.html"
+        },
+        {
+          "role": "product",
+          "url": "https://www.workday.com/en-us/products/conversational-ai/candidate-experience.html"
+        }
+      ]
+    },
+    "Smartsheet": {
+      "sector": "business_saas",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.smartsheet.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.smartsheet.com/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://www.smartsheet.com/platform"
+        },
+        {
+          "role": "product",
+          "url": "https://www.smartsheet.com/platform/features/ai"
+        },
+        {
+          "role": "product",
+          "url": "https://www.smartsheet.com/platform/features"
+        }
+      ]
+    },
+    "ClickUp": {
+      "sector": "business_saas",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://clickup.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://clickup.com/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://clickup.com/features/tasks"
+        },
+        {
+          "role": "product",
+          "url": "https://clickup.com/features/project-time-tracking"
+        },
+        {
+          "role": "product",
+          "url": "https://clickup.com/features/chat"
+        }
+      ]
+    },
+    "Zuora": {
+      "sector": "business_saas",
+      "pages": [],
+      "note": "homepage not fetched"
+    },
+    "SAP": {
+      "sector": "business_saas",
+      "pages": [],
+      "note": "homepage not fetched"
+    },
+    "Oracle": {
+      "sector": "business_saas",
+      "pages": [],
+      "note": "homepage not fetched"
+    },
+    "Klarna": {
+      "sector": "fintech",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.klarna.com/us/?grs=%2F&grr=empty"
+        }
+      ]
+    },
+    "Marqeta": {
+      "sector": "fintech",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.marqeta.com/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.marqeta.com/platform/overview"
+        },
+        {
+          "role": "product",
+          "url": "https://www.marqeta.com/platform/card-issuing"
+        },
+        {
+          "role": "product",
+          "url": "https://www.marqeta.com/platform/credit"
+        },
+        {
+          "role": "product",
+          "url": "https://www.marqeta.com/platform/accounts-money-movement"
+        }
+      ]
+    },
+    "Xero": {
+      "sector": "fintech",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.xero.com/us/"
+        }
+      ]
+    },
+    "Bill": {
+      "sector": "fintech",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.bill.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.bill.com/product/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://www.bill.com/product/accounts-payable"
+        },
+        {
+          "role": "product",
+          "url": "https://www.bill.com/product/accounts-receivable"
+        },
+        {
+          "role": "product",
+          "url": "https://www.bill.com/product/cash-flow-forecasting"
+        }
+      ]
+    },
+    "Gusto": {
+      "sector": "fintech",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://gusto.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://gusto.com/product/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://gusto.com/product/payroll"
+        },
+        {
+          "role": "product",
+          "url": "https://gusto.com/product/time-tools"
+        },
+        {
+          "role": "product",
+          "url": "https://gusto.com/product/solutions/size/solo"
+        }
+      ]
+    },
+    "Rippling": {
+      "sector": "fintech",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.rippling.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.rippling.com/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://www.rippling.com/products/hr"
+        },
+        {
+          "role": "product",
+          "url": "https://www.rippling.com/products/it"
+        },
+        {
+          "role": "product",
+          "url": "https://www.rippling.com/products/finance"
+        }
+      ]
+    },
+    "Deel": {
+      "sector": "fintech",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.deel.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://www.deel.com/pricing/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.deel.com/solutions/payroll/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.deel.com/solutions/hr/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.deel.com/solutions/it/"
+        }
+      ]
+    },
+    "Red Hat": {
+      "sector": "communication",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.redhat.com/en"
+        },
+        {
+          "role": "product",
+          "url": "https://www.redhat.com/en/products/ai/enterprise"
+        },
+        {
+          "role": "product",
+          "url": "https://www.redhat.com/en/products/ai/inference"
+        },
+        {
+          "role": "product",
+          "url": "https://www.redhat.com/en/products/ai/enterprise-linux-ai"
+        },
+        {
+          "role": "product",
+          "url": "https://www.redhat.com/en/products/ai/openshift-ai"
+        }
+      ]
+    },
+    "SUSE": {
+      "sector": "communication",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.suse.com/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.suse.com/solutions/linux/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.suse.com/products/server/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.suse.com/products/sles-for-sap/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.suse.com/products/multi-linux-support/"
+        }
+      ]
+    },
+    "Canonical": {
+      "sector": "communication",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://canonical.com/"
+        },
+        {
+          "role": "product",
+          "url": "https://canonical.com/solutions"
+        },
+        {
+          "role": "product",
+          "url": "https://canonical.com/solutions/ai"
+        },
+        {
+          "role": "product",
+          "url": "https://canonical.com/solutions/ubuntu-os"
+        },
+        {
+          "role": "product",
+          "url": "https://canonical.com/solutions/infrastructure"
+        }
+      ]
+    },
+    "Adobe": {
+      "sector": "commerce_marketing",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.adobe.com/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.adobe.com/products/catalog.html"
+        }
+      ]
+    },
+    "Autodesk": {
+      "sector": "commerce_marketing",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.autodesk.com/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.autodesk.com/products"
+        }
+      ]
+    },
+    "Intuit": {
+      "sector": "commerce_marketing",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.intuit.com/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.intuit.com/products/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.intuit.com/solutions/education/"
+        }
+      ]
+    },
+    "Toast": {
+      "sector": "commerce_marketing",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://pos.toasttab.com/"
+        },
+        {
+          "role": "pricing",
+          "url": "https://pos.toasttab.com/pricing"
+        },
+        {
+          "role": "product",
+          "url": "https://pos.toasttab.com/products/catering-and-events"
+        },
+        {
+          "role": "product",
+          "url": "https://pos.toasttab.com/products/point-of-sale"
+        },
+        {
+          "role": "product",
+          "url": "https://pos.toasttab.com/products/toast-iq"
+        }
+      ]
+    },
+    "Rockwell Automation": {
+      "sector": "industrial",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.rockwellautomation.com/"
+        }
+      ]
+    },
+    "Emerson": {
+      "sector": "industrial",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.emerson.com/en/corporate"
+        },
+        {
+          "role": "product",
+          "url": "https://www.emerson.com/en/final-control/catalog/solutions/blue-hydrogen"
+        },
+        {
+          "role": "product",
+          "url": "https://www.emerson.com/en/final-control/catalog/solutions/common-applications"
+        },
+        {
+          "role": "product",
+          "url": "https://www.emerson.com/en/final-control/catalog/solutions/fugitive-emissions"
+        },
+        {
+          "role": "product",
+          "url": "https://www.emerson.com/en/final-control/catalog/solutions/common-applications/lng-valves"
+        }
+      ]
+    },
+    "Johnson Controls": {
+      "sector": "industrial",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.johnsoncontrols.com/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.johnsoncontrols.com/industries/data-centers/solutions"
+        },
+        {
+          "role": "product",
+          "url": "https://www.johnsoncontrols.com/industries/data-centers/solutions/thermal-management"
+        },
+        {
+          "role": "product",
+          "url": "https://www.johnsoncontrols.com/industries/data-centers/solutions/building-controls"
+        },
+        {
+          "role": "product",
+          "url": "https://www.johnsoncontrols.com/industries/data-centers/solutions/fire-protection"
+        }
+      ]
+    },
+    "GE Aerospace": {
+      "sector": "industrial",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.geaerospace.com/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.geaerospace.com/commercial/services"
+        },
+        {
+          "role": "product",
+          "url": "https://www.geaerospace.com/commercial/services/true-choice"
+        },
+        {
+          "role": "product",
+          "url": "https://www.geaerospace.com/commercial/services/TRUEngine"
+        },
+        {
+          "role": "product",
+          "url": "https://www.geaerospace.com/commercial/services/on-wing-support"
+        }
+      ]
+    },
+    "Roche": {
+      "sector": "healthcare_finance_consumer",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.roche.com/"
+        },
+        {
+          "role": "product",
+          "url": "https://www.roche.com/solutions"
+        },
+        {
+          "role": "product",
+          "url": "https://www.roche.com/solutions/pipeline"
+        },
+        {
+          "role": "product",
+          "url": "https://www.roche.com/solutions/focus-areas"
+        },
+        {
+          "role": "product",
+          "url": "https://www.roche.com/solutions/focus-areas/cardiometabolic"
+        }
+      ]
+    },
+    "Johnson & Johnson": {
+      "sector": "healthcare_finance_consumer",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.jnj.com/"
+        }
+      ]
+    },
+    "Procter & Gamble": {
+      "sector": "healthcare_finance_consumer",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://us.pg.com/"
+        }
+      ]
+    },
+    "Deloitte": {
+      "sector": "healthcare_finance_consumer",
+      "pages": [
+        {
+          "role": "homepage",
+          "url": "https://www.deloitte.com/us/en.html"
+        },
+        {
+          "role": "product",
+          "url": "https://www.deloitte.com/us/en/what-we-do/capabilities/blockchain-digital-assets.html"
+        },
+        {
+          "role": "product",
+          "url": "https://www.deloitte.com/us/en/services/consulting/articles/ai-factory-industry-trends.html"
+        }
+      ]
+    }
+  }
+}
