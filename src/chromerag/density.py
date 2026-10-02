@@ -7,6 +7,7 @@ from dataclasses import dataclass, field
 
 from bs4 import BeautifulSoup, NavigableString, Tag
 
+from chromerag.domutil import all_tags, tags_named
 from chromerag.models import BlockScore
 from chromerag.treestats import TreeStats
 
@@ -311,7 +312,7 @@ def strip_non_content_tags(soup: BeautifulSoup) -> BeautifulSoup:
     JSON-LD lives in <script type=\"application/ld+json\">. Once fuse_front_matter
     has copied that data into a dict, these tags are safe to drop.
     """
-    for tag in soup.find_all(list(NOISE_TAGS)):
+    for tag in tags_named(soup, NOISE_TAGS):
         if tag.attrs is None:  # inside a subtree removed earlier in this loop
             continue
         if tag.name in _WRAPPER_TAGS and _wraps_page_content(tag):
@@ -349,7 +350,7 @@ def candidate_blocks(
                 root = main
 
     blocks: list[Tag] = []
-    for tag in root.find_all(True):
+    for tag in all_tags(root):
         if not isinstance(tag, Tag):
             continue
         name = tag.name
@@ -435,7 +436,7 @@ def prune_noise_subtrees(
     body = soup.body or soup
     stats = stats or TreeStats(body)
     page_text_len = stats.text_len(body)
-    for tag in list(body.find_all(True)):
+    for tag in all_tags(body):
         if not isinstance(tag, Tag) or getattr(tag, "attrs", None) is None:
             continue
         if looks_like_noise(

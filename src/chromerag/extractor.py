@@ -78,6 +78,8 @@ def _noise_index_for(threshold: float) -> NoiseAnchorIndex:
 
 # Pages with fewer blocks than this are kept whole by the learned classifier.
 LBC_MIN_BLOCKS = 4
+# Below this expected F1 the page gets a warning (on WCXB dev such pages score 0.57 on average, the rest 0.88).
+LOW_CONFIDENCE_F1 = 0.70
 
 
 class StopExtraction(Exception):
@@ -362,6 +364,12 @@ class ChromeRAG:
             warnings.append(
                 "Extraction produced very little Markdown despite non-thin input HTML. "
                 "Inspect diagnostics or try --priority coverage."
+            )
+        expected_f1 = result.diagnostics.get("lbc", {}).get("expected_f1")
+        if expected_f1 is not None and expected_f1 < LOW_CONFIDENCE_F1:
+            warnings.append(
+                f"Low extraction confidence (expected F1 {expected_f1:.2f}): the model is unsure which "
+                "blocks are content on this page. Check the output or try another priority."
             )
         result.warnings = warnings
         return result

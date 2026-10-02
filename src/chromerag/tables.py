@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from bs4 import BeautifulSoup, Tag
 
+from chromerag.domutil import tags_named
+
 
 def _cell_text(cell: Tag) -> str:
     return " ".join(cell.get_text(" ", strip=True).split())
@@ -91,7 +93,7 @@ def linearize_table(table: Tag, index: int = 1) -> str:
 def unwrap_layout_tables(soup: BeautifulSoup) -> int:
     """Turn layout tables into plain divs so their content is scored like any other block."""
     count = 0
-    for table in list(soup.find_all("table")):
+    for table in tags_named(soup, ("table",)):
         if table.attrs is not None and is_layout_table(table):
             _unwrap_layout_table(table)
             count += 1
@@ -101,7 +103,7 @@ def unwrap_layout_tables(soup: BeautifulSoup) -> int:
 def replace_tables_with_linearized(soup: BeautifulSoup) -> int:
     """Replace each <table> with a <pre> of linearized KV text. Returns count."""
     count = 0
-    for i, table in enumerate(list(soup.find_all("table")), start=1):
+    for i, table in enumerate(tags_named(soup, ("table",)), start=1):
         if table.attrs is None:
             continue
         if is_layout_table(table):

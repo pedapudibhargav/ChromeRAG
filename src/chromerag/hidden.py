@@ -6,6 +6,8 @@ import re
 
 from bs4 import BeautifulSoup, Tag
 
+from chromerag.domutil import all_tags, tags_named
+
 _PROTECTED = frozenset({"html", "body", "main", "article"})
 _DISPLAY_NONE = re.compile(r"display\s*:\s*none", re.I)
 _VISIBILITY_HIDDEN = re.compile(r"visibility\s*:\s*hidden", re.I)
@@ -59,7 +61,7 @@ def _is_hidden(tag: Tag) -> bool:
 def remove_hidden_nodes(soup: BeautifulSoup) -> int:
     """Drop non-rendered subtrees. Returns count removed."""
     removed = 0
-    for tag in list(soup.find_all(True)):
+    for tag in all_tags(soup):
         if not isinstance(tag, Tag) or tag.name in _PROTECTED:
             continue
         if _is_hidden(tag):
@@ -71,7 +73,7 @@ def remove_hidden_nodes(soup: BeautifulSoup) -> int:
 def remove_skip_links(soup: BeautifulSoup) -> int:
     """Drop skip-navigation anchors and empty wrappers."""
     removed = 0
-    for anchor in list(soup.find_all("a")):
+    for anchor in tags_named(soup, ("a",)):
         # An earlier iteration may have removed this anchor's wrapper; decomposed tags have no attrs.
         if not isinstance(anchor, Tag) or anchor.attrs is None:
             continue

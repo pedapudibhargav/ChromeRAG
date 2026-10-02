@@ -7,6 +7,7 @@ import re
 from bs4 import BeautifulSoup, Tag
 
 from chromerag.config import PageType
+from chromerag.domutil import all_tags
 
 _BODY_CLASS_RE = re.compile(
     r"(^|[\s\"'])"
@@ -41,28 +42,19 @@ def _attr_blob(tag: Tag) -> str:
 
 
 def _iter_candidates(body: Tag) -> list[tuple[Tag, str]]:
-    found: list[tuple[Tag, str]] = []
-    for tag in body.find_all("main"):
-        if isinstance(tag, Tag):
-            found.append((tag, "main"))
-    for tag in body.find_all(attrs={"role": "main"}):
-        if isinstance(tag, Tag):
-            found.append((tag, "role=main"))
-    for tag in body.find_all("article"):
-        if isinstance(tag, Tag):
-            found.append((tag, "article"))
-    for tag in body.find_all(True):
-        if not isinstance(tag, Tag):
-            continue
+    """Candidates in ladder order: main, role=main, article, article body, content class, exact content."""
+    tags = all_tags(body)
+    found: list[tuple[Tag, str]] = [(t, "main") for t in tags if t.name == "main"]
+    found += [(t, "role=main") for t in tags if t.get("role") == "main"]
+    found += [(t, "article") for t in tags if t.name == "article"]
+    for tag in tags:
         if tag.get("itemprop") == "articleBody":
             found.append((tag, "itemprop=articleBody"))
             continue
         blob = _attr_blob(tag)
         if blob and _BODY_CLASS_RE.search(blob):
             found.append((tag, "content-class"))
-    for tag in body.find_all(True):
-        if not isinstance(tag, Tag):
-            continue
+    for tag in tags:
         ident = (tag.get("id") or "").strip()
         classes = tag.get("class") or []
         if _CONTENT_EXACT.match(ident) or any(_CONTENT_EXACT.match(str(c)) for c in classes):

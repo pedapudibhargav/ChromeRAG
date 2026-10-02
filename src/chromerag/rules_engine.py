@@ -27,6 +27,7 @@ from typing import Any
 import yaml
 from bs4 import BeautifulSoup, Tag
 
+from chromerag.domutil import all_tags
 from chromerag.treestats import TreeStats
 
 _RULES_PKG = Path(__file__).resolve().parent / "rules"
@@ -241,10 +242,10 @@ class RuleIndex:
         stats = stats or TreeStats(soup)
         root_ids: set[int] | None = None
         if content_root is not None:
-            root_ids = {id(t) for t in content_root.find_all(True)}
+            root_ids = {id(t) for t in all_tags(content_root)}
             root_ids.add(id(content_root))
 
-        for tag in soup.find_all(True):
+        for tag in all_tags(soup):
             if tag.attrs is None:  # inside a subtree removed earlier in this walk
                 continue
             ident = str(tag.get("id") or "")

@@ -17,6 +17,7 @@ from dataclasses import dataclass
 import numpy as np
 from bs4 import Tag
 
+from chromerag.domutil import all_tags, tags_named
 from chromerag.treestats import TreeStats
 
 _HEADINGS = ("h1", "h2", "h3", "h4", "h5", "h6")
@@ -239,7 +240,7 @@ def block_features(
 
     root_ids: set[int] | None = None
     if root is not None and root is not body:
-        root_ids = {id(root)} | {id(t) for t in root.find_all(True)}
+        root_ids = {id(root)} | {id(t) for t in all_tags(root)}
 
     top = body.parent
     box_blocks: dict[int, int] = {}
@@ -425,7 +426,7 @@ def wrap_loose_text(body: Tag) -> int:
     for node in body.parents:
         soup = node
     made = 0
-    hosts = [body, *[t for t in body.find_all(_LOOSE_HOSTS) if isinstance(t, Tag)]]
+    hosts = [body, *tags_named(body, _LOOSE_HOSTS)]
     for host in hosts:
         if host.attrs is None:
             continue
