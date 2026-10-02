@@ -19,12 +19,13 @@ iframe,.srcview{width:100%;height:42vh;border:0;background:#fff}.srcview{backgro
 .rate{padding:8px 10px;border-top:1px solid var(--line);display:grid;gap:6px}.rate label{display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:12px;color:var(--mut)}
 .stars{display:flex;gap:3px}.stars button{padding:1px 7px;font-size:12px}.stars button.on{background:var(--acc);border-color:var(--acc);color:#fff}
 .foot{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.foot textarea{flex:1;min-width:200px;height:34px;font:inherit;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:4px 8px}
+.livebtn{background:var(--acc);color:#fff;text-decoration:none;border-radius:6px;padding:5px 12px;font-weight:600}.urlline{padding:6px 10px;font-size:13px;border-bottom:1px solid var(--line);word-break:break-all}.urlline a{color:var(--acc)}
 .hint{color:var(--mut);font-size:12px}.saved{color:var(--ok);font-size:12px}
 </style></head><body>
-<header><h1>Blind extraction rating</h1><span class="pill" id="prog">–</span><span class="pill" id="type">–</span><span class="sp"></span>
+<header><h1>Blind extraction rating</h1><span class="pill" id="prog">–</span><span class="pill" id="type">–</span><a id="live" class="livebtn" target="_blank" rel="noopener">Open live page ↗</a><span class="sp"></span>
 <button id="prev">← Prev</button><button id="next">Next →</button><button class="pri" id="export">Finish &amp; export</button></header>
 <main>
-<section class="src"><div class="bar"><b>Original page</b><button data-v="render" class="pri">Rendered</button><button data-v="source">HTML source</button><a id="orig" target="_blank" rel="noopener"></a></div>
+<section class="src"><div class="urlline">URL: <a id="orig2" target="_blank" rel="noopener"></a> <span class="hint">(extractors ran on a saved copy of this page; the live page may differ slightly)</span></div><div class="bar"><b>Original page</b><button data-v="render" class="pri">Rendered</button><button data-v="source">HTML source</button><a id="orig" target="_blank" rel="noopener"></a></div>
 <iframe id="frame" sandbox="" title="original page"></iframe><div class="srcview" id="srcview" hidden></div></section>
 <section class="cols" id="cols"></section>
 <section class="foot"><span class="hint">Keys: <b>1–4</b> pick best (A–D), <b>0</b> = none/tie, <b>←/→</b> navigate. Score each output: content kept (5 = everything useful) and chrome left (5 = no menus/footers/cookie text).</span>
@@ -37,7 +38,7 @@ async function init(){items=await api("/api/items");const first=items.findIndex(
 function emptyState(){return{best:null,scores:{A:{},B:{},C:{},D:{}},note:"",skipped:false}}
 async function load(){const id=items[cur].id;const d=await api("/api/item/"+id);state=d.rating?{best:d.rating.best,scores:Object.assign(emptyState().scores,d.rating.scores),note:d.rating.note||"",skipped:d.rating.skipped}:emptyState();
  $("#prog").textContent=`Page ${cur+1} of ${items.length} · rated ${items.filter(i=>i.done).length}`;$("#type").textContent=d.type;
- $("#orig").textContent=d.url;$("#orig").href=d.url;$("#frame").src="/html/"+id;$("#srcview").textContent="";$("#srcview").dataset.id=id;$("#note").value=state.note;setView(view);
+ $("#orig").textContent=d.url;$("#orig").href=d.url;$("#orig2").textContent=d.url;$("#orig2").href=d.url;$("#live").href=d.url;$("#frame").src="/html/"+id;$("#srcview").textContent="";$("#srcview").dataset.id=id;$("#note").value=state.note;setView(view);
  const c=$("#cols");c.innerHTML="";for(const L of "ABCD"){const o=d.outputs[L];const col=document.createElement("div");col.className="col";col.id="col"+L;
   col.innerHTML=`<h2><span>Output ${L}</span><span class="hint">${o.words} words</span></h2><div class="txt"></div><div class="rate"><label>Content kept <span class="stars" data-k="content" data-l="${L}"></span></label><label>Chrome left out <span class="stars" data-k="chrome" data-l="${L}"></span></label><button class="pickb" data-l="${L}">Best: ${L}</button></div>`;
   col.querySelector(".txt").textContent=o.text;c.appendChild(col)}

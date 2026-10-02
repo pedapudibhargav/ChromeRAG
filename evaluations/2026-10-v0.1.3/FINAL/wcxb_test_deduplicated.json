@@ -1,0 +1,119 @@
+{
+ "n": 372,
+ "removed": 139,
+ "definition": "test ids not present in the public dev/ folder (poc/wcxb_leaked_ids.json)",
+ "types": {
+  "all": {
+   "n": 372,
+   "chromerag_coverage": 0.9029172093871832,
+   "chromerag": 0.9030973991263131,
+   "chromerag_precision": 0.8854937688724054,
+   "trafilatura": 0.8671658420267317,
+   "readability": 0.7779426652433646,
+   "markitdown": 0.5677341765238277,
+   "diff_vs_trafilatura": [
+    0.03593155709958145,
+    0.017652936049594777,
+    0.05442894810938166
+   ]
+  },
+  "article": {
+   "n": 178,
+   "chromerag_coverage": 0.9426546184647016,
+   "chromerag": 0.9508391557287669,
+   "chromerag_precision": 0.952939793463809,
+   "trafilatura": 0.9533522898479454,
+   "readability": 0.9435608582914122,
+   "markitdown": 0.6632336157897777,
+   "diff_vs_trafilatura": [
+    -0.0025131341191785552,
+    -0.012394380910160808,
+    0.0061637588188778875
+   ]
+  },
+  "documentation": {
+   "n": 40,
+   "chromerag_coverage": 0.952190777153174,
+   "chromerag": 0.9535292589168884,
+   "chromerag_precision": 0.9439359540556854,
+   "trafilatura": 0.9310006084856086,
+   "readability": 0.8657079688471845,
+   "markitdown": 0.614343547159539,
+   "diff_vs_trafilatura": [
+    0.022528650431279752,
+    -0.01680911126547297,
+    0.061336391263455366
+   ]
+  },
+  "service": {
+   "n": 56,
+   "chromerag_coverage": 0.838814170167243,
+   "chromerag": 0.8364888954630799,
+   "chromerag_precision": 0.8251371856954497,
+   "trafilatura": 0.8129623351465562,
+   "readability": 0.5947192139599599,
+   "markitdown": 0.47750320156820497,
+   "diff_vs_trafilatura": [
+    0.023526560316523615,
+    -0.017384403454533667,
+    0.0660717174760944
+   ]
+  },
+  "forum": {
+   "n": 50,
+   "chromerag_coverage": 0.8858113112963987,
+   "chromerag": 0.884007369936743,
+   "chromerag_precision": 0.8557620344794592,
+   "trafilatura": 0.7308875245390942,
+   "readability": 0.6278213439127314,
+   "markitdown": 0.45218690195306477,
+   "diff_vs_trafilatura": [
+    0.1531198453976488,
+    0.09049293996543167,
+    0.21887754714303448
+   ]
+  },
+  "product": {
+   "n": 2,
+   "chromerag_coverage": 1.0,
+   "chromerag": 1.0,
+   "chromerag_precision": 0.9973451327433628,
+   "trafilatura": 0.4913494809688581,
+   "readability": 0.4733333333333334,
+   "markitdown": 0.1568194367752623,
+   "diff_vs_trafilatura": [
+    0.5086505190311419,
+    0.01730103806228378,
+    1.0
+   ]
+  },
+  "collection": {
+   "n": 9,
+   "chromerag_coverage": 0.7836708431142843,
+   "chromerag": 0.7879768223409372,
+   "chromerag_precision": 0.6639642244565811,
+   "trafilatura": 0.7169727587379641,
+   "readability": 0.5232684782801618,
+   "markitdown": 0.5116875294064009,
+   "diff_vs_trafilatura": [
+    0.07100406360297318,
+    0.02511385497605085,
+    0.11687244823610438
+   ]
+  },
+  "listing": {
+   "n": 37,
+   "chromerag_coverage": 0.8023743793776825,
+   "chromerag": 0.7682744420203904,
+   "chromerag_precision": 0.6772110327901435,
+   "trafilatura": 0.7065740679957935,
+   "readability": 0.44489442681595714,
+   "markitdown": 0.3864712742221916,
+   "diff_vs_trafilatura": [
+    0.06170037402459696,
+    -0.04465423167514765,
+    0.18016572441984793
+   ]
+  }
+ }
+}

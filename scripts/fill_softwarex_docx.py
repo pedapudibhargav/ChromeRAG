@@ -36,7 +36,7 @@ OUT = ROOT / "papers" / "softwarex" / "ChromeRAG_SoftwareX_OSP.docx"
 
 _NEXT_ID = 0xF000
 
-TITLE = "ChromeRAG: A Learned Boilerplate Filter and Site-Template Learner for Web RAG Ingestion"
+TITLE = "ChromeRAG: A Learned Boilerplate Filter for Web RAG Ingestion"
 AUTHORS = (
     "Bhargava Chary Peddapudi (Independent Researcher; "
     "ORCID: https://orcid.org/0009-0002-8523-8415); "
@@ -426,7 +426,7 @@ def _write_document(path: Path, tree: etree._ElementTree) -> None:
     path.write_text(text, encoding="utf-8")
 
 
-PAPER_TITLE = "ChromeRAG: A Learned Boilerplate Filter and Site-Template Learner for Web RAG Ingestion"
+PAPER_TITLE = "ChromeRAG: A Learned Boilerplate Filter for Web RAG Ingestion"
 PAPER_AUTHOR = "Bhargava Chary Peddapudi"
 
 

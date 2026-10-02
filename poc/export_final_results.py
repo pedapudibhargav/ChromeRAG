@@ -11,6 +11,8 @@ from pathlib import Path
 
 import numpy as np
 
+from poc.wcxb import load_split
+
 ROOT = Path(__file__).resolve().parents[1]
 EV = ROOT / "evaluations" / "2026-10-v0.1.3"
 OUT = ROOT / "docs" / "data" / "final_results.json"
@@ -43,6 +45,9 @@ def main() -> None:
     dev = json.loads((EV / "wcxb_dev_cv.json").read_text())
     frontier = json.loads((EV / "wcxb_dev_frontier.json").read_text())
     judge = json.loads((EV / "FINAL" / "llm_judge_final.json").read_text())
+    from poc.wcxb import LEAKED_IDS
+
+    test_dedup = [r for r in test if r["id"] not in LEAKED_IDS]  # 139 test pages are also in the dev/ folder
     judge2 = json.loads((EV / "FINAL" / "llm_judge_wcxb_test.json").read_text())
     fresh_ret = json.loads((EV / "FINAL" / "fresh_retrieval_eval_report.json").read_text())
     thr = sorted({t for r in frontier for t in r["thr"]}, key=float)
@@ -52,6 +57,12 @@ def main() -> None:
             "means": _means(test),
             "bootstrap_vs_trafilatura": {t: _boot(test, t, "trafilatura") for t in TOOLS[:3]},
             "bootstrap_by_type_balanced": {s: _boot(test, "chromerag", "trafilatura", s) for s in TYPES},
+        },
+        "wcxb_test_deduplicated": {
+            "note": f"{len(test) - len(test_dedup)} of {len(test)} test pages are also in the public dev/ folder (identical HTML) and are removed here",
+            "means": _means(test_dedup),
+            "bootstrap_vs_trafilatura": {t: _boot(test_dedup, t, "trafilatura") for t in TOOLS[:3]},
+            "bootstrap_by_type_balanced": {s: _boot(test_dedup, "chromerag", "trafilatura", s) for s in TYPES if sum(r["type"] == s for r in test_dedup) > 2},
         },
         "wcxb_dev_cv": {
             "means": _means(dev),
@@ -65,6 +76,7 @@ def main() -> None:
             for name in ("heldout", "fresh")
         },
         "judge": {k: v for k, v in judge["summary"].items() if k.startswith("all:") or k == "position_consistency"},
+        "judge_wcxb_test_deduplicated": json.loads((EV / "FINAL" / "llm_judge_wcxb_test_deduplicated.json").read_text()),
         "judge_wcxb_test": {"pages": judge2["n_pages"], **{k: v for k, v in judge2["summary"].items() if k.startswith("all:") or k == "position_consistency"}, "by_type": judge2["by_type"]},
         "retrieval_fresh": {
             "bm25": {t: v["scores"]["all"] for t, v in fresh_ret["tools"].items()},

@@ -47,7 +47,9 @@ def test_learn_creates_missing_output_dir_and_batch_uses_model(tmp_path: Path) -
     assert all(row["stce_applied"] for row in summary)
     assert [p.name for p in (out / "pricing").iterdir()] == ["chromerag.md"]
     pricing = (out / "pricing" / "chromerag.md").read_text(encoding="utf-8")
-    assert "Widget Summit" not in pricing  # repeated in-content strip removed by STCE
+    assert "Widget Summit" not in pricing  # repeated in-content paragraph removed by STCE
+    single = ChromeRAG().extract((EXAMPLES / "pricing.html").read_text(encoding="utf-8")).markdown
+    assert "Widget Summit" in single  # the learned filter keeps it: it reads like content
     assert "Monthly price (USD): 49" in pricing  # table linearized, content kept
 
 

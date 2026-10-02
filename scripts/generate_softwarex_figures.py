@@ -145,15 +145,14 @@ def fig_architecture() -> str:
 
 
 # --------------------------------------------------------------------------- Fig. 2
-TYPE_LABELS = {"all": "All pages (511)", "article": "Article (257)", "documentation": "Documentation (42)",
-               "service": "Service (59)", "forum": "Forum (51)", "product": "Product (28)",
-               "collection": "Collection (34)", "listing": "Listing (40)"}
+TYPE_ORDER = ("all", "article", "documentation", "service", "forum", "product", "collection", "listing")
 DOT_TOOLS = ("chromerag", "trafilatura", "readability", "markitdown")
 
 
 def fig_wcxb_test(final: dict) -> str:
-    means = final["wcxb_test"]["means"]
-    rows = list(TYPE_LABELS)
+    means = final["wcxb_test_deduplicated"]["means"]
+    rows = list(TYPE_ORDER)
+    names = {k: ("All pages" if k == "all" else k.capitalize()) + f" ({means[k]['n']})" for k in rows}
     row_h, top, label_w = 17, 30, 104
     h = top + len(rows) * row_h + 26
     x0, w = label_w + 8, WIDTH - label_w - 24
@@ -163,7 +162,7 @@ def fig_wcxb_test(final: dict) -> str:
     for t in (0.2, 0.4, 0.6, 0.8, 1.0):
         body.append(f'<line x1="{sx(t):.1f}" y1="{top - 6}" x2="{sx(t):.1f}" y2="{top + len(rows) * row_h}" stroke="{GRID}" stroke-width="0.6"/>')
         body.append(_text(sx(t), top + len(rows) * row_h + 10, f"{t:.1f}", size=7, anchor="middle", fill=INK_2))
-    body.append(_text(x0 + w / 2, top + len(rows) * row_h + 21, "Word-level F1 against human-reviewed main content (WCXB held-out test)", size=7.5, anchor="middle", fill=INK_2))
+    body.append(_text(x0 + w / 2, top + len(rows) * row_h + 21, "Word-level F1, WCXB test pages not in the development split (small n for product and collection)", size=7.5, anchor="middle", fill=INK_2))
     lx = x0
     for key in DOT_TOOLS:
         label, color = METHODS[key]
@@ -174,7 +173,7 @@ def fig_wcxb_test(final: dict) -> str:
         y = top + i * row_h + row_h / 2
         if row == "all":
             body.append(f'<rect x="4" y="{y - row_h / 2 + 1:.1f}" width="{WIDTH - 8}" height="{row_h - 2}" fill="#f6f5f2"/>')
-        body.append(_text(label_w, y + 2.5, TYPE_LABELS[row], size=7.5, anchor="end", weight="bold" if row == "all" else "normal"))
+        body.append(_text(label_w, y + 2.5, names[row], size=7.5, anchor="end", weight="bold" if row == "all" else "normal"))
         for key in DOT_TOOLS:
             v = means[row][key]["f1"]
             body.append(f'<circle cx="{sx(v):.1f}" cy="{y:.1f}" r="3.4" fill="{METHODS[key][1]}" stroke="{SURFACE}" stroke-width="0.9"/>')

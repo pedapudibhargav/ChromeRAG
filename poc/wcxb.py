@@ -77,7 +77,13 @@ def _page_type(data: dict) -> str:
     return "collection" if pt == "category" else pt
 
 
-def load_split(split: str, root: Path | str = DEFAULT_ROOT) -> list[Page]:
+# 139 files sit in both the dev/ and test/ folders of the public WCXB release (metadata.json assigns them to test;
+# identical HTML, same ids). poc/wcxb_leaked_ids.json lists them. The frozen 0.1.3 model was trained on dev/ including
+# these files, so test results are reported with them removed (drop_leaked=True).
+LEAKED_IDS = frozenset(json.loads((ROOT / "poc" / "wcxb_leaked_ids.json").read_text())) if (ROOT / "poc" / "wcxb_leaked_ids.json").exists() else frozenset()
+
+
+def load_split(split: str, root: Path | str = DEFAULT_ROOT, *, drop_leaked: bool = False) -> list[Page]:
     """Load WCXB pages for *split* (dev, test, …). Skips files without a main_content key (2 in dev)."""
     root = Path(root)
     gt_dir = root / split / "ground-truth"
@@ -98,6 +104,8 @@ def load_split(split: str, root: Path | str = DEFAULT_ROOT) -> list[Page]:
         main_content = gt.get("main_content", "") or ""
 
         page_id = gt_path.stem
+        if drop_leaked and page_id in LEAKED_IDS:
+            continue
         html_path = html_dir / f"{page_id}.html.gz"
         if not html_path.exists():
             continue

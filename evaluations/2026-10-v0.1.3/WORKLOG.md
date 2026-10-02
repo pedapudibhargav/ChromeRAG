@@ -251,3 +251,34 @@ zero); it favours ChromeRAG on forum, product, collection and service pages and 
 documentation and listings. This agrees with the F1 ties on articles and documentation, and it is the more
 conservative of the two judge results (the landing-page sample, 70% vs 28%, is marketing pages only).
 The coverage of all evaluation sets is in `EVALUATION_COVERAGE.md` and `evaluation_domains.csv`.
+
+---
+
+## Audit after the final run (2026-10-02): duplicates between WCXB dev and test
+
+Found while preparing the paper (a reviewer-style check of the split):
+
+* 138 of the 511 WCXB test pages have the same URL as a development page, and 139 have byte-identical HTML (SHA-1).
+  They include 26 of the 28 product pages and 25 of the 34 collection pages. 166 test pages (155 of 473 domains) are
+  on a domain that also occurs in development. The final model was trained on all of development, so it saw these
+  pages. The overall test score hardly changes (0.902 on all 511, 0.903 on the 373 pages not in development), but the
+  per-type claims for products and collections on the test split were contaminated.
+* Primary test result is therefore the 373 deduplicated pages (`FINAL/wcxb_test_deduplicated.json`): balanced 0.903,
+  Trafilatura 0.867, Readability 0.778, MarkItDown 0.567; difference to Trafilatura +0.036 [+0.018, +0.054]. By type:
+  forum +0.153 [+0.091, +0.219] (clear); collection +0.071 [+0.025, +0.117] (n = 9); article −0.003, documentation +0.023,
+  service +0.025, listing +0.062 (intervals contain zero); product n = 2. Domains absent from development (345 pages):
+  0.903 vs 0.874, +0.029 [+0.012, +0.046]. Domain-clustered bootstrap on all 511: +0.043 [+0.027, +0.060].
+* The earlier statement "large gains on forums, product and collection pages" is withdrawn for product pages. Cross-
+  validated development gains: product +0.026, collection +0.087, forum +0.108.
+* Judge sample on WCXB test: 33 of the 105 pages were duplicates (14 product, 11 collection, 5 article, 2 listing, 1
+  documentation). On the other 72 pages: ChromeRAG 53% vs Trafilatura 44% (interval includes zero), 79% vs MarkItDown 21%
+  (`FINAL/llm_judge_wcxb_test_deduplicated.json`).
+* Landing held-out and fresh companies: 11 of 42 and 9 of 47 registrable domains occur in WCXB development. On pages from
+  other domains coverage − Trafilatura is +0.052 [+0.017, +0.086] (130 held-out pages) and +0.136 [+0.105, +0.167]
+  (147 fresh pages) (`FINAL/landing_unseen_domain.json`); the full-set differences are +0.079 and +0.131.
+* Documentation corpus rerun (2026-10-02, `data/raw` re-fetched): anchor F_bal 0.833 (coverage), 0.798 (balanced),
+  Trafilatura 0.739, MarkItDown 0.696, Readability 0.531; BM25 hit@5 0.947 / 0.935 / 0.921 / 0.964 / 0.775
+  (supersedes the 0.940 in the first run above). STCE rerun: 11 groups, 49 pages, F_bal 0.868 -> 0.870; crawl 125 groups,
+  1,791 pages, 314 changed, 0.876 -> 0.877, repeated 5-grams per page 12.6 -> 12.3; 13 pages lose more than 0.05 recall.
+* Heuristic-only ablation and speed table: see the earlier sections; speed bench 36 / 30 / 30 / 37 ms (ChromeRAG /
+  Trafilatura / Readability / MarkItDown), p95 108 vs 147 ms, Apple M4 Pro 48 GB, Python 3.14.7.

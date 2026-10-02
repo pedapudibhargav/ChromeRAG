@@ -1,0 +1,58 @@
+{
+ "heldout": {
+  "all": {
+   "n": 177,
+   "chromerag_coverage": 0.7588423728813558,
+   "chromerag": 0.7166355932203391,
+   "trafilatura": 0.6802536723163841,
+   "markitdown": 0.7232700564971751,
+   "readability": 0.5121096045197739,
+   "coverage_minus_trafilatura": [
+    0.07858870056497175,
+    0.04970387005649718,
+    0.10775781073446328
+   ]
+  },
+  "domain_not_in_wcxb_dev": {
+   "n": 130,
+   "chromerag_coverage": 0.755806923076923,
+   "chromerag": 0.7233669230769231,
+   "trafilatura": 0.7037061538461538,
+   "markitdown": 0.7185038461538461,
+   "readability": 0.5187176923076924,
+   "coverage_minus_trafilatura": [
+    0.05210076923076924,
+    0.017168346153846152,
+    0.08587992307692305
+   ]
+  }
+ },
+ "fresh": {
+  "all": {
+   "n": 178,
+   "chromerag_coverage": 0.7797870786516854,
+   "chromerag": 0.7436483146067415,
+   "trafilatura": 0.6485797752808989,
+   "markitdown": 0.7405780898876405,
+   "readability": 0.5672241573033708,
+   "coverage_minus_trafilatura": [
+    0.1312073033707865,
+    0.10224015449438201,
+    0.15930807584269663
+   ]
+  },
+  "domain_not_in_wcxb_dev": {
+   "n": 147,
+   "chromerag_coverage": 0.7878020408163267,
+   "chromerag": 0.7544319727891157,
+   "trafilatura": 0.6522537414965988,
+   "markitdown": 0.7408952380952382,
+   "readability": 0.5803,
+   "coverage_minus_trafilatura": [
+    0.1355482993197279,
+    0.10494238095238094,
+    0.16738175170068026
+   ]
+  }
+ }
+}

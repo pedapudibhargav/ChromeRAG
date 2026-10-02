@@ -4,16 +4,16 @@
 
 ```
 ChromeRAG converts HTML to RAG-ready Markdown with a 150 KB learned block filter.
-On 511 held-out WCXB pages: F1 0.902 vs 0.860 Trafilatura, 0.540 MarkItDown.
-Large gains on forums, product and category pages; ties Trafilatura on articles.
-Blind LLM judge: beats MarkItDown on 83-87% of pages; ties Trafilatura on WCXB.
+On 373 held-out WCXB test pages: F1 0.903 vs 0.867 Trafilatura, 0.567 MarkItDown.
+Clear gain on forum pages; ties Trafilatura on articles and documentation.
+LLM judge prefers it to MarkItDown on 79-87% of pages; ties Trafilatura on WCXB.
 CPU-only NumPy inference, about 36 ms per page; learns site templates; MIT, on PyPI.
 ```
 
 | # | Chars | Highlight |
 |---|------:|-----------|
 | 1 | 81 | ChromeRAG converts HTML to RAG-ready Markdown with a 150 KB learned block filter. |
-| 2 | 76 | On 511 held-out WCXB pages: F1 0.902 vs 0.860 Trafilatura, 0.540 MarkItDown. |
-| 3 | 80 | Large gains on forums, product and category pages; ties Trafilatura on articles. |
-| 4 | 79 | Blind LLM judge: beats MarkItDown on 83-87% of pages; ties Trafilatura on WCXB. |
+| 2 | 81 | On 373 held-out WCXB test pages: F1 0.903 vs 0.867 Trafilatura, 0.567 MarkItDown. |
+| 3 | 74 | Clear gain on forum pages; ties Trafilatura on articles and documentation. |
+| 4 | 80 | LLM judge prefers it to MarkItDown on 79-87% of pages; ties Trafilatura on WCXB. |
 | 5 | 84 | CPU-only NumPy inference, about 36 ms per page; learns site templates; MIT, on PyPI. |

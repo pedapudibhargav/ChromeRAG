@@ -64,7 +64,7 @@ chromerag batch examples/site -o out/batch --chrome-model out/site_chrome.json
 
 `learn` reports one site group (`docs.example.com/docs`) with its chrome signatures; `batch`
 writes `out/batch/<page>/chromerag.md` plus `out/batch/batch_summary.json`. The repeated
-"Widget Summit" strip survives single-page extraction but is removed once the site model is applied.
+"Widget Summit" paragraph survives single-page extraction but is removed once the site model is applied.
 
 Priorities: `precision` (strip more) · `balanced` (default) · `coverage` (keep more).
 
@@ -149,14 +149,13 @@ score reaches the threshold of the chosen priority: `coverage` 0.30, `balanced` 
 
 * The model is a 150 KB array file (`src/chromerag/assets/lbc_stage1.npz`) evaluated with NumPy
   only; scikit-learn is needed to retrain, not to run.
-* It was trained on human-reviewed pages (WCXB development split, 1,495 pages). On the 511 held-out
-  WCXB test pages (run once, after the code was frozen) word-level F1 is **0.902** (`balanced`;
-  `coverage` 0.900, `precision` 0.887) against Trafilatura 0.860, Readability 0.763 and MarkItDown 0.540:
-  +0.043 [+0.027, +0.059] over Trafilatura, with large gains on forum, product and collection pages and a tie
-  on articles and documentation. Cross-validated development numbers are 0.852 / 0.851 / 0.837 against 0.818.
-  A blind LLM judge preferred ChromeRAG to MarkItDown on 87% (landing pages) and 83% (WCXB test sample) of pages,
-  and to Trafilatura on 70% of landing pages but only 56% vs 42% on the WCXB sample (not significant; Trafilatura
-  wins on articles and documentation). Everything is in `evaluations/2026-10-v0.1.3/` and on the site.
+* It was trained on human-reviewed pages (WCXB development split, 1,495 pages). Cross-validated development F1
+  (5 folds grouped by site) is 0.852 / 0.851 / 0.837 against Trafilatura 0.818. On the WCXB test split, after removing
+  the 138 pages that duplicate development pages (373 pages left), word-level F1 is **0.903** (`balanced`) against
+  Trafilatura 0.867, Readability 0.778 and MarkItDown 0.567: +0.036 [+0.018, +0.054], a clear gain on forum pages
+  (+0.153) and ties on articles, documentation, services and listings (all 511 pages: 0.902 vs 0.860).
+  A language-model judge preferred ChromeRAG to MarkItDown on 79-87% of pages and to Trafilatura on 70% of landing
+  pages, but tied with Trafilatura on a mixed WCXB sample. Everything is in `evaluations/2026-10-v0.1.3/`.
 * Link targets are no longer written by default (`PipelineConfig(include_links=True)` or
   `--links` brings back `[text](url)`), repeated blocks are written once, and the Markdown now
   follows document order.
@@ -190,31 +189,36 @@ thin page, and 18 pages with too little landmarked text. 208 of the 242 pages ar
 
 | Method | Recall ↑ | Noise ↓ | Fbal ↑ (242 scoreable) | Fbal ↑ (all 268) |
 |--------|--------:|--------:|-------:|-------:|
-| chromerag_coverage | 0.688 | 0.007 | **0.788** | **0.747** |
-| chromerag (balanced) | 0.665 | 0.006 | 0.771 | 0.731 |
+| chromerag_coverage | 0.739 | 0.010 | **0.833** | **0.790** |
+| chromerag (balanced) | 0.688 | 0.004 | 0.798 | 0.755 |
 | trafilatura | 0.640 | 0.012 | 0.739 | 0.696 |
 | markitdown | 0.691 | 0.250 | 0.696 | 0.661 |
-| readability | 0.449 | 0.013 | 0.531 | 0.495 |
+| readability | 0.449 | 0.013 | 0.531 | 0.496 |
 
-Paired bootstrap (95% CI): coverage − Trafilatura Fbal **+0.049 [+0.021, +0.079]** (driven by
-recall; noise difference not significant); coverage − MarkItDown noise **−0.243 [−0.266, −0.220]**
-at equal recall. Trafilatura keeps less than 20% of the content on 25 pages, ChromeRAG on 13.
+This corpus was a **development** set for 0.1.3 (the learned filter was tuned and checked against it; it was
+re-fetched on 2026-10-02) and is not held out. Paired bootstrap (95% CI): coverage − Trafilatura Fbal
+**+0.094 [+0.066, +0.122]**; coverage − MarkItDown recall +0.048 [+0.027, +0.070] and noise **−0.240
+[−0.266, −0.216]**. Trafilatura keeps less than 20% of the content on 25 pages, ChromeRAG on 2. The anchors
+come from `<main>`/`<article>`, which ChromeRAG's content-root selection also prefers, so treat this as a
+proxy; the human-reviewed WCXB benchmark below is the primary evidence.
 
 ### Retrieval
 
-Each tool's output is split into ~200-word chunks and indexed with BM25. 771 known-item queries
+Each tool's output is split into ~200-word chunks and indexed with BM25. 773 known-item queries
 (page titles, section headings and content passages from the input HTML, each with exactly one
 correct page) are run against each index.
 
 | Method | Hit@5 ↑ | Chrome in top-5 context ↓ | Chunks indexed |
 |--------|--------:|--------:|--------:|
-| chromerag_coverage | 0.949 | 0.1% | 2,553 |
-| trafilatura | 0.922 | 0.5% | 1,949 |
-| markitdown | 0.964 | 2.6% | 3,907 |
-| readability | 0.774 | 0.6% | 1,701 |
+| chromerag_coverage | 0.947 | 0.5% | 2,010 |
+| chromerag (balanced) | 0.935 | 0.1% | 1,712 |
+| trafilatura | 0.921 | 0.6% | 1,950 |
+| markitdown | 0.964 | 2.6% | 3,909 |
+| readability | 0.775 | 0.6% | 1,702 |
 
-ChromeRAG vs MarkItDown hit@5 is not significantly different (−0.014, 95% CI [−0.035, +0.006])
-with 35% fewer chunks; vs Trafilatura it is higher (+0.027 [+0.003, +0.053]).
+ChromeRAG (coverage) vs MarkItDown hit@5 is not significantly different (−0.017, 95% CI [−0.037, +0.003])
+with 49% fewer chunks; vs Trafilatura +0.026 [+0.001, +0.051] (marginal). On 178 fresh-company pages
+(`evaluations/2026-10-v0.1.3/FINAL/`) hit@5 is 0.916 vs 0.832 for Trafilatura, with 0.1% vs 1.1% chrome in the context.
 
 ### Site-template learning (STCE)
 
@@ -224,16 +228,16 @@ pages per documentation site (`poc/stce_crawl_urls.json`, fetched with `poc/craw
 
 | Page set | Sites | Scored pages | Recall without → with | Pages changed | Site-repeated text* |
 |----------|------:|------:|------:|------:|------:|
-| Benchmark sites | 11 | 47 | 0.714 → 0.714 | 6 of 49 | 1.4% → 1.4% |
-| Documentation crawl | 125 | 1,727 | 0.770 → 0.769 | 174 of 1,791 | 3.1% → 3.0% |
+| Benchmark sites | 11 | 47 | 0.776 → 0.778 | 8 of 49 | 0.5% → 0.5% |
+| Documentation crawl | 125 | 1,727 | 0.805 → 0.805 | 314 of 1,791 | 2.1% → 2.1% |
 
 \* Share of a page's Markdown body (front-matter excluded) made of 5-grams that recur on ≥ 80% of
 the same site's outputs. On the crawl, Trafilatura leaves 2.1% and MarkItDown 34.9%.
 
 Single-page extraction already removes most repeated chrome, so STCE is a guarded complement for
-template blocks without chrome markup (like the "Widget Summit" strip in the quick start). The 17
-crawl pages that lose more than 0.05 recall come from three sites that put feedback widgets or
-promotions inside `<main>`, which the anchor metric counts as content.
+template blocks that the learned filter keeps because they read like content (like the "Widget Summit"
+paragraph in the quick start). On the crawl, 13 pages from 7 sites lose more than 0.05 recall; we have not
+inspected them individually.
 
 ---
 

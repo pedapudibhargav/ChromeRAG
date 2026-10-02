@@ -1,0 +1,38 @@
+{
+ "duplicates_excluded": 33,
+ "pages": 72,
+ "summary": {
+  "all:trafilatura": {
+   "pairs": 72,
+   "chromerag_wins": 0.528,
+   "baseline_wins": 0.444,
+   "ties": 0.028,
+   "net_win_ci95": [
+    -0.139,
+    0.319
+   ],
+   "content_chromerag": 4.19,
+   "content_baseline": 3.89,
+   "chrome_chromerag": 3.88,
+   "chrome_baseline": 4.03
+  },
+  "all:markitdown": {
+   "pairs": 72,
+   "chromerag_wins": 0.792,
+   "baseline_wins": 0.208,
+   "ties": 0.0,
+   "net_win_ci95": [
+    0.389,
+    0.75
+   ],
+   "content_chromerag": 4.06,
+   "content_baseline": 3.47,
+   "chrome_chromerag": 4.43,
+   "chrome_baseline": 1.32
+  },
+  "position_consistency": {
+   "pairs": 49,
+   "same_verdict": 0.816
+  }
+ }
+}

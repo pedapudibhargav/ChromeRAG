@@ -32,8 +32,9 @@ IMAGES = [
     ),
     (
         "fig2_wcxb_test.png",
-        "Figure 2. Word-level F1 on the 511 held-out WCXB test pages, overall and by page type. Each dot is the mean "
-        "over the pages of one type; ChromeRAG is in balanced mode and its value is printed.",
+        "Figure 2. Word-level F1 on the 373 WCXB test pages whose URL is not in the development split, overall and by "
+        "page type (n in brackets; product has 2 pages and collection 9, so those rows are indicative only). Each dot is "
+        "the mean over the pages of one type; ChromeRAG is in balanced mode and its value is printed.",
     ),
     (
         "fig3_frontier.png",
