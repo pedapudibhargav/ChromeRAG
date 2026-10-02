@@ -3,10 +3,15 @@ name: chromerag
 services:
   extractor:
     container_name: chromerag
-    image: ${POC_BASE_IMAGE:-python:3.12-slim}
+    build:
+      context: .
+      dockerfile: ${CHROMERAG_DOCKERFILE:-Dockerfile.apt}
+    image: chromerag:local
     volumes:
       - ./src:/app/src
       - ./poc:/app/poc
+      - ./tests:/app/tests
+      - ./examples:/app/examples:ro
       - ./data:/app/data
       - ./scripts:/app/scripts:ro
       - ./apps:/app/apps
@@ -15,21 +20,19 @@ services:
     environment:
       - PYTHONPATH=/app/src:/app
       - PYTHONUNBUFFERED=1
-      - PYPI_INDEX_URL=${PYPI_INDEX_URL:-https://pypi.org/simple/}
-      - PIP_TRUSTED_HOST=${PIP_TRUSTED_HOST:-}
-      - SSL_EXTRA_CA=${SSL_EXTRA_CA:-}
     working_dir: /app
     ports:
       - "8765:8765"
     command:
       [
+        "python3",
+        "-m",
         "uvicorn",
         "apps.ui.main:app",
         "--host",
         "0.0.0.0",
         "--port",
         "8765",
-        "--reload",
       ]
     networks:
       - chromerag-net
