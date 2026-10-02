@@ -27,16 +27,23 @@ POSITIVE_SHARE = 0.5
 MAX_WEIGHT = 120
 
 
-def label_blocks(texts: list[str], reference: str) -> tuple[np.ndarray, np.ndarray]:
+def label_blocks(texts: list[str], reference: str, without: list[str] | None = None) -> tuple[np.ndarray, np.ndarray]:
     ref = tokenize(reference)
     joined = " " + " ".join(ref) + " "
     tri = {tuple(ref[i : i + 3]) for i in range(len(ref) - 2)}
+    banned = {" ".join(tokenize(x)) for x in (without or []) if x}
     y = np.zeros(len(texts), dtype=np.float32)
     w = np.zeros(len(texts), dtype=np.float32)
     for i, text in enumerate(texts):
         toks = tokenize(text)
         w[i] = min(MAX_WEIGHT, max(1, len(toks)))
         if not toks:
+            continue
+        joined_toks = " ".join(toks)
+        if joined_toks in banned or (
+            len(toks) <= 20 and any(len(b) >= 0.5 * len(joined_toks) and (" " + b + " ") in (" " + joined_toks + " ") for b in banned)
+        ):
+            w[i] = min(MAX_WEIGHT, w[i] * 2)  # the annotators listed (most of) this text as page chrome
             continue
         if len(toks) < 3:
             y[i] = 1.0 if (" " + " ".join(toks) + " ") in joined else 0.0
@@ -66,7 +73,7 @@ def _one(page):
         print("CRASH", page.id, exc)
     if "X" not in rows or len(rows["texts"]) == 0:
         return None
-    y, w = label_blocks(rows["texts"], page.main_content)
+    y, w = label_blocks(rows["texts"], page.main_content, page.without_snippets)
     site = site_of(page.url)
     return page.id, page.page_type, half(site), rows["X"], y, w, [len(t) for t in rows["texts"]], rows["box"], zlib.crc32(site.encode()) % 5
 

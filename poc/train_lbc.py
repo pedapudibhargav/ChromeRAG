@@ -67,6 +67,7 @@ def main() -> None:
     ap.add_argument("--depth", type=int, default=6)
     ap.add_argument("--lr", type=float, default=0.06)
     ap.add_argument("--fit-all", action="store_true", help="train on every page instead of the learn half")
+    ap.add_argument("--holdout-fold", type=int, default=None, help="train on the other 4 site folds, validate on this one")
     ap.add_argument("--stack", action="store_true", help="also train the context (second) stage")
     ap.add_argument("--out-dir", required=True)
     a = ap.parse_args()
@@ -76,6 +77,8 @@ def main() -> None:
     chars, box, page, fold, half = z["chars"], z["box"], z["page"], z["fold"], z["half"]
     train = np.ones(len(y), bool) if a.fit_all else half == 0
     valid = half == 1
+    if a.holdout_fold is not None:
+        train, valid = fold != a.holdout_fold, fold == a.holdout_fold
 
     def make():
         return HistGradientBoostingClassifier(

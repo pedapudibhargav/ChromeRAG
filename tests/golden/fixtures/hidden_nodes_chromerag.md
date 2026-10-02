@@ -2,8 +2,6 @@
 title: Hidden content test
 ---
 
-# Visible guide
-
 This paragraph is visible and should appear in the extracted Markdown output.
 
 ## Configuration

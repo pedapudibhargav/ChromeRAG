@@ -56,12 +56,16 @@ def _one(page):
     return page.id, page.url, page.page_type, ours, traf, page.main_content
 
 
-def run(split: str, out: str, half: str = "all") -> None:
+def run(split: str, out: str, half: str = "all", fold: int | None = None) -> None:
     from poc.learn_tokens import half as site_half
     from poc.learn_tokens import site_of
 
     pages = load_split(split)
-    if half != "all":
+    if fold is not None:
+        import zlib
+
+        pages = [p for p in pages if zlib.crc32(site_of(p.url).encode()) % 5 == fold]
+    elif half != "all":
         pages = [p for p in pages if site_half(site_of(p.url)) == half]
     with ProcessPoolExecutor() as pool:
         rows = list(pool.map(_one, pages, chunksize=8))
@@ -113,11 +117,12 @@ def main() -> None:
     ap.add_argument("--out", default="/tmp/cr/dev.pkl")
     ap.add_argument("--pkl", default="/tmp/cr/dev.pkl")
     ap.add_argument("--type", default=None)
+    ap.add_argument("--fold", type=int, default=None)
     ap.add_argument("--half", default="all", choices=["all", "learn", "valid"])
     ap.add_argument("--n", type=int, default=15)
     a = ap.parse_args()
     if a.cmd == "run":
-        run(a.split, a.out, a.half)
+        run(a.split, a.out, a.half, a.fold)
         return
     rows = pickle.load(open(a.pkl, "rb"))
     if a.cmd == "summary":

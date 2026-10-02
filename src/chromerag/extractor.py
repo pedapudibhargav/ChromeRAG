@@ -76,6 +76,10 @@ def _noise_index_for(threshold: float) -> NoiseAnchorIndex:
     return NoiseAnchorIndex(threshold=threshold)
 
 
+# Pages with fewer blocks than this are kept whole by the learned classifier.
+LBC_MIN_BLOCKS = 4
+
+
 class StopExtraction(Exception):
     """Raised by the training hook to end extraction right after cleaning."""
 
@@ -126,8 +130,8 @@ class ChromeRAG:
         """Remove blocks the learned classifier scores below ``cfg.lbc_threshold``."""
         stats = TreeStats(body)
         blocks = find_blocks(body, stats)
-        if not blocks:
-            return 0, 0
+        if len(blocks) < LBC_MIN_BLOCKS:
+            return len(blocks), len(blocks)  # too little page to judge: the model never saw pages like this
         root = content_root if isinstance(content_root, Tag) else None
         X, box = block_features(blocks, body, stats, root)
         chars = np.array([len(b.text) for b in blocks])

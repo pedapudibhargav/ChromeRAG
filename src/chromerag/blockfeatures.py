@@ -23,10 +23,13 @@ _HEADINGS = ("h1", "h2", "h3", "h4", "h5", "h6")
 _LEAF_TAGS = frozenset({"p", *_HEADINGS, "li", "pre", "blockquote", "figcaption", "dt", "dd", "table"})
 _CONTAINER_TAGS = frozenset({"div", "section", "article", "span"})
 _TAG_GROUPS = ("p", "h1", "h2", "h3", "h456", "li", "pre", "blockquote", "div", "figcaption", "table", "other")
-_ANCESTOR_FLAGS = ("main", "article", "header", "footer", "aside", "form", "ul", "ol", "blockquote", "section", "nav")
+_ANCESTOR_FLAGS = (
+    "main", "article", "header", "footer", "aside", "form", "ul", "ol", "blockquote", "section", "nav", "a", "label",
+)
 
 N_CLASS_BUCKETS = 192
 N_TEXT_BUCKETS = 64
+N_SECTION_BUCKETS = 96
 MAX_ANCESTORS = 8
 
 _STOPWORDS = frozenset(
@@ -47,12 +50,17 @@ _DATEISH = re.compile(
     r"aug(ust)?|sep(t(ember)?)?|oct(ober)?|nov(ember)?|dec(ember)?)\b",
     re.I,
 )
+_CTA_VERBS = frozenset(
+    "get schedule contact sign join learn shop book request start try see view download subscribe watch find "
+    "explore buy add read talk call apply register login log create build discover compare check order claim "
+    "reserve browse visit follow share tweet pin email print save".split()
+)
 _SPLIT_NAME = re.compile(r"[^a-z]+")
 
 _NUMERIC = (
     "log_chars", "log_words", "link_density", "n_links", "avg_word_len", "upper_frac", "digit_frac",
     "punct_frac", "ends_sentence", "n_sentences", "commas_per_word", "stopword_frac", "all_caps",
-    "starts_capital", "has_separator", "dateish", "name_like", "ends_colon", "emphasis_frac", "chrome_word_frac",
+    "starts_capital", "has_separator", "dateish", "name_like", "ends_colon", "emphasis_frac", "chrome_word_frac", "starts_cta_verb", "short_cta",
     "idx_frac", "chars_before_frac", "chars_after_frac", "log_n_blocks", "log_page_chars",
     "dist_prev_heading", "seen_h1", "before_first_h1", "in_root", "depth",
     *(f"in_{f}" for f in _ANCESTOR_FLAGS),
@@ -67,11 +75,15 @@ FEATURE_NAMES: tuple[str, ...] = (
     *_NUMERIC,
     *(f"cls_{i}" for i in range(N_CLASS_BUCKETS)),
     *(f"txt_{i}" for i in range(N_TEXT_BUCKETS)),
+    *(f"sec_{i}" for i in range(N_SECTION_BUCKETS)),
+    *(f"sec2_{i}" for i in range(N_SECTION_BUCKETS)),
 )
 N_FEATURES = len(FEATURE_NAMES)
 _IDX = {name: i for i, name in enumerate(FEATURE_NAMES)}
 _CLS0 = _IDX["cls_0"]
 _TXT0 = _IDX["txt_0"]
+_SEC0 = _IDX["sec_0"]
+_SEC20 = _IDX["sec2_0"]
 
 
 @dataclass
@@ -163,6 +175,8 @@ def _text_features(text: str) -> dict[str, float]:
         "name_like": 1.0 if len(words) <= 4 and capitalised == len(words) else 0.0,
         "ends_colon": 1.0 if text.rstrip().endswith(":") else 0.0,
         "chrome_word_frac": sum(1 for w in low if w in _CHROME_WORDS) / n_words,
+        "starts_cta_verb": 1.0 if low and low[0] in _CTA_VERBS else 0.0,
+        "short_cta": 1.0 if low and low[0] in _CTA_VERBS and len(words) <= 6 else 0.0,
     }
 
 
@@ -218,6 +232,8 @@ def block_features(
         key_count[k] = key_count.get(k, 0) + 1
     seen_keys: set[str] = set()
     median_chars = float(np.median(chars)) if chars else 1.0
+    sec_words: list[str] = []  # words of the nearest heading before the block
+    sec2_words: list[str] = []  # words of the nearest h1-h3 before the block
     first_h1 = next((i for i, b in enumerate(blocks) if b.tag.name == "h1"), -1)
     seen_h1 = 0.0
     last_heading = -1
@@ -277,6 +293,15 @@ def block_features(
             own = 1 if chars[i] >= 200 else 0
             row[_IDX["topic_overlap"]] = sum(1 for w in ws if long_df.get(w, 0) - own >= 1) / len(ws)
             row[_IDX["topic_overlap_strong"]] = sum(1 for w in ws if long_df.get(w, 0) - own >= 3) / len(ws)
+        for w in sec_words:
+            row[_SEC0 + _bucket(w, N_SECTION_BUCKETS)] = 1.0
+        for w in sec2_words:
+            row[_SEC20 + _bucket(w, N_SECTION_BUCKETS)] = 1.0
+        if tag.name in _HEADINGS:
+            heading_words = [w for w in _WORD.findall(block.text.lower()) if len(w) > 2][:6]
+            sec_words = heading_words
+            if tag.name in ("h1", "h2", "h3"):
+                sec2_words = heading_words
         row[_IDX["depth"]] = float(min(40, depth))
         for f in flags:
             row[_IDX["in_" + f]] = 1.0

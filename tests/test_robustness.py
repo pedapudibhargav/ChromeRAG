@@ -27,7 +27,7 @@ def test_per_call_config_uses_inferred_type_per_url() -> None:
 def test_hidden_nodes_removed_from_output() -> None:
     html = FIXTURES.joinpath("hidden_nodes.html").read_text(encoding="utf-8")
     md = ChromeRAG(enable_dvdf=False).extract(html).markdown.lower()
-    assert "visible guide" in md
+    assert "this paragraph is visible" in md
     assert "environment variable api_key" in md
     assert "sign up now for 50 percent off" not in md
     assert "modal overlay marketing" not in md

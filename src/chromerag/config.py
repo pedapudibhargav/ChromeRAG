@@ -79,7 +79,7 @@ class PipelineConfig:
     max_rejected_drop_chars: int = 400  # density/DVDF rejected nodes dropped only if shorter
 
     # Learned block classifier: drop blocks whose content probability is below this
-    lbc_threshold: float = 0.45
+    lbc_threshold: float = 0.50
     lbc_whole_page: bool = True  # classify blocks outside the detected content root too
 
     # DVDF
