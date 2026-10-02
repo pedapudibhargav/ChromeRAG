@@ -68,8 +68,8 @@ regression model; the numbers are not comparable, protocols differ.)
 | recall | 0.938 | 0.930 | 0.926 | 0.915 | 0.900 | 0.880 | 0.857 | 0.828 | 0.785 |
 | F1 | 0.847 | 0.851 | 0.852 | 0.854 | 0.851 | 0.846 | 0.837 | 0.825 | 0.793 |
 
-Trafilatura (best configuration) sits at P 0.855 / R 0.839 / F1 0.818: the ChromeRAG curve is above it from
-threshold 0.25 to 0.75. Trafilatura settings: defaults 0.814, tables+Markdown 0.818, favor_recall 0.789,
+Trafilatura (best configuration) sits at P 0.855 / R 0.839 / F1 0.818: ChromeRAG's F1 is higher at every threshold up to 0.8,
+and at thresholds 0.6-0.7 both its precision and its recall are higher. Trafilatura settings: defaults 0.814, tables+Markdown 0.818, favor_recall 0.789,
 favor_precision 0.751 (the paper baseline is the best of them).
 
 ## 6. Comparison with published systems (not re-run)
