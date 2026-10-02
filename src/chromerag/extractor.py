@@ -19,6 +19,7 @@ import re
 from functools import lru_cache
 from typing import Any
 
+import numpy as np
 from bs4 import BeautifulSoup, Tag
 
 from chromerag.config import (
@@ -41,11 +42,13 @@ from chromerag.dvdf import NoiseAnchorIndex
 from chromerag.hidden import remove_hidden_nodes, remove_skip_links
 from chromerag.input_quality import InputQualityReport, assess_input_html
 from chromerag.markdown_out import front_matter_yaml, soup_to_markdown
-from chromerag.models import ExtractResult
+from chromerag.models import BlockScore, ExtractResult
+from chromerag.blockfeatures import block_features, find_blocks
+from chromerag.lbc import TwoStageModel, default_two_stage
 from chromerag.rules_engine import DEFAULT_INDEX, RuleHit, RuleIndex
 from chromerag.schema_fusion import fuse_front_matter
 from chromerag.site_chrome import SiteChromeModel, apply_site_chrome, site_group_key
-from chromerag.tables import replace_tables_with_linearized
+from chromerag.tables import replace_tables_with_linearized, unwrap_layout_tables
 from chromerag.treestats import TreeStats
 
 
@@ -73,6 +76,10 @@ def _noise_index_for(threshold: float) -> NoiseAnchorIndex:
     return NoiseAnchorIndex(threshold=threshold)
 
 
+class StopExtraction(Exception):
+    """Raised by the training hook to end extraction right after cleaning."""
+
+
 class ChromeRAG:
     """Enterprise HTML → RAG-ready Markdown."""
 
@@ -83,6 +90,7 @@ class ChromeRAG:
         strictness: Strictness | str = Strictness.BALANCED,
         site_chrome: SiteChromeModel | None = None,
         rule_index: RuleIndex | None = None,
+        lbc_model: TwoStageModel | None = None,
         density: Any = None,
         dvdf_threshold: float | None = None,
         enable_dvdf: bool | None = None,
@@ -109,6 +117,28 @@ class ChromeRAG:
         self.config = cfg
         self.site_chrome = site_chrome
         self.rule_index = rule_index or DEFAULT_INDEX
+        self.lbc_model = lbc_model if lbc_model is not None else default_two_stage()
+        self._capture: Any = None
+
+    def _drop_by_classifier(
+        self, soup: BeautifulSoup, body: Tag, content_root: Any, cfg: PipelineConfig
+    ) -> tuple[int, int]:
+        """Remove blocks the learned classifier scores below ``cfg.lbc_threshold``."""
+        stats = TreeStats(body)
+        blocks = find_blocks(body, stats)
+        if not blocks:
+            return 0, 0
+        root = content_root if isinstance(content_root, Tag) else None
+        X, box = block_features(blocks, body, stats, root)
+        chars = np.array([len(b.text) for b in blocks])
+        proba = self.lbc_model.predict(X.astype("float64"), chars, box)
+        kept = 0
+        for block, p in zip(blocks, proba, strict=True):
+            if p < cfg.lbc_threshold:
+                block.tag.decompose()
+            else:
+                kept += 1
+        return len(blocks), kept
 
     def _noise_index(self, cfg: PipelineConfig) -> NoiseAnchorIndex | None:
         if not cfg.enable_dvdf:
@@ -136,6 +166,8 @@ class ChromeRAG:
         strip_non_content_tags(soup)
         remove_hidden_nodes(soup)
         remove_skip_links(soup)
+        if cfg.enable_tables:
+            unwrap_layout_tables(soup)
 
         body_words = _body_word_count(soup)
         if force_body_root:
@@ -180,37 +212,47 @@ class ChromeRAG:
             cache=elem_cache,
             stats=stats or TreeStats(body),
         )
-        stats = TreeStats(body, serialized=True)  # pruning removed nodes; measure what is left
+        if self._capture is not None:  # training hook: hand over the cleaned page and stop
+            self._capture(soup, content_root if isinstance(content_root, Tag) else None)
+            raise StopExtraction
+        use_lbc = cfg.enable_lbc and self.lbc_model is not None
+        scored: list[BlockScore] = []
+        lbc_in = lbc_kept = 0
+        if use_lbc:
+            lbc_in, lbc_kept = self._drop_by_classifier(soup, body, content_root, cfg)
+            if cfg.lbc_whole_page:
+                content_root = body
+        else:
+            stats = TreeStats(body, serialized=True)  # pruning removed nodes; measure what is left
+            density_cfg = cfg.density_config()
+            blocks = candidate_blocks(
+                soup,
+                density_cfg,
+                cache=elem_cache,
+                content_root=content_root if isinstance(content_root, Tag) else None,
+                stats=stats,
+            )
+            scored = score_blocks(blocks, density_cfg, cache=elem_cache, stats=stats)
+            noise_index = self._noise_index(cfg)
+            if noise_index is not None:
+                scored = noise_index.apply(scored)
 
-        density_cfg = cfg.density_config()
-        blocks = candidate_blocks(
-            soup,
-            density_cfg,
-            cache=elem_cache,
-            content_root=content_root if isinstance(content_root, Tag) else None,
-            stats=stats,
-        )
-        scored = score_blocks(blocks, density_cfg, cache=elem_cache, stats=stats)
-        noise_index = self._noise_index(cfg)
-        if noise_index is not None:
-            scored = noise_index.apply(scored)
-
-        rejected_texts = {b.text for b in scored if not b.keep}
-        drop_tags = ["p", "li"]
-        if cfg.strictness == Strictness.AGGRESSIVE:
-            drop_tags = ["p", "li", "div", "section"]
-        for tag in [t for t in soup.find_all(drop_tags) if isinstance(t, Tag)]:
-            # Long blocks are never dropped here; checking that first avoids reading their text.
-            if stats.text_len(tag) >= cfg.max_rejected_drop_chars:
-                continue
-            text = tag.get_text(" ", strip=True)
-            if text not in rejected_texts:
-                continue
-            if tag.name in {"h1", "h2", "h3", "h4", "h5", "h6", "table", "tr", "pre"}:
-                continue
-            if tag.find(["h1", "h2", "h3", "h4", "h5", "h6"]):
-                continue
-            tag.decompose()
+            rejected_texts = {b.text for b in scored if not b.keep}
+            drop_tags = ["p", "li"]
+            if cfg.strictness == Strictness.AGGRESSIVE:
+                drop_tags = ["p", "li", "div", "section"]
+            for tag in [t for t in soup.find_all(drop_tags) if isinstance(t, Tag)]:
+                # Long blocks are never dropped here; checking that first avoids reading their text.
+                if stats.text_len(tag) >= cfg.max_rejected_drop_chars:
+                    continue
+                text = tag.get_text(" ", strip=True)
+                if text not in rejected_texts:
+                    continue
+                if tag.name in {"h1", "h2", "h3", "h4", "h5", "h6", "table", "tr", "pre"}:
+                    continue
+                if tag.find(["h1", "h2", "h3", "h4", "h5", "h6"]):
+                    continue
+                tag.decompose()
 
         n_tables = replace_tables_with_linearized(soup) if cfg.enable_tables else 0
         root_tag = content_root if isinstance(content_root, Tag) else None
@@ -218,9 +260,10 @@ class ChromeRAG:
             soup,
             inject_heading_paths=cfg.inject_heading_paths,
             content_root=root_tag,
+            links=cfg.include_links,
         )
         md = front_matter_yaml(front) + body_md if front else body_md
-        kept = sum(1 for b in scored if b.keep)
+        kept = lbc_kept if use_lbc else sum(1 for b in scored if b.keep)
         token_est = estimate_tokens(md)
 
         diagnostics = {
@@ -252,7 +295,7 @@ class ChromeRAG:
             url=url,
             markdown=md,
             front_matter={k: v for k, v in front.items() if not str(k).startswith("_")},
-            n_blocks_in=len(scored),
+            n_blocks_in=lbc_in if use_lbc else len(scored),
             n_blocks_kept=kept,
             n_tables=n_tables,
             tokens_estimate=token_est,

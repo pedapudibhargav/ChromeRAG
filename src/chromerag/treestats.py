@@ -7,6 +7,7 @@ The values are exact, not estimates:
   text_len(tag)   == len(tag.get_text(" ", strip=True))
   text_nosep(tag) == len(tag.get_text("", strip=True))
   link_len(tag)   == len(" ".join(a.get_text(" ", strip=True) for a in tag.find_all("a")))
+  long_paragraphs(tag) == count of descendant <p> with >= 100 chars of text
   has_main(tag)   == tag.find("main") or tag.find(attrs={"role": "main"}) is found
   html_len(tag)   == len(str(tag))   (only when built with ``serialized=True``)
 
@@ -20,6 +21,7 @@ from __future__ import annotations
 from bs4 import BeautifulSoup, CData, NavigableString, Tag
 
 _TEXT_TYPES = (NavigableString, CData)
+LONG_PARAGRAPH_CHARS = 100  # a <p> this long is running prose, not a label or a teaser
 _RAW_TEXT_PARENTS = frozenset({"script", "style"})  # bs4 does not escape text inside these
 
 
@@ -66,7 +68,8 @@ class TreeStats:
     def __init__(self, root: Tag | BeautifulSoup, *, serialized: bool = False) -> None:
         # row = [sum of stripped string lengths, string count, descendant <a> count,
         #        sum of text_len over descendant <a>, has descendant main,
-        #        length of the children as str() writes them, inexact flag]
+        #        length of the children as str() writes them, inexact flag,
+        #        number of descendant <p> with at least LONG_PARAGRAPH_CHARS of text]
         rows: dict[int, list] = {}
         get = rows.get
         for node in reversed(list(root.descendants)):
@@ -76,7 +79,7 @@ class TreeStats:
                     continue
                 row = get(id(parent))
                 if row is None:
-                    row = rows[id(parent)] = [0, 0, 0, 0, False, 0, False]
+                    row = rows[id(parent)] = [0, 0, 0, 0, False, 0, False, 0]
                 stripped = node.strip()
                 if stripped:
                     row[0] += len(stripped)
@@ -89,21 +92,24 @@ class TreeStats:
                     # comments, doctype...: leave the count to bs4
                     row = get(id(parent))
                     if row is None:
-                        row = rows[id(parent)] = [0, 0, 0, 0, False, 0, False]
+                        row = rows[id(parent)] = [0, 0, 0, 0, False, 0, False, 0]
                     row[6] = True
                 continue
             row = get(id(node))
             if row is None:
-                row = rows[id(node)] = [0, 0, 0, 0, False, 0, False]
+                row = rows[id(node)] = [0, 0, 0, 0, False, 0, False, 0]
             if parent is None:
                 continue
             prow = get(id(parent))
             if prow is None:
-                prow = rows[id(parent)] = [0, 0, 0, 0, False, 0, False]
+                prow = rows[id(parent)] = [0, 0, 0, 0, False, 0, False, 0]
             prow[0] += row[0]
             prow[1] += row[1]
             prow[2] += row[2]
             prow[3] += row[3]
+            prow[7] += row[7]
+            if node.name == "p" and row[0] + (row[1] - 1 if row[1] > 1 else 0) >= LONG_PARAGRAPH_CHARS:
+                prow[7] += 1
             if node.name == "a":
                 prow[2] += 1
                 prow[3] += row[0] + (row[1] - 1 if row[1] > 1 else 0)
@@ -120,7 +126,7 @@ class TreeStats:
 
     def _row(self, tag: Tag) -> list:
         row = self._rows.get(id(tag))
-        return row if row is not None else [0, 0, 0, 0, False, 0, False]
+        return row if row is not None else [0, 0, 0, 0, False, 0, False, 0]
 
     def html_len(self, tag: Tag) -> int:
         """``len(str(tag))``. Needs ``serialized=True``; asks bs4 itself for odd markup."""
@@ -145,6 +151,10 @@ class TreeStats:
 
     def has_main(self, tag: Tag) -> bool:
         return self._row(tag)[4]
+
+    def long_paragraphs(self, tag: Tag) -> int:
+        """Number of descendant ``<p>`` with at least ``LONG_PARAGRAPH_CHARS`` of text."""
+        return self._row(tag)[7]
 
     def link_density(self, tag: Tag) -> float:
         """Same value as ``density.link_density`` (empty text counts as fully linked)."""

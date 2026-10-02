@@ -9,11 +9,45 @@ def _cell_text(cell: Tag) -> str:
     return " ".join(cell.get_text(" ", strip=True).split())
 
 
+_BLOCK_IN_CELL = ("p", "div", "h1", "h2", "h3", "h4", "h5", "h6", "ul", "ol", "blockquote", "pre", "table")
+_TABLE_PARTS = ("table", "thead", "tbody", "tfoot", "tr", "td", "th", "caption")
+_LAYOUT_MIN_PROSE_CELLS = 1
+
+
+def _own_rows(table: Tag) -> list[Tag]:
+    """Rows that belong to ``table`` itself, not to a table nested inside it."""
+    return [tr for tr in table.find_all("tr") if tr.find_parent("table") is table]
+
+
+def is_layout_table(table: Tag) -> bool:
+    """A table used to position page elements, not to hold tabular data.
+
+    It has a nested table, or a cell with block content (paragraphs, headings, lists), or a
+    cell holding a long run of text. Data tables keep short text in their cells.
+    """
+    if table.find("table"):
+        return True
+    if table.find("th") or table.find("caption") or table.find("thead"):
+        return False
+    for cell in table.find_all(["td", "th"]):
+        if cell.find(_BLOCK_IN_CELL):
+            return True
+        if len(cell.get_text(" ", strip=True)) > 300:
+            return True
+    return False
+
+
+def _unwrap_layout_table(table: Tag) -> None:
+    for part in [table, *table.find_all(_TABLE_PARTS)]:
+        if part.find_parent("table") is table or part is table:
+            part.name = "div"
+
+
 def linearize_table(table: Tag, index: int = 1) -> str:
     caption = table.find("caption")
     title = caption.get_text(" ", strip=True) if caption else f"Table {index}"
 
-    rows = table.find_all("tr")
+    rows = _own_rows(table)
     if not rows:
         return ""
 
@@ -23,9 +57,7 @@ def linearize_table(table: Tag, index: int = 1) -> str:
     if header_row:
         ths = header_row.find_all(["th", "td"])
         headers = [_cell_text(c) for c in ths]
-        data_trs = table.find("tbody").find_all("tr") if table.find("tbody") else []
-        if not data_trs:
-            data_trs = [tr for tr in rows if tr.find_parent("thead") is None]
+        data_trs = [tr for tr in rows if tr.find_parent("thead") is None]
     else:
         first = rows[0]
         cells = first.find_all(["th", "td"])
@@ -56,10 +88,25 @@ def linearize_table(table: Tag, index: int = 1) -> str:
     return "\n".join(lines)
 
 
+def unwrap_layout_tables(soup: BeautifulSoup) -> int:
+    """Turn layout tables into plain divs so their content is scored like any other block."""
+    count = 0
+    for table in list(soup.find_all("table")):
+        if table.attrs is not None and is_layout_table(table):
+            _unwrap_layout_table(table)
+            count += 1
+    return count
+
+
 def replace_tables_with_linearized(soup: BeautifulSoup) -> int:
     """Replace each <table> with a <pre> of linearized KV text. Returns count."""
     count = 0
     for i, table in enumerate(list(soup.find_all("table")), start=1):
+        if table.attrs is None:
+            continue
+        if is_layout_table(table):
+            _unwrap_layout_table(table)
+            continue
         text = linearize_table(table, index=i)
         if not text:
             table.decompose()

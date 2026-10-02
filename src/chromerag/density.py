@@ -142,6 +142,8 @@ MAIN_LANDMARK_ATTRS = {"role": "main"}
 # A chrome-looking container holding more than this share of the page's visible
 # text is almost always a content wrapper (e.g. class="VPContent has-sidebar").
 MAX_NOISE_PAGE_SHARE = 0.5
+PROSE_MIN_PARAGRAPHS = 2
+PROSE_MAX_LINK_DENSITY = 0.35
 
 
 @dataclass
@@ -198,6 +200,15 @@ def looks_like_noise(
         # Huge <header>/<nav> sometimes wraps real page content — keep those.
         return not (tag.name in {"header", "nav", "footer", "aside"} and text_len > 8000)
 
+    # Running prose with few links is content, whatever the layout classes say
+    # (class="col-sm-9 sidebar-first-only" is a grid column, not a sidebar).
+    if (
+        stats is not None
+        and stats.long_paragraphs(tag) >= PROSE_MIN_PARAGRAPHS
+        and stats.link_density(tag) < PROSE_MAX_LINK_DENSITY
+    ):
+        return False
+
     tokens = cache.attr_tokens(tag) if cache else _attr_tokens(tag)
     if tokens & NOISE_TOKENS:
         return text_len <= max_noise_block_chars
@@ -235,7 +246,43 @@ def text_density(tag: Tag, stats: TreeStats | None = None) -> float:
 
 def parse_html(html: str) -> BeautifulSoup:
     """Parse only — keep scripts so JSON-LD can be harvested."""
-    return BeautifulSoup(html, "lxml")
+    soup = BeautifulSoup(html, "lxml")
+    _adopt_trailing_content(soup)
+    return soup
+
+
+def _adopt_trailing_content(soup: BeautifulSoup) -> None:
+    """Move content that lxml left after ``</html>`` into ``<body>``.
+
+    A stray ``</body></html>`` in the middle of a page makes lxml keep the rest of the document
+    as siblings of ``<html>``; without this the rest of the page would never be looked at.
+    """
+    html = soup.find("html")
+    body = soup.body
+    if not isinstance(html, Tag) or not isinstance(body, Tag):
+        return
+    for node in list(soup.children):
+        if node is html:
+            continue
+        if isinstance(node, Tag) or (isinstance(node, NavigableString) and node.strip() and type(node) is NavigableString):
+            body.append(node.extract())
+
+
+# Tags that normally hold a few words but that an unclosed tag or a page-wide <form> can turn
+# into the parent of the whole article (ASP.NET forms, unclosed <button>, <noscript> in <head>).
+_WRAPPER_TAGS = frozenset({"form", "button", "noscript"})
+_WRAPPER_MIN_CHARS = 400
+_WRAPPER_BLOCKS = ("p", "h1", "h2", "h3", "li", "article", "section", "div")
+
+
+def _wraps_page_content(tag: Tag) -> bool:
+    """True when a form/button/noscript holds article-sized text, so removing it would lose content."""
+    text = tag.get_text(" ", strip=True)
+    if len(text) < _WRAPPER_MIN_CHARS:
+        return False
+    if not tag.find(_WRAPPER_BLOCKS):
+        return False
+    return True
 
 
 def strip_non_content_tags(soup: BeautifulSoup) -> BeautifulSoup:
@@ -245,6 +292,11 @@ def strip_non_content_tags(soup: BeautifulSoup) -> BeautifulSoup:
     has copied that data into a dict, these tags are safe to drop.
     """
     for tag in soup.find_all(list(NOISE_TAGS)):
+        if tag.attrs is None:  # inside a subtree removed earlier in this loop
+            continue
+        if tag.name in _WRAPPER_TAGS and _wraps_page_content(tag):
+            tag.unwrap()
+            continue
         tag.decompose()
     for comment in soup.find_all(
         string=lambda t: isinstance(t, NavigableString) and t.__class__.__name__ == "Comment"

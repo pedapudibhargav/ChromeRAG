@@ -16,7 +16,7 @@ def front_matter_yaml(data: dict) -> str:
     return f"---\n{dumped}\n---\n\n"
 
 
-def _inline(el: Tag | NavigableString) -> str:
+def _inline(el: Tag | NavigableString, links: bool = True) -> str:
     if isinstance(el, NavigableString):
         return str(el)
     if not isinstance(el, Tag):
@@ -27,27 +27,27 @@ def _inline(el: Tag | NavigableString) -> str:
     if name == "br":
         return "\n"
     if name in {"strong", "b"}:
-        return f"**{''.join(_inline(c) for c in el.children).strip()}**"
+        return f"**{''.join(_inline(c, links) for c in el.children).strip()}**"
     if name in {"em", "i"}:
-        return f"*{' '.join(_inline(c) for c in el.children).strip()}*"
+        return f"*{' '.join(_inline(c, links) for c in el.children).strip()}*"
     if name == "code" and el.parent and el.parent.name != "pre":
         return f"`{el.get_text()}`"
     if name == "a":
         text = el.get_text(" ", strip=True)
         href = el.get("href") or ""
-        if href and text:
+        if links and href and text:
             return f"[{text}]({href})"
         return text
-    return "".join(_inline(c) for c in el.children)
+    return "".join(_inline(c, links) for c in el.children)
 
 
-def element_to_markdown(el: Tag) -> str:
+def element_to_markdown(el: Tag, links: bool = True) -> str:
     name = el.name or ""
     if name in {"h1", "h2", "h3", "h4", "h5", "h6"}:
         level = int(name[1])
         return f"{'#' * level} {el.get_text(' ', strip=True)}\n\n"
     if name == "p":
-        return f"{''.join(_inline(c) for c in el.children).strip()}\n\n"
+        return f"{''.join(_inline(c, links) for c in el.children).strip()}\n\n"
     if name == "pre":
         text = el.get_text("\n", strip=False).strip()
         if text.startswith("[Table:"):
@@ -73,6 +73,7 @@ def soup_to_markdown(
     *,
     inject_heading_paths: bool = False,
     content_root: Tag | None = None,
+    links: bool = True,
 ) -> str:
     """Convert cleaned soup to Markdown.
 
@@ -98,11 +99,11 @@ def soup_to_markdown(
             while heading_stack and heading_stack[-1][0] >= level:
                 heading_stack.pop()
             heading_stack.append((level, text))
-            parts.append(element_to_markdown(el))
+            parts.append(element_to_markdown(el, links))
             seen.add(id(el))
             return
 
-        body = element_to_markdown(el)
+        body = element_to_markdown(el, links)
         if inject_heading_paths and body.strip() and heading_stack:
             path = " > ".join(t for _, t in heading_stack)
             parts.append(f"[Section: {path}]\n{body}")
@@ -160,9 +161,8 @@ def soup_to_markdown(
                     parts.append(f"{text}\n\n")
                 seen.add(id(node))
                 continue
-        for child in list(node.children):
-            if isinstance(child, Tag):
-                stack.append(child)
+        # Depth first, in document order: push the children in front of the siblings still waiting.
+        stack[0:0] = [child for child in node.children if isinstance(child, Tag)]
 
     md = "".join(parts)
     md = re.sub(r"\n{3,}", "\n\n", md).strip() + "\n"

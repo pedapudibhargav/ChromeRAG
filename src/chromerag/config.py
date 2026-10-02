@@ -65,7 +65,9 @@ class PipelineConfig:
     enable_dvdf: bool = True
     enable_stce: bool = True  # applied only when a SiteChromeModel is provided
     enable_rules: bool = True
+    enable_lbc: bool = True  # learned block classifier (needs assets/lbc_model.npz)
     inject_heading_paths: bool = False
+    include_links: bool = False  # write [text](url); off keeps link text only
 
     # Density
     min_chars: int = 40
@@ -75,6 +77,10 @@ class PipelineConfig:
     # Chrome / size guards
     max_noise_block_chars: int = 4000  # do not strip wrappers larger than this via class heuristics
     max_rejected_drop_chars: int = 400  # density/DVDF rejected nodes dropped only if shorter
+
+    # Learned block classifier: drop blocks whose content probability is below this
+    lbc_threshold: float = 0.45
+    lbc_whole_page: bool = True  # classify blocks outside the detected content root too
 
     # DVDF
     dvdf_threshold: float = 0.42
@@ -139,6 +145,7 @@ class PipelineConfig:
             base.dvdf_threshold = 0.55
             base.max_rejected_drop_chars = 250
             base.stce_frequency = 0.85
+            base.lbc_threshold = 0.35
             base.enable_dvdf = True
         elif strictness == Strictness.AGGRESSIVE:
             base.max_link_density = 0.40
@@ -147,6 +154,7 @@ class PipelineConfig:
             base.dvdf_threshold = 0.32
             base.max_rejected_drop_chars = 600
             base.stce_frequency = 0.55
+            base.lbc_threshold = 0.60
             base.stce_max_block_chars = 3500
         else:  # BALANCED
             pass
@@ -183,6 +191,7 @@ PROFILE_FIELDS = (
     "dvdf_threshold",
     "stce_frequency",
     "stce_max_block_chars",
+    "lbc_threshold",
 )
 
 

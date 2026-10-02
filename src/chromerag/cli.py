@@ -31,6 +31,7 @@ def _build_config(args: argparse.Namespace) -> PipelineConfig:
         enable_stce=not getattr(args, "no_stce", False),
         enable_rules=not getattr(args, "no_rules", False),
         inject_heading_paths=getattr(args, "heading_paths", False),
+        include_links=getattr(args, "links", False),
     )
     if getattr(args, "priority", None):
         return PipelineConfig.from_priority(args.priority, **overrides)
@@ -58,6 +59,7 @@ def _add_shared_flags(p: argparse.ArgumentParser) -> None:
     p.add_argument("--no-stce", action="store_true")
     p.add_argument("--no-rules", action="store_true")
     p.add_argument("--heading-paths", action="store_true")
+    p.add_argument("--links", action="store_true", help="keep link targets as [text](url)")
 
 
 def _load_fixture_dir(raw_dir: Path) -> list[BatchPage]:

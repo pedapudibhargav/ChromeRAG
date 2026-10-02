@@ -26,17 +26,29 @@ def _class_tokens(tag: Tag) -> set[str]:
     return tokens
 
 
+_HIDDEN_ARTICLE_MIN_CHARS = 1500
+_HIDDEN_ARTICLE_MAX_LINK_SHARE = 0.25
+
+
+def _is_hidden_article(tag: Tag) -> bool:
+    """A hidden block with long running text and few links is page content that a script reveals
+    (tab panels, expanders, lazy-shown articles), not a menu or a dialog."""
+    text_len = len(tag.get_text(" ", strip=True))
+    if text_len < _HIDDEN_ARTICLE_MIN_CHARS:
+        return False
+    link_len = sum(len(a.get_text(" ", strip=True)) for a in tag.find_all("a"))
+    return link_len / text_len < _HIDDEN_ARTICLE_MAX_LINK_SHARE
+
+
 def _is_hidden(tag: Tag) -> bool:
     if not getattr(tag, "attrs", None):
         return False
-    if tag.has_attr("hidden"):
-        return True
     style = tag.get("style") or ""
     if isinstance(style, list):
         style = " ".join(str(s) for s in style)
     style = str(style)
-    if _DISPLAY_NONE.search(style) or _VISIBILITY_HIDDEN.search(style):
-        return True
+    if tag.has_attr("hidden") or _DISPLAY_NONE.search(style) or _VISIBILITY_HIDDEN.search(style):
+        return not _is_hidden_article(tag)
     if (tag.get("aria-hidden") or "").lower() == "true":
         text_len = len(tag.get_text(" ", strip=True))
         if text_len < 120 or _class_tokens(tag) & _ARIA_MODAL_TOKENS:
