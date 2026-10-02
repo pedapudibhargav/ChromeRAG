@@ -145,7 +145,7 @@ class PipelineConfig:
             base.dvdf_threshold = 0.55
             base.max_rejected_drop_chars = 250
             base.stce_frequency = 0.85
-            base.lbc_threshold = 0.35
+            base.lbc_threshold = 0.30
             base.enable_dvdf = True
         elif strictness == Strictness.AGGRESSIVE:
             base.max_link_density = 0.40
@@ -154,7 +154,7 @@ class PipelineConfig:
             base.dvdf_threshold = 0.32
             base.max_rejected_drop_chars = 600
             base.stce_frequency = 0.55
-            base.lbc_threshold = 0.60
+            base.lbc_threshold = 0.70
             base.stce_max_block_chars = 3500
         else:  # BALANCED
             pass

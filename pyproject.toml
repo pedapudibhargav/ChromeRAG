@@ -77,4 +77,4 @@ Documentation = "https://pedapudibhargav.github.io/ChromeRAG/"
 where = ["src"]
 
 [tool.setuptools.package-data]
-chromerag = ["assets/*.json", "assets/*.txt", "rules/*.yaml"]
+chromerag = ["assets/*.json", "assets/*.txt", "assets/*.npz", "rules/*.yaml"]

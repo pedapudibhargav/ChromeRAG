@@ -10,7 +10,6 @@ from __future__ import annotations
 
 import argparse
 import pickle
-import re
 from collections import Counter, defaultdict
 from concurrent.futures import ProcessPoolExecutor
 

@@ -15,3 +15,11 @@ Regenerated after reviewing sample diffs on dev corpus pages.
 8. **Config switches** — page-type inference and the coverage fallback keep caller switches such as `enable_rules`.
 
 Performance work (single-pass statistics, cached densities) is output-identical: with rules disabled, old and new code give the same hashes on 631 pages.
+
+# Allowed golden hash changes (learned block classifier)
+
+9. **Learned block classifier** replaces the density/DVDF block filter. Blocks are scored by gradient-boosted trees (`assets/lbc_stage1.npz`, trained on WCXB dev).
+10. **Link targets** are no longer written by default (`include_links`).
+11. **Markdown order** follows the document (depth first); it used to be breadth first.
+12. **Layout tables** are unwrapped; nested layout tables no longer repeat their text.
+13. **Wrappers** — a page-wide `<form>`, unclosed `<button>` or large `<noscript>` is unwrapped instead of dropped; content after a stray `</html>` is adopted into `<body>`; large hidden blocks of running text are kept.

@@ -22,6 +22,7 @@ from typing import Any
 import numpy as np
 from bs4 import BeautifulSoup, Tag
 
+from chromerag.blockfeatures import block_features, find_blocks
 from chromerag.config import (
     PipelineConfig,
     Strictness,
@@ -41,10 +42,9 @@ from chromerag.density import (
 from chromerag.dvdf import NoiseAnchorIndex
 from chromerag.hidden import remove_hidden_nodes, remove_skip_links
 from chromerag.input_quality import InputQualityReport, assess_input_html
+from chromerag.lbc import TwoStageModel, default_two_stage
 from chromerag.markdown_out import front_matter_yaml, soup_to_markdown
 from chromerag.models import BlockScore, ExtractResult
-from chromerag.blockfeatures import block_features, find_blocks
-from chromerag.lbc import TwoStageModel, default_two_stage
 from chromerag.rules_engine import DEFAULT_INDEX, RuleHit, RuleIndex
 from chromerag.schema_fusion import fuse_front_matter
 from chromerag.site_chrome import SiteChromeModel, apply_site_chrome, site_group_key
