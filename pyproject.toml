@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "chromerag"
-version = "0.1.2"
+version = "0.1.3"
 description = "HTML to RAG-ready Markdown: a learned boilerplate filter that removes site chrome (navigation, footers, cookie banners, related links, comments) and keeps article, documentation and pricing content. Pure NumPy inference, no model download."
 readme = "README.md"
 requires-python = ">=3.11"

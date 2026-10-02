@@ -1,6 +1,6 @@
 # Benchmark findings — ChromeRAG
 
-**Package:** `chromerag` 0.1.2 · results in `docs/data/corpus_comparison_summary.md`
+**Package:** `chromerag` 0.1.2 (findings of that release; 0.1.3 results are in `evaluations/2026-10-v0.1.3/`) · results in `docs/data/corpus_comparison_summary.md`
 
 ## Evaluation design
 

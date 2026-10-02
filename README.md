@@ -20,7 +20,7 @@
 | Precision / coverage priority knobs | PDF / Office formats |
 
 **Paper:** *ChromeRAG: Ingest-Time Elimination of Site Template Noise for Enterprise Web RAG* (submitted to SoftwareX)  
-**Release:** [`v0.1.2`](https://github.com/pedapudibhargav/ChromeRAG/tree/v0.1.2)  
+**Release:** [`v0.1.3`](https://github.com/pedapudibhargav/ChromeRAG/tree/v0.1.3)  
 **Author:** [Bhargava Chary Peddapudi](https://orcid.org/0009-0002-8523-8415)
 
 ---
@@ -137,7 +137,7 @@ come from cross-validation grouped by site (see below and `evaluations/`).
 
 ---
 
-## Learned block filter (unreleased, 0.1.3)
+## Learned block filter (new in 0.1.3)
 
 Version 0.1.3 replaces the hand-set density thresholds with a small learned model. The page is
 cleaned as before (tags, hidden nodes, rules, site chrome, obvious navigation), then split into
@@ -283,7 +283,7 @@ papers/softwarex/  # SoftwareX manuscript sources
 
 If you use ChromeRAG, please cite the software (see [`CITATION.cff`](CITATION.cff)):
 
-> B. C. Peddapudi, *ChromeRAG*, version 0.1.2, Zenodo, 2026. https://doi.org/10.5281/zenodo.22970290
+> B. C. Peddapudi, *ChromeRAG*, version 0.1.3, Zenodo, 2026. https://doi.org/10.5281/zenodo.22970289 (all versions)
 
 To cite whichever version is latest, use the all-versions DOI [10.5281/zenodo.22970289](https://doi.org/10.5281/zenodo.22970289).
 

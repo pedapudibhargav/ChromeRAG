@@ -2,7 +2,7 @@
 
 All notable changes to ChromeRAG. Versions follow [Semantic Versioning](https://semver.org/).
 
-## Unreleased (0.1.3)
+## 0.1.3 — 2026-10-02
 
 ### Added
 - **Learned block filter.** Each text block is scored by gradient-boosted trees (150 KB model file,
