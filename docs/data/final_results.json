@@ -1066,6 +1066,148 @@
    "same_verdict": 0.83
   }
  },
+ "judge_wcxb_test": {
+  "pages": 105,
+  "all:trafilatura": {
+   "pairs": 105,
+   "chromerag_wins": 0.562,
+   "baseline_wins": 0.419,
+   "ties": 0.019,
+   "net_win_ci95": [
+    -0.048,
+    0.333
+   ],
+   "content_chromerag": 4.15,
+   "content_baseline": 3.7,
+   "chrome_chromerag": 3.9,
+   "chrome_baseline": 4.11
+  },
+  "all:markitdown": {
+   "pairs": 105,
+   "chromerag_wins": 0.829,
+   "baseline_wins": 0.171,
+   "ties": 0.0,
+   "net_win_ci95": [
+    0.505,
+    0.79
+   ],
+   "content_chromerag": 4.08,
+   "content_baseline": 3.25,
+   "chrome_chromerag": 4.41,
+   "chrome_baseline": 1.23
+  },
+  "position_consistency": {
+   "pairs": 69,
+   "same_verdict": 0.826
+  },
+  "by_type": {
+   "article:trafilatura": {
+    "pairs": 15,
+    "chromerag_wins": 0.4,
+    "baseline_wins": 0.6
+   },
+   "article:markitdown": {
+    "pairs": 15,
+    "chromerag_wins": 1.0,
+    "baseline_wins": 0.0
+   },
+   "article:readability": {
+    "pairs": 15,
+    "chromerag_wins": 0.4,
+    "baseline_wins": 0.6
+   },
+   "collection:trafilatura": {
+    "pairs": 15,
+    "chromerag_wins": 0.733,
+    "baseline_wins": 0.267
+   },
+   "collection:markitdown": {
+    "pairs": 15,
+    "chromerag_wins": 0.8,
+    "baseline_wins": 0.2
+   },
+   "collection:readability": {
+    "pairs": 15,
+    "chromerag_wins": 0.8,
+    "baseline_wins": 0.133
+   },
+   "documentation:trafilatura": {
+    "pairs": 15,
+    "chromerag_wins": 0.333,
+    "baseline_wins": 0.667
+   },
+   "documentation:markitdown": {
+    "pairs": 15,
+    "chromerag_wins": 0.733,
+    "baseline_wins": 0.267
+   },
+   "documentation:readability": {
+    "pairs": 15,
+    "chromerag_wins": 0.667,
+    "baseline_wins": 0.267
+   },
+   "forum:trafilatura": {
+    "pairs": 15,
+    "chromerag_wins": 0.733,
+    "baseline_wins": 0.267
+   },
+   "forum:markitdown": {
+    "pairs": 15,
+    "chromerag_wins": 0.933,
+    "baseline_wins": 0.067
+   },
+   "forum:readability": {
+    "pairs": 15,
+    "chromerag_wins": 0.667,
+    "baseline_wins": 0.333
+   },
+   "listing:trafilatura": {
+    "pairs": 15,
+    "chromerag_wins": 0.333,
+    "baseline_wins": 0.533
+   },
+   "listing:markitdown": {
+    "pairs": 15,
+    "chromerag_wins": 0.6,
+    "baseline_wins": 0.4
+   },
+   "listing:readability": {
+    "pairs": 15,
+    "chromerag_wins": 0.8,
+    "baseline_wins": 0.133
+   },
+   "product:trafilatura": {
+    "pairs": 15,
+    "chromerag_wins": 0.667,
+    "baseline_wins": 0.333
+   },
+   "product:markitdown": {
+    "pairs": 15,
+    "chromerag_wins": 0.933,
+    "baseline_wins": 0.067
+   },
+   "product:readability": {
+    "pairs": 15,
+    "chromerag_wins": 0.8,
+    "baseline_wins": 0.2
+   },
+   "service:trafilatura": {
+    "pairs": 15,
+    "chromerag_wins": 0.733,
+    "baseline_wins": 0.267
+   },
+   "service:markitdown": {
+    "pairs": 15,
+    "chromerag_wins": 0.8,
+    "baseline_wins": 0.2
+   },
+   "service:readability": {
+    "pairs": 15,
+    "chromerag_wins": 0.8,
+    "baseline_wins": 0.2
+   }
+  }
+ },
  "retrieval_fresh": {
   "bm25": {
    "chromerag_coverage": {

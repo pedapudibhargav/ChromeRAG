@@ -154,8 +154,9 @@ score reaches the threshold of the chosen priority: `coverage` 0.30, `balanced` 
   `coverage` 0.900, `precision` 0.887) against Trafilatura 0.860, Readability 0.763 and MarkItDown 0.540:
   +0.043 [+0.027, +0.059] over Trafilatura, with large gains on forum, product and collection pages and a tie
   on articles and documentation. Cross-validated development numbers are 0.852 / 0.851 / 0.837 against 0.818.
-  On company landing pages a blind LLM judge preferred ChromeRAG to Trafilatura on 70% of 100 held-out and
-  fresh pages and to MarkItDown on 87%. Everything is in `evaluations/2026-10-v0.1.3/` and on the site.
+  A blind LLM judge preferred ChromeRAG to MarkItDown on 87% (landing pages) and 83% (WCXB test sample) of pages,
+  and to Trafilatura on 70% of landing pages but only 56% vs 42% on the WCXB sample (not significant; Trafilatura
+  wins on articles and documentation). Everything is in `evaluations/2026-10-v0.1.3/` and on the site.
 * Link targets are no longer written by default (`PipelineConfig(include_links=True)` or
   `--links` brings back `[text](url)`), repeated blocks are written once, and the Markdown now
   follows document order.

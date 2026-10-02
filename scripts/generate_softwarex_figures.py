@@ -263,20 +263,24 @@ def fig_retrieval(report: dict) -> str:
 
 # --------------------------------------------------------------------------- Fig. 5
 def fig_judge(final: dict) -> str:
-    rows = [("vs Trafilatura", final["judge"]["all:trafilatura"]), ("vs MarkItDown", final["judge"]["all:markitdown"])]
-    h, top, label_w = 70, 22, 90
+    rows = [("Landing pages (100)", "vs Trafilatura", final["judge"]["all:trafilatura"], "#eb6834"),
+            ("Landing pages (100)", "vs MarkItDown", final["judge"]["all:markitdown"], "#1baf7a"),
+            ("WCXB test (105)", "vs Trafilatura", final["judge_wcxb_test"]["all:trafilatura"], "#eb6834"),
+            ("WCXB test (105)", "vs MarkItDown", final["judge_wcxb_test"]["all:markitdown"], "#1baf7a")]
+    h, top, label_w = 112, 22, 128
     x0, w = label_w + 6, WIDTH - label_w - 20
-    body: list[str] = [_text(x0, 10, "Blind pairwise LLM judge, 100 pages (held-out and fresh companies)", size=7.5, fill=INK_2)]
-    for i, (label, r) in enumerate(rows):
-        y = top + i * 22
-        body.append(_text(label_w, y + 9, label, size=7.5, anchor="end"))
+    body: list[str] = [_text(x0, 10, "Blind pairwise LLM judge: share of pages preferred (grey = tie)", size=7.5, fill=INK_2)]
+    for i, (group, label, r, other) in enumerate(rows):
+        y = top + i * 20
+        body.append(_text(label_w, y + 9, f"{group}, {label}", size=7, anchor="end"))
         x = x0
-        for key, color, name in (("chromerag_wins", "#2a78d6", "ChromeRAG better"), ("ties", "#c9c8c2", "tie"), ("baseline_wins", "#eb6834" if i == 0 else "#1baf7a", "other better")):
+        for key, color in (("chromerag_wins", "#2a78d6"), ("ties", "#c9c8c2"), ("baseline_wins", other)):
             seg = r[key] * w
             body.append(f'<rect x="{x:.1f}" y="{y}" width="{seg:.1f}" height="13" fill="{color}"/>')
             if r[key] >= 0.08:
                 body.append(_text(x + seg / 2, y + 9.5, f"{r[key] * 100:.0f}%", size=7, anchor="middle", fill="#ffffff" if key != "ties" else INK))
             x += seg
+    body.append(f'<rect x="{x0}" y="{top + 84}" width="8" height="8" fill="#2a78d6"/>' + _text(x0 + 12, top + 91, "ChromeRAG preferred", size=7))
     return _svg(h, body)
 
 

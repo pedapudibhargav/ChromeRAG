@@ -43,6 +43,7 @@ def main() -> None:
     dev = json.loads((EV / "wcxb_dev_cv.json").read_text())
     frontier = json.loads((EV / "wcxb_dev_frontier.json").read_text())
     judge = json.loads((EV / "FINAL" / "llm_judge_final.json").read_text())
+    judge2 = json.loads((EV / "FINAL" / "llm_judge_wcxb_test.json").read_text())
     fresh_ret = json.loads((EV / "FINAL" / "fresh_retrieval_eval_report.json").read_text())
     thr = sorted({t for r in frontier for t in r["thr"]}, key=float)
     result = {
@@ -64,6 +65,7 @@ def main() -> None:
             for name in ("heldout", "fresh")
         },
         "judge": {k: v for k, v in judge["summary"].items() if k.startswith("all:") or k == "position_consistency"},
+        "judge_wcxb_test": {"pages": judge2["n_pages"], **{k: v for k, v in judge2["summary"].items() if k.startswith("all:") or k == "position_consistency"}, "by_type": judge2["by_type"]},
         "retrieval_fresh": {
             "bm25": {t: v["scores"]["all"] for t, v in fresh_ret["tools"].items()},
             "dense": {t: v["scores"]["all"] for t, v in fresh_ret["dense"]["tools"].items()},
