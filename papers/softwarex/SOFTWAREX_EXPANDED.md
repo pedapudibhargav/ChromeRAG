@@ -193,7 +193,7 @@ The software, the list of benchmark URLs (`poc/corpus_urls.json`), the evaluatio
 
 ## Declaration of generative AI and AI-assisted technologies in the manuscript preparation process
 
-During the preparation of this work the author used Cursor (with a Grok-based coding agent) and Anthropic Claude (Claude Code) in order to assist with software development, code review, drafting and editing of the manuscript text, and verification of reported numbers against the benchmark outputs, and analysis scripts for the evaluation. After using these tools, the author reviewed and edited the content as needed and takes full responsibility for the content of the published article.
+During the preparation of this work the author used Cursor (with a Grok-based coding agent) and Anthropic Claude (Claude Code) in order to assist with software development, code review, drafting and editing of the manuscript text, analysis scripts for the evaluation, and verification of reported numbers against the benchmark outputs. The author also used OpenAI models as components of the evaluation itself: gpt-5.6-luna as the blind pairwise judge of extraction quality and text-embedding-3-small for the dense-retrieval experiment; their prompts, samples and outputs are published with the repository. After using these tools, the author reviewed and edited the content as needed and takes full responsibility for the content of the published article.
 
 ---
 
