@@ -73,6 +73,7 @@ def _iter_candidates(body: Tag) -> list[tuple[Tag, str]]:
 def find_content_root(
     soup: BeautifulSoup,
     page_type: PageType | str = PageType.UNKNOWN,
+    body_words: int | None = None,
 ) -> tuple[Tag, str]:
     """Return (root tag, candidate label). Falls back to body."""
     del page_type  # reserved for platform-specific overrides in WP6
@@ -83,8 +84,9 @@ def find_content_root(
             return fallback, "body"
         return soup, "body"  # type: ignore[return-value]
 
-    cache: dict[int, int] = {id(body): _word_count(body)}
-    body_words = cache[id(body)]
+    if body_words is None:
+        body_words = _word_count(body)
+    cache: dict[int, int] = {id(body): body_words}
 
     seen: set[int] = set()
     for tag, label in _iter_candidates(body):

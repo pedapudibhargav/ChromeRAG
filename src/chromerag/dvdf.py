@@ -14,8 +14,8 @@ from __future__ import annotations
 
 import hashlib
 import json
-import math
 import re
+from functools import lru_cache
 from pathlib import Path
 from typing import Sequence
 
@@ -43,6 +43,12 @@ def _tokenize(text: str) -> list[str]:
     return re.findall(r"[a-z0-9]+", text.lower())
 
 
+@lru_cache(maxsize=1 << 16)
+def _token_slot(tok: str, dim: int) -> tuple[int, float]:
+    h = int(hashlib.md5(tok.encode("utf-8")).hexdigest(), 16)
+    return h % dim, (1.0 if (h // dim) % 2 == 0 else -1.0)
+
+
 def _hash_embed(text: str, dim: int = 384) -> np.ndarray:
     """Deterministic bag-of-hashes embedding (no model download).
 
@@ -54,11 +60,9 @@ def _hash_embed(text: str, dim: int = 384) -> np.ndarray:
     toks = _tokenize(text)
     if not toks:
         return vec
-    for tok in toks:
-        h = int(hashlib.md5(tok.encode("utf-8")).hexdigest(), 16)
-        idx = h % dim
-        sign = 1.0 if (h // dim) % 2 == 0 else -1.0
-        vec[idx] += sign
+    slots = [_token_slot(tok, dim) for tok in toks]
+    # +-1 sums are exact in float32, so the order of the additions does not matter.
+    np.add.at(vec, [i for i, _ in slots], [sg for _, sg in slots])
     norm = np.linalg.norm(vec)
     if norm > 0:
         vec /= norm
@@ -88,6 +92,10 @@ class NoiseAnchorIndex:
         self.onnx_model_path = Path(onnx_model_path) if onnx_model_path else None
         self._session = None
         self._anchor_vecs = [self.embed(a) for a in self.anchors]
+        self._anchor_matrix = (
+            np.stack(self._anchor_vecs) if self._anchor_vecs else np.zeros((0, 384), dtype=np.float32)
+        )
+        self._anchor_norms = np.linalg.norm(self._anchor_matrix, axis=1)
 
     def embed(self, text: str) -> np.ndarray:
         if self.use_onnx and self._try_onnx():
@@ -120,9 +128,20 @@ class NoiseAnchorIndex:
         vec = self.embed(text)
         return max((cosine(vec, a) for a in self._anchor_vecs), default=0.0)
 
+    def _scores(self, texts: list[str]) -> np.ndarray:
+        """Highest cosine similarity to any anchor, for many texts at once."""
+        if not texts or not len(self._anchor_norms):
+            return np.zeros(len(texts))
+        matrix = np.stack([self.embed(t) for t in texts])
+        denom = np.linalg.norm(matrix, axis=1)[:, None] * self._anchor_norms[None, :]
+        dots = matrix @ self._anchor_matrix.T
+        cos = np.divide(dots, denom, out=np.zeros_like(dots), where=denom != 0)
+        return cos.max(axis=1)
+
     def apply(self, blocks: list[BlockScore]) -> list[BlockScore]:
-        for b in blocks:
-            score = self.max_noise_similarity(b.text)
+        scores = self._scores([b.text for b in blocks])
+        for b, score in zip(blocks, scores, strict=True):
+            score = float(score)
             b.noise_cosine = score
             if b.keep and score >= self.threshold:
                 b.keep = False

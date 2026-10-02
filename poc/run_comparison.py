@@ -13,10 +13,10 @@ import traceback
 from collections import defaultdict
 from pathlib import Path
 
-from poc.baselines import BASELINES
-from poc.metrics import extract_anchors, score_extraction, scores_to_dict
 from chromerag import ChromeRAG
 from chromerag.config import ContentPriority, PipelineConfig
+from poc.baselines import BASELINES
+from poc.metrics import extract_anchors, score_extraction, scores_to_dict
 
 ROOT = Path(__file__).resolve().parents[1]
 RAW = ROOT / "data" / "raw"

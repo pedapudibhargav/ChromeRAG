@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, fields
 from enum import Enum
 
 from chromerag.density import DensityConfig
@@ -167,6 +167,48 @@ class PipelineConfig:
                 raise ValueError(f"Unknown PipelineConfig field: {key}")
             setattr(base, key, value)
         return base
+
+
+# Fields that make up an aggressiveness profile (Strictness / ContentPriority). Everything else on
+# PipelineConfig (enable_* switches, heading paths, ...) is a caller choice and must survive when
+# the pipeline derives a new config from an existing one.
+PROFILE_FIELDS = (
+    "strictness",
+    "content_priority",
+    "page_type",
+    "min_chars",
+    "max_link_density",
+    "min_text_density",
+    "max_rejected_drop_chars",
+    "dvdf_threshold",
+    "stce_frequency",
+    "stce_max_block_chars",
+)
+
+
+def with_page_type(base: PipelineConfig, page_type: PageType) -> PipelineConfig:
+    """Config for an inferred page type. Explicit caller settings are kept.
+
+    A field counts as explicit when it differs from what ``base``'s strictness profile would
+    give for an unknown page type.
+    """
+    plain = PipelineConfig.from_strictness(base.strictness)
+    profile = PipelineConfig.from_strictness(base.strictness, page_type)
+    values = {}
+    for f in fields(PipelineConfig):
+        mine = getattr(base, f.name)
+        values[f.name] = getattr(profile, f.name) if mine == getattr(plain, f.name) else mine
+    values["page_type"] = page_type
+    values["content_priority"] = base.content_priority
+    return PipelineConfig(**values)
+
+
+def coverage_fallback(base: PipelineConfig) -> PipelineConfig:
+    """``base`` with COVERAGE thresholds (used to retry a collapsed extraction)."""
+    coverage = PipelineConfig.from_priority(ContentPriority.COVERAGE, page_type=base.page_type)
+    values = {f.name: getattr(base, f.name) for f in fields(PipelineConfig)}
+    values.update({name: getattr(coverage, name) for name in PROFILE_FIELDS})
+    return PipelineConfig(**values)
 
 
 def infer_page_type(url: str | None, html: str = "") -> PageType:

@@ -8,7 +8,11 @@ import pytest
 
 from chromerag import ChromeRAG
 from chromerag.density import parse_html
-from chromerag.input_quality import _visible_text, _visible_text_from_soup, assess_input_html
+from chromerag.input_quality import (
+    _visible_text,
+    _visible_text_from_soup,
+    assess_input_html,
+)
 
 FIXTURES = Path(__file__).parent / "fixtures"
 

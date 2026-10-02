@@ -8,6 +8,7 @@ from dataclasses import dataclass, field
 from bs4 import BeautifulSoup, NavigableString, Tag
 
 from chromerag.models import BlockScore
+from chromerag.treestats import TreeStats
 
 NOISE_TAGS = {
     "script",
@@ -145,13 +146,10 @@ MAX_NOISE_PAGE_SHARE = 0.5
 
 @dataclass
 class ElementCache:
-    """Per-extract caches keyed by id(tag)."""
+    """Per-extract cache of id/class token sets and attribute blobs, keyed by id(tag)."""
 
     tokens: dict[int, set[str]] = field(default_factory=dict)
     blobs: dict[int, str] = field(default_factory=dict)
-    text_densities: dict[int, float] = field(default_factory=dict)
-    link_densities: dict[int, float] = field(default_factory=dict)
-    noise: dict[int, bool] = field(default_factory=dict)
 
     def attr_tokens(self, tag: Tag) -> set[str]:
         key = id(tag)
@@ -165,25 +163,6 @@ class ElementCache:
             self.blobs[key] = _attrs_blob(tag)
         return self.blobs[key]
 
-    def link_density(self, tag: Tag) -> float:
-        key = id(tag)
-        if key not in self.link_densities:
-            text = tag.get_text(" ", strip=True)
-            if not text:
-                self.link_densities[key] = 1.0
-            else:
-                link_text = " ".join(a.get_text(" ", strip=True) for a in tag.find_all("a"))
-                self.link_densities[key] = min(1.0, len(link_text) / max(1, len(text)))
-        return self.link_densities[key]
-
-    def text_density(self, tag: Tag) -> float:
-        key = id(tag)
-        if key not in self.text_densities:
-            text = tag.get_text("", strip=True)
-            html = str(tag)
-            self.text_densities[key] = len(text) / max(1, len(html)) if html else 0.0
-        return self.text_densities[key]
-
 
 def looks_like_noise(
     tag: Tag,
@@ -191,50 +170,51 @@ def looks_like_noise(
     max_noise_block_chars: int = 4000,
     page_text_len: int | None = None,
     cache: ElementCache | None = None,
+    stats: TreeStats | None = None,
 ) -> bool:
-    """Heuristic chrome detector with size guards (avoid sticky-subnav disasters)."""
+    """Heuristic chrome detector with size guards (avoid sticky-subnav disasters).
+
+    ``stats`` (see ``treestats``) gives the same answers as live ``get_text``/``find`` calls
+    without walking the subtree again.
+    """
     if not isinstance(tag, Tag) or not tag.name:
         return False
-    text_len = len(tag.get_text(" ", strip=True))
 
     # Never treat the primary content landmark (or a wrapper around it) as chrome.
     if tag.name == "main" or (tag.get("role") or "").lower() == "main":
         return False
-    if tag.find("main") or tag.find(attrs=MAIN_LANDMARK_ATTRS):
-        return False
+    if stats is not None:
+        if stats.has_main(tag):
+            return False
+        text_len = stats.text_len(tag)
+    else:
+        if tag.find("main") or tag.find(attrs=MAIN_LANDMARK_ATTRS):
+            return False
+        text_len = len(tag.get_text(" ", strip=True))
     if page_text_len and text_len > MAX_NOISE_PAGE_SHARE * page_text_len:
         return False
 
     if tag.name in STRIP_TAGS:
         # Huge <header>/<nav> sometimes wraps real page content — keep those.
-        if tag.name in {"header", "nav", "footer", "aside"} and text_len > 8000:
-            return False
-        result = True
-    else:
-        tokens = cache.attr_tokens(tag) if cache else _attr_tokens(tag)
-        if tokens & NOISE_TOKENS:
-            result = text_len <= max_noise_block_chars
-        else:
-            blob = cache.attrs_blob(tag) if cache else _attrs_blob(tag)
-            if blob and NOISE_ID_CLASS_RE.search(blob):
-                result = text_len <= max_noise_block_chars
-            else:
-                role = ""
-                if getattr(tag, "attrs", None):
-                    role = (tag.get("role") or "").lower()
-                if role in {"navigation", "banner", "complementary", "contentinfo", "search"}:
-                    result = text_len < max_noise_block_chars
-                else:
-                    result = False
+        return not (tag.name in {"header", "nav", "footer", "aside"} and text_len > 8000)
 
-    if cache is not None:
-        cache.noise[id(tag)] = result
-    return result
+    tokens = cache.attr_tokens(tag) if cache else _attr_tokens(tag)
+    if tokens & NOISE_TOKENS:
+        return text_len <= max_noise_block_chars
+    blob = cache.attrs_blob(tag) if cache else _attrs_blob(tag)
+    if blob and NOISE_ID_CLASS_RE.search(blob):
+        return text_len <= max_noise_block_chars
+    role = ""
+    if getattr(tag, "attrs", None):
+        role = (tag.get("role") or "").lower()
+    if role in {"navigation", "banner", "complementary", "contentinfo", "search"}:
+        return text_len < max_noise_block_chars
+    return False
 
 
-def link_density(tag: Tag, cache: ElementCache | None = None) -> float:
-    if cache is not None:
-        return cache.link_density(tag)
+def link_density(tag: Tag, stats: TreeStats | None = None) -> float:
+    if stats is not None:
+        return stats.link_density(tag)
     text = tag.get_text(" ", strip=True)
     if not text:
         return 1.0
@@ -242,15 +222,15 @@ def link_density(tag: Tag, cache: ElementCache | None = None) -> float:
     return min(1.0, len(link_text) / max(1, len(text)))
 
 
-def text_density(tag: Tag, cache: ElementCache | None = None) -> float:
+def text_density(tag: Tag, stats: TreeStats | None = None) -> float:
     """Approx chars / serialized HTML length for the node."""
-    if cache is not None:
-        return cache.text_density(tag)
-    text = tag.get_text("", strip=True)
-    html = str(tag)
-    if not html:
+    if stats is not None:
+        text_len, html_len = stats.text_nosep(tag), stats.html_len(tag)
+    else:
+        text_len, html_len = len(tag.get_text("", strip=True)), len(str(tag))
+    if not html_len:
         return 0.0
-    return len(text) / max(1, len(html))
+    return text_len / max(1, html_len)
 
 
 def parse_html(html: str) -> BeautifulSoup:
@@ -284,6 +264,7 @@ def candidate_blocks(
     *,
     cache: ElementCache | None = None,
     content_root: Tag | None = None,
+    stats: TreeStats | None = None,
 ) -> list[Tag]:
     cfg = cfg or DensityConfig()
     root: Tag | BeautifulSoup = soup
@@ -299,29 +280,33 @@ def candidate_blocks(
     for tag in root.find_all(True):
         if not isinstance(tag, Tag):
             continue
-        if tag.name in NOISE_TAGS:
+        name = tag.name
+        if name in NOISE_TAGS:
             continue
-        if looks_like_noise(tag, cache=cache):
+        if looks_like_noise(tag, cache=cache, stats=stats):
             continue
         # Leaf-ish content containers: paragraphs, headings, list items, table rows, pre
-        if tag.name in {"p", "h1", "h2", "h3", "h4", "h5", "h6", "li", "pre", "blockquote", "figcaption"}:
+        if name in _LEAF_BLOCK_TAGS or name == "tr":
             blocks.append(tag)
-        elif tag.name == "tr":
-            blocks.append(tag)
-        elif tag.name in {"div", "section"} and _is_shallow_text_block(tag):
+        elif name in {"div", "section"} and _is_shallow_text_block(tag, stats):
             blocks.append(tag)
     return blocks
 
 
-def _is_shallow_text_block(tag: Tag) -> bool:
+_LEAF_BLOCK_TAGS = frozenset({"p", "h1", "h2", "h3", "h4", "h5", "h6", "li", "pre", "blockquote", "figcaption"})
+_SHALLOW_CHILD_TAGS = frozenset({"div", "section", "p", "ul", "ol", "table", "article"})
+
+
+def _is_shallow_text_block(tag: Tag, stats: TreeStats | None = None) -> bool:
     """True if div/section has direct text and few nested block children."""
-    child_blocks = [
-        c
-        for c in tag.children
-        if isinstance(c, Tag) and c.name in {"div", "section", "p", "ul", "ol", "table", "article"}
-    ]
-    text = tag.get_text(" ", strip=True)
-    return len(text) >= 40 and len(child_blocks) <= 1
+    child_blocks = 0
+    for child in tag.children:
+        if isinstance(child, Tag) and child.name in _SHALLOW_CHILD_TAGS:
+            child_blocks += 1
+            if child_blocks > 1:
+                return False
+    text_len = stats.text_len(tag) if stats is not None else len(tag.get_text(" ", strip=True))
+    return text_len >= 40
 
 
 def score_blocks(
@@ -329,24 +314,27 @@ def score_blocks(
     cfg: DensityConfig | None = None,
     *,
     cache: ElementCache | None = None,
+    stats: TreeStats | None = None,
 ) -> list[BlockScore]:
     cfg = cfg or DensityConfig()
     scored: list[BlockScore] = []
     for tag in blocks:
         text = tag.get_text(" ", strip=True)
-        ld = link_density(tag, cache)
-        td = text_density(tag, cache)
+        ld = link_density(tag, stats)
         keep = True
         reason = "ok"
+        td = -1.0  # not computed: only div/section that pass the earlier checks need it
         if len(text) < cfg.min_chars and tag.name not in {"h1", "h2", "h3", "h4", "h5", "h6", "tr"}:
             keep = False
             reason = "too_short"
         elif ld > cfg.max_link_density and tag.name not in {"tr", "table"}:
             keep = False
             reason = "high_link_density"
-        elif td < cfg.min_text_density and tag.name in {"div", "section"}:
-            keep = False
-            reason = "low_text_density"
+        elif tag.name in {"div", "section"}:
+            td = text_density(tag, stats)
+            if td < cfg.min_text_density:
+                keep = False
+                reason = "low_text_density"
         scored.append(
             BlockScore(
                 text=text,
@@ -365,23 +353,25 @@ def prune_noise_subtrees(
     *,
     max_noise_block_chars: int = 4000,
     cache: ElementCache | None = None,
+    stats: TreeStats | None = None,
 ) -> BeautifulSoup:
-    """In-place remove obvious chrome before conversion."""
+    """In-place remove obvious chrome before conversion.
+
+    Tags are visited in document order (ancestors first) and only the visited tag is removed,
+    so ``stats`` computed before the loop stays exact for every tag still to be visited.
+    """
     body = soup.body or soup
-    page_text_len = len(body.get_text(" ", strip=True))
+    stats = stats or TreeStats(body)
+    page_text_len = stats.text_len(body)
     for tag in list(body.find_all(True)):
         if not isinstance(tag, Tag) or getattr(tag, "attrs", None) is None:
             continue
-        key = id(tag)
-        if cache is not None and key in cache.noise:
-            is_noise = cache.noise[key]
-        else:
-            is_noise = looks_like_noise(
-                tag,
-                max_noise_block_chars=max_noise_block_chars,
-                page_text_len=page_text_len,
-                cache=cache,
-            )
-        if is_noise:
+        if looks_like_noise(
+            tag,
+            max_noise_block_chars=max_noise_block_chars,
+            page_text_len=page_text_len,
+            cache=cache,
+            stats=stats,
+        ):
             tag.decompose()
     return soup

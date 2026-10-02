@@ -1,0 +1,33 @@
+{
+  "label": "final",
+  "tools": {
+    "chromerag_coverage": {
+      "median_ms_per_page": 39.37,
+      "p95_ms_per_page": 126.603,
+      "pages_per_second": 25.4,
+      "n_pages": 200,
+      "passes": 3
+    },
+    "trafilatura": {
+      "median_ms_per_page": 38.914,
+      "p95_ms_per_page": 233.185,
+      "pages_per_second": 25.698,
+      "n_pages": 200,
+      "passes": 3
+    },
+    "markitdown": {
+      "median_ms_per_page": 83.285,
+      "p95_ms_per_page": 479.357,
+      "pages_per_second": 12.007,
+      "n_pages": 200,
+      "passes": 3
+    },
+    "readability": {
+      "median_ms_per_page": 50.871,
+      "p95_ms_per_page": 304.027,
+      "pages_per_second": 19.658,
+      "n_pages": 200,
+      "passes": 3
+    }
+  }
+}

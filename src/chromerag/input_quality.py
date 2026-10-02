@@ -10,7 +10,7 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass, field
 
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, CData, NavigableString
 
 # Heuristic thresholds — tuned for corporate docs/marketing shells.
 _MIN_VISIBLE_CHARS = 280
@@ -56,14 +56,28 @@ class InputQualityReport:
         }
 
 
+_HIDDEN_CONTAINERS = ("script", "style", "noscript", "svg", "template")
+_TEXT_TYPES = (NavigableString, CData)
+
+
 def _visible_text_from_soup(soup: BeautifulSoup) -> tuple[str, int]:
-    """Count visible text and script characters from an already-parsed tree."""
+    """Visible text and script size from an already-parsed, unmodified tree.
+
+    Same result as parsing the HTML a second time and deleting the hidden containers, without
+    the second parse: text inside script/style/noscript/svg/template does not count.
+    """
     script_chars = sum(len(s.get_text() or "") for s in soup.find_all("script"))
-    work = BeautifulSoup(str(soup), "lxml")
-    for t in work(["script", "style", "noscript", "svg", "template"]):
-        t.decompose()
-    text = re.sub(r"\s+", " ", work.get_text(" ", strip=True)).strip()
-    return text, script_chars
+    hidden: set[int] = set()
+    for container in soup.find_all(_HIDDEN_CONTAINERS):
+        hidden.update(id(node) for node in container.descendants)
+    parts = []
+    for node in soup.descendants:
+        if type(node) in _TEXT_TYPES and id(node) not in hidden:
+            stripped = node.strip()
+            if stripped:
+                parts.append(stripped)
+    return re.sub(r"\s+", " ", " ".join(parts)).strip(), script_chars
+
 
 def _visible_text(html: str) -> tuple[str, int]:
     soup = BeautifulSoup(html, "lxml")

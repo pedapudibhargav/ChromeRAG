@@ -23,6 +23,7 @@ import re
 import time
 from collections import Counter, defaultdict
 from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
 from urllib.parse import urljoin, urlparse
 
 import httpx
@@ -32,9 +33,11 @@ from poc.crawl_site_groups import DELAY_S, HOST_WORKERS, _allowed
 from poc.fetch_pages import HEADERS, _ssl_verify, sniff_signals
 from poc.run_corpus_comparison import ROOT
 
-COMPANIES = ROOT / "poc" / "landing_companies.json"
-URLS = ROOT / "poc" / "landing_urls.json"
-RAW = ROOT / "data" / "landing_raw"
+DEFAULT_COMPANIES = ROOT / "poc" / "landing_companies.json"
+DEFAULT_URLS = ROOT / "poc" / "landing_urls.json"
+DEFAULT_RAW = ROOT / "data" / "landing_raw"
+# Names other modules import.
+COMPANIES, URLS, RAW = DEFAULT_COMPANIES, DEFAULT_URLS, DEFAULT_RAW
 MAX_PAGES = 5
 MAX_PRODUCT = 4
 
@@ -100,9 +103,9 @@ def _slug(name: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
 
 
-def _save(page_id: str, url: str, response: httpx.Response, company: dict, role: str) -> None:
-    RAW.mkdir(parents=True, exist_ok=True)
-    (RAW / f"{page_id}.html").write_text(response.text, encoding="utf-8")
+def _save(raw: Path, page_id: str, url: str, response: httpx.Response, company: dict, role: str) -> None:
+    raw.mkdir(parents=True, exist_ok=True)
+    (raw / f"{page_id}.html").write_text(response.text, encoding="utf-8")
     meta = {
         "id": page_id,
         "url": str(response.url),
@@ -113,7 +116,7 @@ def _save(page_id: str, url: str, response: httpx.Response, company: dict, role:
         "status_code": response.status_code,
         "signals": sniff_signals(response.text),
     }
-    (RAW / f"{page_id}.meta.json").write_text(json.dumps(meta, indent=2), encoding="utf-8")
+    (raw / f"{page_id}.meta.json").write_text(json.dumps(meta, indent=2), encoding="utf-8")
 
 
 def _get(client: httpx.Client, url: str, robots: dict) -> httpx.Response | None:
@@ -127,8 +130,8 @@ def _get(client: httpx.Client, url: str, robots: dict) -> httpx.Response | None:
         return None
 
 
-def plan() -> dict:
-    companies = json.loads(COMPANIES.read_text(encoding="utf-8"))["companies"]
+def plan(companies_path: Path = DEFAULT_COMPANIES, urls_path: Path = DEFAULT_URLS, raw: Path = DEFAULT_RAW) -> dict:
+    companies = json.loads(companies_path.read_text(encoding="utf-8"))["companies"]
     result: dict[str, dict] = {}
 
     def one(company: dict) -> tuple[str, dict]:
@@ -137,7 +140,7 @@ def plan() -> dict:
             r = _get(client, company["homepage"], robots)
             if r is None:
                 return company["name"], {"sector": company["sector"], "pages": [], "note": "homepage not fetched"}
-            _save(f"{_slug(company['name'])}-00", company["homepage"], r, company, "homepage")
+            _save(raw, f"{_slug(company['name'])}-00", company["homepage"], r, company, "homepage")
             pages = choose_pages(str(r.url), r.text)
             return company["name"], {
                 "sector": company["sector"],
@@ -154,13 +157,13 @@ def plan() -> dict:
         ),
         "companies": result,
     }
-    URLS.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    urls_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
     return payload
 
 
-def fetch() -> dict:
-    companies = {c["name"]: c for c in json.loads(COMPANIES.read_text(encoding="utf-8"))["companies"]}
-    listed = json.loads(URLS.read_text(encoding="utf-8"))["companies"]
+def fetch(companies_path: Path = DEFAULT_COMPANIES, urls_path: Path = DEFAULT_URLS, raw: Path = DEFAULT_RAW) -> dict:
+    companies = {c["name"]: c for c in json.loads(companies_path.read_text(encoding="utf-8"))["companies"]}
+    listed = json.loads(urls_path.read_text(encoding="utf-8"))["companies"]
     by_host: dict[str, list[tuple[str, str, dict, str]]] = defaultdict(list)
     for name, entry in listed.items():
         for i, page in enumerate(entry["pages"]):
@@ -172,7 +175,7 @@ def fetch() -> dict:
         robots: dict = {}
         with httpx.Client(follow_redirects=True, timeout=30.0, headers=HEADERS, verify=_ssl_verify()) as client:
             for page_id, url, company, role in jobs:
-                if (RAW / f"{page_id}.meta.json").exists():
+                if (raw / f"{page_id}.meta.json").exists():
                     counts["ok"] += 1
                     continue
                 time.sleep(DELAY_S)
@@ -180,7 +183,7 @@ def fetch() -> dict:
                 if r is None:
                     counts["failed_or_disallowed"] += 1
                     continue
-                _save(page_id, url, r, company, role)
+                _save(raw, page_id, url, r, company, role)
                 counts["ok"] += 1
 
     with ThreadPoolExecutor(max_workers=HOST_WORKERS) as pool:
@@ -192,21 +195,22 @@ def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--plan", action="store_true")
     p.add_argument("--fetch", action="store_true")
-    p.add_argument("--companies", type=Path, default=COMPANIES, help="Company list JSON")
-    p.add_argument("--raw-dir", type=Path, default=RAW, help="Output directory for fetched HTML")
+    p.add_argument("--companies", type=Path, default=DEFAULT_COMPANIES, help="Company list JSON")
+    p.add_argument("--urls", type=Path, default=DEFAULT_URLS, help="Planned-URL list JSON (written by --plan)")
+    p.add_argument("--raw-dir", type=Path, default=DEFAULT_RAW, help="Output directory for fetched HTML")
     args = p.parse_args()
-    global COMPANIES, RAW  # noqa: PLW0603
-    COMPANIES = args.companies
-    RAW = args.raw_dir
-    RAW.mkdir(parents=True, exist_ok=True)
     if not (args.plan or args.fetch):
         p.error("pass --plan and/or --fetch")
+    if args.plan or args.fetch:
+        if args.urls.resolve() == DEFAULT_URLS.resolve() and args.companies.resolve() != DEFAULT_COMPANIES.resolve():
+            p.error("--companies is not the default list: pass --urls with a different file so "
+                    "poc/landing_urls.json (the frozen benchmark) is not overwritten")
     if args.plan:
-        payload = plan()
+        payload = plan(args.companies, args.urls, args.raw_dir)
         pages = [pg for e in payload["companies"].values() for pg in e["pages"]]
         print(f"Planned {len(pages)} pages from {len(payload['companies'])} companies:", Counter(pg["role"] for pg in pages))
     if args.fetch:
-        print("Fetched:", fetch())
+        print("Fetched:", fetch(args.companies, args.urls, args.raw_dir))
 
 
 if __name__ == "__main__":

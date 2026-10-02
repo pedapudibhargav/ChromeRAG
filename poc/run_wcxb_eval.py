@@ -12,7 +12,6 @@ from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
 from chromerag import ChromeRAG, ContentPriority, PipelineConfig
-
 from poc.baselines import BASELINES
 from poc.wcxb import load_split, snippet_rate, strip_front_matter, word_f1
 
@@ -37,11 +36,11 @@ TYPE_ORDER = (
 )
 
 
-def _extract(tool: str, html: str) -> str:
+def _extract(tool: str, html: str, url: str) -> str:
     if tool in TOOL_CHROMERAG:
         return ChromeRAG(
             config=PipelineConfig.from_priority(TOOL_CHROMERAG[tool], enable_dvdf=True)
-        ).extract(html).markdown
+        ).extract(html, url=url or None).markdown
     fn = BASELINES[tool]
     return fn(html)
 
@@ -52,11 +51,12 @@ def _score_page(args: tuple) -> dict:
     ref = page_dict["main_content"]
     for tool in tools:
         t0 = time.perf_counter()
+        error = None
         try:
-            pred = strip_front_matter(_extract(tool, page_dict["html"]))
+            pred = strip_front_matter(_extract(tool, page_dict["html"], page_dict.get("url", "")))
         except Exception as exc:  # noqa: BLE001
-            row[tool] = {"error": str(exc), "ms": (time.perf_counter() - t0) * 1000}
-            continue
+            # A crash is a failed extraction: score it as empty output, never drop the page.
+            pred, error = "", f"{type(exc).__name__}: {exc}"[:200]
         ms = (time.perf_counter() - t0) * 1000
         p, r, f1 = word_f1(pred, ref)
         row[tool] = {
@@ -67,6 +67,8 @@ def _score_page(args: tuple) -> dict:
             "without": snippet_rate(pred, page_dict["without_snippets"]),
             "ms": ms,
         }
+        if error:
+            row[tool]["error"] = error
     return row
 
 
@@ -180,6 +182,7 @@ def main() -> None:
     page_dicts = [
         {
             "id": p.id,
+            "url": p.url,
             "page_type": p.page_type,
             "html": p.html,
             "main_content": p.main_content,
@@ -198,6 +201,11 @@ def main() -> None:
     print(f"Wrote {args.out}")
 
     _print_table(rows, tools)
+    crashed = {t: sum(1 for r in rows if "error" in r.get(t, {})) for t in tools}
+    if any(crashed.values()):
+        print(f"\nERRORS (scored as empty output): {crashed}", file=sys.stderr)
+        first = next((r[t]["error"] for r in rows for t in tools if "error" in r.get(t, {})), "")
+        print(f"first error: {first}", file=sys.stderr)
     if args.compare:
         _compare(rows, args.compare, tools)
     elif args.split == "dev" and BASELINE_PATH.exists():

@@ -6,8 +6,8 @@ import json
 import traceback
 from pathlib import Path
 
-from poc.baselines import BASELINES, estimate_tokens, noise_keyword_hits
 from chromerag import ChromeRAG
+from poc.baselines import BASELINES, estimate_tokens, noise_keyword_hits
 
 ROOT = Path(__file__).resolve().parents[1]
 RAW = ROOT / "data" / "raw"

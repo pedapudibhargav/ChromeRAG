@@ -5,7 +5,6 @@ from __future__ import annotations
 import argparse
 
 from chromerag import ChromeRAG, ContentPriority, PipelineConfig
-
 from poc.wcxb import load_split, strip_front_matter, word_f1
 
 

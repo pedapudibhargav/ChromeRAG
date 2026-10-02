@@ -7,3 +7,11 @@
 5. **Collapse fallback** — retry with `<body>` root and coverage thresholds when output is too thin.
 
 Regenerated after reviewing sample diffs on dev corpus pages.
+
+# Allowed golden hash changes (WP3 and review)
+
+6. **Rule index** — YAML rules (consent managers, share/related blocks, Docusaurus footer) drop matching subtrees before scoring.
+7. **Crash fix** — pages that used to raise in skip-link removal now produce output.
+8. **Config switches** — page-type inference and the coverage fallback keep caller switches such as `enable_rules`.
+
+Performance work (single-pass statistics, cached densities) is output-identical: with rules disabled, old and new code give the same hashes on 631 pages.

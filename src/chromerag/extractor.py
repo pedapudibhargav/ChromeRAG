@@ -16,11 +16,18 @@ from __future__ import annotations
 
 import copy
 import re
+from functools import lru_cache
 from typing import Any
 
 from bs4 import BeautifulSoup, Tag
 
-from chromerag.config import ContentPriority, PipelineConfig, Strictness, infer_page_type
+from chromerag.config import (
+    PipelineConfig,
+    Strictness,
+    coverage_fallback,
+    infer_page_type,
+    with_page_type,
+)
 from chromerag.content_root import find_content_root
 from chromerag.density import (
     ElementCache,
@@ -32,13 +39,14 @@ from chromerag.density import (
 )
 from chromerag.dvdf import NoiseAnchorIndex
 from chromerag.hidden import remove_hidden_nodes, remove_skip_links
+from chromerag.input_quality import InputQualityReport, assess_input_html
 from chromerag.markdown_out import front_matter_yaml, soup_to_markdown
 from chromerag.models import ExtractResult
-from chromerag.input_quality import InputQualityReport, assess_input_html
-from chromerag.rules_engine import DEFAULT_INDEX, RuleHit
+from chromerag.rules_engine import DEFAULT_INDEX, RuleHit, RuleIndex
 from chromerag.schema_fusion import fuse_front_matter
 from chromerag.site_chrome import SiteChromeModel, apply_site_chrome, site_group_key
 from chromerag.tables import replace_tables_with_linearized
+from chromerag.treestats import TreeStats
 
 
 def estimate_tokens(text: str) -> int:
@@ -56,25 +64,13 @@ def _body_word_count(soup: BeautifulSoup) -> int:
 def _resolve_cfg(base: PipelineConfig, url: str | None, html: str) -> PipelineConfig:
     if base.page_type.value != "unknown" or not url:
         return base
-    return PipelineConfig.from_strictness(
-        base.strictness,
-        infer_page_type(url, html),
-        enable_schema=base.enable_schema,
-        enable_tables=base.enable_tables,
-        enable_dvdf=base.enable_dvdf,
-        enable_stce=base.enable_stce,
-        inject_heading_paths=base.inject_heading_paths,
-        min_chars=base.min_chars,
-        max_link_density=base.max_link_density,
-        min_text_density=base.min_text_density,
-        max_noise_block_chars=base.max_noise_block_chars,
-        max_rejected_drop_chars=base.max_rejected_drop_chars,
-        dvdf_threshold=base.dvdf_threshold,
-        stce_min_pages=base.stce_min_pages,
-        stce_frequency=base.stce_frequency,
-        stce_max_block_chars=base.stce_max_block_chars,
-        stce_require_chrome_features=base.stce_require_chrome_features,
-    )
+    return with_page_type(base, infer_page_type(url, html))
+
+
+@lru_cache(maxsize=8)
+def _noise_index_for(threshold: float) -> NoiseAnchorIndex:
+    """One shared anchor bank per threshold (it never changes after construction)."""
+    return NoiseAnchorIndex(threshold=threshold)
 
 
 class ChromeRAG:
@@ -86,6 +82,7 @@ class ChromeRAG:
         *,
         strictness: Strictness | str = Strictness.BALANCED,
         site_chrome: SiteChromeModel | None = None,
+        rule_index: RuleIndex | None = None,
         density: Any = None,
         dvdf_threshold: float | None = None,
         enable_dvdf: bool | None = None,
@@ -111,11 +108,12 @@ class ChromeRAG:
 
         self.config = cfg
         self.site_chrome = site_chrome
+        self.rule_index = rule_index or DEFAULT_INDEX
 
     def _noise_index(self, cfg: PipelineConfig) -> NoiseAnchorIndex | None:
         if not cfg.enable_dvdf:
             return None
-        return NoiseAnchorIndex(threshold=cfg.dvdf_threshold)
+        return _noise_index_for(cfg.dvdf_threshold)
 
     def _extract_core(
         self,
@@ -144,17 +142,23 @@ class ChromeRAG:
             content_root = soup.body if isinstance(soup.body, Tag) else soup
             root_label = "body-forced"
         else:
-            content_root, root_label = find_content_root(soup, cfg.page_type)
+            content_root, root_label = find_content_root(soup, cfg.page_type, body_words)
+
+        body = soup.body if isinstance(soup.body, Tag) else soup
+        stats: TreeStats | None = TreeStats(body)
 
         rule_hits: list[RuleHit] = []
         rule_totals: dict[str, int] = {}
         if cfg.enable_rules:
             root_tag = content_root if isinstance(content_root, Tag) else None
-            rule_hits, rule_totals = DEFAULT_INDEX.apply(
+            rule_hits, rule_totals = self.rule_index.apply(
                 soup,
                 content_root=root_tag,
                 page_type=cfg.page_type.value,
+                stats=stats,
             )
+            if rule_hits:
+                stats = None  # the tree changed
 
         elem_cache = ElementCache()
         stce_removed = 0
@@ -167,8 +171,16 @@ class ChromeRAG:
                 or self.site_chrome.group_key.split("/")[0] == (expected.split("/")[0])
             ):
                 stce_removed = apply_site_chrome(soup, self.site_chrome)
+                if stce_removed:
+                    stats = None
 
-        prune_noise_subtrees(soup, max_noise_block_chars=cfg.max_noise_block_chars, cache=elem_cache)
+        prune_noise_subtrees(
+            soup,
+            max_noise_block_chars=cfg.max_noise_block_chars,
+            cache=elem_cache,
+            stats=stats or TreeStats(body),
+        )
+        stats = TreeStats(body, serialized=True)  # pruning removed nodes; measure what is left
 
         density_cfg = cfg.density_config()
         blocks = candidate_blocks(
@@ -176,8 +188,9 @@ class ChromeRAG:
             density_cfg,
             cache=elem_cache,
             content_root=content_root if isinstance(content_root, Tag) else None,
+            stats=stats,
         )
-        scored = score_blocks(blocks, density_cfg, cache=elem_cache)
+        scored = score_blocks(blocks, density_cfg, cache=elem_cache, stats=stats)
         noise_index = self._noise_index(cfg)
         if noise_index is not None:
             scored = noise_index.apply(scored)
@@ -187,12 +200,13 @@ class ChromeRAG:
         if cfg.strictness == Strictness.AGGRESSIVE:
             drop_tags = ["p", "li", "div", "section"]
         for tag in [t for t in soup.find_all(drop_tags) if isinstance(t, Tag)]:
+            # Long blocks are never dropped here; checking that first avoids reading their text.
+            if stats.text_len(tag) >= cfg.max_rejected_drop_chars:
+                continue
             text = tag.get_text(" ", strip=True)
             if text not in rejected_texts:
                 continue
             if tag.name in {"h1", "h2", "h3", "h4", "h5", "h6", "table", "tr", "pre"}:
-                continue
-            if len(text) >= cfg.max_rejected_drop_chars:
                 continue
             if tag.find(["h1", "h2", "h3", "h4", "h5", "h6"]):
                 continue
@@ -259,15 +273,7 @@ class ChromeRAG:
             body_words > 0 and out_words < 0.15 * body_words
         )
         if collapsed and not meta["input_quality"].is_thin:
-            coverage_cfg = PipelineConfig.from_priority(
-                ContentPriority.COVERAGE,
-                page_type=cfg.page_type,
-                enable_schema=cfg.enable_schema,
-                enable_tables=cfg.enable_tables,
-                enable_dvdf=cfg.enable_dvdf,
-                enable_stce=cfg.enable_stce,
-                inject_heading_paths=cfg.inject_heading_paths,
-            )
+            coverage_cfg = coverage_fallback(cfg)
             md2, _, result2 = self._extract_core(
                 html,
                 url,

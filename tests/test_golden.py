@@ -1,4 +1,8 @@
-"""Golden Markdown regression check."""
+"""Golden Markdown regression check.
+
+Output changes are allowed only together with a reviewed regeneration of the manifest
+(`python -m poc.golden --write`) and a note in tests/golden/ALLOWED_CHANGES.md.
+"""
 
 from __future__ import annotations
 
@@ -7,7 +11,6 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-ALLOWED = ROOT / "tests" / "golden" / "ALLOWED_CHANGES.md"
 
 
 def test_golden_check() -> None:
@@ -16,9 +19,6 @@ def test_golden_check() -> None:
         import pytest
 
         pytest.skip("data/raw missing (gitignored corpus)")
-
-    if ALLOWED.exists():
-        return
 
     proc = subprocess.run(
         [sys.executable, "-m", "poc.golden", "--check"],

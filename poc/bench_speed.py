@@ -9,7 +9,6 @@ import time
 from pathlib import Path
 
 from chromerag import ChromeRAG, ContentPriority, PipelineConfig
-
 from poc.baselines import BASELINES
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -77,7 +76,6 @@ def _bench_tool(name: str, fn, htmls: list[str], *, passes: int = 3) -> dict:
     all_times: list[float] = []
     for _ in range(passes):
         times: list[float] = []
-        t0 = time.perf_counter()
         for html in htmls:
             t_page = time.perf_counter()
             fn(html)

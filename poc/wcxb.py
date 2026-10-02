@@ -78,7 +78,7 @@ def _page_type(data: dict) -> str:
 
 
 def load_split(split: str, root: Path | str = DEFAULT_ROOT) -> list[Page]:
-    """Load WCXB pages for *split* (dev, test, …). Skips GT without main_content."""
+    """Load WCXB pages for *split* (dev, test, …). Skips files without a main_content key (2 in dev)."""
     root = Path(root)
     gt_dir = root / split / "ground-truth"
     html_dir = root / split / "html"
@@ -91,9 +91,11 @@ def load_split(split: str, root: Path | str = DEFAULT_ROOT) -> list[Page]:
         gt = data.get("ground_truth", {})
         if not isinstance(gt, dict):
             continue
-        main_content = gt.get("main_content", "") or ""
-        if not main_content.strip():
+        # Same 1,495 dev pages as the frozen 0.1.2 baseline: skip only files that have no
+        # main_content key. Empty references are kept and scored (empty output scores 1.0).
+        if "main_content" not in gt:
             continue
+        main_content = gt.get("main_content", "") or ""
 
         page_id = gt_path.stem
         html_path = html_dir / f"{page_id}.html.gz"

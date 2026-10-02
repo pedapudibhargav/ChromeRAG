@@ -8,8 +8,8 @@ import pytest
 
 from chromerag import ChromeRAG, PipelineConfig, __version__
 from chromerag.config import ContentPriority, Strictness
-from chromerag.schema_fusion import fuse_front_matter
 from chromerag.density import parse_html
+from chromerag.schema_fusion import fuse_front_matter
 
 FIXTURES = Path(__file__).parent / "fixtures"
 

@@ -10,15 +10,14 @@ Stages:
 from __future__ import annotations
 
 import json
-import sys
 from collections import defaultdict
 from pathlib import Path
 
-from poc.baselines import BASELINES, noise_keyword_hits
-from poc.metrics import extract_anchors, score_extraction, scores_to_dict
 from chromerag import ChromeRAG, ContentPriority, PipelineConfig, learn_then_extract
 from chromerag.batch import BatchPage
 from chromerag.site_chrome import save_chrome_models
+from poc.baselines import BASELINES, noise_keyword_hits
+from poc.metrics import extract_anchors, score_extraction, scores_to_dict
 
 ROOT = Path(__file__).resolve().parents[1]
 RAW = ROOT / "data" / "raw"

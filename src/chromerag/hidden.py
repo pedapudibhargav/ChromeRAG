@@ -60,7 +60,8 @@ def remove_skip_links(soup: BeautifulSoup) -> int:
     """Drop skip-navigation anchors and empty wrappers."""
     removed = 0
     for anchor in list(soup.find_all("a")):
-        if not isinstance(anchor, Tag):
+        # An earlier iteration may have removed this anchor's wrapper; decomposed tags have no attrs.
+        if not isinstance(anchor, Tag) or anchor.attrs is None:
             continue
         href = anchor.get("href") or ""
         if not str(href).startswith("#"):

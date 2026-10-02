@@ -23,8 +23,8 @@ def baseline_markdownify(html: str) -> str:
 
 
 def baseline_readability(html: str) -> str:
-    from readability import Document
     from bs4 import BeautifulSoup
+    from readability import Document
 
     doc = Document(html)
     summary = doc.summary()
