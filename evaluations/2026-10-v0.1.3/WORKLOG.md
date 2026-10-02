@@ -146,3 +146,14 @@ documentation 0.965, service 0.902, product 0.845, listing 0.851, forum 0.832, c
 
 Other gates: anchor F_bal docs 0.834 (baseline 0.788), landing dev 0.781 (baseline 0.785 on all 362
 pages); speed median ~29 ms/page vs Trafilatura ~31 ms (`poc/bench_speed.py`).
+
+### Ablation (WCXB dev, all 1,495 pages)
+
+| | coverage | balanced | precision |
+|---|---|---|---|
+| v0.1.2 baseline (heuristics) | 0.749 | — | — |
+| heuristics + robustness fixes (`enable_lbc=False`) | 0.822 | 0.817 | 0.790 |
+| + learned block filter (5-fold CV) | 0.846 | 0.845 | 0.833 |
+
+The robustness fixes (wrappers, tables, hidden text, order, links) account for most of the gain over 0.1.2;
+the learned filter adds +0.024 / +0.028 / +0.043 on top.

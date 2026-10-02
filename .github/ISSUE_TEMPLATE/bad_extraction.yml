@@ -1,0 +1,25 @@
+name: Bad extraction
+description: A page where ChromeRAG kept chrome or dropped content
+labels: [extraction]
+body:
+  - type: input
+    id: url
+    attributes: {label: Page URL or description, description: "Do not include pages with personal data."}
+    validations: {required: true}
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority used
+      options: [precision, balanced, coverage]
+  - type: textarea
+    id: got
+    attributes: {label: What you got (paste the wrong part of the Markdown)}
+  - type: textarea
+    id: expected
+    attributes: {label: What you expected}
+  - type: textarea
+    id: html
+    attributes: {label: Minimal HTML that reproduces it (optional)}
+  - type: input
+    id: version
+    attributes: {label: "chromerag --version"}
