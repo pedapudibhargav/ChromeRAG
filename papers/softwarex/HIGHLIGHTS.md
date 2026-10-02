@@ -3,17 +3,17 @@
 3–5 bullets, each ≤ 85 characters including spaces. Paste one per field in Editorial Manager.
 
 ```
-ChromeRAG converts scraped HTML into RAG-ready Markdown without site chrome.
-Learns a site's repeated template from a few pages, guarded against content loss.
-On 242 public pages: Fbal 0.788 vs 0.739 Trafilatura and 0.696 MarkItDown.
-Matches MarkItDown's BM25 retrieval hit rate with 35% fewer chunks to embed.
-Schema.org front-matter, table rows, JS-shell warnings; MIT, CPU-only, on PyPI.
+ChromeRAG converts HTML to RAG-ready Markdown with a 150 KB learned block filter.
+On 511 held-out WCXB pages: F1 0.902 vs 0.860 Trafilatura, 0.540 MarkItDown.
+Large gains on forums, product and category pages; ties Trafilatura on articles.
+Blind LLM judge prefers it to Trafilatura on 70% and MarkItDown on 87% of pages.
+CPU-only NumPy inference, about 36 ms per page; learns site templates; MIT, on PyPI.
 ```
 
 | # | Chars | Highlight |
 |---|------:|-----------|
-| 1 | 76 | ChromeRAG converts scraped HTML into RAG-ready Markdown without site chrome. |
-| 2 | 81 | Learns a site's repeated template from a few pages, guarded against content loss. |
-| 3 | 74 | On 242 public pages: Fbal 0.788 vs 0.739 Trafilatura and 0.696 MarkItDown. |
-| 4 | 76 | Matches MarkItDown's BM25 retrieval hit rate with 35% fewer chunks to embed. |
-| 5 | 79 | Schema.org front-matter, table rows, JS-shell warnings; MIT, CPU-only, on PyPI. |
+| 1 | 81 | ChromeRAG converts HTML to RAG-ready Markdown with a 150 KB learned block filter. |
+| 2 | 76 | On 511 held-out WCXB pages: F1 0.902 vs 0.860 Trafilatura, 0.540 MarkItDown. |
+| 3 | 80 | Large gains on forums, product and category pages; ties Trafilatura on articles. |
+| 4 | 80 | Blind LLM judge prefers it to Trafilatura on 70% and MarkItDown on 87% of pages. |
+| 5 | 84 | CPU-only NumPy inference, about 36 ms per page; learns site templates; MIT, on PyPI. |

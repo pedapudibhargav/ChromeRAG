@@ -80,11 +80,12 @@ def _hbar(x0, y, length, thickness, color):
 # --------------------------------------------------------------------------- Fig. 1
 def fig_architecture() -> str:
     stages = [
-        ("1", "Input-quality", "gate", "thin / JS-shell", "warnings"),
-        ("2", "Schema", "harvest", "JSON-LD, Microdata", "→ front-matter"),
-        ("3", "Clean +", "STCE", "strip scripts; apply", "site model"),
-        ("4", "Structural +", "density prune", "landmarks, link", "density, DVDF"),
-        ("5", "Tables +", "Markdown", "key–value rows,", "safe headings"),
+        ("1", "Input", "gate", "thin / JS", "warnings"),
+        ("2", "Schema", "harvest", "JSON-LD", "front-matter"),
+        ("3", "Clean +", "STCE", "hidden, rules,", "site model"),
+        ("4", "Chrome", "prune", "landmarks,", "class words"),
+        ("5", "Learned", "block filter", "trees score", "each block"),
+        ("6", "Tables +", "Markdown", "key–value,", "doc. order"),
     ]
     h = 150
     body: list[str] = [
@@ -92,7 +93,7 @@ def fig_architecture() -> str:
         f'orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 z" fill="{MUTED}"/></marker></defs>'
     ]
     io_w, gap = 50, 9
-    box_w = (WIDTH - 2 * io_w - 12 - 6 * gap) / 5
+    box_w = (WIDTH - 2 * io_w - 12 - 7 * gap) / 6
     top, bh = 14, 74
     body.append(f'<rect x="6" y="{top}" width="{io_w}" height="{bh}" rx="4" fill="#f3f2ef"/>')
     body.append(_text(6 + io_w / 2, top + bh / 2 - 5, "HTML", size=9, anchor="middle", weight="bold"))
@@ -100,7 +101,7 @@ def fig_architecture() -> str:
     x = 6 + io_w + gap
     centers = []
     for num, l1, l2, d1, d2 in stages:
-        accent = num == "3"
+        accent = num == "5"
         fill = "#eaf2fc" if accent else "#f7f7f5"
         stroke = "#2a78d6" if accent else "#d6d5d0"
         body.append(
@@ -144,79 +145,84 @@ def fig_architecture() -> str:
 
 
 # --------------------------------------------------------------------------- Fig. 2
-def fig_benchmark(report: dict) -> str:
-    h = 212
-    body: list[str] = []
-    pw = (WIDTH - 30) / 2
-    # (a) recall vs noise retention, means over scoreable pages
-    summary = report["summary"]
-    x0, y0, w, ph = 44, 20, pw - 44, 150
-    xmax, ymin, ymax = 0.3, 0.4, 0.75
-    sx = lambda v: x0 + v / xmax * w  # noqa: E731
-    sy = lambda v: y0 + ph - (v - ymin) / (ymax - ymin) * ph  # noqa: E731
-    body.append(_text(4, 10, "(a)", size=9, weight="bold"))
-    for t in (0.0, 0.1, 0.2, 0.3):
-        body.append(f'<line x1="{sx(t):.1f}" y1="{y0}" x2="{sx(t):.1f}" y2="{y0 + ph}" stroke="{GRID}" stroke-width="0.6"/>')
-        body.append(_text(sx(t), y0 + ph + 10, f"{t:.1f}", size=7, anchor="middle", fill=INK_2))
-    for t in (0.4, 0.5, 0.6, 0.7):
-        body.append(f'<line x1="{x0}" y1="{sy(t):.1f}" x2="{x0 + w}" y2="{sy(t):.1f}" stroke="{GRID}" stroke-width="0.6"/>')
-        body.append(_text(x0 - 4, sy(t) + 2.5, f"{t:.1f}", size=7, anchor="end", fill=INK_2))
-    body.append(_text(x0 + w / 2, y0 + ph + 22, "Noise retention (lower is better)", size=7.5, anchor="middle", fill=INK_2))
-    body.append(
-        f'<text x="12" y="{y0 + ph / 2:.1f}" font-size="7.5" fill="{INK_2}" text-anchor="middle" '
-        f'transform="rotate(-90 12 {y0 + ph / 2:.1f})">Content recall (higher is better)</text>'
-    )
-    body.append(_text(x0 + 4, y0 + 9, "↖ better", size=7, fill=MUTED))
-    leader_x = sx(0.045)  # labels for the cluster near zero noise sit to the right
-    for key, (label, color) in METHODS.items():
-        s = summary[key]
-        cx, cy = sx(s["avg_noise_retention"]), sy(s["avg_content_recall"])
-        if key == "markitdown":
-            body.append(_text(cx, cy - 8, label, size=7, anchor="middle"))
-        else:
-            body.append(f'<line x1="{cx + 4:.1f}" y1="{cy:.1f}" x2="{leader_x - 2:.1f}" y2="{cy:.1f}" stroke="{MUTED}" stroke-width="0.5"/>')
-            body.append(_text(leader_x, cy + 2.5, label, size=7))
-        body.append(f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="3.6" fill="{color}" stroke="{SURFACE}" stroke-width="1.2"/>')
+TYPE_LABELS = {"all": "All pages (511)", "article": "Article (257)", "documentation": "Documentation (42)",
+               "service": "Service (59)", "forum": "Forum (51)", "product": "Product (28)",
+               "collection": "Collection (34)", "listing": "Listing (40)"}
+DOT_TOOLS = ("chromerag", "trafilatura", "readability", "markitdown")
 
-    # (b) per-page recall ECDF: where content gets lost
-    pages = [p for p in report["pages"].values() if p.get("scoreable")]
-    bx0, by0, bw = WIDTH / 2 + 42, 20, pw - 38
-    body.append(_text(WIDTH / 2 + 8, 10, "(b)", size=9, weight="bold"))
-    bsx = lambda v: bx0 + v * bw  # noqa: E731
-    bsy = lambda v: by0 + ph - v * ph  # noqa: E731
-    body.append(f'<rect x="{bsx(0):.1f}" y="{by0}" width="{bsx(0.2) - bsx(0):.1f}" height="{ph}" fill="#f6f5f2"/>')
-    body.append(_text(bsx(0.1), by0 + 9, "recall < 0.2", size=6.5, anchor="middle", fill=MUTED))
-    for t in (0.0, 0.25, 0.5, 0.75, 1.0):
-        body.append(f'<line x1="{bsx(t):.1f}" y1="{by0}" x2="{bsx(t):.1f}" y2="{by0 + ph}" stroke="{GRID}" stroke-width="0.6"/>')
-        body.append(_text(bsx(t), by0 + ph + 10, f"{t:g}", size=7, anchor="middle", fill=INK_2))
-        body.append(f'<line x1="{bx0}" y1="{bsy(t):.1f}" x2="{bx0 + bw}" y2="{bsy(t):.1f}" stroke="{GRID}" stroke-width="0.6"/>')
-        body.append(_text(bx0 - 4, bsy(t) + 2.5, f"{int(t * 100)}%", size=7, anchor="end", fill=INK_2))
-    body.append(_text(bx0 + bw / 2, by0 + ph + 22, "Per-page content recall", size=7.5, anchor="middle", fill=INK_2))
-    body.append(
-        f'<text x="{WIDTH / 2 + 12:.1f}" y="{by0 + ph / 2:.1f}" font-size="7.5" fill="{INK_2}" text-anchor="middle" '
-        f'transform="rotate(-90 {WIDTH / 2 + 12:.1f} {by0 + ph / 2:.1f})">Share of pages (cumulative)</text>'
-    )
-    legend_y = bsy(0.86)
-    for i, key in enumerate(("trafilatura", "chromerag_coverage", "markitdown")):
+
+def fig_wcxb_test(final: dict) -> str:
+    means = final["wcxb_test"]["means"]
+    rows = list(TYPE_LABELS)
+    row_h, top, label_w = 17, 30, 104
+    h = top + len(rows) * row_h + 26
+    x0, w = label_w + 8, WIDTH - label_w - 24
+    lo, hi = 0.2, 1.0
+    sx = lambda v: x0 + (v - lo) / (hi - lo) * w  # noqa: E731
+    body: list[str] = []
+    for t in (0.2, 0.4, 0.6, 0.8, 1.0):
+        body.append(f'<line x1="{sx(t):.1f}" y1="{top - 6}" x2="{sx(t):.1f}" y2="{top + len(rows) * row_h}" stroke="{GRID}" stroke-width="0.6"/>')
+        body.append(_text(sx(t), top + len(rows) * row_h + 10, f"{t:.1f}", size=7, anchor="middle", fill=INK_2))
+    body.append(_text(x0 + w / 2, top + len(rows) * row_h + 21, "Word-level F1 against human-reviewed main content (WCXB held-out test)", size=7.5, anchor="middle", fill=INK_2))
+    lx = x0
+    for key in DOT_TOOLS:
         label, color = METHODS[key]
-        vals = sorted(p["methods"][key]["content_recall"] for p in pages)
-        n = len(vals)
-        pts = [f"{bsx(0):.2f},{bsy(0):.2f}"]
-        for j, v in enumerate(vals):
-            pts.append(f"{bsx(v):.2f},{bsy(j / n):.2f}")
-            pts.append(f"{bsx(v):.2f},{bsy((j + 1) / n):.2f}")
-        pts.append(f"{bsx(1):.2f},{bsy(1):.2f}")
-        body.append(
-            f'<polyline points="{" ".join(pts)}" fill="none" stroke="{color}" stroke-width="1.5" '
-            'stroke-linejoin="round" stroke-linecap="round"/>'
-        )
-        ly = legend_y + i * 11
-        body.append(f'<line x1="{bsx(0.24):.1f}" y1="{ly - 2.5}" x2="{bsx(0.30):.1f}" y2="{ly - 2.5}" stroke="{color}" stroke-width="1.8" stroke-linecap="round"/>')
-        body.append(_text(bsx(0.32), ly, label.split(" (")[0], size=7))
+        body.append(f'<circle cx="{lx + 3:.1f}" cy="10" r="3.4" fill="{color}"/>')
+        body.append(_text(lx + 10, 12.5, label, size=7.5))
+        lx += 20 + 4.4 * len(label)
+    for i, row in enumerate(rows):
+        y = top + i * row_h + row_h / 2
+        if row == "all":
+            body.append(f'<rect x="4" y="{y - row_h / 2 + 1:.1f}" width="{WIDTH - 8}" height="{row_h - 2}" fill="#f6f5f2"/>')
+        body.append(_text(label_w, y + 2.5, TYPE_LABELS[row], size=7.5, anchor="end", weight="bold" if row == "all" else "normal"))
+        for key in DOT_TOOLS:
+            v = means[row][key]["f1"]
+            body.append(f'<circle cx="{sx(v):.1f}" cy="{y:.1f}" r="3.4" fill="{METHODS[key][1]}" stroke="{SURFACE}" stroke-width="0.9"/>')
+        v = means[row]["chromerag"]["f1"]
+        body.append(_text(sx(v), y - 6, f"{v:.2f}", size=6.5, anchor="middle", fill="#2a78d6"))
     return _svg(h, body)
 
 
 # --------------------------------------------------------------------------- Fig. 3
+def fig_frontier(final: dict) -> str:
+    h = 200
+    x0, y0, w, ph = 46, 14, WIDTH - 130, 150
+    xmin, xmax, ymin, ymax = 0.68, 1.0, 0.76, 0.90
+    sx = lambda v: x0 + (v - xmin) / (xmax - xmin) * w  # noqa: E731
+    sy = lambda v: y0 + ph - (v - ymin) / (ymax - ymin) * ph  # noqa: E731
+    body: list[str] = []
+    for t in (0.7, 0.8, 0.9, 1.0):
+        body.append(f'<line x1="{sx(t):.1f}" y1="{y0}" x2="{sx(t):.1f}" y2="{y0 + ph}" stroke="{GRID}" stroke-width="0.6"/>')
+        body.append(_text(sx(t), y0 + ph + 10, f"{t:.1f}", size=7, anchor="middle", fill=INK_2))
+    for t in (0.76, 0.80, 0.84, 0.88):
+        body.append(f'<line x1="{x0}" y1="{sy(t):.1f}" x2="{x0 + w}" y2="{sy(t):.1f}" stroke="{GRID}" stroke-width="0.6"/>')
+        body.append(_text(x0 - 4, sy(t) + 2.5, f"{t:.2f}", size=7, anchor="end", fill=INK_2))
+    body.append(_text(x0 + w / 2, y0 + ph + 22, "Recall", size=7.5, anchor="middle", fill=INK_2))
+    body.append(f'<text x="12" y="{y0 + ph / 2:.1f}" font-size="7.5" fill="{INK_2}" text-anchor="middle" transform="rotate(-90 12 {y0 + ph / 2:.1f})">Precision</text>')
+    pts = []
+    for t, (p, r, f1) in final["frontier_dev"].items():
+        if xmin <= r <= xmax and ymin <= p <= ymax:
+            pts.append((float(t), r, p))
+    pts.sort()
+    body.append('<polyline points="' + " ".join(f"{sx(r):.1f},{sy(p):.1f}" for _, r, p in pts) + f'" fill="none" stroke="#2a78d6" stroke-width="1.6"/>')
+    for t, r, p in pts:
+        body.append(f'<circle cx="{sx(r):.1f}" cy="{sy(p):.1f}" r="2.6" fill="#2a78d6" stroke="{SURFACE}" stroke-width="0.8"/>')
+        body.append(_text(sx(r) + 4, sy(p) - 3, f"{t:.2f}", size=6, fill=INK_2))
+    dev = final["wcxb_dev_cv"]["means"]["all"]
+    for key in ("trafilatura", "readability"):
+        label, color = METHODS[key]
+        p, r = dev[key]["p"], dev[key]["r"]
+        body.append(f'<circle cx="{sx(r):.1f}" cy="{sy(p):.1f}" r="4" fill="{color}" stroke="{SURFACE}" stroke-width="1"/>')
+        body.append(_text(sx(r) + 7, sy(p) + 2.5, label, size=7.5))
+    body.append(_text(x0 + w + 8, y0 + 12, "ChromeRAG:", size=7.5, weight="bold", fill="#2a78d6"))
+    body.append(_text(x0 + w + 8, y0 + 23, "threshold 0.15 to 0.90", size=7, fill=INK_2))
+    body.append(_text(x0 + w + 8, y0 + 34, "(coverage 0.30,", size=7, fill=INK_2))
+    body.append(_text(x0 + w + 8, y0 + 44, "balanced 0.50,", size=7, fill=INK_2))
+    body.append(_text(x0 + w + 8, y0 + 54, "precision 0.70)", size=7, fill=INK_2))
+    return _svg(h, body)
+
+
+# --------------------------------------------------------------------------- Fig. 4
 def fig_retrieval(report: dict) -> str:
     tools = [t for t in METHODS if t in report["tools"]]
     rows = len(tools)
@@ -245,13 +251,32 @@ def fig_retrieval(report: dict) -> str:
         for i, tool in enumerate(tools):
             label, color = METHODS[tool]
             y = top + i * row_h + (row_h - thick) / 2
-            v = report["tools"][tool]["scores"]["all"][metric]
+            v = report["tools"][tool][metric]
             length = v / vmax * w
             body.append(_hbar(x0, y, length, thick, color))
             body.append(_text(x0 + length + 3, y + thick / 2 + 2.5, fmt(v), size=7))
             if pi == 0:
                 body.append(_text(label_w - 8, y + thick / 2 + 2.5, label, size=7.5, anchor="end"))
         body.append(f'<line x1="{x0}" y1="{top - 4}" x2="{x0}" y2="{top + rows * row_h}" stroke="{INK_2}" stroke-width="0.8"/>')
+    return _svg(h, body)
+
+
+# --------------------------------------------------------------------------- Fig. 5
+def fig_judge(final: dict) -> str:
+    rows = [("vs Trafilatura", final["judge"]["all:trafilatura"]), ("vs MarkItDown", final["judge"]["all:markitdown"])]
+    h, top, label_w = 70, 22, 90
+    x0, w = label_w + 6, WIDTH - label_w - 20
+    body: list[str] = [_text(x0, 10, "Blind pairwise LLM judge, 100 pages (held-out and fresh companies)", size=7.5, fill=INK_2)]
+    for i, (label, r) in enumerate(rows):
+        y = top + i * 22
+        body.append(_text(label_w, y + 9, label, size=7.5, anchor="end"))
+        x = x0
+        for key, color, name in (("chromerag_wins", "#2a78d6", "ChromeRAG better"), ("ties", "#c9c8c2", "tie"), ("baseline_wins", "#eb6834" if i == 0 else "#1baf7a", "other better")):
+            seg = r[key] * w
+            body.append(f'<rect x="{x:.1f}" y="{y}" width="{seg:.1f}" height="13" fill="{color}"/>')
+            if r[key] >= 0.08:
+                body.append(_text(x + seg / 2, y + 9.5, f"{r[key] * 100:.0f}%", size=7, anchor="middle", fill="#ffffff" if key != "ties" else INK))
+            x += seg
     return _svg(h, body)
 
 
@@ -296,13 +321,15 @@ def render(name: str, svg: str) -> None:
 
 
 def main() -> None:
-    corpus = json.loads((DATA / "corpus_comparison_report.json").read_text(encoding="utf-8"))
-    retrieval = json.loads((DATA / "retrieval_eval_report.json").read_text(encoding="utf-8"))
+    final = json.loads((DATA / "final_results.json").read_text(encoding="utf-8"))
+    fresh = {"tools": {t: v for t, v in final["retrieval_fresh"]["bm25"].items()}}
     for stale in OUT.glob("fig*_*.png"):
         stale.unlink()
     render("fig1_architecture", fig_architecture())
-    render("fig2_benchmark", fig_benchmark(corpus))
-    render("fig3_retrieval", fig_retrieval(retrieval))
+    render("fig2_wcxb_test", fig_wcxb_test(final))
+    render("fig3_frontier", fig_frontier(final))
+    render("fig4_retrieval", fig_retrieval(fresh))
+    render("fig5_judge", fig_judge(final))
     print("Done:", OUT)
 
 

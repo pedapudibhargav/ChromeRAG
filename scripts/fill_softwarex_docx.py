@@ -36,7 +36,7 @@ OUT = ROOT / "papers" / "softwarex" / "ChromeRAG_SoftwareX_OSP.docx"
 
 _NEXT_ID = 0xF000
 
-TITLE = "ChromeRAG: Ingest-Time Elimination of Site Template Noise for Enterprise Web RAG"
+TITLE = "ChromeRAG: A Learned Boilerplate Filter and Site-Template Learner for Web RAG Ingestion"
 AUTHORS = (
     "Bhargava Chary Peddapudi (Independent Researcher; "
     "ORCID: https://orcid.org/0009-0002-8523-8415); "
@@ -44,13 +44,13 @@ AUTHORS = (
 )
 KEYWORDS = (
     "retrieval-augmented generation; HTML extraction; boilerplate removal; "
-    "web template detection; Markdown; Python"
+    "main content extraction; Markdown; Python"
 )
 BOLD_LEAD, ITALIC_LEAD, LEAD_END = "\x01", "\x02", "\x03"
 
 METADATA = {
-    "C1": "v0.1.2",
-    "C2": "https://github.com/pedapudibhargav/ChromeRAG/tree/v0.1.2",
+    "C1": "v0.1.3",
+    "C2": "https://github.com/pedapudibhargav/ChromeRAG/tree/v0.1.3",
     "C3": "MIT",
     "C4": "git",
     "C5": "Python ≥3.11; BeautifulSoup4, lxml, PyYAML, NumPy",
@@ -426,7 +426,7 @@ def _write_document(path: Path, tree: etree._ElementTree) -> None:
     path.write_text(text, encoding="utf-8")
 
 
-PAPER_TITLE = "ChromeRAG: Ingest-Time Elimination of Site Template Noise for Enterprise Web RAG"
+PAPER_TITLE = "ChromeRAG: A Learned Boilerplate Filter and Site-Template Learner for Web RAG Ingestion"
 PAPER_AUTHOR = "Bhargava Chary Peddapudi"
 
 

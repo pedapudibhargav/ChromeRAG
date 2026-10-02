@@ -27,21 +27,29 @@ W, R, A, WP, PIC = f"{{{W_NS}}}", f"{{{R_NS}}}", f"{{{A_NS}}}", f"{{{WP_NS}}}", 
 IMAGES = [
     (
         "fig1_architecture.png",
-        "Figure 1. ChromeRAG processing pipeline. The optional site model produced by "
-        "chromerag learn is applied in stage 3.",
+        "Figure 1. ChromeRAG processing pipeline. The learned block filter (stage 5) scores every text block; "
+        "the optional site model produced by chromerag learn is applied in stage 3.",
     ),
     (
-        "fig2_benchmark.png",
-        "Figure 2. Extraction benchmark on the 242 scoreable pages. (a) Mean content recall "
-        "against mean noise retention; the upper left is better. (b) Cumulative distribution of "
-        "per-page content recall: the shaded band marks near-total content loss (recall below 0.2), "
-        "which affects 25 pages for Trafilatura, 13 for ChromeRAG (coverage) and 1 for MarkItDown.",
+        "fig2_wcxb_test.png",
+        "Figure 2. Word-level F1 on the 511 held-out WCXB test pages, overall and by page type. Each dot is the mean "
+        "over the pages of one type; ChromeRAG is in balanced mode and its value is printed.",
     ),
     (
-        "fig3_retrieval.png",
-        "Figure 3. BM25 retrieval over each tool's ~200-word chunks, 771 known-item queries "
-        "built from the input HTML. (a) Share of queries whose page is in the top five chunks. "
-        "(b) Share of the retrieved top-five text that is navigation, header or footer chrome.",
+        "fig3_frontier.png",
+        "Figure 3. Precision and recall on WCXB development pages (five-fold cross-validation grouped by site) as "
+        "the ChromeRAG threshold goes from 0.15 to 0.90, against the single operating points of Trafilatura and Readability.",
+    ),
+    (
+        "fig4_retrieval.png",
+        "Figure 4. BM25 retrieval over each tool's ~200-word chunks on the 178 fresh-company landing pages, 668 known-item "
+        "queries. (a) Share of queries whose page is in the top five chunks (ChromeRAG in coverage mode). (b) Share of "
+        "the retrieved top-five text that is navigation, header or footer chrome.",
+    ),
+    (
+        "fig5_judge.png",
+        "Figure 5. Blind pairwise judgement by a language model of ChromeRAG (coverage) against Trafilatura and MarkItDown "
+        "on 100 held-out and fresh landing pages; grey marks ties.",
     ),
 ]
 

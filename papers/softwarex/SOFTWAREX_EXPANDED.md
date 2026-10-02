@@ -1,7 +1,7 @@
-# ChromeRAG: Ingest-Time Elimination of Site Template Noise for Enterprise Web RAG
+# ChromeRAG: A Learned Boilerplate Filter and Site-Template Learner for Web RAG Ingestion
 
 **Target journal:** Elsevier *SoftwareX* (Original Software Publication)  
-**Package:** `chromerag` (v0.1.2)  
+**Package:** `chromerag` (v0.1.3)  
 **Draft status:** Source text for `scripts/fill_softwarex_docx.py`, which fills the official SoftwareX OSP Word template (v6, March 2026). Do not submit this Markdown file as-is.
 
 **Authors:** Bhargava Chary Peddapudi (Independent Researcher; ORCID: https://orcid.org/0009-0002-8523-8415)  
@@ -11,21 +11,21 @@
 
 ## Abstract
 
-Web pages indexed for retrieval-augmented generation (RAG) carry navigation menus, cookie banners and footers that become noisy chunks in the vector store. ChromeRAG is an MIT-licensed, CPU-only Python package and command-line tool that converts HTML into RAG-ready Markdown. It removes this site-template "chrome", optionally learns a site's repeated template from a few pages, turns Schema.org metadata into front-matter, linearizes tables, and flags unrendered JavaScript shells. On 242 public pages it reached a balanced F-score of 0.788, against 0.739 for Trafilatura and 0.696 for MarkItDown, and in BM25 retrieval it matched MarkItDown's accuracy with 35% fewer chunks.
+Web pages indexed for retrieval-augmented generation (RAG) carry navigation, cookie banners, related links and comments that become noisy chunks. ChromeRAG is an MIT-licensed, CPU-only Python package and command-line tool that converts HTML into RAG-ready Markdown. A 150 KB gradient-boosted model, evaluated with NumPy, scores each text block; an optional site model removes repeated templates; metadata becomes front-matter, tables become key-value rows, and JavaScript shells are flagged. On the 511 held-out WCXB pages it reaches a word-level F1 of 0.902, against 0.860 for Trafilatura and 0.540 for MarkItDown.
 
-**Keywords:** retrieval-augmented generation; HTML extraction; boilerplate removal; web template detection; Markdown; Python
+**Keywords:** retrieval-augmented generation; HTML extraction; boilerplate removal; main content extraction; Markdown; Python
 
 ---
 
 ## Motivation and significance
 
-**Chrome pollutes RAG indexes.** Retrieval-augmented generation grounds a language model in retrieved passages [1]. In organizations those passages usually come from documentation portals, API references, pricing pages and knowledge bases, and that HTML was never written for machines to read. Each page mixes its own content with site-wide "chrome": top navigation, sidebar link trees, cookie-consent banners, sales calls to action and legal footers. If this HTML is converted naively and embedded, the same chrome text appears in every page's chunks. At query time these near-duplicate chunks compete with real content, show up as false positives, and use up the model's context window. The cost grows with corpus size. A 10,000-page portal with a 200-token footer adds two million tokens of identical text to the index.
+**Chrome pollutes RAG indexes.** Retrieval-augmented generation grounds a language model in retrieved passages [1]. In organizations those passages usually come from documentation portals, product and pricing pages and knowledge bases, and that HTML was never written for machines to read. Each page mixes its own content with site-wide "chrome": navigation, sidebar link trees, cookie-consent banners, sales calls to action, related-article lists, comment threads and legal footers. If this HTML is converted naively and embedded, the same text appears in the chunks of every page. At query time these near-duplicates compete with real content, produce false positives and use up the model's context window. The cost grows with corpus size: a 10,000-page portal with a 200-token footer adds two million tokens of identical text to the index.
 
-**Related work and the gap.** Boilerplate removal is an established problem. Shallow text features [2] and neural sequence labelling [3] classify blocks within a single page. Trafilatura [4] and Readability [5] are widely used main-content extractors tuned for articles, and a recent large-scale comparison [7] found that no single algorithm is best on every page type. Format converters such as MarkItDown [6] keep headings, tables and code blocks, but they do not try to remove chrome. Using several pages from the same site was proposed early on [8, 9]: blocks that repeat across a site's pages are likely to be template rather than content. Alarte et al. [10] benchmarked such template extractors. Query-time methods such as HtmlRAG [11] prune HTML after retrieval, so they complement ingest-time cleaning and do not replace it. What practitioners lack is a small, installable component at the ingest step of a RAG pipeline that combines four things: single-page chrome removal, an optional learned model of a site's repeated template, structured metadata and tables in a form suited to chunking, and explicit signals when the input HTML is unusable.
+**Related work and the gap.** Boilerplate removal is an established problem. Shallow text features [2] and neural sequence labelling over words and tags [3, 4] classify blocks within one page. Trafilatura [5] and Readability [6] are widely used extractors tuned for articles, and a large comparison [8] found that no algorithm is best on every page type. Format converters such as MarkItDown [7] keep headings, tables and code but do not try to remove chrome. The recent WCXB benchmark [9] makes the weakness of article-tuned tools measurable: on seven page types, systems agree on articles (F1 about 0.93) and differ by 20 to 30 points on forums, products and collections. A page-type-aware Rust extractor with a learned page classifier [10] and a language-model block labeller (MinerU-HTML, 0.6B parameters, GPU) [11] lead that benchmark. Using several pages of one site to find the template was proposed early [12, 13] and benchmarked in [14]; query-time pruning such as HtmlRAG [15] complements ingest-time cleaning. What practitioners lack is a small, installable, CPU-only component for the ingest step that combines a learned single-page filter, an optional site-template model, metadata and tables in a chunk-friendly form, and explicit signals when the input is unusable or the extraction is unsure.
 
-**What ChromeRAG provides.** ChromeRAG fills that gap with (i) *site-template chrome elimination* (STCE), a learn-then-extract model built from pages of the same site; (ii) Schema.org JSON-LD and Microdata harvested into YAML front-matter, so every chunk can carry typed metadata; (iii) linearization of tables into key–value rows that survive chunking; and (iv) input-quality warnings that separate legitimately short pages from JavaScript shells that must be rendered first. The package is query-agnostic and independent of any retriever or model. It runs on CPU without downloading a model, so it also works in air-gapped environments.
+**What ChromeRAG provides.** (i) A *learned block filter*: gradient-boosted trees over about 530 structural and lexical features of each text block, with a threshold per content priority; (ii) *site-template chrome elimination* (STCE), a learn-then-extract model built from pages of the same site; (iii) Schema.org JSON-LD and Microdata as YAML front-matter; (iv) tables as key-value rows; (v) input-quality warnings and a per-page confidence estimate. The package is independent of any retriever or model, needs no model download and works in air-gapped environments.
 
-**How it is used.** A crawler or headless browser stores HTML files. ChromeRAG converts each file, or a whole directory, into Markdown for chunking and embedding. When several pages from one site are available, `chromerag learn` builds a site chrome model first.
+**How it is used.** A crawler or headless browser stores HTML files. ChromeRAG converts each file, or a directory, into Markdown for chunking and embedding. When several pages of one site are available, `chromerag learn` builds a site model first.
 
 ---
 
@@ -33,37 +33,39 @@ Web pages indexed for retrieval-augmented generation (RAG) carry navigation menu
 
 ### Software architecture
 
-ChromeRAG is a small, dependency-light Python package (`src/chromerag`, about 2,400 lines) built on BeautifulSoup/lxml. Each document passes through five stages (Fig. 1), each in its own module. A pytest suite of 22 tests covers the pipeline end to end, the CLI, STCE regressions and the LangChain loader, and runs in continuous integration on Linux (Python 3.11–3.14), macOS and Windows.
+ChromeRAG is a small Python package (`src/chromerag`, about 4,000 lines) built on BeautifulSoup/lxml and NumPy. Each document passes through six stages (Fig. 1), each in its own module. A pytest suite of 64 tests covers the pipeline, the learned filter, the rule index, regression fixtures with exact golden outputs, the CLI, STCE and the LangChain loader; continuous integration runs on Linux (Python 3.11 to 3.14), macOS and Windows.
 
 <!-- FIG 1 -->
 
-*Stage 1: input-quality gate* (`input_quality.py`). The raw HTML is measured for visible text, script weight, single-page-application root markers (`id="root"`, `id="app"`, `__next`) and `<noscript>` "enable JavaScript" hints. Inputs that look thin produce `WARNING:` lines on stderr and entries in `result.warnings`. The gate runs on the document as received, before anything is removed.
+*Stage 1: input-quality gate* (`input_quality.py`). The raw HTML is measured for visible text, script weight, single-page-application root markers and "enable JavaScript" hints. Thin inputs produce warnings on stderr and in `result.warnings`.
 
-*Stage 2: schema harvest* (`schema_fusion.py`). JSON-LD blocks and Microdata are read before scripts are removed. Fields such as title, type, description, dates, author and breadcrumb become YAML front-matter.
+*Stage 2: schema harvest* (`schema_fusion.py`). JSON-LD and Microdata are read before scripts are removed; title, type, description, dates, author and breadcrumb become YAML front-matter.
 
-*Stage 3: cleaning and STCE* (`site_chrome.py`). Scripts, styles, forms and SVG are removed. If a site model is supplied, blocks whose signature is in the model are removed. A signature is a hash of the block's tag, id, classes and ARIA role, or of its text when the block has no attributes. `chromerag learn` groups pages by host and first path segment. Repeated and near-duplicate pages (for example one page published for several versions) count once. A signature enters the model only when it appears on at least a set share of the group's pages (default 80%), stays short, carries the same leading text on most of those pages, and either looks like chrome (chrome-related class tokens or phrases, or high link density) or is a short block whose text is identical on every page of the group, such as a site tagline. Frequency alone is therefore not enough: content cards that merely share a CSS class are not learned. At extraction time a matching block is removed only if it is close to its learned size, does not contain `<main>`, does not hold most of the page's text, and either carries the learned text or is explicitly marked as chrome, so a utility class reused by a content block cannot delete it.
+*Stage 3: cleaning and STCE* (`site_chrome.py`, `hidden.py`, `rules_engine.py`). Scripts, styles and SVG are removed; hidden nodes and skip links are removed unless a hidden block holds long running text with few links (pages that reveal content by script). A wrapper tag such as a page-wide `<form>`, an unclosed `<button>` or a large `<noscript>` keeps its content. A YAML rule index drops known chrome (consent managers, share bars, generator footers), and every rule carries evidence and a fixture. If a site model is supplied, blocks whose signature is in the model are removed. A signature hashes the tag, id, classes and role, or the text for blocks without attributes. `chromerag learn` keeps a signature only if it appears on at least 80% of a site group's pages, stays short, repeats its leading text, and looks like chrome or is identical on every page; at extraction time a match is removed only if it is close to its learned size, holds no `<main>`, and does not hold most of the page's text.
 
-*Stage 4: structural and density pruning* (`density.py`, `dvdf.py`). Landmark and class heuristics remove `nav`, `footer`, cookie, newsletter and similar subtrees. A guard stops a subtree from being removed if it contains `<main>` or holds most of the page's visible text. Candidate blocks are then scored by link density and text density. DVDF (density/vector filtering) embeds each block as a deterministic 384-dimensional feature-hashing vector [12] and drops blocks whose cosine similarity to a bank of boilerplate anchor phrases passes a threshold. Because the embedding is lexical, it catches near-verbatim boilerplate, not paraphrases, and needs no model download.
+*Stage 4: chrome pruning* (`density.py`, `content_root.py`). Landmark and class-word rules (`nav`, `footer`, cookie, newsletter, sidebar) remove subtrees, with guards: a subtree that contains `<main>`, holds most of the page's text, or holds two or more long paragraphs with few links is kept. A content-root ladder (`main`, `role=main`, `article`, content classes) is validated by size.
 
-*Stage 5: tables and Markdown* (`tables.py`, `markdown_out.py`). Tables become `Row n -> header: value | …` lines. The remaining DOM is written as Markdown with safe heading levels and fenced code.
+*Stage 5: learned block filter* (`blockfeatures.py`, `lbc.py`). The cleaned page is split into blocks: paragraphs, headings, list items, quotes, preformatted blocks, tables, text-only containers, and runs of loose text between block elements. Each block is described by about 530 numbers in five groups: its text (length, link density, punctuation, stop-word share, call-to-action verbs, dates), its place in the page (position, distance to headings, whether it is in the content root), its tree context (ancestor tags, link density and text mass of enclosing boxes, repeated sibling structures such as comment threads and card grids, overlap with the title and the page's long paragraphs), the hashed words of its ancestors' `class` and `id`, and the words of the heading above it. Trees (300 trees of depth 6, trained with scikit-learn) give the probability that the block is main content; the exported model is a 150 KB array file and prediction uses NumPy only. A block is kept when its probability reaches 0.30 (`coverage`), 0.50 (`balanced`) or 0.70 (`precision`). Pages with fewer than four blocks are kept whole, exact repeats are written once, and the model's own expected precision, recall and F1 for the page are stored in `diagnostics["lbc"]`; a warning is issued below an expected F1 of 0.70.
 
-Scope is deliberately narrow: ChromeRAG takes HTML in and returns Markdown. It does not fetch pages, render JavaScript or crawl sites. Those jobs belong to the caller, or to the separate evaluation harness in `poc/`, which is not needed at runtime.
+*Stage 6: tables and Markdown* (`tables.py`, `markdown_out.py`). Layout tables (nested, or cells with block content) are unwrapped; data tables become `Row n -> header: value | ...` lines. The page is written in document order with safe heading levels and fenced code; link targets are omitted unless requested (`--links`).
+
+*Training.* `poc/lbc_data.py` labels every block of the 1,495 WCXB development pages by word-trigram overlap with the human-reviewed main content (blocks the annotators list as "without" snippets are labelled noise) and `poc/train_lbc.py` fits the trees, weighting blocks by word count. Retraining takes about two minutes. The WCXB test split is never used for training or tuning.
+
+Scope is deliberately narrow: HTML in, Markdown out. ChromeRAG does not fetch pages, render JavaScript or crawl; those belong to the caller or to the evaluation harness in `poc/`.
 
 ### Software functionalities
 
-The Python API centres on `ChromeRAG(config=…, site_chrome=…)`. `PipelineConfig.from_priority()` selects one of three presets. `COVERAGE` loosens thresholds to keep more content, `PRECISION` tightens them to remove more chrome, and `BALANCED` is the default. Each stage can be switched off on its own (`--no-dvdf`, `--no-schema`, `--no-tables`, `--no-stce`). `extract(html, url=None)` returns a typed `ExtractResult` with `markdown`, `front_matter`, `warnings`, `input_quality`, a token estimate, and `diagnostics` (samples of kept and rejected blocks with the reason for each decision). The URL is used only as metadata (page-type hints, site grouping and the `url` front-matter field), never to access the network.
-
-The CLI has three subcommands (Table 1).
+The Python API centres on `ChromeRAG(config=..., site_chrome=...)`. `PipelineConfig.from_priority()` selects `COVERAGE`, `BALANCED` (default) or `PRECISION`. Stages can be switched off individually (`--no-rules`, `--no-schema`, `--no-tables`, `--no-stce`, `enable_lbc=False` for the density filter of version 0.1.2). `extract(html, url=None)` returns a typed `ExtractResult` with `markdown`, `front_matter`, `warnings`, `input_quality`, a token estimate and `diagnostics` (kept and rejected samples with reasons, the rules that fired, the model's expected F1). The URL is metadata only and is never fetched.
 
 Table 1. ChromeRAG command-line interface.
 
 | Task | Command | Output |
 |---|---|---|
-| One page | chromerag extract page.html -o page.md --priority coverage | Markdown; --json-meta prints diagnostics; --fail-on-thin exits with code 3 |
+| One page | chromerag extract page.html -o page.md --priority balanced | Markdown; --json-meta prints diagnostics; --explain lists removed blocks; --fail-on-thin exits with code 3 |
 | Learn site chrome | chromerag learn pages/ -o site.json --min-pages 3 | JSON site model grouped by host and path prefix |
 | Batch | chromerag batch pages/ -o out/ --chrome-model site.json | One Markdown file per page and batch_summary.json flagging thin/JS-shell pages |
 
-The package needs Python 3.11 or later and installs with `pip install chromerag` [14]. An optional LangChain document loader (`chromerag.integrations.langchain.ChromeRAGLoader`, extra `[langchain]`) returns one `Document` per page with the front-matter as metadata. The repository adds the tests, the evaluation harness, and a one-page GitHub Pages site with the leaderboard and a per-page score explorer.
+The package needs Python 3.11 or later and installs with `pip install chromerag` [18]. Optional LangChain and LlamaIndex components (`chromerag.integrations`) return one document per page with the front-matter as metadata. The repository adds the tests, the evaluation harness, a Docker image and a one-page GitHub Pages site with the leaderboards.
 
 ---
 
@@ -71,7 +73,7 @@ The package needs Python 3.11 or later and installs with `pip install chromerag`
 
 ### Learning a site template
 
-The repository includes four small synthetic pages from a fictional documentation site (`examples/site/`). They share a header menu, cookie banner, sales call-to-action, footer and a repeated "Widget Summit: register now" strip inside `<main>`. Stage 4 removes the menu, banner and footer because of their markup. The in-content strip has no chrome-like markup, so it survives single-page extraction. It is removed only after learning:
+The repository includes four synthetic pages from a fictional documentation site (`examples/site/`). They share a header menu, cookie banner, sales call to action, footer and a repeated "Widget Summit: register now" strip inside `<main>`. Single-page extraction removes the menu, banner and footer; the in-content strip has no chrome-like markup and survives until a site model is learned:
 
 ```bash
 pip install chromerag
@@ -79,7 +81,7 @@ chromerag learn examples/site -o out/site.json --min-pages 3
 chromerag batch examples/site -o out/batch --chrome-model out/site.json
 ```
 
-`learn` reports one site group (`docs.example.com/docs`) with six chrome signatures. `batch` applies them to all four pages. The resulting `pricing` page keeps its JSON-LD as front-matter and its table as key–value rows:
+`learn` reports one site group (`docs.example.com/docs`) with six chrome signatures; `batch` applies them to all four pages. The `pricing` page keeps its JSON-LD as front-matter and its table as key-value rows:
 
 ```text
 ---
@@ -94,57 +96,74 @@ Every plan includes unlimited local runs. ...
 Row 2 -> Plan: Team | Hosted minutes: 20,000 | Monthly price (USD): 49
 ```
 
-A JavaScript shell (`<div id="root"></div>` plus a script tag) instead produces a warning telling the caller to render the page with Playwright or Puppeteer first. With `--fail-on-thin`, the command exits with code 3, so pipelines can route such pages to a headless browser.
+A JavaScript shell (`<div id="root"></div>` plus a script tag) produces a warning to render the page first; with `--fail-on-thin` the command exits with code 3 so pipelines can route such pages to a headless browser.
 
-### Public benchmark
+### Human-reviewed benchmark
 
-The harness (`poc/run_corpus_comparison.py`) compares ChromeRAG's three presets with Trafilatura [4], Readability [5], MarkItDown [6], markdownify, html2text and BeautifulSoup text extraction. All tools run on the same stored HTML. No tool receives a site model, so the benchmark measures single-page extraction without STCE. The corpus lists 367 unique public URLs (documentation, pricing, marketing, cloud, article and hub pages). A plain HTTP fetch without JavaScript rendering returned 268 unique pages; a URL reached under two identifiers is scored once.
+WCXB [9] has 2,008 pages from 1,613 domains in seven page types, split into 1,497 development and 511 test pages, with human-reviewed main content. Word-level F1 compares the bag of words of an extractor's output with the reference (title excluded); "with" and "without" snippets test that required text is present and that listed chrome is absent. All tools receive the same HTML and none gets a site model. Trafilatura [5] is run with its best of five settings on the development set (tables, no comments, no links, Markdown output; 0.818 against 0.814 for the defaults, 0.789 for `favor_recall`); MarkItDown [7] and Readability [6] use their defaults.
 
-The metrics use structural anchors taken from each input DOM: word 5-grams from `<main>`/`<article>` text (content) and from `<nav>`, `<header>`, `<footer>`, `<aside>` and cookie/newsletter containers (noise). 5-grams found in both sets are discarded. *Recall* is the share of content anchors that appear in a tool's output. *Noise retention* is the share of noise anchors that appear. *F_bal* is the harmonic mean of recall and (1 − noise retention). A page counts as *scoreable* when its input DOM has at least 50 content anchors. This rule looks only at the input and never at any tool's output. It keeps 242 pages from 164 hosts and excludes 26: 7 JavaScript shells, 1 other thin page, and 18 pages with too little landmarked text to score. The cohort is dominated by documentation (208 of 242 pages), the main source of enterprise RAG corpora; the other categories are too small for separate conclusions.
+*Development results* come from five-fold cross-validation grouped by site, so every page is scored by a model that never saw its site. F1 is 0.852 (`coverage`), 0.851 (`balanced`) and 0.837 (`precision`) against 0.818 for Trafilatura. Replacing the density filter of 0.1.2 by the learned filter raises F1 from 0.822, 0.817 and 0.790 to these values; the larger part of the gain over 0.1.2 (0.749) comes from fixing whole-page losses: wrapper tags, hidden blocks, nested layout tables that repeated text, breadth-first output order, and link targets counted as words.
 
-Table 2. Mean scores per method on the 242 scoreable pages, with F_bal over all 268 fetched pages for comparison.
+*Test results* were produced once, after the code, model and thresholds were frozen (git tag `freeze-0.1.3`), by a model trained on all development pages (Table 2, Fig. 2).
 
-| Method | Recall ↑ | Noise ret. ↓ | F_bal ↑ (242 scoreable) | F_bal ↑ (all 268) |
+Table 2. Word-level F1 on the 511 WCXB test pages (ChromeRAG in `balanced` mode).
+
+| Page type (n) | ChromeRAG | Trafilatura | Readability | MarkItDown |
 |---|---|---|---|---|
-| ChromeRAG coverage | 0.688 | 0.007 | 0.788 | 0.747 |
-| ChromeRAG balanced | 0.665 | 0.006 | 0.771 | 0.731 |
-| Trafilatura [4] | 0.640 | 0.012 | 0.739 | 0.696 |
-| MarkItDown [6] | 0.691 | 0.250 | 0.696 | 0.661 |
-| Readability [5] | 0.449 | 0.013 | 0.531 | 0.495 |
+| All (511) | 0.902 | 0.860 | 0.763 | 0.540 |
+| Article (257) | 0.954 | 0.952 | 0.926 | 0.643 |
+| Documentation (42) | 0.956 | 0.934 | 0.872 | 0.615 |
+| Service (59) | 0.844 | 0.817 | 0.612 | 0.471 |
+| Forum (51) | 0.867 | 0.717 | 0.616 | 0.443 |
+| Product (28) | 0.874 | 0.724 | 0.527 | 0.335 |
+| Collection (34) | 0.795 | 0.626 | 0.450 | 0.284 |
+| Listing (40) | 0.760 | 0.722 | 0.439 | 0.386 |
 
 <!-- FIG 2 -->
 
-Table 2 and Fig. 2 show two different trade-offs. Against MarkItDown, ChromeRAG keeps the same amount of content: the paired bootstrap difference in recall (2,000 resamples) is −0.003, with a 95% CI of [−0.025, 0.017]. It keeps far less chrome (difference in noise retention −0.243, CI [−0.266, −0.220]), and its median output is 820 tokens against 3,436 for MarkItDown. Against Trafilatura, noise retention does not differ significantly (−0.005, CI [−0.014, 0.003]). ChromeRAG's higher F_bal (+0.049, CI [+0.021, +0.079]) comes from recall. Page by page, the two tools win about equally often (103 against 109 pages, with 30 ties where F_bal differs by at most 0.01). The difference in means comes from failures: Trafilatura keeps less than 20% of the content on 25 pages, against 13 for ChromeRAG, mostly multi-section documentation and marketing pages (Fig. 2b). Per-page scores, per-category tables and the all-page means are published with the code, so readers can check individual cases.
+The paired bootstrap difference to Trafilatura is +0.043 (95% CI [+0.027, +0.059]) overall, +0.150 on forums [+0.091, +0.217], +0.150 on products [+0.069, +0.243] and +0.169 on collections [+0.080, +0.264]. On articles, documentation, services and listings the intervals contain zero. The fraction of required snippets found is 0.798 against 0.720 (+0.078 [+0.051, +0.105]); the fraction of forbidden snippets found is 0.077 against 0.083 (no difference). The benchmark's publication [9] reports 0.903 for a page-type-aware Rust extractor and 0.841 for Trafilatura on the same test pages under its own configuration; we could not build that tool here, so we quote it and make no claim of superiority. The two sets of numbers use different Trafilatura settings and are not interchangeable.
 
-### Retrieval over the chunked output
-
-Extraction scores do not show what a retriever receives. `poc/run_retrieval_eval.py` splits each tool's output for the 242 pages into chunks of about 200 words, indexes them with BM25, and runs 771 known-item queries built from the input HTML only: page titles and section headings from `<main>`, and 12-word passages from its paragraphs, each kept only if its text occurs in exactly one page. A hit means a chunk from that page is among the top five (Fig. 3). ChromeRAG reaches a hit@5 of 0.949, against 0.964 for MarkItDown (difference −0.014, 95% CI [−0.035, 0.006], bootstrap over pages), 0.922 for Trafilatura (+0.027 [+0.003, +0.053]) and 0.774 for Readability. It gets there with 2,553 chunks instead of MarkItDown's 3,907, less than half of the indexed words, and with 0.1% of the retrieved context made of chrome anchors against 2.6% for MarkItDown.
+Fig. 3 shows the trade-off on the development folds. ChromeRAG's curve lies above Trafilatura's single operating point for thresholds from 0.6 to 0.7 (higher precision and recall at once) and has higher F1 at every threshold up to 0.8. The model's confidence is informative: pages with an expected F1 below 0.70 (7.6% of pages) score 0.57 on average against 0.88 for the rest.
 
 <!-- FIG 3 -->
 
+Median time on 200 stored pages in one process is 36 ms for ChromeRAG, 30 ms for Trafilatura, 30 ms for Readability and 37 ms for MarkItDown; the 95th percentile is 108 ms against 147 ms for Trafilatura.
+
+### Marketing and landing pages, retrieval and judged quality
+
+The WCXB service, product and collection pages are the nearest public proxy for enterprise marketing content, but we also built a corpus of company landing pages (`poc/landing_corpus.py`): up to five pages per company chosen from the homepage's own links before any extractor was run. Companies were split by a hash into development and held-out sets, and a second list of 51 companies was fetched only after the freeze ("fresh", 178 scoreable pages). On the structural-anchor metric (recall of word 5-grams from `<main>`/`<article>`, retention of anchors from navigation, header, footer and cookie containers, balanced F), `coverage` mode reaches 0.759 on the 177 held-out pages and 0.780 on the fresh pages, against 0.680 and 0.649 for Trafilatura, 0.723 and 0.741 for MarkItDown (which keeps 22 to 26% of the chrome anchors, ChromeRAG 0.1% or less) and 0.512 and 0.567 for Readability. On 242 documentation, pricing and article pages with at least 50 content anchors, the same metric gives 0.833 for `coverage` and 0.739 for Trafilatura (+0.094, CI [+0.066, +0.123]); Trafilatura keeps under 20% of the content on 25 of these pages, ChromeRAG on 2.
+
+BM25 retrieval with 668 known-item queries over the fresh pages (chunks of about 200 words) gives a hit@5 of 0.916 for ChromeRAG against 0.832 for Trafilatura (+0.084 [+0.045, +0.123]) and 0.949 for MarkItDown, which keeps everything (chrome in 2.3% of the retrieved context against 0.1% for ChromeRAG and 1.1% for Trafilatura). With dense embeddings (`text-embedding-3-small`) all tools but Readability tie (0.708 against 0.698 for Trafilatura; difference +0.010 [-0.024, +0.047]). On the documentation corpus, BM25 hit@5 is 0.947 against 0.921 for Trafilatura and 0.964 for MarkItDown, with 2,010 chunks against MarkItDown's 3,909.
+
+<!-- FIG 4 -->
+
+A blind pairwise judgement by a language model (gpt-5.6-luna, 100 held-out and fresh pages, tool names hidden, output order randomised, 83% of repeated pairs with swapped positions judged the same) preferred ChromeRAG over Trafilatura on 70% of pages and over MarkItDown on 87%, against 28% and 12% (Fig. 5). The judge scored content kept at 4.4 against 3.5 for Trafilatura, and chrome left at 4.0 against 4.7 on a 5-point scale where 5 means no chrome: Trafilatura leaves less chrome but loses more content.
+
+<!-- FIG 5 -->
+
 ### Site-template learning on real sites
 
-`poc/run_stce_eval.py` applies `chromerag learn` with default settings and compares coverage-mode output with and without the site model. On the benchmark's 11 site groups with at least three unique pages (47 scored pages), recall is unchanged (0.714). Because those groups are small, `poc/crawl_site_groups.py` also fetched up to 15 same-section pages from each documentation site in the corpus, respecting robots.txt (the list is published as `poc/stce_crawl_urls.json`). This gives 1,791 pages in 125 site groups with a learned model. There STCE changes 174 pages and keeps F_bal level (0.851 to 0.852; recall 0.770 to 0.769), while site-repeated text, 5-grams that recur on at least 80% of a site's outputs, falls from 16.7 to 16.2 per page. The 17 pages that lose more than 0.05 recall all come from three sites that place feedback widgets, promotions or notices inside `<main>`; inspection showed that only such chrome was removed. Most repeated chrome is already gone before STCE: site-repeated text is 3.1% of ChromeRAG's output, against 2.1% for Trafilatura and 34.9% for MarkItDown. STCE is therefore a guarded complement for template blocks without chrome markup, as in the example above. Testing it on real sites exposed failure modes that are now guarded and covered by regression tests: utility CSS classes shared by chrome and content, a page fetched twice or published for several versions, and content wrappers whose class matched a small learned block.
+`poc/run_stce_eval.py` compares coverage-mode output with and without the site model. On 11 benchmark site groups (49 pages) F_bal rises from 0.868 to 0.870. A crawl of up to 15 same-section pages from each documentation site (1,791 pages in 125 groups, robots.txt respected, list in `poc/stce_crawl_urls.json`) shows STCE changing 314 pages and keeping F_bal level (0.876 to 0.877, recall 0.805 both); text repeated across a site falls from 12.6 to 12.3 five-grams per page. Thirteen pages from seven sites lose more than 0.05 recall, which we did not inspect individually. Because most repeated chrome is already removed before STCE (site-repeated text is 2.1% of ChromeRAG's output, 2.1% for Trafilatura and 34.9% for MarkItDown), STCE is a guarded complement for template blocks without chrome markup, as in the example above.
 
 ---
 
 ## Impact
 
-**Improving an existing workflow.** Chunking and embedding scraped HTML is now a routine data-engineering task, and chrome removal is often done with ad hoc regular expressions written for each site. ChromeRAG replaces those with one tested step whose behaviour is documented. It works on CPU without network access, and it reports what it removed and why (`diagnostics`). Two properties matter most for RAG corpora. Across a whole site, the learned model can remove template blocks without chrome markup, which single-page extractors keep, and on 125 real documentation sites it left F_bal unchanged. On single pages, output stays about four times shorter than a structure-preserving converter while keeping the same content. In retrieval this means the same hit rate as MarkItDown with 35% fewer chunks to embed and far less chrome in the context passed to the model.
+**Improving an existing workflow.** Chunking and embedding scraped HTML is routine data engineering, and chrome removal is often done with per-site regular expressions. ChromeRAG replaces them with one tested step that runs on CPU without network access or a model download, reports what it removed and why, and tells the caller when it is unsure. Its accuracy gain concentrates where article-tuned tools fail: forums, product pages, category pages and multi-section service pages. For retrieval it keeps the content that BM25 needs (hit@5 above Trafilatura on landing and documentation pages) while leaving 20 times less chrome in the retrieved context than a structure-preserving converter.
 
-**Integration pathways.** The bundled LangChain loader turns stored HTML files into documents whose metadata carries the front-matter, so a text splitter copies title, type and breadcrumb onto every chunk; a LlamaIndex reader can wrap `extract()` the same way. `chromerag batch` fits into Airflow or Prefect jobs after a crawl step. Its `batch_summary.json` lets later tasks send thin or JavaScript-shell pages to a headless browser instead of indexing empty text without notice. The typed front-matter supports filtering and citation at query time.
+**Integration pathways.** The LangChain loader and LlamaIndex reader turn stored HTML files into documents whose metadata carries the front-matter, so a splitter copies title, type and breadcrumb onto every chunk. `chromerag batch` fits Airflow or Prefect jobs after a crawl; `batch_summary.json` sends thin pages to a headless browser, and the confidence estimate lets a job route low-confidence pages to review or to a heavier extractor.
 
-**New research questions.** The repository includes a reproducible, tool-agnostic evaluation harness for web content extraction aimed at RAG, not news archiving. Researchers can register another extractor in `poc/baselines.py` and score it on the same pages, anchors and retrieval queries, and the published crawl list (`poc/stce_crawl_urls.json`) supports site-level studies. Open questions include whether the retrieval result holds for dense retrievers and for generated answers, how site-level template models age as sites are redesigned, and whether semantic encoders improve on the lexical DVDF filter.
+**New research questions.** The repository includes a tool-agnostic harness: cross-validation by site, final-evaluation scripts, error taxonomy, frontier and confidence calibration (`poc/wcxb_*`), the landing-page corpus builder with a pre-registered split, the judge and retrieval evaluations, and all per-page outputs. Open questions include how far block-level labels from one benchmark transfer to other languages and page mixes, whether a sentence encoder improves on the lexical features, and how site-template models age.
 
-**Adoption.** ChromeRAG was first released on PyPI and GitHub in September 2026, so download, citation and third-party usage figures are not yet meaningful. The public issue tracker and the live leaderboard at https://pedapudibhargav.github.io/ChromeRAG/ are the channels for outside feedback.
+**Adoption.** ChromeRAG was first released on PyPI and GitHub in September 2026, so download, citation and third-party usage figures are not yet meaningful. The issue tracker, the live leaderboards at https://pedapudibhargav.github.io/ChromeRAG/ and the archived releases (Zenodo) are the channels for outside feedback.
 
-**Limitations.** (i) ChromeRAG does not run JavaScript. It warns about shell pages but cannot recover their content. (ii) The metrics use structural anchors, not human-labelled spans. Pages without landmarks are under-represented, and extractors that also use landmarks may have an advantage. For this reason, all per-page scores are published, and the retrieval evaluation uses queries rather than anchors. (iii) DVDF compares lexical hashed vectors, not semantic embeddings, and retrieval was evaluated with BM25 only. (iv) STCE needs at least three pages from the same site group and considers block-level elements only, so template text in bare links or paragraphs can remain. (v) Only HTML is handled. PDF and Office formats need other converters such as MarkItDown.
+**Limitations.** (i) ChromeRAG does not run JavaScript; it warns about shells but cannot recover their content. (ii) The model was trained on one benchmark (WCXB development pages, mostly English); its features include English stop words and call-to-action verbs, and other languages and page mixes are untested. (iii) Labels are word overlaps with human-reviewed references, and annotators are inconsistent in places: documentation code samples are included on 82% of pages but left out of repeated live samples on others, which caps the gain on documentation (ChromeRAG and Trafilatura are within noise there). (iv) The ceilings of block selection are 0.975 for articles but only 0.80 to 0.85 for products, collections, listings and forums, so absolute scores on those types stay lower. (v) Landing-page evidence uses a structural-anchor metric that cannot see chrome inside `<main>`, an LLM judge and BM25/dense retrieval over known-item queries, not human ratings of answers. (vi) STCE needs at least three pages per site group. (vii) Only HTML is handled. (viii) The benchmark's author also builds a competing extractor; we use the public data and our own scorer, which matches the benchmark's definition.
 
 ---
 
 ## Conclusions
 
-ChromeRAG is a focused, installable component for the ingest step of web RAG pipelines. It converts HTML into Markdown without site chrome, can learn a site's repeated template, carries Schema.org metadata and tables into chunk-friendly form, and reports unusable inputs instead of hiding them. On a public benchmark of 242 pages, with a cohort chosen from the input alone, ChromeRAG matches MarkItDown's content recall while keeping about 35 times less chrome. It is ahead of Trafilatura on F_bal, mainly because it has fewer catastrophic content losses. In BM25 retrieval it matches MarkItDown's hit rate with 35% fewer chunks. The code, tests, benchmark harness and per-page results are openly available. Planned work covers page-type-specific presets, an optional sentence-encoder backend for DVDF [13], and evaluation with dense retrievers and generated answers.
+ChromeRAG is a focused, installable component for the ingest step of web RAG pipelines. A 150 KB learned block filter, evaluated with NumPy, removes site chrome on a wide range of page types: on the 511 held-out WCXB pages it gains 0.043 F1 over Trafilatura, with large gains on forums, products and collections and ties on articles and documentation. It also learns a site's template, carries Schema.org metadata and tables into chunk-friendly form, and reports unusable inputs and low-confidence pages. On company landing pages a blind judge prefers its output to Trafilatura's on 70% of pages and to MarkItDown's on 87%. The code, the model, the training and evaluation scripts, and per-page results are openly available. Planned work covers multilingual training data, an optional sentence-encoder feature [17] and evaluation with generated answers.
 
 ---
 
@@ -174,7 +193,7 @@ The software, the list of benchmark URLs (`poc/corpus_urls.json`), the evaluatio
 
 ## Declaration of generative AI and AI-assisted technologies in the manuscript preparation process
 
-During the preparation of this work the author used Cursor (with a Grok-based coding agent) and Anthropic Claude (Claude Code) in order to assist with software development, code review, drafting and editing of the manuscript text, and verification of reported numbers against the benchmark outputs. After using these tools, the author reviewed and edited the content as needed and takes full responsibility for the content of the published article.
+During the preparation of this work the author used Cursor (with a Grok-based coding agent) and Anthropic Claude (Claude Code) in order to assist with software development, code review, drafting and editing of the manuscript text, and verification of reported numbers against the benchmark outputs, and analysis scripts for the evaluation. After using these tools, the author reviewed and edited the content as needed and takes full responsibility for the content of the published article.
 
 ---
 
@@ -183,16 +202,20 @@ During the preparation of this work the author used Cursor (with a Grok-based co
 1. P. Lewis, E. Perez, A. Piktus, F. Petroni, V. Karpukhin, N. Goyal, H. Küttler, M. Lewis, W. Yih, T. Rocktäschel, S. Riedel, and D. Kiela, "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks," in *Advances in Neural Information Processing Systems 33 (NeurIPS 2020)*, 2020, pp. 9459–9474. arXiv: 2005.11401.
 2. C. Kohlschütter, P. Fankhauser, and W. Nejdl, "Boilerplate Detection Using Shallow Text Features," in *Proc. 3rd ACM Int. Conf. Web Search and Data Mining (WSDM)*, 2010, pp. 441–450. doi: 10.1145/1718487.1718542.
 3. T. Vogels, O.-E. Ganea, and C. Eickhoff, "Web2Text: Deep Structured Boilerplate Removal," in *Advances in Information Retrieval (ECIR 2018)*, LNCS, 2018, pp. 167–179. doi: 10.1007/978-3-319-76941-7_13.
-4. A. Barbaresi, "Trafilatura: A Web Scraping Library and Command-Line Tool for Text Discovery and Extraction," in *Proc. ACL-IJCNLP 2021: System Demonstrations*, 2021, pp. 122–131. doi: 10.18653/v1/2021.acl-demo.15.
-5. Y. Baburov et al., *python-readability* (readability-lxml), Python port of Arc90 Readability, GitHub. [Online]. Available: https://github.com/buriy/python-readability
-6. Microsoft, *MarkItDown*: Python tool for converting files and office documents to Markdown, GitHub. [Online]. Available: https://github.com/microsoft/markitdown
-7. J. Bevendorff, S. Gupta, J. Kiesel, and B. Stein, "An Empirical Comparison of Web Content Extraction Algorithms," in *Proc. 46th Int. ACM SIGIR Conf.*, 2023, pp. 2594–2603. doi: 10.1145/3539618.3591920.
-8. Z. Bar-Yossef and S. Rajagopalan, "Template Detection via Data Mining and its Applications," in *Proc. 11th Int. World Wide Web Conf. (WWW)*, 2002, pp. 580–591. doi: 10.1145/511446.511522.
-9. L. Yi, B. Liu, and X. Li, "Eliminating Noisy Information in Web Pages for Data Mining," in *Proc. 9th ACM SIGKDD Int. Conf. Knowledge Discovery and Data Mining*, 2003, pp. 296–305. doi: 10.1145/956750.956785.
-10. J. Alarte, J. Silva, and S. Tamarit, "What Web Template Extractor Should I Use? A Benchmarking and Comparison for Five Template Extractors," *ACM Trans. Web*, vol. 13, no. 2, pp. 1–19, 2019. doi: 10.1145/3316810.
-11. J. Tan, Z. Dou, W. Wang, M. Wang, W. Chen, and J.-R. Wen, "HtmlRAG: HTML is Better Than Plain Text for Modeling Retrieved Knowledge in RAG Systems," in *Proc. ACM Web Conf. 2025 (WWW '25)*, 2025, pp. 1733–1746. doi: 10.1145/3696410.3714546.
-12. K. Weinberger, A. Dasgupta, J. Langford, A. Smola, and J. Attenberg, "Feature Hashing for Large Scale Multitask Learning," in *Proc. 26th Int. Conf. Machine Learning (ICML)*, 2009, pp. 1113–1120. doi: 10.1145/1553374.1553516.
-13. N. Reimers and I. Gurevych, "Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks," in *Proc. EMNLP-IJCNLP 2019*, 2019, pp. 3980–3990. doi: 10.18653/v1/D19-1410.
-14. B. C. Peddapudi, *ChromeRAG*, version 0.1.2, Zenodo, 2026. doi: 10.5281/zenodo.22970290. Source: https://github.com/pedapudibhargav/ChromeRAG/tree/v0.1.2
+4. J. Leonhardt, A. Anand, and M. Khosla, "Boilerplate Removal using a Neural Sequence Labeling Model," in *Companion Proc. The Web Conf. 2020 (WWW '20)*, 2020. arXiv: 2004.14294.
+5. A. Barbaresi, "Trafilatura: A Web Scraping Library and Command-Line Tool for Text Discovery and Extraction," in *Proc. ACL-IJCNLP 2021: System Demonstrations*, 2021, pp. 122–131. doi: 10.18653/v1/2021.acl-demo.15.
+6. Y. Baburov et al., *python-readability* (readability-lxml), Python port of Arc90 Readability, GitHub. [Online]. Available: https://github.com/buriy/python-readability
+7. Microsoft, *MarkItDown*: Python tool for converting files and office documents to Markdown, GitHub. [Online]. Available: https://github.com/microsoft/markitdown
+8. J. Bevendorff, S. Gupta, J. Kiesel, and B. Stein, "An Empirical Comparison of Web Content Extraction Algorithms," in *Proc. 46th Int. ACM SIGIR Conf.*, 2023, pp. 2594–2603. doi: 10.1145/3539618.3591920.
+9. M. Foley, "WCXB: A Multi-Type Web Content Extraction Benchmark," arXiv: 2605.21097, May 2026. Data: CC-BY-4.0.
+10. M. Foley, *rs-trafilatura*: web content extraction in Rust with page-type classification, GitHub. [Online]. Available: https://github.com/Murrough-Foley/rs-trafilatura
+11. M. Liu et al., "Dripper: Token-Efficient Main HTML Extraction with a Lightweight LM," arXiv: 2511.23119, 2025.
+12. Z. Bar-Yossef and S. Rajagopalan, "Template Detection via Data Mining and its Applications," in *Proc. 11th Int. World Wide Web Conf. (WWW)*, 2002, pp. 580–591. doi: 10.1145/511446.511522.
+13. L. Yi, B. Liu, and X. Li, "Eliminating Noisy Information in Web Pages for Data Mining," in *Proc. 9th ACM SIGKDD Int. Conf. Knowledge Discovery and Data Mining*, 2003, pp. 296–305. doi: 10.1145/956750.956785.
+14. J. Alarte, J. Silva, and S. Tamarit, "What Web Template Extractor Should I Use? A Benchmarking and Comparison for Five Template Extractors," *ACM Trans. Web*, vol. 13, no. 2, pp. 1–19, 2019. doi: 10.1145/3316810.
+15. J. Tan, Z. Dou, W. Wang, M. Wang, W. Chen, and J.-R. Wen, "HtmlRAG: HTML is Better Than Plain Text for Modeling Retrieved Knowledge in RAG Systems," in *Proc. ACM Web Conf. 2025 (WWW '25)*, 2025, pp. 1733–1746. doi: 10.1145/3696410.3714546.
+16. K. Weinberger, A. Dasgupta, J. Langford, A. Smola, and J. Attenberg, "Feature Hashing for Large Scale Multitask Learning," in *Proc. 26th Int. Conf. Machine Learning (ICML)*, 2009, pp. 1113–1120. doi: 10.1145/1553374.1553516.
+17. N. Reimers and I. Gurevych, "Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks," in *Proc. EMNLP-IJCNLP 2019*, 2019, pp. 3980–3990. doi: 10.18653/v1/D19-1410.
+18. B. C. Peddapudi, *ChromeRAG*, version 0.1.3, Zenodo, 2026. doi: 10.5281/zenodo.22970289 (all versions). Source: https://github.com/pedapudibhargav/ChromeRAG
 
 ---
