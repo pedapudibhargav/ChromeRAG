@@ -67,7 +67,7 @@ _NUMERIC = (
     "box_link_density", "box_log_chars", "box_long_p", "box_blocks", "unit_share_of_box", "box_share_of_page",
     "box2_link_density", "box2_log_chars", "box2_long_p",
     "prev_log_chars", "prev_link_density", "next_log_chars", "next_link_density", "prev_same_box", "next_same_box",
-    "same_tag_siblings", "pos_in_parent", "dup_count", "dup_earlier", "len_rel_page", "box_mean_chars",
+    "same_tag_siblings", "pos_in_parent", "rep_up1", "rep_up2", "rep_up3", "rep_up4", "rep_card_blocks", "dup_count", "dup_earlier", "len_rel_page", "box_mean_chars",
     "title_overlap", "desc_overlap", "topic_overlap", "topic_overlap_strong",
 )
 FEATURE_NAMES: tuple[str, ...] = (
@@ -166,6 +166,14 @@ def _inline_counts(tag: Tag) -> tuple[int, int]:
             elif node.name in ("strong", "b", "em", "i"):
                 emph += len(node.get_text(" ", strip=True))
     return links, emph
+
+
+def _same_signature_siblings(tag: Tag) -> int:
+    parent = tag.parent
+    if not isinstance(parent, Tag):
+        return 1
+    sig = (tag.name, tuple(tag.get("class") or ()))
+    return sum(1 for c in parent.children if isinstance(c, Tag) and (c.name, tuple(c.get("class") or ())) == sig)
 
 
 def _bucket(word: str, n: int) -> int:
@@ -358,6 +366,20 @@ def block_features(
             row[_IDX["box2_long_p"]] = float(min(30, stats.long_paragraphs(b2)))
         box_of.append(boxes[0] if boxes else None)
 
+        # Repeated structure above the block (comment threads, review cards, teaser grids):
+        # how many siblings of the ancestor at each distance share its tag and classes.
+        node: Tag | None = tag
+        repeated_box: Tag | None = None
+        for level in range(1, 5):
+            node = node.parent if node is not None else None
+            if not isinstance(node, Tag) or node is top or node.name in ("body", "html"):
+                break
+            same = _same_signature_siblings(node)
+            row[_IDX[f"rep_up{level}"]] = float(min(20, same))
+            if same >= 3 and repeated_box is None:
+                repeated_box = node
+        if repeated_box is not None:
+            row[_IDX["rep_card_blocks"]] = float(min(20, box_blocks.get(id(repeated_box), 0)))
         parent = tag.parent
         if isinstance(parent, Tag):
             sibs = [c for c in parent.children if isinstance(c, Tag)]

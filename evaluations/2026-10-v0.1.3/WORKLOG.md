@@ -122,21 +122,27 @@ and the landing held-out/fresh sets were not touched.
 
 | WCXB dev, 5-fold CV | coverage | balanced | precision | Trafilatura | Readability | MarkItDown |
 |---|---|---|---|---|---|---|
-| all (1,495) | 0.845 | 0.842 | 0.831 | 0.818 | 0.700 | 0.513 |
-| article (792) | 0.931 | 0.937 | 0.938 | 0.937 | 0.890 | 0.625 |
-| documentation (91) | 0.913 | 0.904 | 0.890 | 0.915 | 0.811 | 0.653 |
-| service (165) | 0.813 | 0.802 | 0.754 | 0.759 | 0.554 | 0.462 |
-| forum (112) | 0.761 | 0.759 | 0.744 | 0.675 | 0.457 | 0.439 |
-| product (119) | 0.629 | 0.630 | 0.639 | 0.626 | 0.410 | 0.231 |
-| collection (117) | 0.664 | 0.635 | 0.601 | 0.564 | 0.387 | 0.226 |
-| listing (99) | 0.719 | 0.684 | 0.641 | 0.565 | 0.313 | 0.333 |
+| all (1,495) | 0.846 | 0.845 | 0.833 | 0.818 | 0.700 | 0.513 |
+| article (792) | 0.931 | 0.939 | 0.941 | 0.937 | 0.890 | 0.625 |
+| documentation (91) | 0.910 | 0.908 | 0.885 | 0.915 | 0.811 | 0.653 |
+| service (165) | 0.815 | 0.805 | 0.762 | 0.759 | 0.554 | 0.462 |
+| forum (112) | 0.761 | 0.757 | 0.747 | 0.675 | 0.457 | 0.439 |
+| product (119) | 0.634 | 0.642 | 0.646 | 0.626 | 0.410 | 0.231 |
+| collection (117) | 0.669 | 0.641 | 0.604 | 0.564 | 0.387 | 0.226 |
+| listing (99) | 0.723 | 0.693 | 0.641 | 0.565 | 0.313 | 0.333 |
 
-Paired bootstrap vs Trafilatura (all pages): coverage +0.027 [+0.016, +0.038], balanced +0.024
-[+0.014, +0.035], precision +0.013 [+0.003, +0.023]. Articles: ties (intervals contain 0). Documentation:
-coverage −0.002, balanced −0.011, precision −0.025 (intervals contain 0).
+Paired bootstrap vs Trafilatura (all pages): coverage +0.029 [+0.018, +0.039], balanced +0.028
+[+0.018, +0.038], precision +0.016 [+0.005, +0.026].
 
-Snippets (all pages): with 0.732 / 0.709 / 0.675 vs Trafilatura 0.659; without (lower is better)
-0.106 / 0.084 / 0.067 vs Trafilatura 0.058.
+Snippets (all pages): with 0.734 / 0.711 / 0.676 vs Trafilatura 0.659; without (lower is better)
+0.102 / 0.080 / 0.065 vs Trafilatura 0.058.
+
+Added after the first CV: repeated-structure features (siblings with the same tag and classes above a
+block) and the heading text above a block; exact-repeat removal. Tried and dropped: expected-F selection of
+blocks per page (same F as a fixed threshold), page-level generator/og:type words (no gain).
+
+Ceilings of block selection (labels from the reference, perfect classifier): article 0.975,
+documentation 0.965, service 0.902, product 0.845, listing 0.851, forum 0.832, collection 0.806.
 
 Other gates: anchor F_bal docs 0.834 (baseline 0.788), landing dev 0.781 (baseline 0.785 on all 362
 pages); speed median ~29 ms/page vs Trafilatura ~31 ms (`poc/bench_speed.py`).

@@ -1,0 +1,19 @@
+{
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+  "@type": "SoftwareSourceCode",
+  "name": "ChromeRAG",
+  "description": "HTML to RAG-ready Markdown. A learned block filter removes site chrome (navigation, footers, cookie banners, related links, comments) and keeps article, documentation and pricing content; it also learns repeated site templates from a few pages.",
+  "codeRepository": "https://github.com/pedapudibhargav/ChromeRAG",
+  "issueTracker": "https://github.com/pedapudibhargav/ChromeRAG/issues",
+  "url": "https://pedapudibhargav.github.io/ChromeRAG/",
+  "identifier": "https://doi.org/10.5281/zenodo.22970289",
+  "license": "https://spdx.org/licenses/MIT",
+  "programmingLanguage": "Python",
+  "runtimePlatform": "Python 3.11+",
+  "operatingSystem": ["Linux", "macOS", "Windows"],
+  "applicationCategory": "Text mining",
+  "keywords": ["retrieval-augmented generation", "HTML extraction", "boilerplate removal", "main content extraction", "web template detection", "Markdown", "LLM data preparation"],
+  "softwareRequirements": ["beautifulsoup4", "lxml", "numpy", "pyyaml"],
+  "author": [{"@type": "Person", "givenName": "Bhargava Chary", "familyName": "Peddapudi", "@id": "https://orcid.org/0009-0002-8523-8415"}],
+  "isAccessibleForFree": true
+}

@@ -22,6 +22,7 @@ from typing import Any
 
 from chromerag.config import ContentPriority, PipelineConfig
 from chromerag.extractor import ChromeRAG
+from chromerag.integrations._metadata import flat
 from chromerag.site_chrome import SiteChromeModel
 
 try:
@@ -66,17 +67,8 @@ class ChromeRAGLoader(BaseLoader):
                 continue
             metadata: dict[str, Any] = {
                 "source": url or str(path),
-                **{k: _flat(v) for k, v in result.front_matter.items() if _flat(v) is not None},
+                **{k: flat(v) for k, v in result.front_matter.items() if flat(v) is not None},
             }
             if result.warnings:
                 metadata["chromerag_warnings"] = " | ".join(result.warnings)
             yield Document(page_content=_FRONT_MATTER.sub("", result.markdown), metadata=metadata)
-
-
-def _flat(value: Any) -> str | int | float | bool | None:
-    """Vector stores accept scalar metadata only; lists (e.g. breadcrumbs) become 'a > b'."""
-    if isinstance(value, (str, int, float, bool)):
-        return value
-    if isinstance(value, (list, tuple)) and all(isinstance(v, (str, int, float)) for v in value):
-        return " > ".join(str(v) for v in value)
-    return None

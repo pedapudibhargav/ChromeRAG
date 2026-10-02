@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "chromerag"
 version = "0.1.2"
-description = "ChromeRAG: ingest-time elimination of site template noise for enterprise web RAG."
+description = "HTML to RAG-ready Markdown: a learned boilerplate filter that removes site chrome (navigation, footers, cookie banners, related links, comments) and keeps article, documentation and pricing content. Pure NumPy inference, no model download."
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
@@ -13,12 +13,21 @@ license-files = ["LICENSE.txt"]
 authors = [{ name = "Bhargava Chary Peddapudi", email = "pedapudibhargav@gmail.com" }]
 keywords = [
   "rag",
+  "retrieval-augmented-generation",
   "html",
+  "html-to-markdown",
   "markdown",
-  "boilerplate",
-  "chrome",
-  "vector",
-  "ingest",
+  "boilerplate-removal",
+  "content-extraction",
+  "main-content-extraction",
+  "web-scraping",
+  "web-template-detection",
+  "llm",
+  "chunking",
+  "vector-search",
+  "trafilatura-alternative",
+  "langchain",
+  "llamaindex",
 ]
 classifiers = [
   "Development Status :: 3 - Alpha",
@@ -53,6 +62,9 @@ baselines = [
 langchain = [
   "langchain-core>=0.2",
 ]
+llamaindex = [
+  "llama-index-core>=0.10",
+]
 ui = [
   "fastapi>=0.110.0",
   "uvicorn>=0.27.0",
@@ -72,6 +84,8 @@ Homepage = "https://github.com/pedapudibhargav/ChromeRAG"
 Repository = "https://github.com/pedapudibhargav/ChromeRAG.git"
 Issues = "https://github.com/pedapudibhargav/ChromeRAG/issues"
 Documentation = "https://pedapudibhargav.github.io/ChromeRAG/"
+Changelog = "https://github.com/pedapudibhargav/ChromeRAG/blob/main/CHANGELOG.md"
+"Cite" = "https://doi.org/10.5281/zenodo.22970289"
 
 [tool.setuptools.packages.find]
 where = ["src"]

@@ -64,6 +64,7 @@ cp docs/index.html _site/index.html
 for f in leaderboard corpus_comparison_report retrieval_eval_report stce_summary test_report; do
   cp "docs/data/$f.json" _site/data/
 done
+cp docs/robots.txt docs/sitemap.xml _site/
 touch _site/.nojekyll
 echo "Site ready in _site/ ($(du -sh _site | cut -f1))"
 exit "$PYTEST_RC"

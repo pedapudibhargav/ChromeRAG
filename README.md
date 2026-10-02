@@ -7,7 +7,7 @@
 [![Results](https://img.shields.io/badge/results-GitHub%20Pages-2a78d6.svg)](https://pedapudibhargav.github.io/ChromeRAG/)
 [![DOI](https://zenodo.org/badge/1378773845.svg)](https://doi.org/10.5281/zenodo.22970289)
 
-**HTML → RAG-ready Markdown** that strips site-template chrome (nav, footer, CTAs, cookie banners) while keeping documentation, pricing tables, and article body text.
+**HTML → RAG-ready Markdown.** A small learned filter (plus optional site-template learning) removes navigation, footers, CTAs, cookie banners, related links and comment threads, and keeps article text, documentation and pricing tables. Pure NumPy inference: no GPU, no model download, about 30 ms per page. A drop-in alternative to Trafilatura, Readability and MarkItDown when the pages are documentation, marketing or product pages as well as articles.
 
 > Built for **enterprise RAG ingest**, **LLM chunking**, **vector indexing**, and **boilerplate / noise removal** from scraped HTML — not for pixel-perfect web archiving.
 
@@ -98,6 +98,32 @@ print(result.warnings)       # e.g. JS shell → render with Playwright first
 Learn-then-extract from Python: `chromerag.learn_then_extract(pages)` or
 `load_chrome_models(path)` + `ChromeRAG(site_chrome=model)`.
 
+### Use it in a RAG pipeline
+
+```python
+# LangChain:  pip install "chromerag[langchain]"
+from chromerag.integrations.langchain import ChromeRAGLoader
+docs = ChromeRAGLoader(["pages/pricing.html"], urls={"pages/pricing.html": "https://example.com/pricing"}).load()
+
+# LlamaIndex: pip install "chromerag[llamaindex]"
+from chromerag.integrations.llamaindex import ChromeRAGReader
+docs = ChromeRAGReader().load_data(["pages/pricing.html"])
+```
+
+Front-matter (title, type, dates, breadcrumb) becomes document metadata, so a text splitter copies it
+onto every chunk.
+
+### Frequently asked
+
+**Does it need a model download or a GPU?** No. The model is a 150 KB array file inside the wheel.
+**Does it run JavaScript?** No; it warns on unrendered shells. Render with Playwright first.
+**When should I pick Trafilatura instead?** For pure news/blog articles it is as good (the two tie in
+our benchmark). ChromeRAG is better on documentation sites, marketing and product pages, forums and
+listings, and when you can show it several pages of one site.
+**How do I keep link URLs?** `PipelineConfig(include_links=True)` or `--links`.
+**Can I trust the numbers?** Every table is recomputed from files in the repository; learned-model numbers
+come from cross-validation grouped by site (see below and `evaluations/`).
+
 ---
 
 ## Why ChromeRAG (vs MarkItDown / Trafilatura)?
@@ -124,8 +150,8 @@ score reaches the threshold of the chosen priority: `coverage` 0.30, `balanced` 
 * The model is a 150 KB array file (`src/chromerag/assets/lbc_stage1.npz`) evaluated with NumPy
   only; scikit-learn is needed to retrain, not to run.
 * It was trained on human-reviewed pages (WCXB dev). Numbers on pages from sites the model never
-  saw (5-fold, site-grouped cross-validation, word-level F1): coverage 0.845, balanced 0.842,
-  precision 0.831, Trafilatura 0.818, Readability 0.700, MarkItDown 0.513
+  saw (5-fold, site-grouped cross-validation, word-level F1): coverage 0.846, balanced 0.845,
+  precision 0.833, Trafilatura 0.818, Readability 0.700, MarkItDown 0.513
   (`evaluations/2026-10-v0.1.3/wcxb_dev_cv.json`). The held-out WCXB test split has not been used.
 * Link targets are no longer written by default (`PipelineConfig(include_links=True)` or
   `--links` brings back `[text](url)`), repeated blocks are written once, and the Markdown now
