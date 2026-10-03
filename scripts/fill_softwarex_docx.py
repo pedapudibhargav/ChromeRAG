@@ -38,7 +38,7 @@ _NEXT_ID = 0xF000
 
 TITLE = "ChromeRAG: A Learned Boilerplate Filter for Web RAG Ingestion"
 AUTHORS = (
-    "Bhargava Chary Peddapudi (Independent Researcher; "
+    "Bhargava Chary Peddapudi (Independent Researcher, Milpitas, California 95035, United States; "
     "ORCID: https://orcid.org/0009-0002-8523-8415); "
     "Corresponding email: pedapudibhargav@gmail.com"
 )
