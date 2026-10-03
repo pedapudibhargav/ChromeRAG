@@ -24,13 +24,25 @@ def _alnum_count(text: str) -> int:
     return len(_ALNUM.findall(text))
 
 
-def _contains_page_h1(tag: Tag, root: Tag | None) -> bool:
+def _page_h1_ancestor_ids(root: Tag | None) -> frozenset[int]:
+    """Ids of the page's first ``h1`` and of every element that contains it: the ones a pass must keep."""
     if root is None:
-        return False
+        return frozenset()
     h1 = root.find("h1")
     if h1 is None or not isinstance(h1, Tag):
-        return False
-    return h1 is tag or h1 in tag.descendants
+        return frozenset()
+    ids = {id(h1)}
+    ids.update(id(p) for p in h1.parents if isinstance(p, Tag))
+    return frozenset(ids)
+
+
+def _substantive_ancestor_ids(scope: Tag, stats: TreeStats) -> frozenset[int]:
+    """Ids of the elements that have a substantive descendant (heading, pre, table... with >= 40 chars of text)."""
+    ids: set[int] = set()
+    for tag in all_tags(scope):
+        if tag.name in _SUBSTANTIVE and stats.text_len(tag) >= 40:
+            ids.update(id(p) for p in tag.parents if isinstance(p, Tag))
+    return frozenset(ids)
 
 
 def _in_main_article(tag: Tag) -> bool:
@@ -58,27 +70,20 @@ def _is_editorial_list(tag: Tag, stats: TreeStats) -> bool:
     return short >= 5
 
 
-def _has_substantive_descendant(tag: Tag, stats: TreeStats) -> bool:
+def _has_substantive_descendant(tag: Tag, stats: TreeStats, substantive_ancestors: frozenset[int]) -> bool:
     if stats.long_paragraphs(tag) > 0:
         return True
-    for child in tag.find_all(_SUBSTANTIVE):
-        if child is tag:
-            continue
-        if stats.text_len(child) >= 40:
-            return True
-    return False
+    return id(tag) in substantive_ancestors
 
 
-def _too_large(tag: Tag, root: Tag | None, root_words: int, stats: TreeStats) -> bool:
+def _too_large(
+    tag: Tag, root: Tag | None, root_words: int, stats: TreeStats, h1_keep: frozenset[int]
+) -> bool:
     if root is not None and tag is root:
         return True
-    if _contains_page_h1(tag, root):
+    if id(tag) in h1_keep:
         return True
-    if root_words > 0:
-        words = _word_count(tag.get_text(" ", strip=True))
-        if words > 0.4 * root_words:
-            return True
-    return False
+    return root_words > 0 and stats.words(tag) > 0.4 * root_words
 
 
 def _drop_link_dense_blocks(
@@ -89,20 +94,20 @@ def _drop_link_dense_blocks(
     stats: TreeStats,
 ) -> int:
     removed = 0
+    h1_keep = _page_h1_ancestor_ids(root)
+    substantive = _substantive_ancestor_ids(soup_tag, stats)
     for tag in list(all_tags(soup_tag)):
         if tag.attrs is None or tag.name not in _BLOCK_TAGS:
             continue
-        if _too_large(tag, root, root_words, stats):
+        if _too_large(tag, root, root_words, stats, h1_keep):
             continue
-        if _has_substantive_descendant(tag, stats):
+        if _has_substantive_descendant(tag, stats, substantive):
             continue
         if _is_editorial_list(tag, stats):
             continue
-        text = tag.get_text(" ", strip=True)
-        words = _word_count(text)
-        if words >= 40 or not text:
-            continue
         text_len = stats.text_len(tag)
+        if text_len == 0 or stats.words(tag) >= 40:
+            continue
         link_len = stats.link_len(tag)
         if text_len == 0 or link_len < 0.8 * text_len:
             continue
@@ -119,12 +124,13 @@ def _drop_micro_leaves(
     stats: TreeStats,
 ) -> int:
     removed = 0
+    h1_keep = _page_h1_ancestor_ids(root)
     for tag in list(all_tags(soup_tag)):
         if tag.attrs is None or tag.name not in _MICRO_TAGS:
             continue
         if any(isinstance(c, Tag) for c in tag.children):
             continue
-        if _too_large(tag, root, root_words, stats):
+        if _too_large(tag, root, root_words, stats, h1_keep):
             continue
         text = tag.get_text(" ", strip=True)
         if _alnum_count(text) >= 8:

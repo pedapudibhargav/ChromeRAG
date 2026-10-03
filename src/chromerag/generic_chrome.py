@@ -246,10 +246,9 @@ def _looks_like_article(soup: BeautifulSoup, page_kind_hint: str | None) -> bool
 
 def _list_items(tag: Tag) -> list[Tag]:
     if tag.name == "nav":
-        items = tag.find_all("li")
-        return [li for li in items if isinstance(li, Tag)]
+        return [li for li in tag.descendants if isinstance(li, Tag) and li.name == "li"]
     if tag.name in {"ul", "ol"}:
-        return [li for li in tag.find_all("li", recursive=False) if isinstance(li, Tag)]
+        return [li for li in tag.children if isinstance(li, Tag) and li.name == "li"]
     return []
 
 
@@ -307,9 +306,17 @@ def _drop_toc(
             label.decompose()
 
 
-def _drop_orphan_toc_labels(root: Tag, counts: dict[str, int]) -> None:
-    """A "table of contents" label whose list was removed earlier (by a rule) has nothing under it."""
+_MAX_TOC_LABEL = max(len(lab) for lab in _TOC_LABELS)
+
+
+def _drop_orphan_toc_labels(root: Tag, stats: TreeStats, counts: dict[str, int]) -> None:
+    """A "table of contents" label whose list was removed earlier (by a rule) has nothing under it.
+
+    ``stats`` must describe the current tree: a label can only match when the whole element is no longer than a label.
+    """
     for tag in list(tags_named(root, _HEADING_TAGS | {"p", "span", "div", "label"})):
+        if stats.text_len(tag) > _MAX_TOC_LABEL:
+            continue
         if tag.get_text(" ", strip=True).lower() not in _TOC_LABELS or tag.find(["a", "ul", "ol"]):
             continue
         following = tag.find_next_sibling()
@@ -318,31 +325,65 @@ def _drop_orphan_toc_labels(root: Tag, counts: dict[str, int]) -> None:
             counts["toc"] += 1
 
 
-def _in_content_tail(tag: Tag, root: Tag, stats: TreeStats) -> bool:
+class _TailIndex:
+    """Answers "how much text follows this element?" for many elements of one pass in O(1) each.
+
+    ``total_after(tag)`` is the sum of ``stats.text_len`` over the elements that come after ``tag`` in document
+    order and are not inside it. The callers visit elements in document order and remove only the element they
+    are looking at, so everything after ``tag`` is unchanged when the question is asked.
+    """
+
+    __slots__ = ("_root", "_stats", "_pos", "_end", "_suffix")
+
+    def __init__(self, root: Tag, stats: TreeStats) -> None:
+        self._root = root
+        self._stats = stats
+        self._pos: dict[int, int] | None = None
+        self._end: list[int] = []
+        self._suffix: list[int] = []
+
+    def _build(self) -> dict[int, int]:
+        ordered = all_tags(self._root)
+        n = len(ordered)
+        pos = {id(t): i for i, t in enumerate(ordered)}
+        size = [1] * n  # number of elements in the subtree (the element included)
+        for i in range(n - 1, -1, -1):
+            parent = ordered[i].parent
+            j = pos.get(id(parent)) if parent is not None else None
+            if j is not None:
+                size[j] += size[i]
+        self._end = [i + size[i] for i in range(n)]  # first index after the subtree
+        suffix = [0] * (n + 1)
+        text_len = self._stats.text_len
+        for i in range(n - 1, -1, -1):
+            suffix[i] = suffix[i + 1] + text_len(ordered[i])
+        self._suffix = suffix
+        self._pos = pos
+        return pos
+
+    def total_after(self, tag: Tag) -> int:
+        pos = self._pos if self._pos is not None else self._build()
+        i = pos.get(id(tag))
+        if i is None:
+            return 0
+        return self._suffix[self._end[i]]
+
+
+def _in_content_tail(tag: Tag, root: Tag, stats: TreeStats, tail: _TailIndex) -> bool:
     """True when less than 15% of root text follows ``tag`` (outside its subtree)."""
     root_text = stats.text_len(root)
     if root_text <= 0:
         return True
-    total_after = 0
-    found = False
-    for t in all_tags(root):
-        if t is tag:
-            found = True
-            continue
-        if not found or tag in t.parents:
-            continue
-        total_after += stats.text_len(t)
-    return total_after / max(1, root_text) <= 0.15
+    return tail.total_after(tag) / max(1, root_text) <= 0.15
 
 
-def _is_pager(tag: Tag, stats: TreeStats, root: Tag) -> bool:
+def _is_pager(tag: Tag, stats: TreeStats, root: Tag, tail: _TailIndex) -> bool:
     if tag.name not in {"nav", "ul", "div"}:
+        return False
+    if stats.text_len(tag) >= 120:
         return False
     anchors = [a for a in tag.find_all("a") if isinstance(a, Tag)]
     if not anchors or len(anchors) > 3:
-        return False
-    total = stats.text_len(tag)
-    if total >= 120:
         return False
     hits = 0
     for a in anchors:
@@ -356,14 +397,15 @@ def _is_pager(tag: Tag, stats: TreeStats, root: Tag) -> bool:
     iden = str(tag.get("id") or "")
     if _PAGER_CLASS.search(f"{aria} {cls} {iden}"):
         return True
-    return _in_content_tail(tag, root, stats)
+    return _in_content_tail(tag, root, stats, tail)
 
 
 def _drop_pager(root: Tag, stats: TreeStats, counts: dict[str, int]) -> None:
+    tail = _TailIndex(root, stats)
     for tag in list(all_tags(root)):
         if tag.name not in {"nav", "ul", "div"}:
             continue
-        if _is_pager(tag, stats, root):
+        if _is_pager(tag, stats, root, tail):
             tag.decompose()
             counts["pager"] += 1
 
@@ -544,8 +586,10 @@ def _alone_in_block(tag: Tag) -> bool:
     return visible <= 1
 
 
-def _is_cta_block(tag: Tag) -> bool:
+def _is_cta_block(tag: Tag, stats: TreeStats) -> bool:
     if tag.name not in _CTA_LEAF_TAGS:
+        return False
+    if stats.words(tag) > 6:
         return False
     text = tag.get_text(" ", strip=True)
     if not _is_cta_text(text):
@@ -570,88 +614,145 @@ def _is_share_item(text: str) -> bool:
     return any(tok in cleaned.split() for tok in _SHARE_TOKENS if len(tok) > 2)
 
 
-def _share_strip_items(tag: Tag) -> list[str]:
+_SHARE_ITEM_TAGS = frozenset({"a", "span", "li"})
+
+
+def _share_strip_items(tag: Tag, stats: TreeStats) -> list[str]:
+    """Texts of the direct items of a strip; [] when there are fewer than two (every caller needs at least two)."""
     if tag.name in {"ul", "ol", "nav"}:
-        return [
-            li.get_text(" ", strip=True)
-            for li in tag.find_all("li", recursive=False)
-            if isinstance(li, Tag) and li.get_text(strip=True)
+        lis = [
+            li
+            for li in tag.children
+            if isinstance(li, Tag) and li.name == "li" and stats.text_nosep(li) > 0
         ]
+        if len(lis) < 2:
+            return []
+        return [li.get_text(" ", strip=True) for li in lis]
     if tag.name == "div":
-        texts: list[str] = []
-        for child in tag.find_all(["a", "span", "li"], recursive=False):
-            if isinstance(child, Tag):
-                t = child.get_text(" ", strip=True)
-                if t:
-                    texts.append(t)
-        if texts:
-            return texts
-        t = tag.get_text(" ", strip=True)
-        return [t] if t else []
+        kids = [
+            child
+            for child in tag.children
+            if isinstance(child, Tag) and child.name in _SHARE_ITEM_TAGS and stats.text_len(child) > 0
+        ]
+        if len(kids) < 2:
+            return []
+        return [child.get_text(" ", strip=True) for child in kids]
     return []
 
 
-def _is_share_strip(tag: Tag) -> bool:
+def _is_share_strip(tag: Tag, stats: TreeStats) -> bool:
     if tag.name not in {"ul", "ol", "div", "nav"}:
         return False
-    items = _share_strip_items(tag)
+    items = _share_strip_items(tag, stats)
     if len(items) < 2:
         return False
     hits = sum(1 for item in items if _is_share_item(item))
     return hits >= max(2, int(0.7 * len(items)))
 
 
-def _has_email_input(tag: Tag) -> bool:
-    for inp in tag.find_all("input"):
-        if not isinstance(inp, Tag):
+def _is_email_input(inp: Tag) -> bool:
+    if inp.name != "input":
+        return False
+    itype = str(inp.get("type") or "").lower()
+    name = str(inp.get("name") or "").lower()
+    return itype == "email" or "email" in name
+
+
+def _is_submit_control(btn: Tag) -> bool:
+    if btn.name == "button":
+        return True
+    return str(btn.get("type") or "").lower() in {"submit", "button"}
+
+
+def _form_control_ancestors(root: Tag) -> tuple[frozenset[int], frozenset[int]]:
+    """Ids of every element that contains an email input, and of every element that contains a submit control."""
+    email: set[int] = set()
+    submit: set[int] = set()
+    for el in root.find_all(["input", "button"]):
+        if not isinstance(el, Tag):
             continue
-        itype = str(inp.get("type") or "").lower()
-        name = str(inp.get("name") or "").lower()
-        if itype == "email" or "email" in name:
-            return True
-    return False
-
-
-def _has_submit_control(tag: Tag) -> bool:
-    for btn in tag.find_all(["button", "input"]):
-        if not isinstance(btn, Tag):
+        is_email = _is_email_input(el)
+        is_submit = _is_submit_control(el)
+        if not (is_email or is_submit):
             continue
-        if btn.name == "button":
-            return True
-        if str(btn.get("type") or "").lower() in {"submit", "button"}:
-            return True
-    return False
+        for p in el.parents:
+            if not isinstance(p, Tag):
+                continue
+            if is_email:
+                email.add(id(p))
+            if is_submit:
+                submit.add(id(p))
+    return frozenset(email), frozenset(submit)
 
 
-def _is_newsletter_block(tag: Tag) -> bool:
+def _wrapper_text(tag: Tag, cache: dict[int, str]) -> str:
+    """``tag.get_text(" ", strip=True)``, shared along chains of single-child wrappers (``<div><div><div>...``).
+
+    A wrapper with one element child and no text of its own has the text of that child, so a chain of
+    wrappers costs one ``get_text`` instead of one per level.
+    """
+    chain: list[Tag] = []
+    cur = tag
+    while True:
+        text = cache.get(id(cur))
+        if text is not None:
+            break
+        chain.append(cur)
+        kids = [c for c in cur.children if isinstance(c, Tag)]
+        own = any(not isinstance(c, Tag) and str(c).strip() for c in cur.children)
+        if own or len(kids) != 1:
+            text = cur.get_text(" ", strip=True)
+            break
+        cur = kids[0]
+    for node in chain:
+        cache[id(node)] = text
+    return text
+
+
+def _is_newsletter_block(
+    tag: Tag,
+    stats: TreeStats,
+    email_ancestors: frozenset[int],
+    submit_ancestors: frozenset[int],
+    text_cache: dict[int, str],
+) -> bool:
     if tag.name not in {"form", "div", "section", "aside", "fieldset"}:
         return False
-    scope = tag if tag.name == "form" else tag
-    if _has_email_input(scope) and _has_submit_control(scope):
+    if id(tag) in email_ancestors and id(tag) in submit_ancestors:
         return True
-    text = scope.get_text(" ", strip=True)
-    if not text or _word_count(text) > 60:
+    if stats.words(tag) > 60:
+        return False
+    text = _wrapper_text(tag, text_cache)
+    if not text:
         return False
     return bool(_NEWSLETTER_TEXT.search(text))
 
 
-def _author_marker(tag: Tag) -> bool:
+def _author_ancestor_ids(root: Tag) -> frozenset[int]:
+    """Ids of every element that contains an ``itemprop="author"`` element (one pass instead of one search per tag)."""
+    ids: set[int] = set()
+    for el in root.find_all(attrs={"itemprop": True}):
+        if str(el.get("itemprop") or "").lower() == "author":
+            ids.update(id(p) for p in el.parents if isinstance(p, Tag))
+    return frozenset(ids)
+
+
+def _author_marker(tag: Tag, author_ancestors: frozenset[int]) -> bool:
     tokens = _class_id_tokens(tag)
     for tok in tokens:
         if _AUTHOR_MARKERS.search(tok):
             return True
     if str(tag.get("itemprop") or "").lower() == "author":
         return True
-    for el in tag.find_all(attrs={"itemprop": True}):
-        if str(el.get("itemprop") or "").lower() == "author":
-            return True
-    return False
+    return id(tag) in author_ancestors
 
 
-def _is_author_bio(tag: Tag, root: Tag, stats: TreeStats) -> bool:
-    if not _author_marker(tag):
+def _is_author_bio(
+    tag: Tag, root: Tag, stats: TreeStats, author_ancestors: frozenset[int], tail: _TailIndex
+) -> bool:
+    if not _author_marker(tag, author_ancestors):
         return False
-    if not _in_content_tail(tag, root, stats):
+    if not _in_content_tail(tag, root, stats, tail):
         return False
     text = tag.get_text(" ", strip=True)
     if not text or _word_count(text) >= 80:
@@ -661,8 +762,10 @@ def _is_author_bio(tag: Tag, root: Tag, stats: TreeStats) -> bool:
     return True
 
 
-def _is_back_to_top(tag: Tag) -> bool:
+def _is_back_to_top(tag: Tag, stats: TreeStats) -> bool:
     if tag.name != "a":
+        return False
+    if stats.words(tag) > 6:
         return False
     text = tag.get_text(" ", strip=True)
     if not text or _word_count(text) > 6:
@@ -680,54 +783,60 @@ def _is_language_label(text: str) -> bool:
     return low in _KNOWN_LANGS
 
 
-def _is_language_switcher(tag: Tag) -> bool:
+def _is_language_switcher(tag: Tag, stats: TreeStats) -> bool:
     if tag.name not in {"ul", "ol", "div", "nav"}:
         return False
-    items = _share_strip_items(tag)
+    items = _share_strip_items(tag, stats)
     if len(items) < 4:
         return False
     hits = sum(1 for item in items if _is_language_label(item))
     return hits >= 4
 
 
-def _drop_cta(root: Tag, root_words: int, counts: dict[str, int]) -> None:
+def _drop_cta(root: Tag, stats: TreeStats, root_words: int, counts: dict[str, int]) -> None:
     state = {"dropped": 0}
     for tag in list(all_tags(root)):
-        if not _alive(tag) or not _is_cta_block(tag):
+        if not _alive(tag) or not _is_cta_block(tag, stats):
             continue
         _try_decompose(tag, root, root_words, state, counts, "cta")
 
 
-def _drop_share(root: Tag, root_words: int, counts: dict[str, int]) -> None:
+def _drop_share(root: Tag, stats: TreeStats, root_words: int, counts: dict[str, int]) -> None:
     state = {"dropped": 0}
     for tag in list(all_tags(root)):
-        if not _alive(tag) or not _is_share_strip(tag):
+        if not _alive(tag) or not _is_share_strip(tag, stats):
             continue
         _try_decompose(tag, root, root_words, state, counts, "share")
 
 
-def _drop_newsletter(root: Tag, root_words: int, counts: dict[str, int]) -> None:
+def _drop_newsletter(root: Tag, stats: TreeStats, root_words: int, counts: dict[str, int]) -> None:
     state = {"dropped": 0}
+    email_ancestors, submit_ancestors = _form_control_ancestors(root)
+    text_cache: dict[int, str] = {}
     for tag in list(all_tags(root)):
-        if not _alive(tag) or not _is_newsletter_block(tag):
+        if not _alive(tag) or not _is_newsletter_block(
+            tag, stats, email_ancestors, submit_ancestors, text_cache
+        ):
             continue
         _try_decompose(tag, root, root_words, state, counts, "newsletter")
 
 
 def _drop_author_bio(root: Tag, stats: TreeStats, root_words: int, counts: dict[str, int]) -> None:
     state = {"dropped": 0}
+    author_ancestors = _author_ancestor_ids(root)
+    tail = _TailIndex(root, stats)
     for tag in list(all_tags(root)):
-        if not _alive(tag) or not _is_author_bio(tag, root, stats):
+        if not _alive(tag) or not _is_author_bio(tag, root, stats, author_ancestors, tail):
             continue
         _try_decompose(tag, root, root_words, state, counts, "author_bio")
 
 
-def _drop_nav_misc(root: Tag, root_words: int, counts: dict[str, int]) -> None:
+def _drop_nav_misc(root: Tag, stats: TreeStats, root_words: int, counts: dict[str, int]) -> None:
     state = {"dropped": 0}
     for tag in list(all_tags(root)):
         if not _alive(tag):
             continue
-        if _is_back_to_top(tag) or _is_language_switcher(tag):
+        if _is_back_to_top(tag, stats) or _is_language_switcher(tag, stats):
             _try_decompose(tag, root, root_words, state, counts, "nav_misc")
 
 
@@ -1050,8 +1159,10 @@ def drop_generic_chrome(
 
     if cfg.chrome_drop_toc:
         _drop_toc(root, stats, root_words, counts)
-        _drop_orphan_toc_labels(root, counts)
         stats = TreeStats(root)
+        _drop_orphan_toc_labels(root, stats, counts)
+        if counts["toc"]:
+            stats = TreeStats(root)
         root_words = _word_count(root.get_text(" ", strip=True))
 
     if cfg.chrome_drop_pager:
@@ -1068,17 +1179,17 @@ def drop_generic_chrome(
         stats = TreeStats(root)
 
     if cfg.chrome_drop_cta:
-        _drop_cta(root, root_words, counts)
+        _drop_cta(root, stats, root_words, counts)
         stats = TreeStats(root)
         root_words = _word_count(root.get_text(" ", strip=True))
 
     if cfg.chrome_drop_share:
-        _drop_share(root, root_words, counts)
+        _drop_share(root, stats, root_words, counts)
         stats = TreeStats(root)
         root_words = _word_count(root.get_text(" ", strip=True))
 
     if cfg.chrome_drop_newsletter:
-        _drop_newsletter(root, root_words, counts)
+        _drop_newsletter(root, stats, root_words, counts)
         stats = TreeStats(root)
         root_words = _word_count(root.get_text(" ", strip=True))
 
@@ -1088,7 +1199,7 @@ def drop_generic_chrome(
         root_words = _word_count(root.get_text(" ", strip=True))
 
     if cfg.chrome_drop_nav_misc:
-        _drop_nav_misc(root, root_words, counts)
+        _drop_nav_misc(root, stats, root_words, counts)
 
     if cfg.chrome_trim_tail:
         _trim_tail(root, stats, counts)

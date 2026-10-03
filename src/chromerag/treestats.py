@@ -8,6 +8,7 @@ The values are exact, not estimates:
   text_nosep(tag) == len(tag.get_text("", strip=True))
   link_len(tag)   == len(" ".join(a.get_text(" ", strip=True) for a in tag.find_all("a")))
   long_paragraphs(tag) == count of descendant <p> with >= 100 chars of text
+  words(tag)      == len(re.findall(r"\w+", tag.get_text(" ", strip=True)))   (built on first use)
   has_main(tag)   == tag.find("main") or tag.find(attrs={"role": "main"}) is found
   html_len(tag)   == len(str(tag))   (only when built with ``serialized=True``)
 
@@ -18,11 +19,14 @@ document order (ancestors first) and removes only the node it is looking at can 
 
 from __future__ import annotations
 
+import re
+
 from bs4 import BeautifulSoup, CData, NavigableString, Tag
 
 _TEXT_TYPES = (NavigableString, CData)
 LONG_PARAGRAPH_CHARS = 100  # a <p> this long is running prose, not a label or a teaser
 _RAW_TEXT_PARENTS = frozenset({"script", "style"})  # bs4 does not escape text inside these
+_WORD = re.compile(r"\w+")
 
 
 def _text_html_len(node: NavigableString, parent_name: str | None) -> int:
@@ -63,7 +67,7 @@ def _open_close_len(tag: Tag) -> int | None:
 class TreeStats:
     """Per-element sizes for the subtree under ``root`` (which is included)."""
 
-    __slots__ = ("_rows", "_serialized")
+    __slots__ = ("_rows", "_serialized", "_root", "_words")
 
     def __init__(self, root: Tag | BeautifulSoup, *, serialized: bool = False) -> None:
         # row = [sum of stripped string lengths, string count, descendant <a> count,
@@ -123,6 +127,34 @@ class TreeStats:
                     prow[5] += overhead + row[5]
         self._rows = rows
         self._serialized = serialized
+        self._root = root
+        self._words: dict[int, int] | None = None
+
+    def words(self, tag: Tag) -> int:
+        """Number of ``\\w+`` words in ``tag.get_text(" ", strip=True)``.
+
+        The text nodes are joined by spaces, so words never merge across nodes and the count is a sum over
+        the text nodes below ``tag``: one bottom-up pass for the whole tree instead of one ``get_text`` per tag.
+        """
+        words = self._words
+        if words is None:
+            words = {}
+            for node in reversed(list(self._root.descendants)):
+                parent = node.parent
+                if parent is None:
+                    continue
+                if type(node) in _TEXT_TYPES:
+                    stripped = node.strip()
+                    if stripped:
+                        n = len(_WORD.findall(stripped))
+                        if n:
+                            words[id(parent)] = words.get(id(parent), 0) + n
+                elif isinstance(node, Tag):
+                    n = words.get(id(node), 0)
+                    if n:
+                        words[id(parent)] = words.get(id(parent), 0) + n
+            self._words = words
+        return words.get(id(tag), 0)
 
     def _row(self, tag: Tag) -> list:
         row = self._rows.get(id(tag))
