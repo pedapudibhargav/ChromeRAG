@@ -263,7 +263,7 @@ Found while preparing the paper (a reviewer-style check of the split):
   on a domain that also occurs in development. The final model was trained on all of development, so it saw these
   pages. The overall test score hardly changes (0.902 on all 511, 0.903 on the 373 pages not in development), but the
   per-type claims for products and collections on the test split were contaminated.
-* Primary test result is therefore the 373 deduplicated pages (`FINAL/wcxb_test_deduplicated.json`): balanced 0.903,
+* Primary test result is therefore the 372 deduplicated pages (`FINAL/wcxb_test_deduplicated.json`): balanced 0.903,
   Trafilatura 0.867, Readability 0.778, MarkItDown 0.567; difference to Trafilatura +0.036 [+0.018, +0.054]. By type:
   forum +0.153 [+0.091, +0.219] (clear); collection +0.071 [+0.025, +0.117] (n = 9); article −0.003, documentation +0.023,
   service +0.025, listing +0.062 (intervals contain zero); product n = 2. Domains absent from development (345 pages):

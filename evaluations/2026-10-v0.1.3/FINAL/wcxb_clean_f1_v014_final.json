@@ -1,0 +1,130 @@
+{
+ "ALL": {
+  "n": 372,
+  "chromerag": 0.9067671431098543,
+  "chromerag_coverage": 0.9070205476513541,
+  "chromerag_precision": 0.8875146381539057,
+  "trafilatura": 0.8671658420267317,
+  "readability": 0.7779426652433646,
+  "markitdown": 0.5677341765238277,
+  "diff_vs_trafilatura": {
+   "mean": 0.03960130108312238,
+   "ci95": [
+    0.02054023159564066,
+    0.05881192418795223
+   ]
+  }
+ },
+ "article": {
+  "n": 178,
+  "chromerag": 0.9513936652943609,
+  "chromerag_coverage": 0.9464292908516074,
+  "chromerag_precision": 0.9526145671313753,
+  "trafilatura": 0.9533522898479454,
+  "readability": 0.9435608582914122,
+  "markitdown": 0.6632336157897777,
+  "diff_vs_trafilatura": {
+   "mean": -0.0019586245535846577,
+   "ci95": [
+    -0.011965513074492071,
+    0.0067471746608355615
+   ]
+  }
+ },
+ "collection": {
+  "n": 9,
+  "chromerag": 0.774321210832952,
+  "chromerag_coverage": 0.7894989653028894,
+  "chromerag_precision": 0.666872888566644,
+  "trafilatura": 0.7169727587379641,
+  "readability": 0.5232684782801618,
+  "markitdown": 0.5116875294064009,
+  "diff_vs_trafilatura": {
+   "mean": 0.057348452094987894,
+   "ci95": [
+    0.0240934496885518,
+    0.08972380066015315
+   ]
+  }
+ },
+ "documentation": {
+  "n": 40,
+  "chromerag": 0.9488060822433504,
+  "chromerag_coverage": 0.9518506174631398,
+  "chromerag_precision": 0.944201298019507,
+  "trafilatura": 0.9310006084856086,
+  "readability": 0.8657079688471845,
+  "markitdown": 0.614343547159539,
+  "diff_vs_trafilatura": {
+   "mean": 0.01780547375774156,
+   "ci95": [
+    -0.01865491547866349,
+    0.05434215871786167
+   ]
+  }
+ },
+ "forum": {
+  "n": 50,
+  "chromerag": 0.8952567693365462,
+  "chromerag_coverage": 0.8988933102784551,
+  "chromerag_precision": 0.8610574083813348,
+  "trafilatura": 0.7308875245390942,
+  "readability": 0.6278213439127314,
+  "markitdown": 0.45218690195306477,
+  "diff_vs_trafilatura": {
+   "mean": 0.16436924479745213,
+   "ci95": [
+    0.10200157242424382,
+    0.22999709328103315
+   ]
+  }
+ },
+ "listing": {
+  "n": 37,
+  "chromerag": 0.7539654771589446,
+  "chromerag_coverage": 0.7613051651092692,
+  "chromerag_precision": 0.6775610860274623,
+  "trafilatura": 0.7065740679957935,
+  "readability": 0.44489442681595714,
+  "markitdown": 0.3864712742221916,
+  "diff_vs_trafilatura": {
+   "mean": 0.047391409163151196,
+   "ci95": [
+    -0.06904413842015257,
+    0.17477071901078023
+   ]
+  }
+ },
+ "product": {
+  "n": 2,
+  "chromerag": 0.9913494809688581,
+  "chromerag_coverage": 0.9913494809688581,
+  "chromerag_precision": 0.9895470383275261,
+  "trafilatura": 0.4913494809688581,
+  "readability": 0.4733333333333334,
+  "markitdown": 0.1568194367752623,
+  "diff_vs_trafilatura": {
+   "mean": 0.5,
+   "ci95": [
+    0.0,
+    1.0
+   ]
+  }
+ },
+ "service": {
+  "n": 56,
+  "chromerag": 0.8643912597070178,
+  "chromerag_coverage": 0.8691439104207606,
+  "chromerag_precision": 0.8342574972723243,
+  "trafilatura": 0.8129623351465562,
+  "readability": 0.5947192139599599,
+  "markitdown": 0.47750320156820497,
+  "diff_vs_trafilatura": {
+   "mean": 0.051428924560461484,
+   "ci95": [
+    0.0038443803579149716,
+    0.10717635290983203
+   ]
+  }
+ }
+}

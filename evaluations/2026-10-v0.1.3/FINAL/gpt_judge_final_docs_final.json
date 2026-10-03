@@ -2,33 +2,33 @@
  "summary": {
   "documentation": {
    "n": 180,
-   "wins": 75,
-   "losses": 58,
-   "ties": 47,
-   "net": 0.09444444444444444,
+   "wins": 86,
+   "losses": 74,
+   "ties": 20,
+   "net": 0.06666666666666667,
    "net_ci95": [
-    -0.03333333333333333,
-    0.21666666666666667
+    -0.07222222222222222,
+    0.20555555555555555
    ],
-   "content_ours": 4.633333333333334,
-   "content_traf": 4.3277777777777775,
-   "chrome_ours": 4.277777777777778,
-   "chrome_traf": 4.4944444444444445
+   "content_ours": 4.333333333333333,
+   "content_traf": 4.2555555555555555,
+   "chrome_ours": 4.55,
+   "chrome_traf": 4.611111111111111
   },
   "ALL": {
    "n": 180,
-   "wins": 75,
-   "losses": 58,
-   "ties": 47,
-   "net": 0.09444444444444444,
+   "wins": 86,
+   "losses": 74,
+   "ties": 20,
+   "net": 0.06666666666666667,
    "net_ci95": [
-    -0.027777777777777776,
-    0.21666666666666667
+    -0.07222222222222222,
+    0.2
    ],
-   "content_ours": 4.633333333333334,
-   "content_traf": 4.3277777777777775,
-   "chrome_ours": 4.277777777777778,
-   "chrome_traf": 4.4944444444444445
+   "content_ours": 4.333333333333333,
+   "content_traf": 4.2555555555555555,
+   "chrome_ours": 4.55,
+   "chrome_traf": 4.611111111111111
   }
  },
  "judgements": [
@@ -41,7 +41,7 @@
    "content_traf": 3,
    "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "A keeps the full example code, B drops it."
+   "reason": "A preserves the substantive code example and explanatory content, while B omits the core example and several important details; both retain only a newsletter prompt as notable chrome."
   },
   {
    "pid": "docs-tailwind-04",
@@ -49,54 +49,54 @@
    "url": "https://tailwindcss.com/docs/installation/tailwind-cli",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 4,
-   "chrome_ours": 3,
+   "content_traf": 5,
+   "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B keeps step headings and filenames but has sidebar leftovers."
+   "reason": "Both retain all substantive installation content without site chrome, but B preserves the original headings, step numbers, and code labels more clearly."
   },
   {
    "pid": "docs-sqlalchemy-02",
    "type": "documentation",
    "url": "https://docs.sqlalchemy.org/en/20/core/type_api.html",
-   "winner": "chromerag",
-   "content_ours": 5,
-   "content_traf": 5,
+   "winner": "trafilatura",
+   "content_ours": 3,
+   "content_traf": 4,
    "chrome_ours": 5,
    "chrome_traf": 4,
-   "reason": "Same content; B adds a footer credit and doc title."
+   "reason": "B preserves the API object and member names that A loses, although it has poorer formatting and includes a likely footer artifact."
   },
   {
    "pid": "docs-mdn-03",
    "type": "documentation",
    "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/virtualkeyboardpolicy",
-   "winner": "tie",
-   "content_ours": 5,
-   "content_traf": 5,
+   "winner": "chromerag",
+   "content_ours": 4,
+   "content_traf": 3,
    "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "Equivalent content with minor noise in each."
+   "chrome_traf": 5,
+   "reason": "B preserves the substantive Specifications section that A omits, though it also includes some navigation-like guide and reference chrome."
   },
   {
    "pid": "docs-ansible-01",
    "type": "documentation",
    "url": "https://docs.ansible.com/projects/ansible/latest/network/user_guide/faq.html",
-   "winner": "tie",
+   "winner": "trafilatura",
    "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Essentially identical."
+   "reason": "Both retain all visible substantive FAQ content and omit site chrome, but B provides cleaner formatting for commands and inline code."
   },
   {
    "pid": "docs-scrapy-01",
    "type": "documentation",
    "url": "https://docs.scrapy.org/en/latest/topics/concepts.html",
-   "winner": "tie",
+   "winner": "trafilatura",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 5,
+   "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "Essentially identical."
+   "reason": "Both retain all substantive content, but A removes the extraneous section-anchor markers present in B."
   },
   {
    "pid": "docs-graphql-00",
@@ -106,63 +106,63 @@
    "content_ours": 2,
    "content_traf": 5,
    "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "B only covers the tail of the page, losing most of the content."
+   "chrome_traf": 5,
+   "reason": "A retains nearly all substantive lesson, best-practice, governance, tutorial, and FAQ content, while B omits most of the page."
   },
   {
    "pid": "docs-postgres-01",
    "type": "documentation",
    "url": "https://www.postgresql.org/docs/current/managing-databases.html",
    "winner": "trafilatura",
-   "content_ours": 5,
-   "content_traf": 5,
+   "content_ours": 4,
+   "content_traf": 3,
    "chrome_ours": 2,
-   "chrome_traf": 5,
-   "reason": "B adds version lists and prev/next navigation."
+   "chrome_traf": 4,
+   "reason": "A is cleaner and retains the chapter\u2019s substantive overview, while B adds extensive version and navigation chrome despite retaining the chapter heading."
   },
   {
    "pid": "docs-keras-04",
    "type": "documentation",
    "url": "https://keras.io/guides/writing_quantization_compatible_layers/",
    "winner": "chromerag",
-   "content_ours": 5,
-   "content_traf": 3,
+   "content_ours": 4,
+   "content_traf": 2,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "A keeps headings and structure; B loses headings and mangles lists."
+   "reason": "A preserves the guide's structure, explanations, code, and practical summary, while B omits substantial material and has badly merged, garbled text."
   },
   {
    "pid": "docs-scrapy-00",
    "type": "documentation",
    "url": "https://docs.scrapy.org/en/latest/",
    "winner": "trafilatura",
-   "content_ours": 3,
+   "content_ours": 4,
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B keeps the link titles with their descriptions; A drops them."
+   "reason": "B preserves the documentation section and page titles alongside their descriptions, while A drops many key titles, and neither retains meaningful site chrome."
   },
   {
    "pid": "docs-svelte-01",
    "type": "documentation",
    "url": "https://svelte.dev/docs/svelte/testing",
    "winner": "chromerag",
-   "content_ours": 4,
+   "content_ours": 3,
    "content_traf": 2,
    "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "B's code is garbled with TypeScript tooltip text."
+   "chrome_traf": 5,
+   "reason": "A preserves more of the substantive testing guidance and readable code, while B is more heavily mangled and omits important examples despite having slightly less chrome."
   },
   {
    "pid": "docs-bun-04",
    "type": "documentation",
    "url": "https://bun.sh/docs/runtime/redis",
-   "winner": "tie",
-   "content_ours": 5,
+   "winner": "trafilatura",
+   "content_ours": 4,
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Essentially identical."
+   "reason": "B preserves the same substantive Redis documentation as A while also retaining the limitations and future-plans section."
   },
   {
    "pid": "docs-prisma-01",
@@ -173,29 +173,29 @@
    "content_traf": 3,
    "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "A drops the command code blocks; B keeps them."
+   "reason": "B preserves the guide's essential commands and code examples, while A omits most executable details despite being slightly cleaner of navigation chrome."
   },
   {
    "pid": "docs-python-docs-03",
    "type": "documentation",
    "url": "https://docs.python.org/3/tutorial/controlflow.html",
    "winner": "tie",
-   "content_ours": 5,
-   "content_traf": 5,
+   "content_ours": 4,
+   "content_traf": 4,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Essentially identical."
+   "reason": "Both extractions preserve the same substantive Python tutorial content with clean formatting and no meaningful site chrome."
   },
   {
    "pid": "docs-bun-00",
    "type": "documentation",
    "url": "https://bun.sh/docs",
-   "winner": "trafilatura",
+   "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 4,
+   "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "A leaves stray card labels."
+   "reason": "Both preserve the substantive documentation without site chrome, but A retains cleaner code-block and Markdown formatting."
   },
   {
    "pid": "docs-istio-02",
@@ -204,31 +204,31 @@
    "winner": "trafilatura",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 2,
+   "chrome_ours": 3,
    "chrome_traf": 5,
-   "reason": "B starts with the site navigation menu."
+   "reason": "Both preserve the substantive migration instructions, but A removes the navigation chrome that B retains."
   },
   {
    "pid": "docs-scrapy-03",
    "type": "documentation",
    "url": "https://docs.scrapy.org/en/latest/topics/download-handlers.html",
-   "winner": "tie",
-   "content_ours": 5,
-   "content_traf": 4,
+   "winner": "chromerag",
+   "content_ours": 4,
+   "content_traf": 3,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "A keeps the Lazy flags; B has cleaner formatting but drops them."
+   "reason": "A preserves more of the download-handler API and lifecycle details, while B omits substantial content in the custom-handler and reference sections."
   },
   {
    "pid": "docs-celery-03",
    "type": "documentation",
    "url": "https://docs.celeryq.dev/en/stable/getting-started/backends-and-brokers/index.html",
-   "winner": "tie",
-   "content_ours": 5,
+   "winner": "trafilatura",
+   "content_ours": 4,
    "content_traf": 5,
    "chrome_ours": 5,
-   "chrome_traf": 4,
-   "reason": "A keeps the broker list; B keeps a proper table and adds a banner."
+   "chrome_traf": 5,
+   "reason": "B preserves the complete broker comparison table and document metadata while both effectively remove site chrome."
   },
   {
    "pid": "docs-postgres-04",
@@ -237,9 +237,9 @@
    "winner": "trafilatura",
    "content_ours": 1,
    "content_traf": 5,
-   "chrome_ours": 4,
+   "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B has only empty letter headings; A keeps the index entries."
+   "reason": "A preserves the index entries and their documentation links, while B retains only the section headings."
   },
   {
    "pid": "docs-openssl-man-03",
@@ -249,8 +249,8 @@
    "content_ours": 5,
    "content_traf": 4,
    "chrome_ours": 5,
-   "chrome_traf": 5,
-   "reason": "B keeps the See Also list; A leaves it empty."
+   "chrome_traf": 4,
+   "reason": "B preserves the substantive page content and includes the useful SEE ALSO references while avoiding the legal copyright boilerplate retained by A."
   },
   {
    "pid": "docs-ray-01",
@@ -259,31 +259,31 @@
    "winner": "trafilatura",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 1,
+   "chrome_ours": 2,
    "chrome_traf": 5,
-   "reason": "B is led by a large site navigation tree."
+   "reason": "Both retain the full substantive explanation and code, but B includes a substantial site-navigation menu while A cleanly removes the chrome."
   },
   {
    "pid": "docs-celery-00",
    "type": "documentation",
    "url": "https://docs.celeryq.dev/en/stable/",
-   "winner": "chromerag",
-   "content_ours": 5,
+   "winner": "trafilatura",
+   "content_ours": 4,
    "content_traf": 5,
    "chrome_ours": 5,
-   "chrome_traf": 4,
-   "reason": "B adds the version banner; content is equal."
+   "chrome_traf": 5,
+   "reason": "B preserves the substantive version-introduction text that A omits, while both effectively remove the page chrome."
   },
   {
    "pid": "docs-terraform-registry-03",
    "type": "documentation",
    "url": "https://developer.hashicorp.com/terraform/docs/partnerships",
-   "winner": "tie",
-   "content_ours": 5,
-   "content_traf": 5,
+   "winner": "trafilatura",
+   "content_ours": 3,
+   "content_traf": 3,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Essentially identical."
+   "reason": "Both retain the substantive introduction and integration details without site chrome, but B includes an additional contact detail at the end."
   },
   {
    "pid": "docs-grpc-02",
@@ -294,7 +294,7 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "A has cleaner code blocks; B inlines commands and repeats the intro."
+   "reason": "A preserves the substantive tutorial more completely, including the updated server execution step, while both remove the site chrome."
   },
   {
    "pid": "docs-terraform-registry-02",
@@ -305,18 +305,18 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Essentially identical."
+   "reason": "Both extractions preserve the substantive Terraform tools tables and descriptions while removing all site chrome, with only equivalent mid-content shortening."
   },
   {
    "pid": "docs-webpack-00",
    "type": "documentation",
    "url": "https://webpack.js.org/concepts/",
-   "winner": "chromerag",
-   "content_ours": 5,
-   "content_traf": 4,
+   "winner": "trafilatura",
+   "content_ours": 4,
+   "content_traf": 5,
    "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "B keeps the core concepts list and A drops it; B adds small edit/next footer."
+   "reason": "A preserves the substantive Environment section, while B omits it and includes a navigation-style \u201cNext\u201d link."
   },
   {
    "pid": "docs-mdn-00",
@@ -327,18 +327,18 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B keeps attribute link names and related topics that A drops."
+   "reason": "B preserves the substantive article and guide titles along with their descriptions, while A omits many meaningful link labels."
   },
   {
    "pid": "docs-mlflow-03",
    "type": "documentation",
    "url": "https://mlflow.org/docs/latest/community/",
    "winner": "chromerag",
-   "content_ours": 5,
+   "content_ours": 4,
    "content_traf": 3,
-   "chrome_ours": 3,
-   "chrome_traf": 4,
-   "reason": "A keeps the community resource cards that B drops, with some CTA text."
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "A preserves the detailed community resource and involvement listings, while B omits the resource links and descriptions despite retaining the announcements section."
   },
   {
    "pid": "docs-python-docs-02",
@@ -347,42 +347,42 @@
    "winner": "tie",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "Essentially equivalent content and noise."
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "Both retain essentially all visible substantive tutorial content and remove the surrounding documentation-site chrome, with only minor formatting differences."
   },
   {
    "pid": "docs-bun-03",
    "type": "documentation",
    "url": "https://bun.sh/docs/runtime/http/cookies",
-   "winner": "trafilatura",
+   "winner": "tie",
    "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B keeps section headings; same content."
+   "reason": "Both extractions preserve all substantive cookie documentation and code while omitting the site's navigation and other chrome."
   },
   {
    "pid": "docs-scrapy-02",
    "type": "documentation",
    "url": "https://docs.scrapy.org/en/latest/intro/overview.html",
-   "winner": "tie",
+   "winner": "trafilatura",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 5,
+   "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "Equivalent content."
+   "reason": "Both retain the substantive page content, but A is cleaner and more readable with fewer stray anchor symbols and formatting artifacts."
   },
   {
    "pid": "docs-sqlalchemy-00",
    "type": "documentation",
    "url": "https://docs.sqlalchemy.org/en/20/",
-   "winner": "tie",
-   "content_ours": 5,
+   "winner": "trafilatura",
+   "content_ours": 3,
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Equivalent content."
+   "reason": "B preserves the full substantive documentation overview, including schema, SQL statement, core basics, and dialect links, while both effectively remove site chrome."
   },
   {
    "pid": "docs-istio-03",
@@ -391,42 +391,42 @@
    "winner": "trafilatura",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 2,
+   "chrome_ours": 3,
    "chrome_traf": 5,
-   "reason": "B prepends a site nav tree."
+   "reason": "A preserves the substantive Sidecar reference content while omitting the navigation chrome included at the start of B."
   },
   {
    "pid": "docs-scrapy-04",
    "type": "documentation",
    "url": "https://docs.scrapy.org/en/latest/genindex.html",
-   "winner": "chromerag",
-   "content_ours": 5,
+   "winner": "trafilatura",
+   "content_ours": 3,
    "content_traf": 5,
    "chrome_ours": 5,
-   "chrome_traf": 1,
-   "reason": "B prepends the full docs nav menu and flattens the index lines."
+   "chrome_traf": 2,
+   "reason": "B preserves substantially more of the API index, while A removes some real entries despite being cleaner of navigation chrome."
   },
   {
    "pid": "docs-istio-04",
    "type": "documentation",
    "url": "https://istio.io/latest/docs/setup/install/multicluster/primary-remote_multi-network/",
-   "winner": "trafilatura",
-   "content_ours": 5,
-   "content_traf": 5,
-   "chrome_ours": 2,
+   "winner": "chromerag",
+   "content_ours": 4,
+   "content_traf": 2,
+   "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "B prepends a site nav tree."
+   "reason": "B preserves a coherent installation procedure with gateway exposure and cleanup, while A is corrupted, omits major steps, and includes malformed commands."
   },
   {
    "pid": "docs-ansible-04",
    "type": "documentation",
    "url": "https://docs.ansible.com/projects/ansible/latest/community/documentation_contributions.html",
-   "winner": "tie",
+   "winner": "trafilatura",
    "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "Near identical; B adds breadcrumb but also See also."
+   "reason": "Both retain the substantive documentation content, but A removes the extraneous heading anchor markers and is slightly cleaner."
   },
   {
    "pid": "docs-rails-02",
@@ -434,32 +434,32 @@
    "url": "https://guides.rubyonrails.org/8_0_release_notes.html",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 3,
+   "content_traf": 4,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B keeps the title and highlights intro that A drops."
+   "reason": "B retains the page title, complete highlights, and introductory context that A omits while both largely preserve the substantive release notes without site chrome."
   },
   {
    "pid": "docs-helm-03",
    "type": "documentation",
    "url": "https://helm.sh/docs/glossary/",
-   "winner": "tie",
+   "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 5,
-   "chrome_ours": 3,
+   "content_traf": 4,
+   "chrome_ours": 5,
    "chrome_traf": 3,
-   "reason": "Both leave trailing sidebar listing."
+   "reason": "B preserves more of the substantive glossary and omits the navigation and documentation-site chrome appended to A."
   },
   {
    "pid": "docs-git-scm-01",
    "type": "documentation",
    "url": "https://git-scm.com/docs/git-bugreport",
    "winner": "chromerag",
-   "content_ours": 5,
-   "content_traf": 4,
-   "chrome_ours": 3,
-   "chrome_traf": 2,
-   "reason": "B has long whitespace version-history junk while A only has a nav list."
+   "content_ours": 4,
+   "content_traf": 3,
+   "chrome_ours": 2,
+   "chrome_traf": 3,
+   "reason": "A preserves nearly all substantive description and option details, while B truncates the main content and retains more irrelevant version-history chrome."
   },
   {
    "pid": "docs-mdn-02",
@@ -467,10 +467,10 @@
    "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/form",
    "winner": "trafilatura",
    "content_ours": 3,
-   "content_traf": 5,
-   "chrome_ours": 4,
-   "chrome_traf": 3,
-   "reason": "B drops attribute names leaving orphan descriptions; A has whitespace junk at top."
+   "content_traf": 4,
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "A preserves the example markup, attribute names, and technical summary, while B omits substantial labels and content despite retaining some later examples."
   },
   {
    "pid": "docs-requests-03",
@@ -481,18 +481,18 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Equivalent."
+   "reason": "Both extractions preserve all substantive installation instructions and omit the page's navigation and other site chrome."
   },
   {
    "pid": "docs-laravel-03",
    "type": "documentation",
    "url": "https://laravel.com/framework/docs/12.x/session",
-   "winner": "tie",
+   "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 4,
+   "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B adds a local TOC but fences code properly."
+   "reason": "Both retain the substantive documentation without site chrome, but B formats the code examples more clearly in fenced blocks."
   },
   {
    "pid": "docs-svelte-02",
@@ -503,18 +503,18 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 4,
-   "reason": "B drops the Edit on GitHub footer."
+   "reason": "Both retain all substantive browser-support content, but B removes the unnecessary GitHub and llms.txt chrome."
   },
   {
    "pid": "docs-prisma-00",
    "type": "documentation",
    "url": "https://www.prisma.io/docs",
-   "winner": "chromerag",
-   "content_ours": 5,
-   "content_traf": 4,
-   "chrome_ours": 4,
-   "chrome_traf": 3,
-   "reason": "B has headings and drops the llms.txt banner and promo."
+   "winner": "trafilatura",
+   "content_ours": 4,
+   "content_traf": 5,
+   "chrome_ours": 5,
+   "chrome_traf": 4,
+   "reason": "A preserves more substantive product, setup, and deployment details, while B is cleaner but omits more useful content."
   },
   {
    "pid": "docs-rabbitmq-04",
@@ -525,7 +525,7 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Equivalent."
+   "reason": "Both extractions preserve all substantive page content while removing the site navigation, footer, and other chrome."
   },
   {
    "pid": "docs-vite-02",
@@ -536,7 +536,7 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Equivalent."
+   "reason": "Both extractions preserve all substantive Project Philosophy content while excluding the page navigation and other site chrome."
   },
   {
    "pid": "docs-svelte-00",
@@ -545,9 +545,9 @@
    "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 4,
-   "chrome_traf": 3,
-   "reason": "B keeps the Edit this page footer."
+   "chrome_ours": 5,
+   "chrome_traf": 4,
+   "reason": "Both preserve the full substantive documentation, but B retains extra page-navigation and editing chrome."
   },
   {
    "pid": "docs-kubernetes-00",
@@ -555,10 +555,10 @@
    "url": "https://kubernetes.io/docs/concepts/",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 3,
+   "content_traf": 4,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B drops section headings leaving orphan descriptions."
+   "reason": "A preserves the substantive section heading, introduction, and descriptive headings while removing the extensive site navigation and promotional chrome."
   },
   {
    "pid": "docs-openssl-man-02",
@@ -566,21 +566,21 @@
    "url": "https://docs.openssl.org/master/man7/ossl-guide-quic-client-non-block/",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 4,
+   "content_traf": 5,
    "chrome_ours": 5,
-   "chrome_traf": 5,
-   "reason": "B loses the SEE ALSO references."
+   "chrome_traf": 4,
+   "reason": "Both preserve the substantive tutorial content, but A omits the legal copyright boilerplate that B retains."
   },
   {
    "pid": "docs-terraform-registry-01",
    "type": "documentation",
    "url": "https://developer.hashicorp.com/terraform/docs/glossary",
-   "winner": "trafilatura",
+   "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 5,
-   "chrome_ours": 3,
+   "content_traf": 4,
+   "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "A duplicates the glossary as a term index list."
+   "reason": "A preserves the glossary's related documentation links in addition to the substantive definitions, while B omits some useful page content."
   },
   {
    "pid": "docs-rails-04",
@@ -591,7 +591,7 @@
    "content_traf": 4,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "A keeps the title and intro; B drops them and garbles a code span."
+   "reason": "A preserves the guide introduction and learning objectives in addition to the substantive sections, while B omits that content."
   },
   {
    "pid": "docs-grpc-00",
@@ -599,10 +599,10 @@
    "url": "https://grpc.io/docs/",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 4,
+   "content_traf": 3,
    "chrome_ours": 5,
-   "chrome_traf": 5,
-   "reason": "A keeps the nested link lists that B drops."
+   "chrome_traf": 4,
+   "reason": "A preserves the useful introductory links and guide references, while B omits them and retains minor page metadata."
   },
   {
    "pid": "docs-vite-00",
@@ -611,20 +611,20 @@
    "winner": "trafilatura",
    "content_ours": 4,
    "content_traf": 5,
-   "chrome_ours": 4,
+   "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B loses code blocks and leaves stray 'bash' labels."
+   "reason": "A preserves more substantive installation and linking instructions, while B omits the clone-and-build command details despite cleaner formatting."
   },
   {
    "pid": "docs-laravel-02",
    "type": "documentation",
    "url": "https://laravel.com/framework/docs/releases",
-   "winner": "trafilatura",
+   "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 5,
-   "chrome_ours": 4,
+   "content_traf": 4,
+   "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B adds stray 'Laravel 13' nav and 'End of life' labels."
+   "reason": "Both cleanly remove site chrome, but B preserves the table's end-of-life/security footnotes that A omits."
   },
   {
    "pid": "docs-cypress-01",
@@ -633,20 +633,20 @@
    "winner": "trafilatura",
    "content_ours": 4,
    "content_traf": 5,
-   "chrome_ours": 3,
-   "chrome_traf": 4,
-   "reason": "A keeps all package-manager commands; B keeps only npm and adds chrome labels."
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "A preserves the alternative package-manager installation and opening commands that B omits, while both largely remove site chrome."
   },
   {
    "pid": "docs-istio-00",
    "type": "documentation",
    "url": "https://istio.io/latest/docs/",
    "winner": "chromerag",
-   "content_ours": 4,
-   "content_traf": 2,
-   "chrome_ours": 3,
-   "chrome_traf": 4,
-   "reason": "A keeps section headings with descriptions; B loses the headings."
+   "content_ours": 5,
+   "content_traf": 3,
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "A preserves the documentation page's section headings, descriptions, and resource links, while B drops most headings and list structure."
   },
   {
    "pid": "docs-rust-book-03",
@@ -657,7 +657,7 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B keeps the appendix title; otherwise equal."
+   "reason": "Both retain all substantive appendix content and remove the site chrome, but B also preserves the appendix title."
   },
   {
    "pid": "docs-kubernetes-04",
@@ -668,7 +668,7 @@
    "content_traf": 3,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "A lacks the title and the limitations and next-steps sections."
+   "reason": "B preserves the substantive documentation structure and adds key scope details, limitations, and next steps that A omits."
   },
   {
    "pid": "docs-scipy-02",
@@ -679,7 +679,7 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Equivalent content."
+   "reason": "Both extractions preserve all substantive security guidance and omit the page chrome."
   },
   {
    "pid": "docs-scipy-01",
@@ -690,29 +690,29 @@
    "content_traf": 3,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B drops the math equations."
+   "reason": "A preserves the mathematical equations and substantive explanation, while B loses the displayed formulas in multiple key sections."
   },
   {
    "pid": "docs-rust-book-02",
    "type": "documentation",
    "url": "https://doc.rust-lang.org/book/print.html",
-   "winner": "trafilatura",
+   "winner": "chromerag",
    "content_ours": 4,
-   "content_traf": 5,
-   "chrome_ours": 4,
-   "chrome_traf": 3,
-   "reason": "B keeps the title and the full book through to the end; A cuts off early."
+   "content_traf": 4,
+   "chrome_ours": 5,
+   "chrome_traf": 4,
+   "reason": "A removes the interactive-book promotional callout and other page chrome while retaining the substantive book text, whereas B preserves that promotional material."
   },
   {
    "pid": "docs-typescript-04",
    "type": "documentation",
    "url": "https://www.typescriptlang.org/docs/handbook/triple-slash-directives.html",
    "winner": "chromerag",
-   "content_ours": 5,
+   "content_ours": 4,
    "content_traf": 3,
    "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "B empties the code blocks and drops the title."
+   "reason": "A retains more of the substantive code examples, while B drops them and replaces them with bare language labels, though A has minor trailing junk."
   },
   {
    "pid": "docs-git-scm-04",
@@ -720,32 +720,32 @@
    "url": "https://git-scm.com/docs/git-remote",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 3,
-   "chrome_ours": 3,
-   "chrome_traf": 2,
-   "reason": "B includes a whitespace-filled version list and jammed examples."
+   "content_traf": 4,
+   "chrome_ours": 2,
+   "chrome_traf": 1,
+   "reason": "A preserves the manual\u2019s substantive sections and readable command details, while B includes more version-history chrome and severely mangles or omits key content."
   },
   {
    "pid": "docs-bun-02",
    "type": "documentation",
    "url": "https://bun.sh/docs/runtime/auto-install",
-   "winner": "trafilatura",
-   "content_ours": 4,
+   "winner": "chromerag",
+   "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B keeps the Yarn and Deno section headings."
+   "reason": "Both retain the substantive documentation without site chrome, but A is cleaner and more readable while B contains formatting artifacts."
   },
   {
    "pid": "docs-typescript-00",
    "type": "documentation",
    "url": "https://www.typescriptlang.org/docs/",
    "winner": "chromerag",
-   "content_ours": 5,
+   "content_ours": 4,
    "content_traf": 2,
-   "chrome_ours": 5,
-   "chrome_traf": 5,
-   "reason": "A drops the link lists."
+   "chrome_ours": 2,
+   "chrome_traf": 4,
+   "reason": "B preserves the documentation landing page\u2019s useful section links and descriptions, while A drops most of that content despite being cleaner."
   },
   {
    "pid": "docs-kubernetes-02",
@@ -753,10 +753,10 @@
    "url": "https://kubernetes.io/docs/concepts/workloads/pods/sidecar-containers/",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 3,
+   "content_traf": 4,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B has the title, headings and bullet lists."
+   "reason": "B preserves the substantive documentation with headings, lifecycle/resource details, and follow-up links, while A ends earlier and omits more content."
   },
   {
    "pid": "docs-pydantic-02",
@@ -764,32 +764,32 @@
    "url": "https://pydantic.dev/docs/validation/latest/api/pydantic/errors/",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 3,
+   "content_traf": 4,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B keeps the class names and structure."
+   "reason": "B preserves the class and attribute headings and organizes the API details, while A omits those names and much of the structure."
   },
   {
    "pid": "docs-celery-01",
    "type": "documentation",
    "url": "https://docs.celeryq.dev/en/stable/getting-started/introduction.html",
    "winner": "trafilatura",
-   "content_ours": 4,
-   "content_traf": 5,
+   "content_ours": 3,
+   "content_traf": 4,
    "chrome_ours": 5,
-   "chrome_traf": 4,
-   "reason": "B includes the 'With git' section; the version note is minor chrome."
+   "chrome_traf": 5,
+   "reason": "B preserves more substantive details, especially version context, section structure, and bundle names, while both largely remove site chrome."
   },
   {
    "pid": "docs-rust-book-00",
    "type": "documentation",
    "url": "https://doc.rust-lang.org/book/",
    "winner": "trafilatura",
-   "content_ours": 5,
+   "content_ours": 4,
    "content_traf": 5,
-   "chrome_ours": 5,
-   "chrome_traf": 5,
-   "reason": "B keeps the title; otherwise equal."
+   "chrome_ours": 4,
+   "chrome_traf": 4,
+   "reason": "B preserves the page title in addition to all the substantive introductory content, while both retain the promotional callout."
   },
   {
    "pid": "docs-requests-02",
@@ -800,29 +800,29 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Equivalent content."
+   "reason": "Both extractions preserve the substantive Requests documentation without introducing meaningful site chrome, with only minor formatting differences."
   },
   {
    "pid": "docs-redis-03",
    "type": "documentation",
    "url": "https://redis.io/docs/latest/develop/tools/insight/",
-   "winner": "tie",
+   "winner": "trafilatura",
    "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "Equivalent content with minor chrome in each."
+   "chrome_traf": 5,
+   "reason": "Both retain the substantive Redis Insight documentation, but B removes more call-to-action chrome such as repeated \u201cLearn more\u201d links."
   },
   {
    "pid": "docs-graphql-02",
    "type": "documentation",
    "url": "https://graphql.org/learn/schema-review/",
    "winner": "trafilatura",
-   "content_ours": 5,
-   "content_traf": 5,
+   "content_ours": 4,
+   "content_traf": 4,
    "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "A leaves a 'Go to next lesson' prompt."
+   "reason": "Both preserve the visible substantive guide content, but B removes the trailing promotional next-lesson call to action and has slightly cleaner formatting."
   },
   {
    "pid": "docs-openssl-man-00",
@@ -830,21 +830,21 @@
    "url": "https://docs.openssl.org/master/",
    "winner": "chromerag",
    "content_ours": 4,
-   "content_traf": 4,
-   "chrome_ours": 5,
+   "content_traf": 5,
+   "chrome_ours": 4,
    "chrome_traf": 2,
-   "reason": "B is run-together text; A is structured but ends at the FIPS heading."
+   "reason": "A is much more readable and removes navigation/footer chrome, though it omits the FIPS descriptive text that B retains."
   },
   {
    "pid": "docs-mlflow-01",
    "type": "documentation",
    "url": "https://mlflow.org/docs/latest/genai/",
-   "winner": "tie",
+   "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 5,
-   "chrome_traf": 5,
-   "reason": "Equivalent content."
+   "chrome_traf": 4,
+   "reason": "Both retain the substantive MLflow content, but B redundantly repeats the demo call-to-action and headings."
   },
   {
    "pid": "docs-celery-02",
@@ -853,31 +853,31 @@
    "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 4,
-   "chrome_traf": 3,
-   "reason": "B keeps the title and description; A leaves a donation footer."
+   "chrome_ours": 5,
+   "chrome_traf": 4,
+   "reason": "Both retain the complete module index, but B preserves its table structure and omits the donation prompt."
   },
   {
    "pid": "docs-laravel-01",
    "type": "documentation",
    "url": "https://laravel.com/framework/docs/12.x/releases",
    "winner": "trafilatura",
-   "content_ours": 4,
+   "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 3,
+   "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "B drops warning banner and trailing TOC with same content."
+   "reason": "Both preserve the substantive release notes, but B removes the old-version warning while retaining the article content."
   },
   {
    "pid": "docs-openssl-man-01",
    "type": "documentation",
    "url": "https://docs.openssl.org/master/man1/",
-   "winner": "tie",
-   "content_ours": 5,
-   "content_traf": 5,
+   "winner": "chromerag",
+   "content_ours": 4,
+   "content_traf": 4,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Same content, only table formatting differs."
+   "reason": "Both retain the substantive command table without site chrome, but A preserves a complete row before truncation while B breaks and loses part of the openssl-req entry."
   },
   {
    "pid": "docs-terraform-registry-00",
@@ -888,18 +888,18 @@
    "content_traf": 4,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B keeps headings and card structure."
+   "reason": "Both retain the substantive Terraform documentation and omit site chrome, but B preserves the page title and organizes the linked descriptions more clearly."
   },
   {
    "pid": "docs-pydantic-04",
    "type": "documentation",
    "url": "https://pydantic.dev/docs/validation/latest/concepts/experimental/",
-   "winner": "tie",
+   "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 5,
+   "content_traf": 3,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Equivalent content; minor heading/formatting differences."
+   "reason": "A preserves the main pipeline documentation and code examples, while B omits substantial examples and explanatory sections; neither retains meaningful site chrome."
   },
   {
    "pid": "docs-rails-01",
@@ -910,51 +910,51 @@
    "content_traf": 4,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B keeps title and learning goals that A lacks."
+   "reason": "B preserves the guide title and introductory learning objectives that A omits, while both retain the substantive technical content without site chrome."
   },
   {
    "pid": "docs-rabbitmq-02",
    "type": "documentation",
    "url": "https://www.rabbitmq.com/docs/monitoring",
    "winner": "trafilatura",
-   "content_ours": 3,
-   "content_traf": 5,
+   "content_ours": 4,
+   "content_traf": 4,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B retains the monitoring tools table that A omits."
+   "reason": "B preserves the substantive monitoring-tools table, while A retains metric categories but contains more truncated and corrupted text."
   },
   {
    "pid": "docs-webpack-03",
    "type": "documentation",
    "url": "https://webpack.js.org/concepts/entry-points/",
-   "winner": "trafilatura",
+   "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 4,
+   "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "A ends with Edit this page/Previous/Next chrome."
+   "reason": "Both retain the substantive documentation and omit site chrome, but A has cleaner formatting and slightly more coherent text around the shortened section."
   },
   {
    "pid": "docs-celery-04",
    "type": "documentation",
    "url": "https://docs.celeryq.dev/en/stable/genindex.html",
    "winner": "trafilatura",
-   "content_ours": 3,
-   "content_traf": 4,
-   "chrome_ours": 5,
+   "content_ours": 4,
+   "content_traf": 5,
+   "chrome_ours": 4,
    "chrome_traf": 2,
-   "reason": "B keeps option context but has nav chrome; A is clean but less informative."
+   "reason": "B preserves the index entries' associated commands and metadata, while A drops much of that substantive context despite removing more chrome."
   },
   {
    "pid": "docs-mlflow-04",
    "type": "documentation",
    "url": "https://mlflow.org/docs/latest/",
-   "winner": "trafilatura",
+   "winner": "tie",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 4,
+   "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "A keeps CTA link text; B cleaner."
+   "reason": "Both extractions preserve all substantive documentation content while removing navigation, links, and footer chrome."
   },
   {
    "pid": "docs-laravel-00",
@@ -963,9 +963,9 @@
    "winner": "trafilatura",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 3,
+   "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "B prepends an in-page TOC and trailing nav leftovers."
+   "reason": "Both preserve the substantive Laravel documentation equally well, but B retains an extra navigation-style \u201cNext Steps\u201d item."
   },
   {
    "pid": "docs-cypress-02",
@@ -974,9 +974,9 @@
    "winner": "trafilatura",
    "content_ours": 4,
    "content_traf": 5,
-   "chrome_ours": 3,
-   "chrome_traf": 4,
-   "reason": "A keeps all package-manager commands; B adds breadcrumb and See also list."
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "A preserves the substantive instructions for all supported package managers, while B omits the Yarn, pnpm, and Bun commands."
   },
   {
    "pid": "docs-sqlalchemy-01",
@@ -985,86 +985,86 @@
    "winner": "chromerag",
    "content_ours": 4,
    "content_traf": 1,
-   "chrome_ours": 3,
-   "chrome_traf": 1,
-   "reason": "B contains only footer chrome with no content."
+   "chrome_ours": 5,
+   "chrome_traf": 4,
+   "reason": "A preserves the page introduction and extensive substantive documentation outline, while B retains only release metadata and footer material."
   },
   {
    "pid": "docs-prisma-04",
    "type": "documentation",
    "url": "https://www.prisma.io/docs/storage",
    "winner": "trafilatura",
-   "content_ours": 5,
+   "content_ours": 4,
    "content_traf": 5,
-   "chrome_ours": 4,
+   "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Same content; A has Edit on GitHub trailer."
+   "reason": "B preserves all substantive content, including the pricing section, while both extractions remove the page chrome."
   },
   {
    "pid": "docs-tailwind-02",
    "type": "documentation",
    "url": "https://tailwindcss.com/docs/installation/framework-guides",
    "winner": "chromerag",
-   "content_ours": 3,
-   "content_traf": 5,
-   "chrome_ours": 4,
+   "content_ours": 4,
+   "content_traf": 3,
+   "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "A lost framework names; B keeps them with descriptions."
+   "reason": "B preserves the framework names, headings, and descriptions while removing the extensive navigation and footer chrome."
   },
   {
    "pid": "docs-mlflow-02",
    "type": "documentation",
    "url": "https://mlflow.org/docs/latest/self-hosting/",
-   "winner": "tie",
+   "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 5,
+   "content_traf": 4,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Near-identical content and formatting."
+   "reason": "B retains additional substantive quickstart and cloud-service details while both effectively remove site chrome."
   },
   {
    "pid": "docs-deno-04",
    "type": "documentation",
    "url": "https://docs.deno.com/runtime/reference/cli/completions/",
-   "winner": "trafilatura",
+   "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 4,
-   "chrome_ours": 3,
-   "chrome_traf": 3,
-   "reason": "B retains section headings for each shell; A has leading TOC and loses headings."
+   "content_traf": 5,
+   "chrome_ours": 5,
+   "chrome_traf": 4,
+   "reason": "Both retain the complete substantive documentation, but A removes more navigation artifacts such as jump links and the truncated update notice."
   },
   {
    "pid": "docs-typescript-03",
    "type": "documentation",
    "url": "https://www.typescriptlang.org/docs/handbook/typescript-from-scratch.html",
-   "winner": "trafilatura",
-   "content_ours": 4,
-   "content_traf": 5,
+   "winner": "chromerag",
+   "content_ours": 5,
+   "content_traf": 4,
    "chrome_ours": 3,
    "chrome_traf": 5,
-   "reason": "A ends with sponsor-badge junk; B keeps extra next-step items."
+   "reason": "A preserves the substantive explanations and code examples much more completely, while B removes or mangles important example content despite having less residual chrome."
   },
   {
    "pid": "docs-ansible-02",
    "type": "documentation",
    "url": "https://docs.ansible.com/projects/ansible/latest/collections_guide/index.html",
    "winner": "chromerag",
-   "content_ours": 1,
+   "content_ours": 4,
    "content_traf": 3,
    "chrome_ours": 4,
-   "chrome_traf": 3,
-   "reason": "B keeps the page body subpage list, A only the intro."
+   "chrome_traf": 4,
+   "reason": "B preserves the relevant section outline in addition to the core introduction, while both largely remove the site's navigation chrome."
   },
   {
    "pid": "docs-matplotlib-00",
    "type": "documentation",
    "url": "https://matplotlib.org/stable/users/index.html",
-   "winner": "trafilatura",
-   "content_ours": 4,
-   "content_traf": 5,
-   "chrome_ours": 4,
-   "chrome_traf": 5,
-   "reason": "B covers more of the index though flat; A truncated earlier."
+   "winner": "chromerag",
+   "content_ours": 1,
+   "content_traf": 1,
+   "chrome_ours": 3,
+   "chrome_traf": 1,
+   "reason": "Both omit the substantive guide content, but A retains far less navigation chrome than B."
   },
   {
    "pid": "docs-matplotlib-02",
@@ -1072,21 +1072,21 @@
    "url": "https://matplotlib.org/stable/users/explain/figure/figure_intro.html",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 5,
+   "content_traf": 4,
    "chrome_ours": 5,
-   "chrome_traf": 4,
-   "reason": "A includes Source code link residue."
+   "chrome_traf": 5,
+   "reason": "B preserves more coherent substantive guidance, including the convenience-method explanation, while both effectively remove site chrome."
   },
   {
    "pid": "docs-deno-00",
    "type": "documentation",
    "url": "https://docs.deno.com/runtime/",
-   "winner": "tie",
+   "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 3,
-   "chrome_traf": 3,
-   "reason": "Both keep content with some TOC/heading-link noise."
+   "chrome_ours": 5,
+   "chrome_traf": 4,
+   "reason": "Both preserve the substantive tutorial content, but A removes navigation artifacts such as \u201cOn this page,\u201d \u201cJump to heading,\u201d and the trailing update notice."
   },
   {
    "pid": "docs-matplotlib-03",
@@ -1097,7 +1097,7 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B keeps rcParams default values that A lost."
+   "reason": "B preserves the rcParam names, values, and descriptions in a structured format, while A omits most parameter names and values."
   },
   {
    "pid": "docs-rabbitmq-01",
@@ -1108,18 +1108,18 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Identical content."
+   "reason": "Both extractions preserve all substantive page content and omit the site's navigation, footer, and other chrome."
   },
   {
    "pid": "docs-ray-00",
    "type": "documentation",
    "url": "https://docs.ray.io/en/latest/",
-   "winner": "chromerag",
-   "content_ours": 5,
-   "content_traf": 3,
+   "winner": "trafilatura",
+   "content_ours": 4,
+   "content_traf": 5,
    "chrome_ours": 3,
    "chrome_traf": 5,
-   "reason": "A code is mashed without whitespace; B readable though with sidebar nav."
+   "reason": "A preserves the substantive examples and description with no site chrome, while B is more readable but includes navigation and omits or truncates some content."
   },
   {
    "pid": "docs-rabbitmq-03",
@@ -1127,10 +1127,10 @@
    "url": "https://www.rabbitmq.com/docs/download",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 4,
+   "content_traf": 3,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B keeps sub-lists under operators and plugins."
+   "reason": "B preserves substantially more installation, operator, download, repository, client, and plugin details while both largely remove site chrome."
   },
   {
    "pid": "docs-webpack-01",
@@ -1138,10 +1138,10 @@
    "url": "https://webpack.js.org/concepts/targets/",
    "winner": "trafilatura",
    "content_ours": 4,
-   "content_traf": 5,
+   "content_traf": 4,
    "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "B keeps the Electron-React resource and omits the Next link; A drops a resource item."
+   "reason": "Both retain essentially the same substantive documentation, but B removes the minor navigation chrome included in A."
   },
   {
    "pid": "docs-mdn-04",
@@ -1150,9 +1150,9 @@
    "winner": "trafilatura",
    "content_ours": 4,
    "content_traf": 5,
-   "chrome_ours": 5,
-   "chrome_traf": 3,
-   "reason": "B loses the cite attribute name and the specifications row; A has only whitespace junk."
+   "chrome_ours": 4,
+   "chrome_traf": 5,
+   "reason": "A preserves the substantive reference content more completely and avoids B\u2019s extraneous breadcrumb/navigation list."
   },
   {
    "pid": "docs-openssl-man-04",
@@ -1160,10 +1160,10 @@
    "url": "https://docs.openssl.org/master/man7/ossl-guide-tls-client-non-block/",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 4,
+   "content_traf": 5,
    "chrome_ours": 5,
-   "chrome_traf": 5,
-   "reason": "A keeps the SEE ALSO list that B leaves empty."
+   "chrome_traf": 4,
+   "reason": "Both retain the substantive tutorial content, but A omits B's unnecessary copyright and license boilerplate."
   },
   {
    "pid": "docs-typescript-01",
@@ -1171,43 +1171,43 @@
    "url": "https://www.typescriptlang.org/docs/handbook/type-compatibility.html",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 2,
+   "content_traf": 3,
    "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "A drops every code example leaving bare 'ts'; B keeps them with minor trailing junk."
+   "reason": "B preserves the substantive code examples and explanatory text, while A omits the code and B includes only minor trailing extraction noise."
   },
   {
    "pid": "docs-sqlalchemy-04",
    "type": "documentation",
    "url": "https://docs.sqlalchemy.org/en/20/copyright.html",
-   "winner": "chromerag",
-   "content_ours": 5,
+   "winner": "trafilatura",
+   "content_ours": 4,
    "content_traf": 5,
    "chrome_ours": 5,
-   "chrome_traf": 3,
-   "reason": "A adds nav stubs and a footer credit; B is clean license text."
+   "chrome_traf": 4,
+   "reason": "A preserves the complete license and image attribution, while B omits the attribution; both effectively remove the surrounding site chrome."
   },
   {
    "pid": "docs-prisma-03",
    "type": "documentation",
    "url": "https://www.prisma.io/docs/prisma-postgres/quickstart/typeorm",
    "winner": "chromerag",
-   "content_ours": 5,
+   "content_ours": 3,
    "content_traf": 2,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B drops all code blocks and commands; A keeps them."
+   "reason": "A preserves the guide\u2019s structure, commands, database output, and key instructions, while B omits nearly all code blocks and actionable commands."
   },
   {
    "pid": "docs-scipy-03",
    "type": "documentation",
    "url": "https://docs.scipy.org/doc/scipy/tutorial/special.html",
    "winner": "chromerag",
-   "content_ours": 5,
-   "content_traf": 4,
+   "content_ours": 4,
+   "content_traf": 3,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "A keeps the Bessel equation and the binary entropy lead-in that B drops."
+   "reason": "A preserves the key differential equation and more of the substantive Cython explanation, while both largely remove site chrome."
   },
   {
    "pid": "docs-cypress-00",
@@ -1215,21 +1215,21 @@
    "url": "https://docs.cypress.io/app/get-started/why-cypress",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 3,
-   "chrome_ours": 5,
-   "chrome_traf": 5,
-   "reason": "A drops the solutions list and inline links text; B keeps them."
+   "content_traf": 4,
+   "chrome_ours": 4,
+   "chrome_traf": 4,
+   "reason": "B preserves more substantive sections, including the Get Started guidance, while both largely omit site chrome."
   },
   {
    "pid": "docs-rabbitmq-00",
    "type": "documentation",
    "url": "https://www.rabbitmq.com/docs",
    "winner": "tie",
-   "content_ours": 5,
-   "content_traf": 5,
+   "content_ours": 4,
+   "content_traf": 4,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Both keep the same content with only formatting differences."
+   "reason": "Both retain the page's substantive introductory and audience guidance while removing navigation and footer chrome, with only minor content omissions."
   },
   {
    "pid": "docs-keras-03",
@@ -1237,21 +1237,21 @@
    "url": "https://keras.io/guides/gptq_quantization_in_keras/",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 3,
-   "chrome_ours": 4,
+   "content_traf": 4,
+   "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "A loses headings and the choose-when bullets; B keeps them with a small trailing TOC."
+   "reason": "B preserves the full guide structure and additional practical guidance, while both largely remove site chrome."
   },
   {
    "pid": "docs-matplotlib-04",
    "type": "documentation",
    "url": "https://matplotlib.org/stable/users/explain/figure/writing_a_backend_pyplot_interface.html",
-   "winner": "tie",
+   "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Equivalent content; only inline-code formatting differs."
+   "reason": "Both retain the substantive documentation and omit site chrome, but B has cleaner spacing and formatting."
   },
   {
    "pid": "docs-rust-book-01",
@@ -1262,7 +1262,7 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B keeps section headings that A drops."
+   "reason": "Both remove the site chrome effectively, but B preserves the chapter and subsection structure and appears to retain slightly more substantive content."
   },
   {
    "pid": "docs-helm-02",
@@ -1273,7 +1273,7 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B keeps the Cheat Sheet entry that A omits."
+   "reason": "B preserves the substantive Cheat Sheet entry that A omits, while both remove the surrounding site chrome."
   },
   {
    "pid": "docs-mlflow-00",
@@ -1282,9 +1282,9 @@
    "winner": "tie",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 4,
+   "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Same content; A keeps link buttons while B drops them."
+   "reason": "Both extractions preserve all substantive page content while removing the navigation and footer chrome."
   },
   {
    "pid": "docs-pydantic-01",
@@ -1293,20 +1293,20 @@
    "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 3,
-   "chrome_ours": 5,
-   "chrome_traf": 5,
-   "reason": "A omits the title, intro and feature blurbs; B has the full page."
+   "chrome_ours": 4,
+   "chrome_traf": 4,
+   "reason": "B preserves the page title, section structure, support details, and related guidance, while A omits important content and presents sections out of order."
   },
   {
    "pid": "docs-vite-04",
    "type": "documentation",
    "url": "https://vite.dev/guide/performance",
-   "winner": "tie",
+   "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 5,
+   "content_traf": 4,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Essentially identical content and no chrome."
+   "reason": "Both remove the site chrome effectively, but B preserves more coherent substantive guidance and code content than A."
   },
   {
    "pid": "docs-laravel-04",
@@ -1315,20 +1315,20 @@
    "winner": "trafilatura",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 3,
+   "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "B keeps the old-version banner and in-page TOC; A is clean."
+   "reason": "Both retain the substantive encryption documentation, but A removes the warning and table of contents while B keeps this site chrome."
   },
   {
    "pid": "docs-scipy-00",
    "type": "documentation",
    "url": "https://docs.scipy.org/doc/scipy/tutorial/index.html",
-   "winner": "tie",
-   "content_ours": 5,
+   "winner": "trafilatura",
+   "content_ours": 2,
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Both keep the full table and text."
+   "reason": "A preserves all subpackage descriptions, while B omits most of the table's substantive descriptions."
   },
   {
    "pid": "docs-rust-book-04",
@@ -1339,7 +1339,7 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "A keeps the Foreword title and the author attribution."
+   "reason": "A preserves the complete foreword including its heading and attribution, while B omits the heading and the author\u2019s attribution."
   },
   {
    "pid": "docs-scipy-04",
@@ -1350,7 +1350,7 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Same content with minor formatting differences."
+   "reason": "Both extractions preserve the substantive SciPy API documentation and remove the site navigation, with only minor formatting differences."
   },
   {
    "pid": "docs-requests-04",
@@ -1361,7 +1361,7 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Both keep all sections and drop the sidebar."
+   "reason": "Both extractions preserve all substantive package descriptions while removing the page\u2019s navigation and other site chrome."
   },
   {
    "pid": "docs-git-scm-03",
@@ -1370,20 +1370,20 @@
    "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 2,
-   "chrome_ours": 3,
-   "chrome_traf": 2,
-   "reason": "A lacks NAME, SYNOPSIS and DESCRIPTION and has whitespace junk; B keeps them despite sidebar lists."
+   "chrome_ours": 4,
+   "chrome_traf": 1,
+   "reason": "B preserves the substantive Git manual content while A is dominated by version-history and navigation noise and omits most of the actual documentation."
   },
   {
    "pid": "docs-redis-04",
    "type": "documentation",
    "url": "https://redis.io/docs/latest/operate/kubernetes/",
    "winner": "chromerag",
-   "content_ours": 5,
-   "content_traf": 3,
+   "content_ours": 4,
+   "content_traf": 4,
    "chrome_ours": 5,
    "chrome_traf": 4,
-   "reason": "B drops several list items and adds a stray table; A is complete."
+   "reason": "A preserves the substantive subsection links and avoids the stray table artifact, while B includes more later headings but omits many useful section details."
   },
   {
    "pid": "docs-python-docs-04",
@@ -1394,29 +1394,29 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Equivalent content; only blank-line formatting differs."
+   "reason": "Both extractions preserve the substantive documentation and remove the site chrome, with only minor formatting differences and the same middle truncation."
   },
   {
    "pid": "docs-git-scm-00",
    "type": "documentation",
    "url": "https://git-scm.com/docs",
    "winner": "trafilatura",
-   "content_ours": 3,
+   "content_ours": 2,
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "A drops many reference entries (Everyday Git, Glossary, send-email, gc); B keeps the full list."
+   "reason": "B preserves nearly the complete command and guide reference, while A omits many substantive entries."
   },
   {
    "pid": "docs-requests-01",
    "type": "documentation",
    "url": "https://requests.readthedocs.io/en/latest/api/",
-   "winner": "chromerag",
+   "winner": "trafilatura",
    "content_ours": 4,
-   "content_traf": 3,
+   "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "A keeps all parameter docs though it drops function signatures; B keeps signatures but loses parameters for most methods."
+   "reason": "B preserves the method signatures and parameter/return structure more completely, while both extractions contain essentially no site chrome."
   },
   {
    "pid": "docs-requests-00",
@@ -1425,31 +1425,31 @@
    "winner": "trafilatura",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 3,
+   "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "A includes the full navigation tree of the docs; B keeps just the page content."
+   "reason": "B preserves the substantive introduction, example, and feature list while omitting more navigation-style guide menus than A."
   },
   {
    "pid": "docs-sqlalchemy-03",
    "type": "documentation",
    "url": "https://docs.sqlalchemy.org/en/20/tutorial/index.html",
-   "winner": "chromerag",
-   "content_ours": 5,
+   "winner": "trafilatura",
+   "content_ours": 4,
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 3,
-   "reason": "B prepends sidebar navigation and appends a footer credit; A is clean."
+   "reason": "B retains the substantive version-check code and more tutorial content, while A is cleaner but omits that material."
   },
   {
    "pid": "docs-grpc-01",
    "type": "documentation",
    "url": "https://grpc.io/docs/languages/dart/basics/",
    "winner": "trafilatura",
-   "content_ours": 5,
-   "content_traf": 5,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "B preserves code blocks inside list items better while A flattens comments inline."
+   "content_ours": 4,
+   "content_traf": 4,
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "Both retain the substantive tutorial content without site chrome, but B has cleaner formatting and less duplicated introductory text."
   },
   {
    "pid": "docs-typescript-02",
@@ -1457,32 +1457,32 @@
    "url": "https://www.typescriptlang.org/docs/handbook/2/functions.html",
    "winner": "chromerag",
    "content_ours": 4,
-   "content_traf": 3,
-   "chrome_ours": 4,
-   "chrome_traf": 5,
-   "reason": "A garbles code samples and drops the title; B keeps code readable despite trailing junk."
+   "content_traf": 4,
+   "chrome_ours": 3,
+   "chrome_traf": 4,
+   "reason": "B preserves the substantive explanation and code more readably, though it includes some playground and interface artifacts."
   },
   {
    "pid": "docs-ansible-03",
    "type": "documentation",
    "url": "https://docs.ansible.com/projects/ansible/latest/getting_started_ee/index.html",
-   "winner": "tie",
-   "content_ours": 5,
+   "winner": "trafilatura",
+   "content_ours": 4,
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Both capture the full content with no chrome."
+   "reason": "B preserves the substantive content more completely by including Python among the standard execution-environment packages."
   },
   {
    "pid": "docs-astro-00",
    "type": "documentation",
    "url": "https://docs.astro.build/en/getting-started/",
-   "winner": "chromerag",
-   "content_ours": 5,
+   "winner": "trafilatura",
+   "content_ours": 3,
    "content_traf": 4,
    "chrome_ours": 3,
-   "chrome_traf": 5,
-   "reason": "A keeps the npm command but includes some nav fragments; B is clean but drops the command."
+   "chrome_traf": 4,
+   "reason": "B retains more of the homepage\u2019s substantive introductory and installation content while avoiding most of the navigation and promotional chrome included in A."
   },
   {
    "pid": "docs-graphql-04",
@@ -1491,9 +1491,9 @@
    "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 4,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "B drops a paragraph about libraries that A keeps."
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "A preserves the full substantive article, including the interactive query and response labels, while B omits those labels."
   },
   {
    "pid": "docs-helm-00",
@@ -1504,95 +1504,95 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "A keeps item counts and clean headings; B drops the Go SDK count and adds emoji."
+   "reason": "A preserves the documentation section item counts that B omits, while both effectively remove the surrounding site chrome."
   },
   {
    "pid": "docs-vite-01",
    "type": "documentation",
    "url": "https://vite.dev/guide/why",
    "winner": "tie",
-   "content_ours": 5,
-   "content_traf": 5,
+   "content_ours": 4,
+   "content_traf": 4,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Both extract the article cleanly and completely."
+   "reason": "Both extractions preserve the substantive Vite documentation with no site chrome, but each has a shortened middle section."
   },
   {
    "pid": "docs-redis-00",
    "type": "documentation",
    "url": "https://redis.io/docs/latest/",
-   "winner": "chromerag",
-   "content_ours": 5,
-   "content_traf": 3,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "B loses the language and integration link lists and has whitespace mess; A keeps them."
+   "winner": "trafilatura",
+   "content_ours": 3,
+   "content_traf": 4,
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "B preserves more substantive product and feature sections, while both largely remove navigation and footer chrome."
   },
   {
    "pid": "docs-grpc-03",
    "type": "documentation",
    "url": "https://grpc.github.io/grpc/php/namespace_grpc",
-   "winner": "tie",
-   "content_ours": 4,
+   "winner": "trafilatura",
+   "content_ours": 2,
    "content_traf": 4,
    "chrome_ours": 5,
-   "chrome_traf": 4,
-   "reason": "A keeps constant descriptions but omits the class list; B keeps the class list but loses some descriptions."
+   "chrome_traf": 5,
+   "reason": "B preserves the complete class and variable indexes with descriptions, while A omits most data structures and variable entries despite retaining some detailed documentation."
   },
   {
    "pid": "docs-ray-03",
    "type": "documentation",
    "url": "https://docs.ray.io/en/latest/data/joining-data.html",
    "winner": "trafilatura",
-   "content_ours": 5,
+   "content_ours": 4,
    "content_traf": 5,
    "chrome_ours": 2,
    "chrome_traf": 5,
-   "reason": "B starts with a large site navigation tree; A is clean."
+   "reason": "A preserves the full joining-data content without site navigation, while B includes substantial navigation chrome and truncates the article."
   },
   {
    "pid": "docs-grpc-04",
    "type": "documentation",
    "url": "https://grpc.io/docs/languages/dart/",
    "winner": "chromerag",
-   "content_ours": 4,
+   "content_ours": 5,
    "content_traf": 3,
-   "chrome_ours": 3,
-   "chrome_traf": 2,
-   "reason": "A keeps the Dart section headings and links; B keeps a promo banner and loses headings."
+   "chrome_ours": 4,
+   "chrome_traf": 3,
+   "reason": "A preserves the page\u2019s headings, links, descriptions, and reference information while removing navigation, whereas B omits much of that structure and includes a promotional banner."
   },
   {
    "pid": "docs-webpack-04",
    "type": "documentation",
    "url": "https://webpack.js.org/concepts/dependency-graph/",
-   "winner": "trafilatura",
-   "content_ours": 5,
-   "content_traf": 5,
-   "chrome_ours": 3,
-   "chrome_traf": 4,
-   "reason": "A has nav fragments at the top; B is mostly clean."
+   "winner": "chromerag",
+   "content_ours": 4,
+   "content_traf": 4,
+   "chrome_ours": 4,
+   "chrome_traf": 3,
+   "reason": "Both preserve the main Dependency Graph content, but B adds more navigation chrome while neither includes the page's tip and further-reading links."
   },
   {
    "pid": "docs-graphql-03",
    "type": "documentation",
    "url": "https://graphql.org/learn/serving-over-http/",
-   "winner": "chromerag",
-   "content_ours": 5,
-   "content_traf": 5,
+   "winner": "trafilatura",
+   "content_ours": 4,
+   "content_traf": 4,
    "chrome_ours": 5,
-   "chrome_traf": 4,
-   "reason": "A ends with a File Uploads teaser; B ends at the content."
+   "chrome_traf": 5,
+   "reason": "Both retain the main article content with little site chrome, but A is slightly cleaner and includes an additional relevant File Uploads section rather than B's stray sentence fragment."
   },
   {
    "pid": "docs-helm-04",
    "type": "documentation",
    "url": "https://helm.sh/docs/plugins/",
    "winner": "trafilatura",
-   "content_ours": 5,
+   "content_ours": 4,
    "content_traf": 5,
-   "chrome_ours": 4,
+   "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Same content, B leaves emoji icons and drops the item count."
+   "reason": "A preserves the substantive \u201c3 items\u201d detail while removing decorative navigation icons, whereas B omits that detail."
   },
   {
    "pid": "docs-helm-01",
@@ -1601,42 +1601,42 @@
    "winner": "tie",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 4,
+   "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Equivalent content; A retains decorative emoji."
+   "reason": "Both retain all substantive guide content and omit the surrounding site chrome."
   },
   {
    "pid": "docs-svelte-04",
    "type": "documentation",
    "url": "https://svelte.dev/docs/svelte/svelte-animate",
    "winner": "trafilatura",
-   "content_ours": 5,
+   "content_ours": 4,
    "content_traf": 5,
    "chrome_ours": 4,
-   "chrome_traf": 5,
-   "reason": "A duplicates the import snippet in a garbled block; B is compact."
+   "chrome_traf": 3,
+   "reason": "B preserves all substantive API details, including the FlipParams easing field, while A omits it despite having slightly less site chrome."
   },
   {
    "pid": "docs-python-docs-01",
    "type": "documentation",
    "url": "https://docs.python.org/3/tutorial/stdlib.html",
-   "winner": "tie",
-   "content_ours": 5,
-   "content_traf": 5,
-   "chrome_ours": 5,
-   "chrome_traf": 5,
-   "reason": "Both keep the tutorial text, B with better inline code formatting."
-  },
-  {
-   "pid": "docs-ray-02",
-   "type": "documentation",
-   "url": "https://docs.ray.io/en/latest/rllib/package_ref/doc/ray.rllib.core.rl_module.rl_module.RLModule.set_state.html",
    "winner": "chromerag",
    "content_ours": 4,
    "content_traf": 4,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B keeps the page title; both lack the method signature."
+   "reason": "Both retain the substantive documentation and omit site chrome, but A preserves the command example formatting slightly better than B."
+  },
+  {
+   "pid": "docs-ray-02",
+   "type": "documentation",
+   "url": "https://docs.ray.io/en/latest/rllib/package_ref/doc/ray.rllib.core.rl_module.rl_module.RLModule.set_state.html",
+   "winner": "trafilatura",
+   "content_ours": 5,
+   "content_traf": 5,
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "Both retain the full substantive API description without chrome, but A preserves the parameter label and formatting more clearly."
   },
   {
    "pid": "docs-python-docs-00",
@@ -1647,29 +1647,29 @@
    "content_traf": 5,
    "chrome_ours": 3,
    "chrome_traf": 5,
-   "reason": "A appends the full table of contents list; B is clean."
+   "reason": "Both preserve the full substantive introduction, but B removes the lengthy navigation table of contents and other page chrome."
   },
   {
    "pid": "docs-deno-03",
    "type": "documentation",
    "url": "https://docs.deno.com/runtime/desktop/webgpu/",
-   "winner": "chromerag",
-   "content_ours": 5,
+   "winner": "trafilatura",
+   "content_ours": 4,
    "content_traf": 5,
-   "chrome_ours": 4,
+   "chrome_ours": 5,
    "chrome_traf": 4,
-   "reason": "A has on-this-page and Jump to heading noise; B has a stray leading nav bullet."
+   "reason": "A preserves more of the substantive guide, including the related links and additional rendering details, while both largely remove site navigation and chrome."
   },
   {
    "pid": "docs-playwright-00",
    "type": "documentation",
    "url": "https://playwright.dev/docs/intro",
    "winner": "trafilatura",
-   "content_ours": 3,
+   "content_ours": 4,
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "A drops the yarn and pnpm command variants that B keeps."
+   "reason": "B preserves the npm, yarn, and pnpm commands throughout, while A omits most yarn and pnpm instructions."
   },
   {
    "pid": "docs-rails-00",
@@ -1680,18 +1680,18 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B drops the guide titles leaving only descriptions, though it keeps the intro."
+   "reason": "A preserves both guide titles and their substantive descriptions, while B omits most guide titles despite having similarly little chrome."
   },
   {
    "pid": "docs-istio-01",
    "type": "documentation",
    "url": "https://istio.io/latest/docs/ambient/migrate/before-you-begin/",
    "winner": "trafilatura",
-   "content_ours": 4,
+   "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 2,
-   "chrome_traf": 4,
-   "reason": "B has nav menu list on top"
+   "chrome_ours": 4,
+   "chrome_traf": 5,
+   "reason": "Both retain the substantive migration instructions, but B adds an unnecessary navigation menu and omits the useful Next steps section."
   },
   {
    "pid": "docs-tailwind-01",
@@ -1699,10 +1699,10 @@
    "url": "https://tailwindcss.com/docs/installation/using-postcss",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 3,
-   "chrome_ours": 3,
-   "chrome_traf": 4,
-   "reason": "A keeps step headings with minor junk; B drops headings"
+   "content_traf": 4,
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "A preserves the instructional heading, numbered step structure, and concluding guidance, while B omits some of that context."
   },
   {
    "pid": "docs-keras-01",
@@ -1711,9 +1711,9 @@
    "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 4,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "A keeps title and section headings"
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "A preserves the article title and section structure while both extractions retain the substantive guide content without site chrome."
   },
   {
    "pid": "docs-pydantic-03",
@@ -1721,21 +1721,21 @@
    "url": "https://pydantic.dev/docs/validation/latest/examples/dynamic_models/",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 5,
-   "chrome_ours": 4,
-   "chrome_traf": 2,
-   "reason": "B repeats paragraphs"
+   "content_traf": 3,
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "A preserves all key code examples and explanations, while B omits the central implementation snippets and redundantly repeats surrounding prose."
   },
   {
    "pid": "docs-graphql-01",
    "type": "documentation",
    "url": "https://graphql.org/learn/performance/",
-   "winner": "tie",
-   "content_ours": 5,
-   "content_traf": 5,
+   "winner": "chromerag",
+   "content_ours": 4,
+   "content_traf": 4,
    "chrome_ours": 5,
-   "chrome_traf": 5,
-   "reason": "Near identical"
+   "chrome_traf": 4,
+   "reason": "Both retain nearly all visible substantive performance guidance, but B avoids the extra Security navigation/chrome appended after the recap."
   },
   {
    "pid": "docs-deno-02",
@@ -1743,32 +1743,32 @@
    "url": "https://docs.deno.com/runtime/reference/std/cbor/",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 4,
-   "chrome_ours": 4,
-   "chrome_traf": 3,
-   "reason": "B has On this page and Jump to heading noise"
+   "content_traf": 5,
+   "chrome_ours": 5,
+   "chrome_traf": 4,
+   "reason": "Both retain all substantive CBOR documentation, but A removes extra page-navigation chrome such as \u201cOn this page\u201d and \u201cJump to heading.\u201d"
   },
   {
    "pid": "docs-vite-03",
    "type": "documentation",
    "url": "https://vite.dev/guide/api-environment-runtimes",
-   "winner": "tie",
+   "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Near identical"
+   "reason": "Both retain the substantive documentation without site chrome, but B preserves code formatting slightly more cleanly."
   },
   {
    "pid": "docs-redis-01",
    "type": "documentation",
    "url": "https://redis.io/docs/latest/integrate/amazon-bedrock/",
-   "winner": "tie",
-   "content_ours": 5,
+   "winner": "trafilatura",
+   "content_ours": 3,
    "content_traf": 5,
-   "chrome_ours": 5,
+   "chrome_ours": 2,
    "chrome_traf": 5,
-   "reason": "Near identical"
+   "reason": "B preserves all substantive Bedrock setup steps while A omits them and retains distracting documentation-navigation chrome."
   },
   {
    "pid": "docs-ansible-00",
@@ -1777,9 +1777,9 @@
    "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 2,
-   "chrome_ours": 3,
+   "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "A keeps toctree content of index page, B only intro"
+   "reason": "A preserves the documentation overview and extensive substantive navigation, while B retains only the introductory paragraph."
   },
   {
    "pid": "docs-tailwind-00",
@@ -1787,10 +1787,10 @@
    "url": "https://tailwindcss.com/docs/installation/using-vite",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 3,
-   "chrome_ours": 3,
+   "content_traf": 4,
+   "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B keeps step headings and filenames despite top junk"
+   "reason": "B preserves all of A\u2019s instructions while retaining the numbered step headings, code labels, and concluding troubleshooting guidance without adding site chrome."
   },
   {
    "pid": "docs-tailwind-03",
@@ -1798,10 +1798,10 @@
    "url": "https://tailwindcss.com/docs/installation/play-cdn",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 3,
-   "chrome_ours": 3,
+   "content_traf": 4,
+   "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B keeps headings and filenames despite top junk"
+   "reason": "B preserves the meaningful section headings, step numbers, and code labels while retaining all substantive instructions and examples."
   },
   {
    "pid": "docs-redis-02",
@@ -1809,54 +1809,54 @@
    "url": "https://redis.io/docs/latest/integrate/",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 2,
-   "chrome_ours": 5,
+   "content_traf": 4,
+   "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "B keeps card titles, A drops them"
+   "reason": "B preserves the names, categories, and descriptions of the integrations, while A omits most item names despite retaining substantial descriptions."
   },
   {
    "pid": "docs-keras-02",
    "type": "documentation",
    "url": "https://keras.io/guides/transfer_learning/",
-   "winner": "chromerag",
-   "content_ours": 5,
-   "content_traf": 3,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "A keeps headings and all list items"
+   "winner": "tie",
+   "content_ours": 4,
+   "content_traf": 4,
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "A preserves the complete workflow and clearer section structure, while B retains more detailed later material but omits that workflow."
   },
   {
    "pid": "docs-postgres-00",
    "type": "documentation",
    "url": "https://www.postgresql.org/docs/current/",
-   "winner": "tie",
-   "content_ours": 3,
-   "content_traf": 2,
-   "chrome_ours": 2,
-   "chrome_traf": 4,
-   "reason": "Both lose most content"
+   "winner": "chromerag",
+   "content_ours": 2,
+   "content_traf": 1,
+   "chrome_ours": 3,
+   "chrome_traf": 3,
+   "reason": "A preserves the documentation title and some structural context, while both extractions mostly retain copyright and feedback boilerplate and omit the substantive table of contents."
   },
   {
    "pid": "docs-keras-00",
    "type": "documentation",
    "url": "https://keras.io/guides/",
    "winner": "chromerag",
-   "content_ours": 5,
-   "content_traf": 1,
+   "content_ours": 4,
+   "content_traf": 2,
    "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "B keeps title and guide list, A is only intro"
+   "reason": "B preserves the substantive guide listing as well as the page description, while A omits the list entirely."
   },
   {
    "pid": "docs-webpack-02",
    "type": "documentation",
    "url": "https://webpack.js.org/concepts/loaders",
-   "winner": "tie",
-   "content_ours": 5,
-   "content_traf": 5,
-   "chrome_ours": 5,
+   "winner": "trafilatura",
+   "content_ours": 4,
+   "content_traf": 4,
+   "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "Near identical"
+   "reason": "Both preserve essentially the same substantive documentation, but B adds unnecessary Previous/Next navigation chrome."
   },
   {
    "pid": "docs-kubernetes-03",
@@ -1864,21 +1864,21 @@
    "url": "https://kubernetes.io/docs/concepts/architecture/control-plane-node-communication/",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 3,
+   "content_traf": 4,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B keeps title and headings"
+   "reason": "B preserves the document structure, connection details, deprecation note, and follow-up links more completely, while A contains a malformed omitted list item."
   },
   {
    "pid": "docs-git-scm-02",
    "type": "documentation",
    "url": "https://git-scm.com/docs/git-fsck",
    "winner": "chromerag",
-   "content_ours": 5,
-   "content_traf": 4,
+   "content_ours": 4,
+   "content_traf": 3,
    "chrome_ours": 4,
    "chrome_traf": 2,
-   "reason": "B has garbage version list whitespace"
+   "reason": "A retains the main command documentation with relatively little navigation chrome, while B contains extensive version-history and malformed site-navigation noise and omits visible core sections."
   },
   {
    "pid": "docs-kubernetes-01",
@@ -1886,10 +1886,10 @@
    "url": "https://kubernetes.io/docs/concepts/services-networking/cluster-ip-allocation/",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 3,
+   "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "A keeps headings"
+   "reason": "Both retain the substantive documentation without site chrome, but A preserves the page's headings and structure."
   },
   {
    "pid": "docs-deno-01",
@@ -1897,21 +1897,21 @@
    "url": "https://docs.deno.com/runtime/reference/std/dotenv/",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 4,
-   "chrome_ours": 4,
-   "chrome_traf": 3,
-   "reason": "B cleaner without Jump to heading"
+   "content_traf": 5,
+   "chrome_ours": 5,
+   "chrome_traf": 4,
+   "reason": "Both retain all substantive documentation, but B removes more navigation text and presents the content more cleanly."
   },
   {
    "pid": "docs-prisma-02",
    "type": "documentation",
    "url": "https://www.prisma.io/docs/composer",
-   "winner": "tie",
-   "content_ours": 5,
-   "content_traf": 5,
-   "chrome_ours": 5,
+   "winner": "chromerag",
+   "content_ours": 4,
+   "content_traf": 3,
+   "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "Near identical"
+   "reason": "B preserves the substantive TypeScript examples that A omits, while both largely remove site chrome."
   },
   {
    "pid": "docs-postgres-03",
@@ -1919,10 +1919,10 @@
    "url": "https://www.postgresql.org/docs/current/errcodes-appendix.html",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 3,
+   "content_traf": 5,
    "chrome_ours": 5,
-   "chrome_traf": 5,
-   "reason": "A keeps heading"
+   "chrome_traf": 4,
+   "reason": "Both retain the substantive explanation and error-code table, but B adds an irrelevant documentation-issue form prompt while A avoids that chrome."
   },
   {
    "pid": "docs-rails-03",
@@ -1930,32 +1930,32 @@
    "url": "https://guides.rubyonrails.org/command_line.html",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 5,
+   "content_traf": 4,
    "chrome_ours": 5,
-   "chrome_traf": 3,
-   "reason": "B keeps intro and title"
+   "chrome_traf": 5,
+   "reason": "B preserves the guide title and introductory learning objectives that A omits, despite truncating a small portion of the routes example."
   },
   {
    "pid": "docs-postgres-02",
    "type": "documentation",
    "url": "https://www.postgresql.org/docs/current/tablesample-method.html",
-   "winner": "chromerag",
-   "content_ours": 5,
-   "content_traf": 4,
-   "chrome_ours": 3,
-   "chrome_traf": 5,
-   "reason": "A keeps chapter title and code formatting"
+   "winner": "trafilatura",
+   "content_ours": 3,
+   "content_traf": 5,
+   "chrome_ours": 5,
+   "chrome_traf": 4,
+   "reason": "B preserves the field names and all substantive documentation, while A omits the TsmRoutine field labels and B adds only a small correction-form prompt."
   },
   {
    "pid": "docs-svelte-03",
    "type": "documentation",
    "url": "https://svelte.dev/docs/svelte/svelte-options",
-   "winner": "tie",
+   "winner": "trafilatura",
    "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 5,
-   "chrome_traf": 5,
-   "reason": "Near identical"
+   "chrome_traf": 4,
+   "reason": "Both retain all substantive documentation, but A presents the legacy options with clearer structure while B removes more minor page chrome."
   },
   {
    "pid": "docs-jest-00",
@@ -1966,18 +1966,18 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B keeps every package-manager command variant while both are free of chrome."
+   "reason": "B preserves the full package-manager variants and more configuration instructions, while both effectively remove site chrome."
   },
   {
    "pid": "docs-matplotlib-01",
    "type": "documentation",
    "url": "https://matplotlib.org/stable/users/explain/figure/interactive.html",
    "winner": "trafilatura",
-   "content_ours": 3,
+   "content_ours": 4,
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B drops the pyplot function names from the lists, leaving orphan descriptions, while A keeps name plus description."
+   "reason": "A preserves the pyplot function names and their descriptions, while B drops those names in the interactive-mode section."
   },
   {
    "pid": "docs-ray-04",
@@ -1986,9 +1986,9 @@
    "winner": "trafilatura",
    "content_ours": 4,
    "content_traf": 5,
-   "chrome_ours": 2,
+   "chrome_ours": 1,
    "chrome_traf": 5,
-   "reason": "A starts with a large sidebar navigation block while B is clean and keeps the full troubleshooting body."
+   "reason": "B preserves the troubleshooting content with examples and common issues while removing the extensive site navigation chrome present in A."
   },
   {
    "pid": "docs-mdn-01",
@@ -1999,18 +1999,18 @@
    "content_traf": 4,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "A keeps attribute names and the technical summary and specifications tables that B drops."
+   "reason": "A preserves more substantive reference material, including the technical summary and specifications, while B omits these sections despite slightly clearer code examples."
   },
   {
    "pid": "docs-bun-01",
    "type": "documentation",
    "url": "https://bun.sh/docs/runtime/json5",
-   "winner": "trafilatura",
-   "content_ours": 4,
-   "content_traf": 4,
+   "winner": "tie",
+   "content_ours": 5,
+   "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "A keeps the bun build command that B loses leaving an empty terminal label, though A drops filenames."
+   "reason": "Both extractions retain the substantive JSON5 documentation and examples without site chrome, differing only in formatting and truncation placement."
   }
  ]
 }

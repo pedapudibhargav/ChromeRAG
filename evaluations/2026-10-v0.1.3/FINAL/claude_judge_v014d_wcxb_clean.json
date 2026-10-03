@@ -2,123 +2,123 @@
  "summary": {
   "article": {
    "n": 178,
-   "wins": 68,
+   "wins": 62,
    "losses": 55,
-   "ties": 55,
-   "net": 0.07303370786516854,
+   "ties": 61,
+   "net": 0.03932584269662921,
    "net_ci95": [
-    -0.05056179775280899,
-    0.19662921348314608
+    -0.07865168539325842,
+    0.15730337078651685
    ],
-   "content_ours": 4.707865168539326,
+   "content_ours": 4.719101123595506,
    "content_traf": 4.573033707865169,
-   "chrome_ours": 3.966292134831461,
-   "chrome_traf": 4.196629213483146
+   "chrome_ours": 3.9719101123595504,
+   "chrome_traf": 4.264044943820225
   },
   "collection": {
    "n": 8,
    "wins": 3,
-   "losses": 3,
-   "ties": 2,
-   "net": 0.0,
+   "losses": 2,
+   "ties": 3,
+   "net": 0.125,
    "net_ci95": [
-    -0.625,
+    -0.375,
     0.625
    ],
    "content_ours": 4.125,
    "content_traf": 3.625,
    "chrome_ours": 3.875,
-   "chrome_traf": 4.0
+   "chrome_traf": 4.375
   },
   "documentation": {
    "n": 40,
-   "wins": 12,
-   "losses": 12,
-   "ties": 16,
-   "net": 0.0,
+   "wins": 10,
+   "losses": 17,
+   "ties": 13,
+   "net": -0.175,
    "net_ci95": [
-    -0.225,
-    0.25
+    -0.425,
+    0.075
    ],
-   "content_ours": 4.675,
-   "content_traf": 4.45,
+   "content_ours": 4.75,
+   "content_traf": 4.65,
    "chrome_ours": 4.175,
-   "chrome_traf": 4.4
+   "chrome_traf": 4.675
   },
   "forum": {
    "n": 50,
-   "wins": 28,
-   "losses": 9,
-   "ties": 13,
-   "net": 0.38,
+   "wins": 36,
+   "losses": 10,
+   "ties": 4,
+   "net": 0.52,
    "net_ci95": [
-    0.16,
-    0.58
+    0.28,
+    0.72
    ],
-   "content_ours": 4.5,
+   "content_ours": 4.54,
    "content_traf": 3.54,
-   "chrome_ours": 3.54,
-   "chrome_traf": 3.66
+   "chrome_ours": 3.6,
+   "chrome_traf": 3.56
   },
   "listing": {
    "n": 36,
-   "wins": 15,
-   "losses": 15,
-   "ties": 6,
-   "net": 0.0,
+   "wins": 17,
+   "losses": 12,
+   "ties": 7,
+   "net": 0.1388888888888889,
    "net_ci95": [
-    -0.3055555555555556,
-    0.3055555555555556
+    -0.16666666666666666,
+    0.4166666666666667
    ],
-   "content_ours": 3.9166666666666665,
-   "content_traf": 3.5555555555555554,
-   "chrome_ours": 3.5277777777777777,
-   "chrome_traf": 3.3333333333333335
+   "content_ours": 3.8055555555555554,
+   "content_traf": 3.5277777777777777,
+   "chrome_ours": 3.8055555555555554,
+   "chrome_traf": 3.4166666666666665
   },
   "product": {
    "n": 2,
-   "wins": 0,
+   "wins": 1,
    "losses": 0,
-   "ties": 2,
-   "net": 0.0,
+   "ties": 1,
+   "net": 0.5,
    "net_ci95": [
     0.0,
-    0.0
+    1.0
    ],
    "content_ours": 3.0,
    "content_traf": 3.0,
-   "chrome_ours": 4.5,
-   "chrome_traf": 3.5
+   "chrome_ours": 5.0,
+   "chrome_traf": 4.5
   },
   "service": {
    "n": 55,
-   "wins": 33,
-   "losses": 17,
-   "ties": 5,
-   "net": 0.2909090909090909,
+   "wins": 31,
+   "losses": 14,
+   "ties": 10,
+   "net": 0.3090909090909091,
    "net_ci95": [
-    0.03636363636363636,
+    0.07272727272727272,
     0.5272727272727272
    ],
-   "content_ours": 4.454545454545454,
-   "content_traf": 3.8,
-   "chrome_ours": 3.6545454545454548,
-   "chrome_traf": 3.690909090909091
+   "content_ours": 4.418181818181818,
+   "content_traf": 3.8181818181818183,
+   "chrome_ours": 3.7636363636363637,
+   "chrome_traf": 3.8545454545454545
   },
   "ALL": {
    "n": 369,
-   "wins": 159,
-   "losses": 111,
+   "wins": 160,
+   "losses": 110,
    "ties": 99,
-   "net": 0.13008130081300814,
+   "net": 0.13550135501355012,
    "net_ci95": [
-    0.04336043360433604,
-    0.21686991869918726
+    0.04878048780487805,
+    0.22228997289972924
    ],
-   "content_ours": 4.53929539295393,
-   "content_traf": 4.176151761517615,
-   "chrome_ours": 3.8428184281842817,
-   "chrome_traf": 3.978319783197832
+   "content_ours": 4.542005420054201,
+   "content_traf": 4.197831978319783,
+   "chrome_ours": 3.899728997289973,
+   "chrome_traf": 4.073170731707317
   }
  },
  "judgements": [
@@ -126,34 +126,34 @@
    "pid": "wcxb-5410",
    "type": "documentation",
    "url": "https://web.mit.edu/rust-lang_v1.25/arch/amd64_ubuntu1404/share/doc/rust/html/book/first-edition/references-and-borrowing.html",
-   "winner": "tie",
-   "content_ours": 4,
-   "content_traf": 4,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "Both keep the full chapter text; A adds headings, B has odd wrapping."
+   "winner": "trafilatura",
+   "content_ours": 5,
+   "content_traf": 5,
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "A keeps headings including the page title and section headings; B drops them but content is otherwise the same."
   },
   {
    "pid": "wcxb-5177",
    "type": "forum",
    "url": "https://english.stackexchange.com/questions/52137/what-is-the-difference-between-grammar-and-usage",
    "winner": "chromerag",
-   "content_ours": 4,
+   "content_ours": 5,
    "content_traf": 2,
-   "chrome_ours": 3,
-   "chrome_traf": 4,
-   "reason": "A keeps only one answer and drops the question and other answers; B keeps more with minor vote/comment chrome."
+   "chrome_ours": 4,
+   "chrome_traf": 5,
+   "reason": "A keeps only one answer and drops the question; B keeps the question and all answers with minor chrome."
   },
   {
    "pid": "wcxb-5268",
    "type": "service",
    "url": "https://www.farmersmarketbluffton.org/",
-   "winner": "trafilatura",
-   "content_ours": 2,
+   "winner": "tie",
+   "content_ours": 3,
    "content_traf": 3,
    "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "B keeps the contact invitation and alert text as well as the sign-up text."
+   "reason": "Both keep only a tiny fragment of the little content present."
   },
   {
    "pid": "wcxb-5600",
@@ -162,31 +162,31 @@
    "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 3,
-   "chrome_ours": 3,
+   "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "B keeps the transformation story listing; A has only the intro plus a CTA."
+   "reason": "A drops all the transformation stories; B keeps them with a bit of CTA noise."
   },
   {
    "pid": "wcxb-4985",
    "type": "service",
    "url": "https://www.daytranslations.com/translation-services/",
    "winner": "trafilatura",
-   "content_ours": 3,
-   "content_traf": 4,
+   "content_ours": 4,
+   "content_traf": 5,
    "chrome_ours": 3,
-   "chrome_traf": 3,
-   "reason": "B retains service sections beyond the quote form fields A emphasises, though both have noise."
+   "chrome_traf": 4,
+   "reason": "A leaks form fields and loses testimonial names; B keeps pricing, add-ons and named testimonials."
   },
   {
    "pid": "wcxb-5585",
    "type": "listing",
    "url": "https://blog.littlepolygon.com/",
-   "winner": "trafilatura",
+   "winner": "chromerag",
    "content_ours": 4,
-   "content_traf": 4,
-   "chrome_ours": 3,
-   "chrome_traf": 5,
-   "reason": "Same post excerpts, B drops URLs, tags and Read more clutter."
+   "content_traf": 3,
+   "chrome_ours": 4,
+   "chrome_traf": 4,
+   "reason": "A keeps dates, links and tags for each post; B has only blurbs; both lack titles."
   },
   {
    "pid": "wcxb-5668",
@@ -196,8 +196,8 @@
    "content_ours": 5,
    "content_traf": 4,
    "chrome_ours": 5,
-   "chrome_traf": 3,
-   "reason": "B keeps the title and omits the newsletter prompt."
+   "chrome_traf": 4,
+   "reason": "B keeps the article title and has no newsletter prompt; A adds a sign-up line and lacks the title."
   },
   {
    "pid": "wcxb-5553",
@@ -208,7 +208,7 @@
    "content_traf": 5,
    "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "Near identical article text with small trailing extras in each."
+   "reason": "Same article; A ends with tags, B with related-post links."
   },
   {
    "pid": "wcxb-5120",
@@ -219,7 +219,7 @@
    "content_traf": 3,
    "chrome_ours": 3,
    "chrome_traf": 2,
-   "reason": "A keeps the original question and replies; B is dominated by signatures and ads and misses the question."
+   "reason": "A keeps the original question and thread replies; B misses the question and is full of signatures."
   },
   {
    "pid": "wcxb-5024",
@@ -227,21 +227,21 @@
    "url": "https://beersmith.com/forum/index.php?forums/recipes.3/",
    "winner": "trafilatura",
    "content_ours": 2,
-   "content_traf": 4,
-   "chrome_ours": 2,
+   "content_traf": 5,
+   "chrome_ours": 4,
    "chrome_traf": 2,
-   "reason": "B keeps thread titles and stats despite nav chrome; A is garbled and loses titles."
+   "reason": "A drops many thread titles; B keeps the full listing but includes navigation chrome."
   },
   {
    "pid": "wcxb-5437",
    "type": "article",
    "url": "https://buildwithfern.com/post/api-documentation-best-practices-guide",
-   "winner": "chromerag",
+   "winner": "tie",
    "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "Both keep the article; B retains the title."
+   "chrome_traf": 5,
+   "reason": "Same article; B adds a repeated date and category labels."
   },
   {
    "pid": "wcxb-5595",
@@ -252,7 +252,7 @@
    "content_traf": 5,
    "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "Same post; A adds Like this/Loading widget."
+   "reason": "B is clean while A adds a 'Like this' widget and mangled spacing."
   },
   {
    "pid": "wcxb-4966",
@@ -263,18 +263,18 @@
    "content_traf": 4,
    "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "B keeps good structure and steps; A drops headings and has stray step numbers."
+   "reason": "B keeps the title and a clean table of tips; A has a looser layout."
   },
   {
    "pid": "wcxb-5044",
    "type": "forum",
    "url": "https://www.rivianforums.com/forum/threads/ev-home-charging-recommendations.32036/",
-   "winner": "tie",
+   "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 5,
+   "content_traf": 4,
    "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "Both keep the thread posts; B adds Share/Top bits."
+   "reason": "B keeps the OP intro and more replies; A drops some replies."
   },
   {
    "pid": "wcxb-5105",
@@ -284,8 +284,8 @@
    "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 3,
-   "chrome_traf": 4,
-   "reason": "B keeps the post cleanly with lists; A has filter/Working chrome."
+   "chrome_traf": 5,
+   "reason": "B has only the clean OP post, while A adds member badges and a blob of text."
   },
   {
    "pid": "wcxb-4943",
@@ -296,7 +296,7 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Identical content."
+   "reason": "The two extractions are essentially identical."
   },
   {
    "pid": "wcxb-5559",
@@ -304,10 +304,10 @@
    "url": "https://alittleadrift.com/solo-asia/",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 5,
+   "content_traf": 4,
    "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "A keeps the title; both fine, A has comments header."
+   "chrome_traf": 5,
+   "reason": "A keeps the title but has a comments heading; B omits the title."
   },
   {
    "pid": "wcxb-5579",
@@ -318,18 +318,18 @@
    "content_traf": 5,
    "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "A is cleaner; B adds trailing date list and garbled bold."
+   "reason": "A ends cleanly; B adds stray dates and broken bold formatting."
   },
   {
    "pid": "wcxb-5166",
    "type": "service",
    "url": "https://www.lovenotions.com/sewingbeginners?tab=supply-list-for-beginners",
    "winner": "tie",
-   "content_ours": 1,
-   "content_traf": 1,
-   "chrome_ours": 1,
-   "chrome_traf": 1,
-   "reason": "Both are raw page-builder shortcode noise."
+   "content_ours": 2,
+   "content_traf": 2,
+   "chrome_ours": 2,
+   "chrome_traf": 2,
+   "reason": "Both output raw page-builder shortcode instead of readable text."
   },
   {
    "pid": "wcxb-5191",
@@ -340,7 +340,7 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Equivalent extractions of the thread."
+   "reason": "Same forum post and reply; only whitespace differs."
   },
   {
    "pid": "wcxb-5570",
@@ -348,21 +348,21 @@
    "url": "https://www.delallo.com/blog/authentic-italian-recipes/?srsltid=AfmBOorGdFWLkqQSm9Ol9GP769ljV3GTG3iUjuqnq5vCnsl8RSEzKq34",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 4,
-   "chrome_ours": 3,
-   "chrome_traf": 4,
-   "reason": "B keeps numbered recipe headings; has some CTA labels."
+   "content_traf": 3,
+   "chrome_ours": 4,
+   "chrome_traf": 5,
+   "reason": "B keeps recipe titles and numbering; A drops all recipe names."
   },
   {
    "pid": "wcxb-5071",
    "type": "forum",
    "url": "https://www.forumsforums.com/threads/cast-iron-anyone.96914/",
-   "winner": "tie",
-   "content_ours": 4,
-   "content_traf": 4,
+   "winner": "chromerag",
+   "content_ours": 5,
+   "content_traf": 3,
    "chrome_ours": 3,
-   "chrome_traf": 4,
-   "reason": "Both keep thread posts; A has rules blurb, B has usernames and quote markup."
+   "chrome_traf": 3,
+   "reason": "B keeps more of the thread's posts; A leaks the rules banner and B has author badges."
   },
   {
    "pid": "wcxb-5623",
@@ -371,9 +371,9 @@
    "winner": "tie",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 4,
+   "chrome_ours": 5,
    "chrome_traf": 4,
-   "reason": "Both keep the article with minor extras."
+   "reason": "Same article; B adds an affiliate-links table."
   },
   {
    "pid": "wcxb-5406",
@@ -381,21 +381,21 @@
    "url": "https://www.integralist.co.uk/posts/rust-ownership/",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 5,
-   "chrome_ours": 5,
+   "content_traf": 4,
+   "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "A is cleaner; B includes a Home nav label."
+   "reason": "A keeps the numbered list of sections that B drops."
   },
   {
    "pid": "wcxb-5029",
    "type": "forum",
    "url": "https://www.fishforums.net/threads/beginner-new-tank-setup-advice-appreciated.463767/",
    "winner": "chromerag",
-   "content_ours": 4,
+   "content_ours": 5,
    "content_traf": 2,
    "chrome_ours": 4,
-   "chrome_traf": 5,
-   "reason": "A keeps only the opening post; B also keeps replies."
+   "chrome_traf": 4,
+   "reason": "A keeps only the opening post, duplicated; B includes the replies."
   },
   {
    "pid": "wcxb-4986",
@@ -404,9 +404,9 @@
    "winner": "chromerag",
    "content_ours": 4,
    "content_traf": 3,
-   "chrome_ours": 3,
+   "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "B keeps headings, about and why-choose sections; A drops them."
+   "reason": "B keeps testimonials, why-choose-us and headings that A drops."
   },
   {
    "pid": "wcxb-5393",
@@ -417,7 +417,7 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B keeps the Gradle version output that A drops."
+   "reason": "A drops the Gradle version output block that B keeps."
   },
   {
    "pid": "wcxb-5512",
@@ -428,7 +428,7 @@
    "content_traf": 5,
    "chrome_ours": 3,
    "chrome_traf": 5,
-   "reason": "A repeats 'Page 1 of 1' chrome."
+   "reason": "Same article text but A leaves repeated \"Page 1 of 1\" chrome."
   },
   {
    "pid": "wcxb-5547",
@@ -437,42 +437,42 @@
    "winner": "trafilatura",
    "content_ours": 4,
    "content_traf": 5,
-   "chrome_ours": 4,
+   "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "A keeps title; B lacks title and adds comment footer."
+   "reason": "A keeps the headline and subtitle that B drops."
   },
   {
    "pid": "wcxb-4542",
    "type": "article",
    "url": "https://www.creditkarma.com/Error_Credit_Karma.htm?referenceerror=18.d4e1202.1773517969.11a18e45",
    "winner": "tie",
-   "content_ours": 5,
-   "content_traf": 5,
+   "content_ours": 4,
+   "content_traf": 4,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Same error message."
+   "reason": "Identical error message content."
   },
   {
    "pid": "wcxb-5582",
    "type": "article",
    "url": "https://fargomom.com/working-mom-tips-finding-balance-in-routine/",
    "winner": "tie",
-   "content_ours": 5,
-   "content_traf": 5,
-   "chrome_ours": 5,
-   "chrome_traf": 5,
-   "reason": "Identical."
+   "content_ours": 4,
+   "content_traf": 4,
+   "chrome_ours": 4,
+   "chrome_traf": 4,
+   "reason": "Texts are identical."
   },
   {
    "pid": "wcxb-5631",
    "type": "article",
    "url": "https://www.teamwork.com/blog/notion-alternatives/",
    "winner": "tie",
-   "content_ours": 5,
-   "content_traf": 5,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "Near identical article text."
+   "content_ours": 4,
+   "content_traf": 4,
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "Near-identical article text with only formatting differences."
   },
   {
    "pid": "wcxb-5591",
@@ -481,75 +481,75 @@
    "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 4,
-   "chrome_ours": 5,
-   "chrome_traf": 5,
-   "reason": "B keeps the title and headings."
+   "chrome_ours": 4,
+   "chrome_traf": 4,
+   "reason": "B keeps the post title; both essentially same body."
   },
   {
    "pid": "wcxb-5684",
    "type": "article",
    "url": "https://www.accountingseed.com/quickbooks-alternatives/",
-   "winner": "chromerag",
+   "winner": "tie",
    "content_ours": 4,
-   "content_traf": 3,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "A keeps title and intro and guide; B starts mid-article."
+   "content_traf": 4,
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "A has intro and criteria but B has the alternatives and table; each loses something."
   },
   {
    "pid": "wcxb-5639",
    "type": "article",
    "url": "https://www.mockplus.com/blog/post/10-best-offline-alternatives-to-figma",
    "winner": "chromerag",
-   "content_ours": 5,
+   "content_ours": 4,
    "content_traf": 3,
    "chrome_ours": 3,
-   "chrome_traf": 3,
-   "reason": "B keeps headings and lists; both end with promo blurbs."
+   "chrome_traf": 4,
+   "reason": "B keeps headings and feature lists A drops, with a little trailing promo."
   },
   {
    "pid": "wcxb-5172",
    "type": "forum",
    "url": "https://cooking.meta.stackexchange.com/questions/1584/how-can-we-make-substitution-questions-more-helpful",
    "winner": "chromerag",
-   "content_ours": 5,
+   "content_ours": 4,
    "content_traf": 3,
    "chrome_ours": 3,
-   "chrome_traf": 5,
-   "reason": "B keeps the third answer; adds vote and comment chrome."
+   "chrome_traf": 4,
+   "reason": "A loses one of the answers; B keeps it with some comment chrome."
   },
   {
    "pid": "wcxb-5638",
    "type": "service",
    "url": "https://www.visily.ai/figma-alternative/",
    "winner": "chromerag",
-   "content_ours": 5,
+   "content_ours": 4,
    "content_traf": 3,
    "chrome_ours": 5,
    "chrome_traf": 3,
-   "reason": "B keeps the bullet lists; A has promo line and drops lists."
+   "reason": "B keeps title, headings and FAQ while A includes a promo line and lacks structure."
   },
   {
    "pid": "wcxb-5248",
    "type": "listing",
    "url": "https://www.iie.org/scholarships-programs/",
    "winner": "tie",
-   "content_ours": 5,
-   "content_traf": 5,
+   "content_ours": 4,
+   "content_traf": 4,
    "chrome_ours": 5,
    "chrome_traf": 4,
-   "reason": "Equivalent listings; B adds result count."
+   "reason": "Same content; B adds a result-count line."
   },
   {
    "pid": "wcxb-4933",
    "type": "service",
    "url": "https://www.cjbpest.com/areas-served/wayne-county/romulus-mi-pest-control",
-   "winner": "trafilatura",
-   "content_ours": 4,
-   "content_traf": 5,
+   "winner": "chromerag",
+   "content_ours": 5,
+   "content_traf": 4,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B keeps the pest list items A drops."
+   "reason": "A keeps title and service lists B drops."
   },
   {
    "pid": "wcxb-5693",
@@ -560,7 +560,7 @@
    "content_traf": 4,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "A keeps title and byline; B lacks title."
+   "reason": "A keeps title and byline missing in B."
   },
   {
    "pid": "wcxb-5121",
@@ -569,9 +569,9 @@
    "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 2,
-   "chrome_ours": 5,
+   "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "A keeps the original question and replies; B loses the question."
+   "reason": "A has the whole thread while B has only part of the replies."
   },
   {
    "pid": "wcxb-5171",
@@ -579,10 +579,10 @@
    "url": "https://cooking.stackexchange.com/questions/92884/educated-ways-to-simplify-substitute-recipes",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 2,
+   "content_traf": 3,
    "chrome_ours": 3,
    "chrome_traf": 3,
-   "reason": "A keeps the question and answers; B has only one answer and a network blurb."
+   "reason": "A has the question and answer; B drops the question and starts with site boilerplate."
   },
   {
    "pid": "wcxb-5148",
@@ -590,10 +590,10 @@
    "url": "https://backpackinglight.com/forums/topic/41395/",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 4,
+   "content_traf": 2,
    "chrome_ours": 4,
    "chrome_traf": 2,
-   "reason": "B adds heavy forum chrome and ads."
+   "reason": "A keeps the forum posts; B is mostly ads and forum boilerplate."
   },
   {
    "pid": "wcxb-5394",
@@ -604,7 +604,7 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Same text; B has cleaner bullets."
+   "reason": "Equivalent content."
   },
   {
    "pid": "wcxb-5645",
@@ -614,19 +614,19 @@
    "content_ours": 5,
    "content_traf": 4,
    "chrome_ours": 3,
-   "chrome_traf": 5,
-   "reason": "B has title and headings but adds related-article and footer links."
+   "chrome_traf": 3,
+   "reason": "B has title and headings; A has promo text mid-article, B some related-article chrome."
   },
   {
    "pid": "wcxb-5101",
    "type": "forum",
    "url": "https://www.audiosciencereview.com/forum/index.php?threads/7-2-4-home-theater-first-time-build-advice.41251/",
-   "winner": "chromerag",
-   "content_ours": 5,
-   "content_traf": 3,
+   "winner": "tie",
+   "content_ours": 4,
+   "content_traf": 4,
    "chrome_ours": 3,
    "chrome_traf": 4,
-   "reason": "A includes the original post; B lacks the setup."
+   "reason": "Each loses some posts; A has avatar letters and navigation leftovers."
   },
   {
    "pid": "wcxb-5252",
@@ -637,29 +637,29 @@
    "content_traf": 5,
    "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "B leaves stray calls to action."
+   "reason": "Same content, B leaves stray CTA lines."
   },
   {
    "pid": "wcxb-5538",
    "type": "article",
    "url": "https://climatedrift.substack.com/p/climate-tech-messaging-is-dead-heres",
    "winner": "trafilatura",
-   "content_ours": 4,
-   "content_traf": 5,
-   "chrome_ours": 3,
+   "content_ours": 5,
+   "content_traf": 4,
+   "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "B keeps title; A leaves comment chrome."
+   "reason": "B keeps title, subtitle and TOC while A includes Apply Now chrome."
   },
   {
    "pid": "wcxb-5115",
    "type": "forum",
    "url": "https://forums.horseandhound.co.uk/threads/dog-breed-suggestions-for-family.739340/",
-   "winner": "tie",
+   "winner": "chromerag",
    "content_ours": 4,
-   "content_traf": 4,
-   "chrome_ours": 3,
-   "chrome_traf": 4,
-   "reason": "Both cover the thread; B has trailing Share/Top."
+   "content_traf": 3,
+   "chrome_ours": 4,
+   "chrome_traf": 5,
+   "reason": "B keeps more thread replies with usernames."
   },
   {
    "pid": "wcxb-5295",
@@ -668,20 +668,20 @@
    "winner": "trafilatura",
    "content_ours": 4,
    "content_traf": 5,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "B keeps the title, location and PTO benefit."
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "B adds job title and location with structured fields."
   },
   {
    "pid": "wcxb-5285",
    "type": "listing",
    "url": "https://www.artnet.com/events/",
    "winner": "trafilatura",
-   "content_ours": 3,
+   "content_ours": 2,
    "content_traf": 4,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "A keeps dates and listing details B drops"
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "A keeps dates and venues for each event; B drops most."
   },
   {
    "pid": "wcxb-5316",
@@ -691,19 +691,19 @@
    "content_ours": 4,
    "content_traf": 4,
    "chrome_ours": 3,
-   "chrome_traf": 4,
-   "reason": "Same content, B adds button and link fragments"
+   "chrome_traf": 5,
+   "reason": "Same body copy, B adds stray button labels."
   },
   {
    "pid": "wcxb-5033",
    "type": "forum",
    "url": "https://www.thepufferforum.com/forum/viewtopic.php?t=1658&start=30",
    "winner": "chromerag",
-   "content_ours": 4,
+   "content_ours": 5,
    "content_traf": 4,
    "chrome_ours": 4,
    "chrome_traf": 2,
-   "reason": "B carries heavy poster profile boilerplate"
+   "reason": "B is cluttered with user profile blocks and duplicated text."
   },
   {
    "pid": "wcxb-5179",
@@ -714,62 +714,62 @@
    "content_traf": 5,
    "chrome_ours": 3,
    "chrome_traf": 4,
-   "reason": "B adds view counts and badge noise, A one network blurb"
+   "reason": "B leaves view counts, badges and tag; A only a network blurb."
   },
   {
    "pid": "wcxb-5080",
    "type": "forum",
    "url": "https://permies.com/t/154/cast-iron-skillet-ain-hard",
    "winner": "chromerag",
-   "content_ours": 3,
-   "content_traf": 4,
-   "chrome_ours": 2,
-   "chrome_traf": 3,
-   "reason": "A keeps forum nav and staff lists, B has title and cleaner post text"
+   "content_ours": 4,
+   "content_traf": 5,
+   "chrome_ours": 3,
+   "chrome_traf": 2,
+   "reason": "A includes forum nav and staff lists and drops the title."
   },
   {
    "pid": "wcxb-5178",
    "type": "forum",
    "url": "https://ell.stackexchange.com/questions/181667/understanding-english-grammar-and-proper-word-usage",
    "winner": "chromerag",
-   "content_ours": 5,
-   "content_traf": 2,
-   "chrome_ours": 4,
-   "chrome_traf": 5,
-   "reason": "A omits the answer entirely"
+   "content_ours": 2,
+   "content_traf": 4,
+   "chrome_ours": 5,
+   "chrome_traf": 4,
+   "reason": "A has only the question, B also keeps the answer."
   },
   {
    "pid": "wcxb-5111",
    "type": "article",
    "url": "https://patient.info/features/healthy-living/10-daily-habits-for-healthy-weight-loss",
-   "winner": "tie",
+   "winner": "chromerag",
    "content_ours": 4,
-   "content_traf": 5,
-   "chrome_ours": 4,
-   "chrome_traf": 3,
-   "reason": "B has title but newsletter prompts, A cleaner but no title"
+   "content_traf": 4,
+   "chrome_ours": 5,
+   "chrome_traf": 2,
+   "reason": "B ends with newsletter and widget chrome and drops list bullets."
   },
   {
    "pid": "wcxb-5441",
    "type": "article",
    "url": "https://www.gravitee.io/blog/api-documentation-done-right-technical-guide",
-   "winner": "tie",
-   "content_ours": 4,
+   "winner": "chromerag",
+   "content_ours": 5,
    "content_traf": 4,
    "chrome_ours": 3,
    "chrome_traf": 3,
-   "reason": "Both keep article but add tail link lists"
+   "reason": "A keeps title and author; both end with link-list chrome."
   },
   {
    "pid": "wcxb-5245",
    "type": "listing",
    "url": "https://www.edupass.org/paying-for-college/scholarships/databases/",
-   "winner": "tie",
+   "winner": "trafilatura",
    "content_ours": 4,
-   "content_traf": 4,
-   "chrome_ours": 3,
-   "chrome_traf": 4,
-   "reason": "A has title but Learn More noise, B lacks title"
+   "content_traf": 5,
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "A drops the final scholarship entries."
   },
   {
    "pid": "wcxb-5629",
@@ -780,7 +780,7 @@
    "content_traf": 5,
    "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "A leaves pagination links"
+   "reason": "A leaves pagination text."
   },
   {
    "pid": "wcxb-5263",
@@ -788,32 +788,32 @@
    "url": "https://mkecowork.com/",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 3,
+   "content_traf": 2,
    "chrome_ours": 3,
    "chrome_traf": 3,
-   "reason": "A keeps pricing table, B duplicates text and drops table"
+   "reason": "A keeps the pricing table, B is repeated blurbs without prices."
   },
   {
    "pid": "wcxb-5124",
    "type": "forum",
    "url": "https://forum.kemper-amps.com/forum/thread/63237-tube-amp-versus-solid-state/",
-   "winner": "tie",
-   "content_ours": 5,
+   "winner": "trafilatura",
+   "content_ours": 4,
    "content_traf": 5,
    "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "Same posts with minor metadata differences"
+   "reason": "A keeps title and thread state, similar posts."
   },
   {
    "pid": "wcxb-5676",
    "type": "article",
    "url": "https://webstudio.is/blog/best-wordpress-alternatives",
    "winner": "trafilatura",
-   "content_ours": 4,
+   "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 3,
-   "chrome_traf": 4,
-   "reason": "B keeps ending section, A ends with stats chrome"
+   "chrome_traf": 5,
+   "reason": "A ends with site stats chrome, B keeps the conclusion."
   },
   {
    "pid": "wcxb-5374",
@@ -824,18 +824,18 @@
    "content_traf": 3,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "A loses Selection widget descriptions"
+   "reason": "A loses descriptions under several headings."
   },
   {
    "pid": "wcxb-5276",
    "type": "listing",
    "url": "https://www.erieartmuseum.org/current",
    "winner": "tie",
-   "content_ours": 5,
-   "content_traf": 5,
+   "content_ours": 4,
+   "content_traf": 4,
    "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "Same content, A has stray 0"
+   "reason": "Same exhibition list."
   },
   {
    "pid": "wcxb-5427",
@@ -846,7 +846,7 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Essentially identical"
+   "reason": "Nearly identical documentation."
   },
   {
    "pid": "wcxb-5535",
@@ -857,18 +857,18 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "A keeps title and subtitle, B has glitch and lacks them"
+   "reason": "A keeps the title and subtitle."
   },
   {
    "pid": "wcxb-5438",
    "type": "article",
    "url": "https://konghq.com/blog/learning-center/guide-to-api-documentation",
    "winner": "trafilatura",
-   "content_ours": 4,
-   "content_traf": 4,
+   "content_ours": 5,
+   "content_traf": 5,
    "chrome_ours": 3,
    "chrome_traf": 5,
-   "reason": "A adds recommended posts residue"
+   "reason": "A adds recommended-posts chrome."
   },
   {
    "pid": "wcxb-5468",
@@ -877,9 +877,9 @@
    "winner": "tie",
    "content_ours": 4,
    "content_traf": 4,
-   "chrome_ours": 3,
+   "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "A has title and TOC, B takeaways and bio"
+   "reason": "A has title, B has key takeaways, both have small chrome."
   },
   {
    "pid": "wcxb-5461",
@@ -890,7 +890,7 @@
    "content_traf": 5,
    "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "A has stray list items"
+   "reason": "A drops text under last subsection and keeps stray bullets."
   },
   {
    "pid": "wcxb-5426",
@@ -900,8 +900,8 @@
    "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 5,
-   "chrome_traf": 4,
-   "reason": "Same content, A has stray Terraform label"
+   "chrome_traf": 5,
+   "reason": "Equivalent."
   },
   {
    "pid": "wcxb-5447",
@@ -912,7 +912,7 @@
    "content_traf": 4,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B keeps title"
+   "reason": "B keeps the article title."
   },
   {
    "pid": "wcxb-5028",
@@ -920,10 +920,10 @@
    "url": "https://www.plantedtank.net/threads/new-tank-setup-opinions.1332084/",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 2,
-   "chrome_ours": 3,
+   "content_traf": 3,
+   "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "A omits replies and duplicates opening post"
+   "reason": "A duplicates the opening post and omits replies."
   },
   {
    "pid": "wcxb-5422",
@@ -931,10 +931,10 @@
    "url": "https://wundergraph.com/blog/graphql-schema-design-principles",
    "winner": "trafilatura",
    "content_ours": 4,
-   "content_traf": 5,
+   "content_traf": 4,
    "chrome_ours": 3,
    "chrome_traf": 4,
-   "reason": "A has footer certification chrome"
+   "reason": "A ends with footer chrome and promo."
   },
   {
    "pid": "wcxb-5656",
@@ -944,8 +944,8 @@
    "content_ours": 5,
    "content_traf": 4,
    "chrome_ours": 3,
-   "chrome_traf": 3,
-   "reason": "B keeps title and subtitle"
+   "chrome_traf": 4,
+   "reason": "B keeps title and subtitle; both leave some trailing chrome."
   },
   {
    "pid": "wcxb-5554",
@@ -955,41 +955,41 @@
    "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 5,
-   "chrome_traf": 4,
-   "reason": "B keeps the title; A omits it."
+   "chrome_traf": 5,
+   "reason": "Same body, B also keeps the article title."
   },
   {
    "pid": "wcxb-5532",
    "type": "article",
    "url": "https://newsletter.mcj.vc/p/sandboxiq?utm_campaign=post&utm_medium=web",
    "winner": "trafilatura",
-   "content_ours": 4,
+   "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 3,
+   "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "B has title and author with no comments; A includes reader comments."
+   "reason": "Same body; B adds title and headings."
   },
   {
    "pid": "wcxb-5090",
    "type": "listing",
    "url": "https://www.paoson.com/forum/",
-   "winner": "chromerag",
-   "content_ours": 5,
+   "winner": "tie",
+   "content_ours": 4,
    "content_traf": 4,
    "chrome_ours": 4,
-   "chrome_traf": 2,
-   "reason": "A is a clean forum list; B is cluttered with whitespace and dates."
+   "chrome_traf": 3,
+   "reason": "Both list forums; A cleaner, B has bullet noise and different elisions."
   },
   {
    "pid": "wcxb-5072",
    "type": "forum",
    "url": "https://forums.sassnet.com/index.php?/topic/356004-cast-iron-frying-panskillet/",
    "winner": "chromerag",
-   "content_ours": 4,
+   "content_ours": 5,
    "content_traf": 1,
-   "chrome_ours": 4,
-   "chrome_traf": 3,
-   "reason": "B has almost no content, A keeps the thread."
+   "chrome_ours": 5,
+   "chrome_traf": 2,
+   "reason": "B is only cookie/terms boilerplate and loses the thread."
   },
   {
    "pid": "wcxb-5604",
@@ -998,20 +998,20 @@
    "winner": "trafilatura",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 1,
-   "chrome_traf": 4,
-   "reason": "B is flooded with repeated date lines."
+   "chrome_ours": 3,
+   "chrome_traf": 5,
+   "reason": "B appends long list of blog dates and titles."
   },
   {
    "pid": "wcxb-5613",
    "type": "article",
    "url": "https://www.thespruce.com/tips-for-stress-free-decluttering-11883984",
-   "winner": "tie",
-   "content_ours": 4,
+   "winner": "chromerag",
+   "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 5,
-   "chrome_traf": 4,
-   "reason": "Both capture the article; B has title and byline plus minor chrome."
+   "chrome_ours": 4,
+   "chrome_traf": 3,
+   "reason": "Similar body; B adds related-article links, A omits title."
   },
   {
    "pid": "wcxb-5371",
@@ -1022,29 +1022,29 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 4,
-   "reason": "A keeps the banner text, B is cleaner."
+   "reason": "B drops the top banner notice; otherwise same."
   },
   {
    "pid": "wcxb-5467",
    "type": "documentation",
    "url": "https://gendersec.tacticaltech.org/wiki/index.php/How_to_install_and_configure_this_wiki",
-   "winner": "tie",
+   "winner": "trafilatura",
    "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "Both keep the full install guide."
+   "chrome_traf": 5,
+   "reason": "Equivalent content; B has stray fence and skins noise."
   },
   {
    "pid": "wcxb-5452",
    "type": "documentation",
    "url": "https://docs.continue.dev/reference",
-   "winner": "chromerag",
+   "winner": "tie",
    "content_ours": 5,
-   "content_traf": 4,
+   "content_traf": 5,
    "chrome_ours": 4,
-   "chrome_traf": 3,
-   "reason": "B drops the card blurbs and is cleaner."
+   "chrome_traf": 4,
+   "reason": "Same content, differing markdown and card teasers."
   },
   {
    "pid": "wcxb-4953",
@@ -1052,10 +1052,10 @@
    "url": "https://www.monroelandscapingny.com/",
    "winner": "trafilatura",
    "content_ours": 4,
-   "content_traf": 5,
-   "chrome_ours": 3,
-   "chrome_traf": 4,
-   "reason": "B drops the repeated READ MORE and keeps the intro."
+   "content_traf": 4,
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "B keeps the business intro and tagline that A drops."
   },
   {
    "pid": "wcxb-5611",
@@ -1064,9 +1064,9 @@
    "winner": "trafilatura",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 2,
+   "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "B appends related posts and comments."
+   "reason": "Same article; B adds a related link section."
   },
   {
    "pid": "wcxb-5446",
@@ -1077,18 +1077,18 @@
    "content_traf": 5,
    "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "Both keep the tutorial; A fragments lists, B is similar."
+   "reason": "Equivalent tutorial content, minor differences."
   },
   {
    "pid": "wcxb-5343",
    "type": "listing",
    "url": "https://www.nc.gov/working/volunteer-opportunities/volunteernc",
-   "winner": "trafilatura",
+   "winner": "tie",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 3,
+   "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "A has stray accordion text; B is clean with About Us."
+   "reason": "Same table; each adds small heading or About chrome."
   },
   {
    "pid": "wcxb-5372",
@@ -1098,19 +1098,19 @@
    "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 3,
-   "chrome_traf": 5,
-   "reason": "A keeps docs navigation remnants."
+   "chrome_traf": 4,
+   "reason": "B preserves code blocks well; A garbles code and has nav leftovers."
   },
   {
    "pid": "wcxb-4973",
    "type": "service",
    "url": "https://www.nationwide.com/personal/insurance/auto/",
-   "winner": "chromerag",
+   "winner": "tie",
    "content_ours": 5,
-   "content_traf": 3,
+   "content_traf": 5,
    "chrome_ours": 4,
-   "chrome_traf": 2,
-   "reason": "B misses the intro and has whitespace clutter."
+   "chrome_traf": 4,
+   "reason": "Both cover different parts of the page, similar quality."
   },
   {
    "pid": "wcxb-5273",
@@ -1119,9 +1119,9 @@
    "winner": "tie",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "Near-identical content; A has Learn More and a title."
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "Near identical."
   },
   {
    "pid": "wcxb-5097",
@@ -1129,21 +1129,21 @@
    "url": "https://sawmillcreek.org/forums/design-forum.5/",
    "winner": "trafilatura",
    "content_ours": 2,
-   "content_traf": 4,
-   "chrome_ours": 4,
-   "chrome_traf": 2,
-   "reason": "A drops many thread titles; B keeps them with chrome."
+   "content_traf": 5,
+   "chrome_ours": 3,
+   "chrome_traf": 3,
+   "reason": "A loses thread titles and stats; B keeps the full listing though it has nav chrome."
   },
   {
    "pid": "wcxb-5445",
    "type": "documentation",
    "url": "https://idratherbewriting.com/learnapidoc/docapis_doc_getting_started_section.html",
    "winner": "trafilatura",
-   "content_ours": 4,
+   "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 1,
-   "chrome_traf": 4,
-   "reason": "B starts with navigation junk and a table of contents."
+   "chrome_ours": 2,
+   "chrome_traf": 5,
+   "reason": "B prepends sidebar nav repetition and Download PDF."
   },
   {
    "pid": "wcxb-5382",
@@ -1154,18 +1154,18 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Both keep the full doc."
+   "reason": "Same content, B adds code language tags."
   },
   {
    "pid": "wcxb-5413",
    "type": "article",
    "url": "https://graphite.com/guides/typescript-generics",
-   "winner": "trafilatura",
+   "winner": "tie",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 3,
-   "chrome_traf": 5,
-   "reason": "A has Read more, related guides and share chrome."
+   "chrome_ours": 4,
+   "chrome_traf": 4,
+   "reason": "A is better formatted with code fences but has Terminal labels; B has more text."
   },
   {
    "pid": "wcxb-4931",
@@ -1174,9 +1174,9 @@
    "winner": "trafilatura",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 3,
+   "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "B has repeated Book Your Move and a city list."
+   "reason": "B adds a stray FAQ question and location list."
   },
   {
    "pid": "wcxb-5152",
@@ -1185,9 +1185,9 @@
    "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 4,
-   "chrome_traf": 3,
-   "reason": "B has the title; A has dates and a copy-URL line."
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "B includes the article title; otherwise same."
   },
   {
    "pid": "wcxb-5671",
@@ -1196,9 +1196,9 @@
    "winner": "tie",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 4,
+   "chrome_ours": 3,
    "chrome_traf": 4,
-   "reason": "Both capture the article with minor chrome."
+   "reason": "A keeps title but also disclosure CTA; B drops both."
   },
   {
    "pid": "wcxb-4978",
@@ -1206,10 +1206,10 @@
    "url": "https://www.cohesity.com/glossary/enterprise-cloud-storage/",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 4,
+   "content_traf": 5,
    "chrome_ours": 3,
    "chrome_traf": 3,
-   "reason": "A keeps headings; both have a CTA."
+   "reason": "A keeps title and structure; both have a CTA."
   },
   {
    "pid": "wcxb-5324",
@@ -1218,20 +1218,20 @@
    "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 4,
-   "chrome_traf": 3,
-   "reason": "B keeps the title; A omits it."
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "B keeps title and extra book list content."
   },
   {
    "pid": "wcxb-5663",
    "type": "article",
    "url": "https://www.emailtooltester.com/en/blog/mailchimp-alternatives/",
-   "winner": "chromerag",
+   "winner": "trafilatura",
    "content_ours": 4,
-   "content_traf": 4,
+   "content_traf": 5,
    "chrome_ours": 4,
-   "chrome_traf": 3,
-   "reason": "B drops the update changelog and keeps the FAQ, though it loses the Beehiiv entry."
+   "chrome_traf": 4,
+   "reason": "A keeps the full list including Beehiiv and Moosend rows that B drops."
   },
   {
    "pid": "wcxb-5581",
@@ -1242,18 +1242,18 @@
    "content_traf": 4,
    "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "B keeps byline, date and intact intro; A garbles the intro into bold and drops the byline."
+   "reason": "B keeps the byline, date and full opening that A truncates, with one stray nav line."
   },
   {
    "pid": "wcxb-5673",
    "type": "article",
    "url": "https://www.buzzcube.io/shopify-alternatives/",
-   "winner": "trafilatura",
+   "winner": "tie",
    "content_ours": 5,
-   "content_traf": 5,
+   "content_traf": 4,
    "chrome_ours": 3,
-   "chrome_traf": 4,
-   "reason": "A ends with CTA, dates and contact chrome; content is equivalent."
+   "chrome_traf": 5,
+   "reason": "A keeps title but trailing promo chrome; B is clean but drops the title."
   },
   {
    "pid": "wcxb-5086",
@@ -1263,8 +1263,8 @@
    "content_ours": 5,
    "content_traf": 2,
    "chrome_ours": 3,
-   "chrome_traf": 4,
-   "reason": "A keeps the forum thread replies while B has only the opening post."
+   "chrome_traf": 3,
+   "reason": "A keeps the whole thread; B has only the opening post, duplicated."
   },
   {
    "pid": "wcxb-5005",
@@ -1273,20 +1273,20 @@
    "winner": "tie",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "Nearly identical; A has Read more stubs, B has an update-date line."
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "Near identical; B adds an updated-date line."
   },
   {
    "pid": "wcxb-5215",
    "type": "article",
    "url": "https://www.nrmlaonline.org/2026/01/30/best-places-to-retire-in-2026",
-   "winner": "tie",
+   "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 4,
    "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "A keeps the title but adds an author bio; B omits the title but is cleaner."
+   "reason": "A keeps the title, B omits it; A adds a short author bio."
   },
   {
    "pid": "wcxb-5587",
@@ -1297,7 +1297,7 @@
    "content_traf": 5,
    "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "A keeps the title and standfirst that B drops."
+   "reason": "A keeps title, subtitle and date; B starts at a read-time stub."
   },
   {
    "pid": "wcxb-5003",
@@ -1306,20 +1306,20 @@
    "winner": "chromerag",
    "content_ours": 4,
    "content_traf": 3,
-   "chrome_ours": 3,
-   "chrome_traf": 3,
-   "reason": "B keeps case study descriptions and more page content despite counters and Read stubs."
+   "chrome_ours": 4,
+   "chrome_traf": 4,
+   "reason": "B retains case studies and more page content."
   },
   {
    "pid": "wcxb-4974",
    "type": "listing",
    "url": "https://aws.amazon.com/products/storage/",
-   "winner": "tie",
-   "content_ours": 4,
+   "winner": "trafilatura",
+   "content_ours": 3,
    "content_traf": 4,
-   "chrome_ours": 3,
-   "chrome_traf": 3,
-   "reason": "A keeps benefits and use cases, B keeps the service catalog; each has some chrome."
+   "chrome_ours": 4,
+   "chrome_traf": 4,
+   "reason": "A keeps benefits and use cases; B lacks them though it lists services."
   },
   {
    "pid": "wcxb-5530",
@@ -1330,7 +1330,7 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "A keeps the title and section headings that B loses."
+   "reason": "A keeps title and section headings that B drops."
   },
   {
    "pid": "wcxb-5614",
@@ -1340,8 +1340,8 @@
    "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 3,
-   "chrome_traf": 5,
-   "reason": "B appends Similar Posts teasers and reply stubs."
+   "chrome_traf": 4,
+   "reason": "B appends related-posts and similar-posts chrome."
   },
   {
    "pid": "wcxb-5621",
@@ -1350,9 +1350,9 @@
    "winner": "tie",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "Essentially the same article text with minor formatting differences."
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "Essentially identical."
   },
   {
    "pid": "wcxb-5685",
@@ -1361,9 +1361,9 @@
    "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 4,
-   "chrome_ours": 3,
+   "chrome_ours": 4,
    "chrome_traf": 3,
-   "reason": "A keeps plan descriptions and quote; B adds promotional CTAs and drops plan text."
+   "reason": "A keeps quote and plan pricing; B lacks them and adds promo links."
   },
   {
    "pid": "wcxb-5346",
@@ -1371,10 +1371,10 @@
    "url": "https://www.raleighrescue.org/ways-to-give/volunteer/",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 3,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "A keeps the current volunteer opportunities section that B omits."
+   "content_traf": 4,
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "A keeps opportunities heading and Easter details that B omits."
   },
   {
    "pid": "wcxb-5364",
@@ -1382,43 +1382,43 @@
    "url": "https://locations.youfit.com/orlando-colonial-dr",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 4,
+   "content_traf": 3,
    "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "B includes intro, hours and FAQ that A lacks."
+   "reason": "B includes about text, hours table and FAQ."
   },
   {
    "pid": "wcxb-5575",
    "type": "listing",
    "url": "https://www.workingmomsbalance.com/",
    "winner": "chromerag",
-   "content_ours": 1,
-   "content_traf": 1,
-   "chrome_ours": 3,
+   "content_ours": 3,
+   "content_traf": 3,
+   "chrome_ours": 4,
    "chrome_traf": 1,
-   "reason": "Both lack real content; A is a full nav dump while B is mostly bare headings."
+   "reason": "Page is mostly chrome; A dumps the whole nav while B leaves bare headings."
   },
   {
    "pid": "wcxb-5449",
    "type": "documentation",
    "url": "https://use.docs.page/getting-started",
-   "winner": "chromerag",
+   "winner": "trafilatura",
    "content_ours": 5,
-   "content_traf": 3,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "A keeps the code examples that B strips, with minor nav chrome."
+   "content_traf": 5,
+   "chrome_ours": 3,
+   "chrome_traf": 5,
+   "reason": "A has leading nav fragments; B is clean."
   },
   {
    "pid": "wcxb-5539",
    "type": "article",
    "url": "https://climatedrift.substack.com/p/abracadabra-unlocking-the-capital",
    "winner": "trafilatura",
-   "content_ours": 5,
-   "content_traf": 4,
-   "chrome_ours": 5,
-   "chrome_traf": 4,
-   "reason": "B keeps title, subtitle and author bio; A leaves comment chrome."
+   "content_ours": 4,
+   "content_traf": 5,
+   "chrome_ours": 4,
+   "chrome_traf": 5,
+   "reason": "B keeps title and subtitle."
   },
   {
    "pid": "wcxb-5531",
@@ -1427,20 +1427,20 @@
    "winner": "trafilatura",
    "content_ours": 4,
    "content_traf": 5,
-   "chrome_ours": 3,
-   "chrome_traf": 3,
-   "reason": "A keeps title and section headings; both contain promo blocks."
+   "chrome_ours": 4,
+   "chrome_traf": 4,
+   "reason": "A keeps title and headings; B drops them and adds a contact line."
   },
   {
    "pid": "wcxb-4988",
    "type": "service",
    "url": "https://www.suretranslation.com/uscis-certified-translation",
-   "winner": "trafilatura",
-   "content_ours": 4,
+   "winner": "chromerag",
+   "content_ours": 5,
    "content_traf": 3,
-   "chrome_ours": 4,
-   "chrome_traf": 2,
-   "reason": "B retains the descriptive service prose while A is mostly language lists."
+   "chrome_ours": 3,
+   "chrome_traf": 4,
+   "reason": "A keeps structured content; B is thinner and scrambled."
   },
   {
    "pid": "wcxb-5218",
@@ -1451,7 +1451,7 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 3,
-   "reason": "B duplicates title text with whitespace junk and adds disclaimer text."
+   "reason": "B has duplicated titles, whitespace junk and extra disclaimers."
   },
   {
    "pid": "wcxb-5592",
@@ -1462,40 +1462,40 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Identical extractions."
+   "reason": "Identical."
   },
   {
    "pid": "wcxb-5170",
    "type": "article",
    "url": "https://sewingworkshop.com/new-blog/sewing-for-beginners",
-   "winner": "tie",
+   "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 4,
+   "chrome_ours": 5,
    "chrome_traf": 4,
-   "reason": "Practically identical article text."
+   "reason": "B adds a stray threadWEAR 301 heading."
   },
   {
    "pid": "wcxb-5598",
    "type": "collection",
    "url": "https://armouryfitness.ca/transformation-stories/",
-   "winner": "trafilatura",
+   "winner": "tie",
    "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "B includes the Allison story and avoids some CTA chrome."
+   "chrome_traf": 5,
+   "reason": "Near identical; A has small CTA remnants."
   },
   {
    "pid": "wcxb-5264",
    "type": "service",
    "url": "https://www.ward4mke.com/",
-   "winner": "trafilatura",
+   "winner": "tie",
    "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "B omits the repeated CTA link lines."
+   "reason": "Same content; A keeps link CTAs, B is cleaner."
   },
   {
    "pid": "wcxb-5004",
@@ -1506,29 +1506,29 @@
    "content_traf": 4,
    "chrome_ours": 4,
    "chrome_traf": 3,
-   "reason": "B keeps headings and subheads and drops the cookie banner; A strips headings and keeps the banner."
+   "reason": "B keeps headings and structure and drops the cookie banner; A ends with it."
   },
   {
    "pid": "wcxb-4995",
    "type": "article",
    "url": "https://www.searchbloom.com/blog/how-much-does-it-cost-to-hire-an-seo-company/",
-   "winner": "chromerag",
+   "winner": "tie",
    "content_ours": 5,
    "content_traf": 4,
    "chrome_ours": 4,
-   "chrome_traf": 5,
-   "reason": "A keeps title and intro; B starts at the 'Last updated' line and drops them."
+   "chrome_traf": 4,
+   "reason": "Both keep the pricing tables; A has the title and intro, B has a date and summary."
   },
   {
    "pid": "wcxb-5168",
    "type": "article",
    "url": "https://crazylittleprojects.com/25-beginner-sewing-projects/",
-   "winner": "chromerag",
+   "winner": "tie",
    "content_ours": 5,
-   "content_traf": 4,
-   "chrome_ours": 3,
+   "content_traf": 5,
+   "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "A keeps title and project names but also reply/related lists; B drops project names."
+   "reason": "Near identical article text with similar small trailing chrome."
   },
   {
    "pid": "wcxb-5618",
@@ -1538,19 +1538,19 @@
    "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 4,
-   "chrome_traf": 5,
-   "reason": "Near-identical body; A has title but a stray Reply."
+   "chrome_traf": 4,
+   "reason": "Same content; A adds the H1 title, B has bold headings."
   },
   {
    "pid": "wcxb-5436",
    "type": "article",
    "url": "https://www.postman.com/api-platform/api-documentation/",
    "winner": "trafilatura",
-   "content_ours": 5,
+   "content_ours": 4,
    "content_traf": 5,
    "chrome_ours": 3,
    "chrome_traf": 5,
-   "reason": "B keeps sidebar topic links and a Read the Report CTA."
+   "reason": "B includes related-topics navigation text and a Read the Report CTA."
   },
   {
    "pid": "wcxb-5164",
@@ -1561,7 +1561,7 @@
    "content_traf": 5,
    "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "Same content; A adds date and trailing name, B slightly cleaner."
+   "reason": "Same content; A has a stray date line and some merged lines."
   },
   {
    "pid": "wcxb-5696",
@@ -1571,41 +1571,41 @@
    "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 3,
-   "chrome_traf": 5,
-   "reason": "A ends with blog-listing and author-name leftovers."
+   "chrome_traf": 4,
+   "reason": "B drops the trailing author and see-more-posts chrome."
   },
   {
    "pid": "wcxb-5463",
    "type": "article",
    "url": "https://wikiteq.com/post/setting-up-a-local-wiki",
    "winner": "trafilatura",
-   "content_ours": 4,
+   "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 5,
+   "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "B splits the shell commands correctly while A merges them into one broken line; B adds only a date and label."
+   "reason": "B keeps code commands on separate lines and the date; A merges commands."
   },
   {
    "pid": "wcxb-5454",
    "type": "documentation",
    "url": "https://docs.readthedocs.com/platform/stable/config-file/v2.html",
-   "winner": "trafilatura",
-   "content_ours": 4,
-   "content_traf": 5,
-   "chrome_ours": 5,
-   "chrome_traf": 5,
-   "reason": "A keeps option metadata labels (Type/Options/Default) and the schema note; B drops them."
+   "winner": "chromerag",
+   "content_ours": 5,
+   "content_traf": 4,
+   "chrome_ours": 4,
+   "chrome_traf": 4,
+   "reason": "B keeps code in clean form and more of the settings reference; A has line-number fragments."
   },
   {
    "pid": "wcxb-4987",
    "type": "service",
    "url": "https://gotranscript.com/text-translation-services",
-   "winner": "tie",
+   "winner": "chromerag",
    "content_ours": 4,
    "content_traf": 4,
-   "chrome_ours": 3,
+   "chrome_ours": 4,
    "chrome_traf": 3,
-   "reason": "Both are marketing-heavy; A has FAQ and success stories, B has benefits table and use cases."
+   "reason": "B ends with a language list and slogans; A has repeated Read article links."
   },
   {
    "pid": "wcxb-4919",
@@ -1616,18 +1616,18 @@
    "content_traf": 5,
    "chrome_ours": 3,
    "chrome_traf": 4,
-   "reason": "B includes FAQ answers while A has questions only plus form and video chrome."
+   "reason": "B keeps FAQ answers while A lists only questions plus Play video chrome."
   },
   {
    "pid": "wcxb-5155",
    "type": "forum",
    "url": "https://grassrootsmotorsports.com/forum/off-topic-discussion/from-small-job-to-total-house-renovation-review-architect-needed/121630/page1/",
-   "winner": "chromerag",
+   "winner": "trafilatura",
    "content_ours": 5,
-   "content_traf": 4,
-   "chrome_ours": 4,
-   "chrome_traf": 2,
-   "reason": "B keeps forum user metadata and whitespace noise."
+   "content_traf": 5,
+   "chrome_ours": 3,
+   "chrome_traf": 5,
+   "reason": "A has pagination markers; B is clean."
   },
   {
    "pid": "wcxb-5356",
@@ -1636,9 +1636,9 @@
    "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 3,
-   "chrome_ours": 4,
+   "chrome_ours": 3,
    "chrome_traf": 4,
-   "reason": "A keeps news headlines and title; B drops them leaving bare Info links."
+   "reason": "A keeps news headings and event dates; B drops them leaving bare Info labels."
   },
   {
    "pid": "wcxb-5584",
@@ -1647,31 +1647,31 @@
    "winner": "tie",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 4,
-   "chrome_traf": 5,
-   "reason": "Equivalent article text; B adds a title but also a comments heading."
+   "chrome_ours": 3,
+   "chrome_traf": 4,
+   "reason": "Same body; B includes title but also comment-count heading."
   },
   {
    "pid": "wcxb-5420",
    "type": "article",
    "url": "https://oneuptime.com/blog/post/2026-01-30-graphql-schema-design/view",
-   "winner": "chromerag",
-   "content_ours": 5,
-   "content_traf": 4,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "A keeps title, subtitle and summary; B drops them; both carry small trailing author chrome."
+   "winner": "trafilatura",
+   "content_ours": 4,
+   "content_traf": 5,
+   "chrome_ours": 3,
+   "chrome_traf": 3,
+   "reason": "B preserves code and table formatting; A has HTML entities, while both have author chrome."
   },
   {
    "pid": "wcxb-5597",
    "type": "article",
    "url": "https://www.oreateai.com/blog/a-year-of-transformation-my-journey-through-fitness/85d18ab40eb5d5f3f2fe398e9cbd800d",
-   "winner": "chromerag",
+   "winner": "tie",
    "content_ours": 5,
    "content_traf": 4,
-   "chrome_ours": 5,
+   "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "A keeps the title; body identical."
+   "reason": "Same article body; A keeps title but has a stray Content label."
   },
   {
    "pid": "wcxb-5635",
@@ -1682,40 +1682,40 @@
    "content_traf": 5,
    "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "Same body; A has author bio, B has Back to Blog."
+   "reason": "Same content with minor author and back-to-blog chrome."
   },
   {
    "pid": "wcxb-5624",
    "type": "article",
    "url": "https://becomenomad.com/embracing-the-digital-nomad-lifestyle-work-remotely-travel/",
-   "winner": "tie",
-   "content_ours": 4,
+   "winner": "trafilatura",
+   "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 3,
-   "chrome_traf": 4,
-   "reason": "A has title but empty author and comments chrome; B omits the title."
+   "chrome_ours": 2,
+   "chrome_traf": 5,
+   "reason": "A has icon glyph junk and Post Author labels; B is clean."
   },
   {
    "pid": "wcxb-5634",
    "type": "article",
    "url": "https://pivot.app/blog/notion-alternative-team-collaboration",
-   "winner": "chromerag",
+   "winner": "tie",
    "content_ours": 5,
    "content_traf": 4,
    "chrome_ours": 4,
    "chrome_traf": 3,
-   "reason": "A keeps title and section headings; B loses headings and adds share and promo text."
+   "reason": "A has the title; B has a date, share and newsletter promo text."
   },
   {
    "pid": "wcxb-4975",
    "type": "article",
    "url": "https://www.business.com/articles/top-10-cloud-storage-services-for-business/",
-   "winner": "chromerag",
-   "content_ours": 5,
-   "content_traf": 3,
-   "chrome_ours": 4,
+   "winner": "trafilatura",
+   "content_ours": 4,
+   "content_traf": 5,
+   "chrome_ours": 3,
    "chrome_traf": 4,
-   "reason": "B drops headings and list items, leaving orphaned lead-in lines."
+   "reason": "B retains the provider comparison table; A has TOC and related-links chrome."
   },
   {
    "pid": "wcxb-5534",
@@ -1724,31 +1724,31 @@
    "winner": "trafilatura",
    "content_ours": 4,
    "content_traf": 5,
-   "chrome_ours": 3,
-   "chrome_traf": 3,
-   "reason": "A keeps headings and structure; B loses section headings and has stray snippets."
+   "chrome_ours": 4,
+   "chrome_traf": 4,
+   "reason": "A keeps the title and section headings with similar chrome."
   },
   {
    "pid": "wcxb-5430",
    "type": "documentation",
    "url": "https://docs.ansible.com/projects/ansible/latest/cli/ansible-playbook.html",
    "winner": "trafilatura",
-   "content_ours": 3,
+   "content_ours": 4,
    "content_traf": 5,
-   "chrome_ours": 5,
+   "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "A drops the option flag names leaving orphaned descriptions."
+   "reason": "B keeps option flags and license text; A lost option names."
   },
   {
    "pid": "wcxb-5440",
    "type": "article",
    "url": "https://www.mintlify.com/resources/our-recommendations-for-creating-api-documentation-with-examples",
    "winner": "tie",
-   "content_ours": 5,
-   "content_traf": 5,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "Near-identical article; both have small related-resource or byline leftovers."
+   "content_ours": 4,
+   "content_traf": 4,
+   "chrome_ours": 3,
+   "chrome_traf": 3,
+   "reason": "Both keep article text and have related-articles or author chrome."
   },
   {
    "pid": "wcxb-5687",
@@ -1757,9 +1757,9 @@
    "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 4,
-   "chrome_ours": 3,
-   "chrome_traf": 4,
-   "reason": "B keeps feature sections with headings but adds learn-more CTA lines; A omits sections."
+   "chrome_ours": 4,
+   "chrome_traf": 3,
+   "reason": "B has better structure and no award badge lines."
   },
   {
    "pid": "wcxb-5442",
@@ -1768,31 +1768,31 @@
    "winner": "tie",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 5,
-   "chrome_traf": 4,
-   "reason": "Same body; A has byline and date, B has title but a trailing CTA."
+   "chrome_ours": 4,
+   "chrome_traf": 3,
+   "reason": "Same body; B has whitespace junk and a signup CTA."
   },
   {
    "pid": "wcxb-5691",
    "type": "article",
    "url": "https://www.emailvendorselection.com/hubspot-alternatives/",
    "winner": "chromerag",
-   "content_ours": 5,
+   "content_ours": 4,
    "content_traf": 4,
    "chrome_ours": 4,
-   "chrome_traf": 5,
-   "reason": "A keeps the title and intro; B drops the H1."
+   "chrome_traf": 4,
+   "reason": "A keeps the title and the list; both similar in content."
   },
   {
    "pid": "wcxb-5601",
    "type": "article",
    "url": "https://www.mikesmithphotography.com/blogindex/landscape-photography-tips",
    "winner": "trafilatura",
-   "content_ours": 5,
+   "content_ours": 4,
    "content_traf": 5,
    "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "B keeps stray counter, date and author tail; A is cleaner."
+   "reason": "B leaves stray \"0\" and date chrome; A cleaner with the title."
   },
   {
    "pid": "wcxb-5385",
@@ -1803,7 +1803,7 @@
    "content_traf": 5,
    "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "B leaves trailing nav 'Plugins'."
+   "reason": "B has a trailing nav item \"Plugins\"."
   },
   {
    "pid": "wcxb-5013",
@@ -1812,9 +1812,9 @@
    "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 4,
-   "chrome_ours": 4,
+   "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B keeps the page title; A omits it."
+   "reason": "B retains the page title."
   },
   {
    "pid": "wcxb-5153",
@@ -1822,21 +1822,21 @@
    "url": "https://www.contractortalk.com/threads/general-discussion.460778/",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 4,
+   "content_traf": 3,
    "chrome_ours": 5,
-   "chrome_traf": 3,
-   "reason": "B duplicates the first post and adds forum footer description."
+   "chrome_traf": 2,
+   "reason": "B duplicates the post and appends forum description chrome and omits the reply sign-off."
   },
   {
    "pid": "wcxb-5354",
    "type": "listing",
    "url": "https://eols.librarycalendar.com/events/upcoming",
    "winner": "trafilatura",
-   "content_ours": 3,
+   "content_ours": 4,
    "content_traf": 4,
    "chrome_ours": 2,
-   "chrome_traf": 4,
-   "reason": "A is mostly filter chrome; B has event details."
+   "chrome_traf": 3,
+   "reason": "A starts with filter/branch menu chrome; B has event dates and details despite label noise."
   },
   {
    "pid": "wcxb-5533",
@@ -1846,8 +1846,8 @@
    "content_ours": 4,
    "content_traf": 5,
    "chrome_ours": 4,
-   "chrome_traf": 5,
-   "reason": "A keeps title and subtitle; B lacks them and has trailing chrome."
+   "chrome_traf": 4,
+   "reason": "A keeps title and subtitle; B drops them."
   },
   {
    "pid": "wcxb-5209",
@@ -1857,8 +1857,8 @@
    "content_ours": 5,
    "content_traf": 4,
    "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "A keeps the byline and date; both end with related news."
+   "chrome_traf": 3,
+   "reason": "A keeps byline and date; B includes related-story headings."
   },
   {
    "pid": "wcxb-5594",
@@ -1869,7 +1869,7 @@
    "content_traf": 5,
    "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "Both keep the body; each has a little tail chrome."
+   "reason": "Same article content, each with small chrome at the tail."
   },
   {
    "pid": "wcxb-5416",
@@ -1880,29 +1880,29 @@
    "content_traf": 4,
    "chrome_ours": 3,
    "chrome_traf": 3,
-   "reason": "A keeps the title; both end with related-article lists."
+   "reason": "A keeps the title; both include related-article lists."
   },
   {
    "pid": "wcxb-5335",
    "type": "listing",
    "url": "https://www.songkick.com/metro-areas/26330-us-sf-bay-area",
-   "winner": "trafilatura",
-   "content_ours": 3,
-   "content_traf": 4,
+   "winner": "chromerag",
+   "content_ours": 4,
+   "content_traf": 3,
    "chrome_ours": 3,
-   "chrome_traf": 4,
-   "reason": "A has the main event listing; B emphasizes popular tickets and artist lists."
+   "chrome_traf": 3,
+   "reason": "B includes dates and the page heading; A has venues without dates."
   },
   {
    "pid": "wcxb-5469",
    "type": "documentation",
    "url": "https://www.inmotionhosting.com/support/edu/mediawiki/install-mediawiki-manually/",
-   "winner": "tie",
-   "content_ours": 5,
+   "winner": "trafilatura",
+   "content_ours": 4,
    "content_traf": 5,
    "chrome_ours": 3,
-   "chrome_traf": 3,
-   "reason": "Both keep the article and trail with related links."
+   "chrome_traf": 4,
+   "reason": "A includes a related-articles table; B is cleaner."
   },
   {
    "pid": "wcxb-5657",
@@ -1911,9 +1911,9 @@
    "winner": "trafilatura",
    "content_ours": 4,
    "content_traf": 4,
-   "chrome_ours": 4,
+   "chrome_ours": 3,
    "chrome_traf": 4,
-   "reason": "Similar landing-page content; B keeps header nav, A is cleaner."
+   "reason": "B starts with header nav items."
   },
   {
    "pid": "wcxb-5576",
@@ -1922,20 +1922,20 @@
    "winner": "trafilatura",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 4,
+   "chrome_ours": 3,
    "chrome_traf": 5,
-   "reason": "B has a leading 'Cart 0'."
+   "reason": "B has \"Cart 0\" and garbled spacing."
   },
   {
    "pid": "wcxb-5695",
    "type": "article",
    "url": "https://leadsbridge.com/blog/hubspot-alternatives/",
    "winner": "chromerag",
-   "content_ours": 4,
+   "content_ours": 5,
    "content_traf": 4,
    "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "A keeps title and byline; both end with a CTA."
+   "reason": "A keeps title, byline and TOC; B drops the title."
   },
   {
    "pid": "wcxb-5007",
@@ -1944,9 +1944,9 @@
    "winner": "trafilatura",
    "content_ours": 4,
    "content_traf": 5,
-   "chrome_ours": 3,
-   "chrome_traf": 5,
-   "reason": "A adds usernames, avatar letters and footer noise; B is clean post text."
+   "chrome_ours": 2,
+   "chrome_traf": 4,
+   "reason": "A adds avatar/initial noise and drops some post text; B has fuller post text."
   },
   {
    "pid": "wcxb-5247",
@@ -1957,29 +1957,29 @@
    "content_traf": 1,
    "chrome_ours": 4,
    "chrome_traf": 1,
-   "reason": "B is only a popup message; A has the article."
+   "reason": "B captured only a popup text."
   },
   {
    "pid": "wcxb-4971",
    "type": "service",
    "url": "https://www.experian.com/insurance/car-insurance-quotes/",
    "winner": "chromerag",
-   "content_ours": 5,
-   "content_traf": 4,
+   "content_ours": 4,
+   "content_traf": 3,
    "chrome_ours": 3,
-   "chrome_traf": 4,
-   "reason": "B keeps the how-it-works section though also the legal footer."
+   "chrome_traf": 3,
+   "reason": "B retains more of the page content in the same budget."
   },
   {
    "pid": "wcxb-5318",
    "type": "service",
    "url": "https://soca-fbc.org/",
-   "winner": "trafilatura",
-   "content_ours": 4,
+   "winner": "tie",
+   "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 4,
-   "chrome_traf": 3,
-   "reason": "B keeps the call to action and has a duplicate heading; A has Go to Top."
+   "chrome_traf": 4,
+   "reason": "Near-identical, with minor chrome on each side."
   },
   {
    "pid": "wcxb-5566",
@@ -1987,21 +1987,21 @@
    "url": "https://www.bemytravelmuse.com/solo-female-travel-southeast-asia/",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 5,
-   "chrome_ours": 4,
-   "chrome_traf": 5,
-   "reason": "B keeps the title; replies list is minor chrome."
+   "content_traf": 4,
+   "chrome_ours": 3,
+   "chrome_traf": 4,
+   "reason": "B keeps the title but has trailing reply markers."
   },
   {
    "pid": "wcxb-5183",
    "type": "forum",
    "url": "https://superuser.com/questions/26862/how-do-i-troubleshoot-a-windows-freeze-or-slowness",
    "winner": "trafilatura",
-   "content_ours": 4,
+   "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 4,
+   "chrome_ours": 2,
    "chrome_traf": 5,
-   "reason": "B keeps comment link and tag chrome."
+   "reason": "B contains vote counts, wiki and comment-link chrome."
   },
   {
    "pid": "wcxb-5409",
@@ -2012,18 +2012,18 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "A keeps the chapter title; B drops it."
+   "reason": "A preserves section headings."
   },
   {
    "pid": "wcxb-5216",
    "type": "article",
    "url": "https://www.travelandleisure.com/best-big-town-for-elderly-to-live-in-2026-11880421",
    "winner": "trafilatura",
-   "content_ours": 3,
+   "content_ours": 4,
    "content_traf": 5,
-   "chrome_ours": 4,
+   "chrome_ours": 3,
    "chrome_traf": 3,
-   "reason": "B keeps title and byline; A omits them."
+   "reason": "B keeps headline and byline; A has related-link chrome and no title."
   },
   {
    "pid": "wcxb-5550",
@@ -2032,20 +2032,20 @@
    "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 4,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "B keeps the post title and byline."
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "B keeps title and byline."
   },
   {
    "pid": "wcxb-5458",
    "type": "documentation",
    "url": "https://use.docs.page/configuration",
-   "winner": "tie",
-   "content_ours": 4,
-   "content_traf": 4,
-   "chrome_ours": 4,
+   "winner": "trafilatura",
+   "content_ours": 3,
+   "content_traf": 5,
+   "chrome_ours": 3,
    "chrome_traf": 4,
-   "reason": "Equivalent docs content with minor differences."
+   "reason": "B is more complete with variables section; A has breadcrumb and misses sections."
   },
   {
    "pid": "wcxb-5350",
@@ -2055,8 +2055,8 @@
    "content_ours": 5,
    "content_traf": 4,
    "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "A keeps the intro and the full list of causes; B adds a copyright footer."
+   "chrome_traf": 3,
+   "reason": "A keeps the cause list and intro; B drops the list and adds copyright credits."
   },
   {
    "pid": "wcxb-5022",
@@ -2066,8 +2066,8 @@
    "content_ours": 2,
    "content_traf": 5,
    "chrome_ours": 4,
-   "chrome_traf": 2,
-   "reason": "B keeps all thread titles and metadata despite nav chrome; A drops many titles."
+   "chrome_traf": 1,
+   "reason": "A loses thread titles/metadata while B keeps all thread titles despite heavy navigation."
   },
   {
    "pid": "wcxb-5418",
@@ -2078,29 +2078,29 @@
    "content_traf": 5,
    "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "Nearly identical; B has a 'Go to next lesson' remnant."
+   "reason": "Same content; B leaves a trailing next-lesson prompt."
   },
   {
    "pid": "wcxb-4958",
    "type": "service",
    "url": "https://www.associatedheating.com/",
-   "winner": "chromerag",
-   "content_ours": 5,
+   "winner": "tie",
+   "content_ours": 4,
    "content_traf": 4,
-   "chrome_ours": 4,
+   "chrome_ours": 3,
    "chrome_traf": 3,
-   "reason": "A keeps the guarantee and installs content; B duplicates text and has blank bullets."
+   "reason": "Both keep reviews and service copy with some CTAs; B has duplicated blocks, A has booking CTAs."
   },
   {
    "pid": "wcxb-5330",
    "type": "article",
    "url": "https://bookriot.com/december-2025-book-club-picks/",
-   "winner": "chromerag",
+   "winner": "trafilatura",
    "content_ours": 4,
-   "content_traf": 4,
-   "chrome_ours": 4,
-   "chrome_traf": 3,
-   "reason": "A leaves 'Follow on social media' and affiliate boilerplate; B is cleaner."
+   "content_traf": 5,
+   "chrome_ours": 3,
+   "chrome_traf": 4,
+   "reason": "A drops author bio and affiliate notice; B keeps them."
   },
   {
    "pid": "wcxb-5063",
@@ -2109,9 +2109,9 @@
    "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 1,
-   "chrome_ours": 5,
+   "chrome_ours": 4,
    "chrome_traf": 1,
-   "reason": "A has the forum thread; B is only a Steam footer."
+   "reason": "A has the whole thread; B only footer boilerplate."
   },
   {
    "pid": "wcxb-5620",
@@ -2122,29 +2122,29 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "A preserves headings and bold structure; B loses section headings."
+   "reason": "A keeps title and section headings; B lacks title and headings."
   },
   {
    "pid": "wcxb-4934",
    "type": "service",
    "url": "https://www.aspest.com/mi/pest-control-romulus",
    "winner": "trafilatura",
-   "content_ours": 5,
+   "content_ours": 4,
    "content_traf": 5,
-   "chrome_ours": 2,
-   "chrome_traf": 5,
-   "reason": "A is full of forms, offers and review widgets; B is content only."
+   "chrome_ours": 4,
+   "chrome_traf": 2,
+   "reason": "B is the clean body text; A includes forms, review stubs and image placeholders."
   },
   {
    "pid": "wcxb-5199",
    "type": "forum",
    "url": "https://redwoodrvowners.com/community/forum-help-faq/possible-broken-link-on-the-common-problems-solutions-page/",
    "winner": "trafilatura",
-   "content_ours": 4,
+   "content_ours": 5,
    "content_traf": 4,
-   "chrome_ours": 2,
+   "chrome_ours": 3,
    "chrome_traf": 5,
-   "reason": "B repeats the user header block on every post."
+   "reason": "A is clean post text but lacks title; B has title but repeated author metadata."
   },
   {
    "pid": "wcxb-4396",
@@ -2155,7 +2155,7 @@
    "content_traf": 2,
    "chrome_ours": 4,
    "chrome_traf": 2,
-   "reason": "A keeps product names; B has nav chrome and prices without names."
+   "reason": "A keeps product names; B keeps only prices and promo banners."
   },
   {
    "pid": "wcxb-5536",
@@ -2164,9 +2164,9 @@
    "winner": "trafilatura",
    "content_ours": 4,
    "content_traf": 5,
-   "chrome_ours": 4,
+   "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "A keeps headings and structure; B adds comment remnants and loses headings."
+   "reason": "A preserves headings and structure; B drops headings."
   },
   {
    "pid": "wcxb-5551",
@@ -2175,20 +2175,20 @@
    "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 5,
+   "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "B keeps the title and no blog CTA; content is otherwise the same."
+   "reason": "Same body; B keeps the page title, A keeps a trailing blog CTA."
   },
   {
    "pid": "wcxb-5291",
    "type": "article",
    "url": "https://www.nonprofitaccountingbasics.org/form-990/charity-ratings-why-they-matter-ways-improve",
-   "winner": "trafilatura",
+   "winner": "tie",
    "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 4,
-   "chrome_traf": 5,
-   "reason": "Same article; B has metadata and a navigation remnant."
+   "chrome_traf": 4,
+   "reason": "Both keep the article; A adds breadcrumb, B adds nav and metadata stubs."
   },
   {
    "pid": "wcxb-5089",
@@ -2199,40 +2199,40 @@
    "content_traf": 5,
    "chrome_ours": 3,
    "chrome_traf": 4,
-   "reason": "B keeps the title and opening post; A misses the first post and has attachment noise."
+   "reason": "B keeps the project link list and posts; A loses the list and adds attachments and signatures."
   },
   {
    "pid": "wcxb-5640",
    "type": "article",
    "url": "https://designmodo.com/figma-alternatives/",
    "winner": "trafilatura",
-   "content_ours": 4,
+   "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 3,
-   "chrome_traf": 4,
-   "reason": "B has a TOC, bios, related-article CTAs; A keeps the tips and conclusion."
+   "chrome_traf": 5,
+   "reason": "B adds TOC, author bios and related-article stubs."
   },
   {
    "pid": "wcxb-5417",
    "type": "documentation",
    "url": "https://graphql.org/learn/schema/",
-   "winner": "tie",
+   "winner": "trafilatura",
    "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "Both capture the lesson; differ only in formatting."
+   "chrome_traf": 5,
+   "reason": "A has cleaner code formatting; B includes a leftover next-lesson prompt."
   },
   {
    "pid": "wcxb-5055",
    "type": "forum",
    "url": "https://theprepared.com/forum/thread/building-raised-garden-beds/",
-   "winner": "trafilatura",
+   "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 5,
-   "chrome_ours": 3,
-   "chrome_traf": 4,
-   "reason": "Same article; A adds counters and comment threads."
+   "content_traf": 4,
+   "chrome_ours": 4,
+   "chrome_traf": 5,
+   "reason": "A keeps the discussion comments; B drops them and ends with empty headers."
   },
   {
    "pid": "wcxb-5104",
@@ -2242,41 +2242,41 @@
    "content_ours": 5,
    "content_traf": 3,
    "chrome_ours": 5,
-   "chrome_traf": 4,
-   "reason": "B drops the speaker model names and has messy whitespace."
+   "chrome_traf": 3,
+   "reason": "A keeps comments; B duplicates the post, mangles product names and drops replies."
   },
   {
    "pid": "wcxb-4982",
    "type": "service",
    "url": "https://officialtranslations.com/syracuse",
    "winner": "trafilatura",
-   "content_ours": 4,
-   "content_traf": 5,
+   "content_ours": 5,
+   "content_traf": 3,
    "chrome_ours": 3,
-   "chrome_traf": 4,
-   "reason": "A leaves top nav and CTA labels; B starts at the content and is fuller."
+   "chrome_traf": 3,
+   "reason": "B keeps pricing and service details; A keeps order-form steps and no prices."
   },
   {
    "pid": "wcxb-5571",
    "type": "collection",
    "url": "https://pinabresciani.com/",
    "winner": "chromerag",
-   "content_ours": 5,
-   "content_traf": 3,
+   "content_ours": 4,
+   "content_traf": 2,
    "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "A keeps the recipe lists; B has only headings."
+   "reason": "A keeps recipe titles; B only keeps section blurbs."
   },
   {
    "pid": "wcxb-5412",
    "type": "documentation",
    "url": "https://typescript-v2-216.ortam.vercel.app/docs/handbook/generics.html",
-   "winner": "chromerag",
+   "winner": "tie",
    "content_ours": 5,
-   "content_traf": 4,
-   "chrome_ours": 5,
+   "content_traf": 5,
+   "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "A has the title and well-formed code blocks; B has broken fences."
+   "reason": "Same content; both have minor code fence formatting issues."
   },
   {
    "pid": "wcxb-5006",
@@ -2284,32 +2284,32 @@
    "url": "https://theappsolutions.com/",
    "winner": "chromerag",
    "content_ours": 4,
-   "content_traf": 4,
-   "chrome_ours": 5,
-   "chrome_traf": 3,
-   "reason": "A includes blog teasers and CTA noise; B is cleaner with testimonials and FAQ."
+   "content_traf": 5,
+   "chrome_ours": 3,
+   "chrome_traf": 4,
+   "reason": "B is cleaner with testimonials; A has duplicated fragments and blog teasers."
   },
   {
    "pid": "wcxb-5301",
    "type": "listing",
    "url": "https://www.intern-list.com/",
    "winner": "chromerag",
-   "content_ours": 3,
+   "content_ours": 4,
    "content_traf": 1,
-   "chrome_ours": 4,
+   "chrome_ours": 3,
    "chrome_traf": 1,
-   "reason": "B is only nav and feedback-form chrome; A keeps the page headings and stats."
+   "reason": "A keeps page text; B is only nav and feedback form."
   },
   {
    "pid": "wcxb-5294",
    "type": "article",
    "url": "https://wholewhale.com/tips/nonprofit-transparency-best-practices/",
-   "winner": "tie",
+   "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "Both near-identical; B adds title but a news teaser."
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "B keeps title and the quoted example that A drops."
   },
   {
    "pid": "wcxb-5662",
@@ -2319,19 +2319,19 @@
    "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "A keeps the title; both otherwise equal."
+   "chrome_traf": 5,
+   "reason": "A keeps the title; B omits it."
   },
   {
    "pid": "wcxb-5572",
    "type": "listing",
    "url": "https://memoriediangelina.com/",
-   "winner": "trafilatura",
-   "content_ours": 4,
-   "content_traf": 4,
-   "chrome_ours": 2,
+   "winner": "chromerag",
+   "content_ours": 3,
+   "content_traf": 2,
+   "chrome_ours": 3,
    "chrome_traf": 4,
-   "reason": "A keeps recipe text with little chrome; B has many stray link fragments."
+   "reason": "B keeps more of the page's recipe titles though with some category noise."
   },
   {
    "pid": "wcxb-5390",
@@ -2342,7 +2342,7 @@
    "content_traf": 3,
    "chrome_ours": 3,
    "chrome_traf": 5,
-   "reason": "B keeps the Checkout/Elements descriptions that A drops, at the cost of some nav labels."
+   "reason": "B retains additional product descriptions beyond the intro, at the cost of some nav labels."
   },
   {
    "pid": "wcxb-5606",
@@ -2352,30 +2352,30 @@
    "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 5,
-   "chrome_traf": 4,
-   "reason": "Same tutorial content; B drops a few stray lines."
+   "chrome_traf": 5,
+   "reason": "Both capture the full tutorial text equally."
   },
   {
    "pid": "wcxb-5646",
    "type": "service",
    "url": "https://pumble.com/compare/free-slack-alternative",
    "winner": "chromerag",
-   "content_ours": 5,
+   "content_ours": 4,
    "content_traf": 3,
    "chrome_ours": 4,
-   "chrome_traf": 3,
-   "reason": "A keeps benefits, testimonials and pricing sections; B is fragmentary."
+   "chrome_traf": 4,
+   "reason": "A keeps testimonials, sections and pricing comparison; B is thinner."
   },
   {
    "pid": "wcxb-5197",
    "type": "listing",
    "url": "https://www.badcaps.net/",
    "winner": "trafilatura",
-   "content_ours": 3,
+   "content_ours": 2,
    "content_traf": 4,
    "chrome_ours": 3,
    "chrome_traf": 3,
-   "reason": "Forum index; B keeps more of the forum descriptions, both noisy."
+   "reason": "B preserves forum names and descriptions; A mostly loses them."
   },
   {
    "pid": "wcxb-5431",
@@ -2383,10 +2383,10 @@
    "url": "https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.5/html/getting_started_with_playbooks/assembly-playbook-practical-example",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 3,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "B keeps the playbook code blocks that A drops."
+   "content_traf": 4,
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "B keeps the playbook code examples that A drops."
   },
   {
    "pid": "wcxb-5670",
@@ -2396,8 +2396,8 @@
    "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 5,
-   "chrome_traf": 4,
-   "reason": "Near identical article and tables; A leaves a Table of Contents label."
+   "chrome_traf": 5,
+   "reason": "Both keep the article and table, differing only in formatting."
   },
   {
    "pid": "wcxb-5203",
@@ -2406,9 +2406,9 @@
    "winner": "tie",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 5,
+   "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "Same list content in both."
+   "reason": "Equivalent content; A has awkward bold run-in while B is clean."
   },
   {
    "pid": "wcxb-5689",
@@ -2419,18 +2419,18 @@
    "content_traf": 5,
    "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "Same article; A adds a trailing CTA."
+   "reason": "Same article content; A keeps a small CTA at the end."
   },
   {
    "pid": "wcxb-5555",
    "type": "article",
    "url": "https://www.getrichslowly.org/life-after-debt/",
-   "winner": "trafilatura",
+   "winner": "tie",
    "content_ours": 4,
-   "content_traf": 5,
+   "content_traf": 4,
    "chrome_ours": 3,
-   "chrome_traf": 4,
-   "reason": "B omits comment/share clutter and reaches further into the article."
+   "chrome_traf": 3,
+   "reason": "Both keep the article; A has stray pipes and reply stubs, B has a subscribe prompt."
   },
   {
    "pid": "wcxb-5379",
@@ -2441,7 +2441,7 @@
    "content_traf": 5,
    "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "Docs content equivalent with minor stray labels in each."
+   "reason": "Both keep the full page; B adds learn-more link lines, A has stray fragments."
   },
   {
    "pid": "wcxb-5031",
@@ -2450,31 +2450,31 @@
    "winner": "tie",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 5,
+   "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "B adds a quick-links list, otherwise the same."
+   "reason": "Same article; B has a stray trailing symbol."
   },
   {
    "pid": "wcxb-5009",
    "type": "forum",
    "url": "https://ambergriscaye.com/forum/ubbthreads.php/galleries/456753/re-5-photography-tips-for-beginners.html",
    "winner": "chromerag",
-   "content_ours": 5,
-   "content_traf": 3,
-   "chrome_ours": 5,
-   "chrome_traf": 2,
-   "reason": "B is wrapped in table-pipe junk and nav; A is clean article text."
+   "content_ours": 4,
+   "content_traf": 4,
+   "chrome_ours": 4,
+   "chrome_traf": 1,
+   "reason": "B is full of table markup and calendar junk while A is clean readable text."
   },
   {
    "pid": "wcxb-5384",
    "type": "documentation",
    "url": "https://router.vuejs.org/guide/advanced/composition-api.html",
    "winner": "trafilatura",
-   "content_ours": 5,
+   "content_ours": 4,
    "content_traf": 5,
    "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "Same docs; A includes a video-lesson promo and ad label."
+   "reason": "B keeps the Navigation Guards heading and drops sponsor text."
   },
   {
    "pid": "wcxb-5608",
@@ -2483,9 +2483,9 @@
    "winner": "trafilatura",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 3,
-   "chrome_traf": 5,
-   "reason": "B includes the free-guide signup form."
+   "chrome_ours": 2,
+   "chrome_traf": 3,
+   "reason": "B includes a lead-capture form and boilerplate that A omits."
   },
   {
    "pid": "wcxb-5032",
@@ -2493,32 +2493,32 @@
    "url": "https://forum.simplydiscus.com/forum/main-discus-topics/discus-basics-for-beginners/86044-inquiries-about-new-discus-setup",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 2,
-   "chrome_ours": 3,
+   "content_traf": 3,
+   "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "A has only the first post; B includes the replies."
+   "reason": "B includes the thread replies, A has the first post duplicated and no replies."
   },
   {
    "pid": "wcxb-5615",
    "type": "article",
    "url": "https://www.theminimalists.com/tips/",
    "winner": "chromerag",
-   "content_ours": 5,
+   "content_ours": 4,
    "content_traf": 4,
-   "chrome_ours": 5,
+   "chrome_ours": 3,
    "chrome_traf": 3,
-   "reason": "B adds title and byline and drops the trailing related-link."
+   "reason": "B has the proper title and no Read more links, A lacks the title."
   },
   {
    "pid": "wcxb-5428",
    "type": "article",
    "url": "https://controlmonkey.io/resource/terraform-aws-provider-guide/",
-   "winner": "chromerag",
-   "content_ours": 5,
-   "content_traf": 5,
-   "chrome_ours": 5,
-   "chrome_traf": 5,
-   "reason": "A keeps the title and date; B omits the title."
+   "winner": "tie",
+   "content_ours": 4,
+   "content_traf": 4,
+   "chrome_ours": 4,
+   "chrome_traf": 4,
+   "reason": "Both capture the guide body similarly with minor formatting differences."
   },
   {
    "pid": "wcxb-4941",
@@ -2527,9 +2527,9 @@
    "winner": "trafilatura",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 2,
+   "chrome_ours": 1,
    "chrome_traf": 5,
-   "reason": "A spends its budget on team and city lists; B is clean."
+   "reason": "A appends a huge list of cities and zip codes that B omits."
   },
   {
    "pid": "wcxb-5642",
@@ -2538,31 +2538,31 @@
    "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 4,
-   "chrome_ours": 5,
+   "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "A keeps title and intro that B omits."
+   "reason": "A keeps title and intro paragraph that B drops, with minor trailing chrome."
   },
   {
    "pid": "wcxb-5049",
    "type": "forum",
    "url": "https://forum.ovoenergy.com/electric-vehicles-166/an-electric-vehicle-ev-charging-point-installed-at-home-9379",
-   "winner": "tie",
+   "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 5,
-   "chrome_ours": 5,
+   "content_traf": 4,
+   "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "Same guide; B adds title and tag, A has odd blank lines."
+   "reason": "B includes the title and replies, A omits them."
   },
   {
    "pid": "wcxb-5195",
    "type": "article",
    "url": "https://penncomp.com/common-it-issues-and-troubleshooting/",
-   "winner": "chromerag",
-   "content_ours": 5,
-   "content_traf": 4,
-   "chrome_ours": 5,
+   "winner": "trafilatura",
+   "content_ours": 3,
+   "content_traf": 5,
+   "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "A retains the FAQ section that B appears to cut."
+   "reason": "B keeps the FAQ answers that A leaves empty."
   },
   {
    "pid": "wcxb-5375",
@@ -2570,10 +2570,10 @@
    "url": "https://docs.flutter.dev/ui/widgets/layout",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 2,
+   "content_traf": 3,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B keeps the widget descriptions that A drops."
+   "reason": "B retains the single-child widget descriptions that A drops."
   },
   {
    "pid": "wcxb-5380",
@@ -2581,21 +2581,21 @@
    "url": "https://v3.tailwindcss.com/docs/utility-first",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 4,
+   "content_traf": 3,
    "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "A keeps the utility bullet explanations B drops, with a stray Theme label."
+   "reason": "B breaks the bullet lists and loses content that A preserves."
   },
   {
    "pid": "wcxb-4936",
    "type": "service",
    "url": "https://superbpestexterminator.com/pest-control-in-romulus-mi/",
-   "winner": "chromerag",
-   "content_ours": 5,
+   "winner": "tie",
+   "content_ours": 4,
    "content_traf": 4,
    "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "B keeps the title and a bullet list that A garbles."
+   "reason": "Each loses some content, A keeps the closing blurb and B the title."
   },
   {
    "pid": "wcxb-5609",
@@ -2604,42 +2604,42 @@
    "winner": "tie",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "Near-identical body text; both keep a trailing academy promo."
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "Near-identical text; only minor formatting differences."
   },
   {
    "pid": "wcxb-5607",
    "type": "article",
    "url": "https://digital-photography-school.com/composing-dynamic-landscape-images/",
-   "winner": "chromerag",
+   "winner": "tie",
    "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Same content; A keeps the article title."
+   "reason": "Same body content; A keeps title, B slightly more text."
   },
   {
    "pid": "wcxb-5617",
    "type": "article",
    "url": "https://minimalism.co/articles/daily-decluttering",
-   "winner": "trafilatura",
-   "content_ours": 4,
+   "winner": "tie",
+   "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 3,
    "chrome_traf": 5,
-   "reason": "A spends space on a table of contents; B has clean body but no title."
+   "reason": "B drops the TOC chrome and title, A keeps the title; roughly equal."
   },
   {
    "pid": "wcxb-5612",
    "type": "article",
    "url": "https://www.becomingminimalist.com/start-decluttering-easy/",
-   "winner": "trafilatura",
+   "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 5,
-   "chrome_ours": 3,
+   "content_traf": 4,
+   "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "A includes comment-section Reply stubs; B is the clean article body."
+   "reason": "A keeps the title and a reader comment; B drops them."
   },
   {
    "pid": "wcxb-5677",
@@ -2647,10 +2647,10 @@
    "url": "https://www.rocket.new/blog/best-wordpress-website-builder-alternatives-for-growing-brands",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 4,
+   "content_traf": 3,
    "chrome_ours": 5,
-   "chrome_traf": 3,
-   "reason": "A has structure and a proper table; B has duplicated FAQ stubs and a fragmented table."
+   "chrome_traf": 4,
+   "reason": "B has FAQ-question clutter, lost headings/bullets and a broken table."
   },
   {
    "pid": "wcxb-5381",
@@ -2661,18 +2661,18 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Equivalent documentation content with minor formatting differences."
+   "reason": "Both keep the docs content with minor formatting differences."
   },
   {
    "pid": "wcxb-5602",
    "type": "article",
    "url": "https://stephenbayphotography.com/blog/my-creative-process-for-landscape-photography/",
-   "winner": "tie",
+   "winner": "trafilatura",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 4,
+   "chrome_ours": 5,
    "chrome_traf": 4,
-   "reason": "Same body; A adds a newsletter plug, B lacks a heading."
+   "reason": "Both retain the content; A keeps the title but a newsletter CTA remains."
   },
   {
    "pid": "wcxb-5652",
@@ -2681,9 +2681,9 @@
    "winner": "tie",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "Essentially identical content."
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "Same content and table, differences are only formatting."
   },
   {
    "pid": "wcxb-5181",
@@ -2694,7 +2694,7 @@
    "content_traf": 1,
    "chrome_ours": 3,
    "chrome_traf": 3,
-   "reason": "A lost the question and answer; B keeps them with some metadata."
+   "reason": "B keeps the question and answer; A only has network boilerplate and the question."
   },
   {
    "pid": "wcxb-5596",
@@ -2702,21 +2702,21 @@
    "url": "https://rishabhdev.com/fitness-journey/",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 5,
+   "content_traf": 4,
    "chrome_ours": 5,
    "chrome_traf": 4,
-   "reason": "Same content; A keeps the title and tidy quote."
+   "reason": "A keeps the title and clean quotes; B adds Table of Contents and drops the title."
   },
   {
    "pid": "wcxb-5061",
    "type": "forum",
    "url": "https://theprepared.com/forum/thread/garden-experiments-with-hard-soil/",
-   "winner": "tie",
+   "winner": "chromerag",
    "content_ours": 4,
    "content_traf": 4,
    "chrome_ours": 3,
-   "chrome_traf": 3,
-   "reason": "Both keep article and comments with some sidebar or metadata noise."
+   "chrome_traf": 2,
+   "reason": "A keeps recent-post and forum-rules chrome; B has less chrome but stray digits."
   },
   {
    "pid": "wcxb-5603",
@@ -2727,18 +2727,18 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Equivalent content."
+   "reason": "Equivalent body content."
   },
   {
    "pid": "wcxb-5039",
    "type": "forum",
    "url": "https://lowendtalk.com/discussion/205826/has-anyone-built-a-custom-mechanical-keyboard-looking-for-advice",
-   "winner": "trafilatura",
+   "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 5,
+   "content_traf": 3,
    "chrome_ours": 3,
-   "chrome_traf": 4,
-   "reason": "B leaves nav and sign-in text and a thanked-by footer."
+   "chrome_traf": 3,
+   "reason": "B includes the comment thread; both carry some forum chrome."
   },
   {
    "pid": "wcxb-5341",
@@ -2747,20 +2747,20 @@
    "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 4,
-   "chrome_ours": 5,
+   "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "B reaches the Volunteer Opportunities section; A has a stray Jump To heading."
+   "reason": "B includes the volunteer opportunities section."
   },
   {
    "pid": "wcxb-5234",
    "type": "listing",
    "url": "http://www.crimewriterson.com/listen/bestpodcasts2025",
    "winner": "trafilatura",
-   "content_ours": 4,
+   "content_ours": 3,
    "content_traf": 5,
-   "chrome_ours": 4,
+   "chrome_ours": 3,
    "chrome_traf": 5,
-   "reason": "B drops some list items and repeats byline lines."
+   "reason": "A keeps complete top-10 lists; B lost several list entries and has duplicate byline chrome."
   },
   {
    "pid": "wcxb-5475",
@@ -2771,7 +2771,7 @@
    "content_traf": 4,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "A keeps the page title."
+   "reason": "A keeps the page title; B only has the description."
   },
   {
    "pid": "wcxb-4482",
@@ -2782,18 +2782,18 @@
    "content_traf": 1,
    "chrome_ours": 4,
    "chrome_traf": 1,
-   "reason": "Page is all chrome; B emits almost nothing while A dumps the full menu."
+   "reason": "The source is almost all chrome; B leaves little, A is the whole nav menu."
   },
   {
    "pid": "wcxb-5292",
    "type": "article",
    "url": "https://hbkcpa.com/insights/nonprofit-ratings-do-make-a-difference/",
    "winner": "tie",
-   "content_ours": 4,
-   "content_traf": 4,
+   "content_ours": 5,
+   "content_traf": 5,
    "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "Similar content with minor differences in extra lines."
+   "chrome_traf": 5,
+   "reason": "Both keep the article body; B has author heading and nested lists."
   },
   {
    "pid": "wcxb-4930",
@@ -2801,10 +2801,10 @@
    "url": "https://www.allied.com/household-moving-company/long-distance-moving",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 4,
-   "chrome_ours": 4,
+   "content_traf": 3,
+   "chrome_ours": 5,
    "chrome_traf": 2,
-   "reason": "B retains forms, consent text and quote widgets; A has less chrome."
+   "reason": "B is full of form consent text and widget junk; A keeps testimonials and content cleanly."
   },
   {
    "pid": "wcxb-5588",
@@ -2815,7 +2815,7 @@
    "content_traf": 5,
    "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "B leaves stray 0 and date line."
+   "reason": "B adds stray 0 and date; same content."
   },
   {
    "pid": "wcxb-5180",
@@ -2824,20 +2824,20 @@
    "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 2,
-   "chrome_ours": 4,
+   "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B drops the question and several answers."
+   "reason": "A keeps the full question and answers; B dropped the question and one answer."
   },
   {
    "pid": "wcxb-5423",
    "type": "article",
    "url": "https://learning.atheros.ai/blog/graphql-best-practices-for-graphql-schema-design",
-   "winner": "tie",
+   "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Both keep the article; B adds title, A formats code oddly."
+   "reason": "B keeps the title and fences code blocks."
   },
   {
    "pid": "wcxb-5149",
@@ -2848,7 +2848,7 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Same content; A has hard line wraps."
+   "reason": "Same content; A has title, B has cleaner paragraphs."
   },
   {
    "pid": "wcxb-4959",
@@ -2859,7 +2859,7 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Equivalent FAQ and service content."
+   "reason": "Equivalent content with formatting differences."
   },
   {
    "pid": "wcxb-5521",
@@ -2868,9 +2868,9 @@
    "winner": "trafilatura",
    "content_ours": 4,
    "content_traf": 5,
-   "chrome_ours": 4,
+   "chrome_ours": 3,
    "chrome_traf": 5,
-   "reason": "B keeps colour temperature guidance; A includes shop links."
+   "reason": "B keeps the color temperature content and drops the shop CTAs."
   },
   {
    "pid": "wcxb-5132",
@@ -2881,7 +2881,7 @@
    "content_traf": 5,
    "chrome_ours": 3,
    "chrome_traf": 5,
-   "reason": "B keeps forum UI chrome (Notifications, RSS, Post dates) while A is clean."
+   "reason": "A keeps the answer text and drops forum chrome; B adds notification/author clutter."
   },
   {
    "pid": "wcxb-5300",
@@ -2889,10 +2889,10 @@
    "url": "https://code.org/en-US/students/internships-and-apprenticeships",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 3,
-   "chrome_ours": 5,
+   "content_traf": 2,
+   "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "A keeps all internship listings; B drops them."
+   "reason": "B drops all apprenticeship and internship listings."
   },
   {
    "pid": "wcxb-4976",
@@ -2903,7 +2903,7 @@
    "content_traf": 4,
    "chrome_ours": 3,
    "chrome_traf": 3,
-   "reason": "Both keep article body; A has byline junk, B has Webflow placeholder and whitespace."
+   "reason": "Both keep the article; A has header junk, B has Webflow placeholder text and no title."
   },
   {
    "pid": "wcxb-4926",
@@ -2911,21 +2911,21 @@
    "url": "https://www.allied.com/local/Houston-Movers",
    "winner": "trafilatura",
    "content_ours": 4,
-   "content_traf": 5,
+   "content_traf": 4,
    "chrome_ours": 3,
    "chrome_traf": 4,
-   "reason": "B retains full FAQ answers; A drops them and adds review/related chrome."
+   "reason": "Both keep body; A ends with related-article blurbs, B keeps FAQ answers."
   },
   {
    "pid": "wcxb-5637",
    "type": "service",
    "url": "https://uizard.io/figma-alternative/",
-   "winner": "chromerag",
+   "winner": "trafilatura",
    "content_ours": 5,
    "content_traf": 4,
-   "chrome_ours": 3,
+   "chrome_ours": 2,
    "chrome_traf": 5,
-   "reason": "A keeps title and intro despite nav list; B misses title and intro."
+   "reason": "A includes nav menu and footer; B is body only."
   },
   {
    "pid": "wcxb-5565",
@@ -2934,20 +2934,20 @@
    "winner": "tie",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 4,
-   "chrome_traf": 5,
-   "reason": "Both keep the post; B adds title and TOC but also affiliate resources."
+   "chrome_ours": 3,
+   "chrome_traf": 4,
+   "reason": "Same body; B adds title and trailing affiliate/resource lists."
   },
   {
    "pid": "wcxb-5647",
    "type": "article",
    "url": "https://getvoip.com/blog/slack-alternatives/",
    "winner": "trafilatura",
-   "content_ours": 4,
-   "content_traf": 5,
-   "chrome_ours": 5,
-   "chrome_traf": 5,
-   "reason": "B keeps the comparison table with providers and pricing; A loses provider names."
+   "content_ours": 3,
+   "content_traf": 4,
+   "chrome_ours": 4,
+   "chrome_traf": 4,
+   "reason": "A breaks comparison table into bare bullets losing providers and pricing; B keeps them."
   },
   {
    "pid": "wcxb-4923",
@@ -2955,10 +2955,10 @@
    "url": "https://www.wyzant.com/College_Math_tutors.aspx",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 3,
+   "content_traf": 2,
    "chrome_ours": 3,
    "chrome_traf": 3,
-   "reason": "A keeps tutor names, rates and reviews; B strips them."
+   "reason": "A keeps tutor names, rates, headings; B drops them."
   },
   {
    "pid": "wcxb-5546",
@@ -2969,29 +2969,29 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "A keeps the episode title and closing; B lacks the title."
+   "reason": "A keeps title and episode heading; otherwise identical transcript."
   },
   {
    "pid": "wcxb-5643",
    "type": "article",
    "url": "https://www.rocket.chat/blog/slack-alternative",
-   "winner": "chromerag",
+   "winner": "tie",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 4,
+   "chrome_ours": 3,
    "chrome_traf": 3,
-   "reason": "Same article body; B has extra promo bullet lists."
+   "reason": "Same article; both end with promo and related-link clutter."
   },
   {
    "pid": "wcxb-5583",
    "type": "article",
    "url": "https://www.allmomdoes.com/blog/a-day-in-the-life-of-a-working-mom-balancing-meetings-meals-and-motherhood/",
-   "winner": "trafilatura",
+   "winner": "tie",
    "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 4,
-   "chrome_traf": 5,
-   "reason": "B leaves stray 'x' and 'What's New' chrome."
+   "chrome_traf": 4,
+   "reason": "Same body; A adds PIN THIS, B adds stray leading tokens."
   },
   {
    "pid": "wcxb-5433",
@@ -3000,9 +3000,9 @@
    "winner": "trafilatura",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 4,
+   "chrome_ours": 3,
    "chrome_traf": 5,
-   "reason": "B leaves 'Load more results' and 'View post' chrome."
+   "reason": "A has the same article without Load more or View post clutter."
   },
   {
    "pid": "wcxb-5548",
@@ -3011,9 +3011,9 @@
    "winner": "trafilatura",
    "content_ours": 4,
    "content_traf": 5,
-   "chrome_ours": 4,
+   "chrome_ours": 3,
    "chrome_traf": 5,
-   "reason": "B has the title and is cleaner; A leaves Share and attachment line."
+   "reason": "B keeps the title and no footer-ish items; A omits title and has file chrome."
   },
   {
    "pid": "wcxb-4948",
@@ -3022,20 +3022,20 @@
    "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 4,
-   "chrome_ours": 4,
-   "chrome_traf": 5,
-   "reason": "B keeps selling points, ratings and area names with minor initials noise."
+   "chrome_ours": 3,
+   "chrome_traf": 4,
+   "reason": "B keeps ratings and reviewer names but has more stray UI text."
   },
   {
    "pid": "wcxb-5084",
    "type": "forum",
    "url": "https://backpackinglight.com/forums/topic/whare-are-your-favorite-cities-with-good-hiking-training-trails/",
    "winner": "chromerag",
-   "content_ours": 5,
+   "content_ours": 4,
    "content_traf": 4,
    "chrome_ours": 4,
    "chrome_traf": 3,
-   "reason": "B keeps author names and drops membership/ad blurbs."
+   "reason": "B is mostly posts with author names; A includes membership notices and ads."
   },
   {
    "pid": "wcxb-5261",
@@ -3045,19 +3045,19 @@
    "content_ours": 5,
    "content_traf": 4,
    "chrome_ours": 5,
-   "chrome_traf": 5,
-   "reason": "B garbles the THE HIVE entry and loses its address."
+   "chrome_traf": 4,
+   "reason": "B loses THE HIVE address."
   },
   {
    "pid": "wcxb-5087",
    "type": "listing",
    "url": "https://www.trailgroove.com/forums/?srsltid=AfmBOoqTckcqZVKedSAzBZbyR0MWjMYvp4U6EpRFbUHdQP44Eoty-GMU",
    "winner": "chromerag",
-   "content_ours": 4,
+   "content_ours": 5,
    "content_traf": 2,
-   "chrome_ours": 3,
+   "chrome_ours": 4,
    "chrome_traf": 3,
-   "reason": "A keeps forum names, descriptions and threads; B strips most names."
+   "reason": "A keeps forum names and descriptions; B drops them leaving numbers and authors."
   },
   {
    "pid": "wcxb-5654",
@@ -3065,32 +3065,32 @@
    "url": "https://www.obsbot.com/blog/video-conferencing/zoom-alternatives?srsltid=AfmBOoqgUv5LkHfKIlyCEQbCFN3IFspqTRdz9RsqC2APIqBKksOuVqfy",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 4,
+   "content_traf": 5,
    "chrome_ours": 4,
-   "chrome_traf": 5,
-   "reason": "B keeps headings, title and TOC; A flattens headings."
+   "chrome_traf": 3,
+   "reason": "B keeps title and headings and the full product feature list."
   },
   {
    "pid": "wcxb-5314",
    "type": "listing",
    "url": "https://houstonspca.org/available-pets/",
    "winner": "chromerag",
-   "content_ours": 5,
-   "content_traf": 1,
-   "chrome_ours": 5,
+   "content_ours": 4,
+   "content_traf": 2,
+   "chrome_ours": 3,
    "chrome_traf": 3,
-   "reason": "B has the adoptable pets list; A has only promo blurbs."
+   "reason": "B keeps the available-pets listing that is the page's main content; A is a tiny promo snippet."
   },
   {
    "pid": "wcxb-5395",
    "type": "documentation",
    "url": "https://docs.spring.io/spring-boot/docs/3.2.0-SNAPSHOT/reference/html/getting-started.html",
-   "winner": "tie",
+   "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 5,
-   "chrome_traf": 5,
-   "reason": "Both keep the Spring Boot guide equivalently."
+   "chrome_traf": 4,
+   "reason": "Same docs; A has stray bullet breaks and broken code line."
   },
   {
    "pid": "wcxb-5092",
@@ -3101,18 +3101,18 @@
    "content_traf": 2,
    "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "A keeps the replies; B duplicates the opening post and drops replies."
+   "reason": "A keeps the replies; B only duplicates the opening post."
   },
   {
    "pid": "wcxb-5562",
    "type": "article",
    "url": "https://jessieonajourney.com/backpacking-southeast-asia/",
-   "winner": "chromerag",
+   "winner": "tie",
    "content_ours": 5,
-   "content_traf": 4,
+   "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B keeps the byline and date line."
+   "reason": "Identical except B keeps the author byline."
   },
   {
    "pid": "wcxb-5627",
@@ -3121,9 +3121,9 @@
    "winner": "tie",
    "content_ours": 4,
    "content_traf": 4,
-   "chrome_ours": 4,
+   "chrome_ours": 3,
    "chrome_traf": 3,
-   "reason": "A keeps date but drops references; B has references but shortcode junk."
+   "reason": "A has date noise, B has shortcode noise but keeps references."
   },
   {
    "pid": "wcxb-5189",
@@ -3131,10 +3131,10 @@
    "url": "https://www.higherlogic.com/blog/online-community-forum/",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 3,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "B keeps the TOC and bullet lists; A drops list items."
+   "content_traf": 4,
+   "chrome_ours": 5,
+   "chrome_traf": 3,
+   "reason": "B keeps headings, date and bullet lists; A drops them."
   },
   {
    "pid": "wcxb-5286",
@@ -3144,19 +3144,19 @@
    "content_ours": 4,
    "content_traf": 5,
    "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "B keeps the intro paragraph; A has heading and Search now."
+   "chrome_traf": 5,
+   "reason": "B keeps the opening paragraph and the same table."
   },
   {
    "pid": "wcxb-5277",
    "type": "listing",
    "url": "https://www.clevelandart.org/whats-on/exhibitions",
    "winner": "chromerag",
-   "content_ours": 5,
-   "content_traf": 4,
-   "chrome_ours": 3,
-   "chrome_traf": 3,
-   "reason": "B keeps all eight exhibitions while A drops the first one."
+   "content_ours": 4,
+   "content_traf": 5,
+   "chrome_ours": 4,
+   "chrome_traf": 4,
+   "reason": "B keeps all 8 exhibitions incl. ArtLens; A drops the first item."
   },
   {
    "pid": "wcxb-4928",
@@ -3166,8 +3166,8 @@
    "content_ours": 5,
    "content_traf": 4,
    "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "A keeps title and clean steps; B has an empty table and garbled step formatting."
+   "chrome_traf": 5,
+   "reason": "B omits the closing paragraph; A is complete with one CTA."
   },
   {
    "pid": "wcxb-5651",
@@ -3176,9 +3176,9 @@
    "winner": "chromerag",
    "content_ours": 4,
    "content_traf": 3,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "A keeps the comparison data in lists while B's table is empty."
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "A keeps plan/pricing/feature details; B's comparison table is empty."
   },
   {
    "pid": "wcxb-4947",
@@ -3187,20 +3187,20 @@
    "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 4,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "A keeps tasker profiles and the full guarantee section; B drops them."
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "A keeps Tasker profiles and Happiness Pledge; B drops them."
   },
   {
    "pid": "wcxb-5411",
    "type": "documentation",
    "url": "https://www.typescriptlang.org/docs/handbook/2/generics.html",
    "winner": "chromerag",
-   "content_ours": 4,
+   "content_ours": 5,
    "content_traf": 4,
    "chrome_ours": 3,
    "chrome_traf": 4,
-   "reason": "B has title and fenced code but trailing contributor-initial junk; A lacks title and mangles code."
+   "reason": "B has clean code blocks and title; A mangles code and loses title."
   },
   {
    "pid": "wcxb-5083",
@@ -3209,31 +3209,31 @@
    "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "Nearly identical; B adds the page title."
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "Near identical; B includes the title."
   },
   {
    "pid": "wcxb-4997",
    "type": "article",
    "url": "https://www.arcintermedia.com/knowledge-base/seo-and-organic-reach/how-much-do-seo-agencies-charge/",
-   "winner": "trafilatura",
-   "content_ours": 4,
+   "winner": "tie",
+   "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "A keeps the H1 title; otherwise near identical."
+   "reason": "Same body; A has title, B trails with related-link bullets."
   },
   {
    "pid": "wcxb-5233",
    "type": "article",
    "url": "https://podnews.net/press-release/best-true-crime-podcasts-2025",
-   "winner": "tie",
-   "content_ours": 4,
+   "winner": "chromerag",
+   "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 4,
-   "chrome_traf": 3,
-   "reason": "A keeps podcast metadata but adds press-release boilerplate; B is cleaner but thinner."
+   "chrome_ours": 5,
+   "chrome_traf": 4,
+   "reason": "B keeps more body text; A adds press-release/hosting metadata."
   },
   {
    "pid": "wcxb-5001",
@@ -3241,32 +3241,32 @@
    "url": "https://codiant.com/blog/top-15-mobile-app-development-companies-in-usa/",
    "winner": "chromerag",
    "content_ours": 4,
-   "content_traf": 4,
-   "chrome_ours": 4,
-   "chrome_traf": 3,
-   "reason": "A includes blog-card promo text in place of FAQ answers; B keeps FAQ answers."
+   "content_traf": 5,
+   "chrome_ours": 3,
+   "chrome_traf": 4,
+   "reason": "B keeps FAQ and has less chrome; A has TOC/newsletter headings and blog teasers."
   },
   {
    "pid": "wcxb-4352",
    "type": "listing",
    "url": "https://www.samsclub.com/are-you-human?url=L2NwL3Nwb3J0cy1lcXVpcG1lbnQtZml0bmVzcy1lcXVpcG1lbnQvMTg4OA==&uuid=83d15cf3-2036-11f1-8173-a766063edaa9&vid=&g=b",
    "winner": "tie",
-   "content_ours": 2,
-   "content_traf": 2,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "Identical outputs."
+   "content_ours": 3,
+   "content_traf": 3,
+   "chrome_ours": 2,
+   "chrome_traf": 2,
+   "reason": "Identical output."
   },
   {
    "pid": "wcxb-5672",
    "type": "article",
    "url": "https://www.tooltester.com/en/blog/shopify-alternatives/",
    "winner": "chromerag",
-   "content_ours": 5,
+   "content_ours": 4,
    "content_traf": 5,
    "chrome_ours": 4,
-   "chrome_traf": 3,
-   "reason": "B keeps the list of alternatives and drops the update-log chrome."
+   "chrome_traf": 4,
+   "reason": "B keeps the 'best alternative' section; A spends space on changelog."
   },
   {
    "pid": "wcxb-5205",
@@ -3276,8 +3276,8 @@
    "content_ours": 5,
    "content_traf": 4,
    "chrome_ours": 4,
-   "chrome_traf": 3,
-   "reason": "A keeps title, date and byline; B ends with subscribe boilerplate."
+   "chrome_traf": 4,
+   "reason": "A keeps title/date/byline; B lacks title and adds subscribe boilerplate."
   },
   {
    "pid": "wcxb-5163",
@@ -3288,40 +3288,40 @@
    "content_traf": 4,
    "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "A keeps project headings that B loses."
+   "reason": "A keeps project headings; B drops them."
   },
   {
    "pid": "wcxb-5541",
    "type": "article",
    "url": "https://nickpardini.substack.com/p/how-to-teach-yourself-finance-and",
    "winner": "trafilatura",
-   "content_ours": 4,
+   "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 3,
+   "chrome_ours": 2,
    "chrome_traf": 4,
-   "reason": "A has the title and no comment chrome; B includes comments and CTAs."
+   "reason": "A is clean; B keeps CTAs and long legal disclaimer."
   },
   {
    "pid": "wcxb-5249",
    "type": "documentation",
    "url": "https://www.nafsa.org/about/about-international-education/financial-aid-undergraduate-international-students",
-   "winner": "trafilatura",
-   "content_ours": 4,
+   "winner": "tie",
+   "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "A keeps section headings; B turns them into a TOC list."
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "Essentially identical."
   },
   {
    "pid": "wcxb-5667",
    "type": "article",
    "url": "https://moosend.com/blog/mailchimp-alternatives/",
    "winner": "trafilatura",
-   "content_ours": 4,
+   "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 3,
-   "chrome_traf": 4,
-   "reason": "A keeps the numbered section heading; B has duplicate title, date and Similar Posts."
+   "chrome_ours": 4,
+   "chrome_traf": 5,
+   "reason": "A keeps section headings; B duplicates title and adds dates."
   },
   {
    "pid": "wcxb-4992",
@@ -3330,20 +3330,20 @@
    "winner": "trafilatura",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 3,
-   "chrome_traf": 4,
-   "reason": "A keeps the structured takeaways; B has share chrome."
+   "chrome_ours": 4,
+   "chrome_traf": 5,
+   "reason": "A has clean key takeaways list; B has share chrome."
   },
   {
    "pid": "wcxb-5626",
    "type": "article",
    "url": "https://www.peakforce.dev/blog/travel-remote-work-starter-guide-for-digital-nomads",
-   "winner": "tie",
-   "content_ours": 5,
+   "winner": "trafilatura",
+   "content_ours": 4,
    "content_traf": 4,
    "chrome_ours": 3,
    "chrome_traf": 5,
-   "reason": "B adds the title but also cookie, author and related chrome."
+   "reason": "A has no cookie/author chrome and keeps more body text."
   },
   {
    "pid": "wcxb-5326",
@@ -3354,29 +3354,29 @@
    "content_traf": 5,
    "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "Near identical; each has a minor extra."
+   "reason": "Both keep the lists; A has author bio, B has site name."
   },
   {
    "pid": "wcxb-4181",
    "type": "product",
    "url": "https://www.uclastore.com/32oz-Wide-Mouth-Hydro-Flask?srsltid=AfmBOorSbunLDAUE518kvGe8C_M-cYOauW4j4xOGCWd9F87Eln41RXVf",
-   "winner": "tie",
+   "winner": "chromerag",
    "content_ours": 1,
    "content_traf": 1,
-   "chrome_ours": 4,
-   "chrome_traf": 3,
-   "reason": "Both essentially empty."
+   "chrome_ours": 5,
+   "chrome_traf": 4,
+   "reason": "Source is only nav text; A has none."
   },
   {
    "pid": "wcxb-5134",
    "type": "listing",
    "url": "https://www.soliforum.com/forum/6/helprepairmaintenance/",
-   "winner": "trafilatura",
-   "content_ours": 4,
-   "content_traf": 5,
+   "winner": "tie",
+   "content_ours": 3,
+   "content_traf": 3,
    "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "B loses the first three topics."
+   "reason": "Each loses different topic details."
   },
   {
    "pid": "wcxb-5357",
@@ -3386,41 +3386,41 @@
    "content_ours": 5,
    "content_traf": 4,
    "chrome_ours": 3,
-   "chrome_traf": 2,
-   "reason": "B has accessibility chrome and mashed text; A is cleaner."
+   "chrome_traf": 3,
+   "reason": "A has structured event details but extra library info; B is garbled."
   },
   {
    "pid": "wcxb-5176",
    "type": "forum",
    "url": "https://travel.stackexchange.com/questions/1703/is-there-any-online-resource-that-can-tell-me-what-visa-rules-are-for-passport-h",
-   "winner": "trafilatura",
+   "winner": "chromerag",
    "content_ours": 4,
-   "content_traf": 5,
+   "content_traf": 3,
    "chrome_ours": 3,
    "chrome_traf": 4,
-   "reason": "A is cleaner; B adds votes, comment links and related-question lists."
+   "reason": "A drops several answers; B keeps them with vote/comment chrome."
   },
   {
    "pid": "wcxb-5290",
    "type": "article",
    "url": "https://www.savethechildren.org/us/about-us/charity-ratings",
-   "winner": "trafilatura",
-   "content_ours": 5,
-   "content_traf": 5,
-   "chrome_ours": 3,
-   "chrome_traf": 4,
-   "reason": "B leaves form-field labels at the end."
+   "winner": "tie",
+   "content_ours": 4,
+   "content_traf": 4,
+   "chrome_ours": 4,
+   "chrome_traf": 5,
+   "reason": "Same content; B adds form-field labels."
   },
   {
    "pid": "wcxb-4937",
    "type": "service",
    "url": "https://www.rosepestsolutions.com/locations/michigan/westland-michigan-pest-control",
    "winner": "chromerag",
-   "content_ours": 5,
-   "content_traf": 3,
-   "chrome_ours": 3,
-   "chrome_traf": 3,
-   "reason": "B keeps the services list and headings that A omits."
+   "content_ours": 4,
+   "content_traf": 5,
+   "chrome_ours": 4,
+   "chrome_traf": 4,
+   "reason": "B keeps service list and address; A drops them."
   },
   {
    "pid": "wcxb-5665",
@@ -3428,32 +3428,32 @@
    "url": "https://www.gmass.co/blog/mailchimp-alternatives/",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 4,
-   "chrome_ours": 3,
+   "content_traf": 5,
+   "chrome_ours": 5,
    "chrome_traf": 3,
-   "reason": "A keeps the table of contents and title; B appends CTA chrome."
+   "reason": "B keeps the trailing CTA/newsletter chrome and drops the title."
   },
   {
    "pid": "wcxb-5302",
    "type": "listing",
    "url": "https://www.internhacker.com/internships/al-us",
    "winner": "chromerag",
-   "content_ours": 5,
+   "content_ours": 4,
    "content_traf": 2,
    "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "B keeps the listings and company counts; A drops them."
+   "reason": "B keeps the job listings and companies; A drops the listings."
   },
   {
    "pid": "wcxb-5578",
    "type": "article",
    "url": "https://parentingoc.com/health-wellness/balance-for-working-moms/",
-   "winner": "trafilatura",
+   "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 3,
-   "chrome_traf": 4,
-   "reason": "Same article; A adds trailing form chrome."
+   "chrome_ours": 4,
+   "chrome_traf": 5,
+   "reason": "A keeps the title and date; B drops them, with only a small stray 'Admin Only' in A."
   },
   {
    "pid": "wcxb-5317",
@@ -3461,10 +3461,10 @@
    "url": "https://www.countypets.com/",
    "winner": "trafilatura",
    "content_ours": 3,
-   "content_traf": 4,
+   "content_traf": 3,
    "chrome_ours": 2,
-   "chrome_traf": 4,
-   "reason": "A is mostly nav; B has hours and address despite duplication."
+   "chrome_traf": 3,
+   "reason": "A includes nav menu items; B has duplicates but less chrome."
   },
   {
    "pid": "wcxb-5373",
@@ -3473,20 +3473,20 @@
    "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 3,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "B keeps widget category descriptions that A drops."
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "B keeps the widget category descriptions that A drops."
   },
   {
    "pid": "wcxb-5225",
    "type": "article",
    "url": "https://www.revolt.tv/article/most-anticipated-festivals-2026-hip-hop-rnb-jazz",
    "winner": "trafilatura",
-   "content_ours": 5,
+   "content_ours": 4,
    "content_traf": 5,
    "chrome_ours": 2,
-   "chrome_traf": 4,
-   "reason": "A keeps image metadata and button junk."
+   "chrome_traf": 5,
+   "reason": "A has image metadata and repeated button attribute junk before each item."
   },
   {
    "pid": "wcxb-4313",
@@ -3496,30 +3496,30 @@
    "content_ours": 1,
    "content_traf": 1,
    "chrome_ours": 3,
-   "chrome_traf": 3,
-   "reason": "Both are basically only nav/accessibility text."
+   "chrome_traf": 4,
+   "reason": "Both are nav-only; A adds menu bullets."
   },
   {
    "pid": "wcxb-5664",
    "type": "article",
    "url": "https://www.emailvendorselection.com/mailchimp-alternatives/",
-   "winner": "chromerag",
-   "content_ours": 5,
+   "winner": "tie",
+   "content_ours": 4,
    "content_traf": 4,
    "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "A keeps title and cleaner list formatting."
+   "reason": "Same body; A has a title and a limitations answer, B has the free-plans list."
   },
   {
    "pid": "wcxb-5235",
    "type": "article",
    "url": "https://www.thebigpossible.com/blog/whats-the-best-true-crime-podcast-in-2025",
-   "winner": "tie",
-   "content_ours": 5,
-   "content_traf": 5,
-   "chrome_ours": 4,
+   "winner": "trafilatura",
+   "content_ours": 4,
+   "content_traf": 4,
+   "chrome_ours": 3,
    "chrome_traf": 4,
-   "reason": "Both keep the full article, A has a stray 0."
+   "reason": "A has a stray 0 and date line; B is cleaner with the same content."
   },
   {
    "pid": "wcxb-5095",
@@ -3528,20 +3528,20 @@
    "winner": "tie",
    "content_ours": 4,
    "content_traf": 4,
-   "chrome_ours": 3,
+   "chrome_ours": 2,
    "chrome_traf": 3,
-   "reason": "A has forum metadata noise; B has duplicated quotes."
+   "reason": "A has post metadata clutter; B repeats post text."
   },
   {
    "pid": "wcxb-5144",
    "type": "forum",
    "url": "https://www.roadbikereview.com/threads/bike-fitting-recommendations.352992/?u=285279",
    "winner": "chromerag",
-   "content_ours": 4,
+   "content_ours": 5,
    "content_traf": 2,
    "chrome_ours": 4,
    "chrome_traf": 2,
-   "reason": "A keeps the question and replies; B has only the last reply plus junk."
+   "reason": "A has the full thread; B keeps only the last post plus forum boilerplate."
   },
   {
    "pid": "wcxb-5456",
@@ -3550,20 +3550,20 @@
    "winner": "tie",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "Near identical article content."
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "Near identical documentation text."
   },
   {
    "pid": "wcxb-4950",
    "type": "service",
    "url": "https://landscapermiddletown-ny.com/",
    "winner": "chromerag",
-   "content_ours": 5,
+   "content_ours": 4,
    "content_traf": 3,
-   "chrome_ours": 3,
+   "chrome_ours": 4,
    "chrome_traf": 3,
-   "reason": "A keeps service descriptions, offers and testimonials."
+   "reason": "A keeps service descriptions and discounts; B drops them and has lists and form text."
   },
   {
    "pid": "wcxb-5269",
@@ -3571,10 +3571,10 @@
    "url": "https://townofbluffton.sc.gov/Calendar.aspx?EID=903",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 4,
+   "content_traf": 3,
    "chrome_ours": 4,
-   "chrome_traf": 2,
-   "reason": "B includes time and labels with less whitespace noise."
+   "chrome_traf": 4,
+   "reason": "B keeps time, link and labels that A drops."
   },
   {
    "pid": "wcxb-5201",
@@ -3585,18 +3585,18 @@
    "content_traf": 4,
    "chrome_ours": 4,
    "chrome_traf": 3,
-   "reason": "A keeps title and headings; B has CTA and loses headings."
+   "reason": "A has title and headings; B has a hero slogan and lacks the title, A has related-post tail."
   },
   {
    "pid": "wcxb-5610",
    "type": "article",
    "url": "https://modernminimalism.com/how-to-declutter-your-home/",
-   "winner": "chromerag",
+   "winner": "tie",
    "content_ours": 5,
-   "content_traf": 4,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "A keeps the guide list items; B drops them."
+   "content_traf": 5,
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "Essentially the same article text."
   },
   {
    "pid": "wcxb-5253",
@@ -3607,7 +3607,7 @@
    "content_traf": 4,
    "chrome_ours": 4,
    "chrome_traf": 3,
-   "reason": "A has the title and body; B adds an author bio."
+   "reason": "A has a title; B lacks the title and ends with an author bio."
   },
   {
    "pid": "wcxb-5650",
@@ -3617,8 +3617,8 @@
    "content_ours": 5,
    "content_traf": 4,
    "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "Same body; B keeps title and author."
+   "chrome_traf": 5,
+   "reason": "B adds the title but also author bios; A omits the title."
   },
   {
    "pid": "wcxb-5388",
@@ -3629,18 +3629,18 @@
    "content_traf": 5,
    "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "Both keep the full course page."
+   "reason": "Same content with minor next-chapter versus start-button residue."
   },
   {
    "pid": "wcxb-4993",
    "type": "article",
    "url": "https://www.contractorgrowthnetwork.com/seo-pricing-guide-2023/",
-   "winner": "tie",
+   "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 5,
+   "content_traf": 4,
    "chrome_ours": 3,
    "chrome_traf": 4,
-   "reason": "Same body; B has title but trailing chrome."
+   "reason": "B keeps the title; both have small CTA residue."
   },
   {
    "pid": "wcxb-4965",
@@ -3648,10 +3648,10 @@
    "url": "https://www.specialtyheating.com/air-conditioner-company-hillsboro-or/",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 3,
-   "chrome_ours": 4,
+   "content_traf": 4,
+   "chrome_ours": 5,
    "chrome_traf": 3,
-   "reason": "A keeps service list; B drops it and keeps taglines."
+   "reason": "A starts at the content; B has hero slogans and a trailing form blurb."
   },
   {
    "pid": "wcxb-5103",
@@ -3660,31 +3660,31 @@
    "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 3,
-   "chrome_ours": 4,
+   "chrome_ours": 5,
    "chrome_traf": 3,
-   "reason": "B keeps dates and thread title; A drops dates."
+   "reason": "B keeps the table with dates and a title; A drops the dates."
   },
   {
    "pid": "wcxb-5434",
    "type": "article",
    "url": "https://stoplight.io/api-documentation-guide",
-   "winner": "chromerag",
+   "winner": "tie",
    "content_ours": 5,
    "content_traf": 4,
-   "chrome_ours": 4,
-   "chrome_traf": 3,
-   "reason": "A keeps title and headings; B drops them."
+   "chrome_ours": 3,
+   "chrome_traf": 4,
+   "reason": "A has the title but stray 'Example H2' junk; B lacks the title."
   },
   {
    "pid": "wcxb-5210",
    "type": "article",
    "url": "https://www.go.study/blog/best-engineering-universities-in-usa-2026-guide",
    "winner": "chromerag",
-   "content_ours": 4,
-   "content_traf": 2,
+   "content_ours": 3,
+   "content_traf": 1,
    "chrome_ours": 2,
-   "chrome_traf": 3,
-   "reason": "A has article content; B has testimonials only."
+   "chrome_traf": 2,
+   "reason": "A has the article intro; B is only testimonials."
   },
   {
    "pid": "wcxb-5628",
@@ -3692,21 +3692,21 @@
    "url": "https://redwhiteadventures.com/productive-digital-nomad/",
    "winner": "tie",
    "content_ours": 5,
-   "content_traf": 5,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "Both keep the full article."
+   "content_traf": 4,
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "Same body; B keeps the date line."
   },
   {
    "pid": "wcxb-4979",
    "type": "article",
    "url": "https://www.filecloud.com/5-best-cloud-storage-providers/",
-   "winner": "chromerag",
+   "winner": "trafilatura",
    "content_ours": 5,
-   "content_traf": 3,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "B keeps the intro sections that A drops."
+   "content_traf": 4,
+   "chrome_ours": 2,
+   "chrome_traf": 5,
+   "reason": "B keeps the intro criteria sections but ends with a country-list form; A is clean but drops the intro."
   },
   {
    "pid": "wcxb-5674",
@@ -3716,30 +3716,30 @@
    "content_ours": 5,
    "content_traf": 4,
    "chrome_ours": 4,
-   "chrome_traf": 5,
-   "reason": "B keeps title and intro; both have the main body."
+   "chrome_traf": 4,
+   "reason": "B keeps title and intro; A drops them and keeps a trial CTA, B has trailing stray labels."
   },
   {
    "pid": "wcxb-5060",
    "type": "forum",
    "url": "https://forum.charlesdowding.co.uk/community/topic/new-raised-beds-mulch-or-grow/",
    "winner": "chromerag",
-   "content_ours": 4,
-   "content_traf": 4,
-   "chrome_ours": 4,
-   "chrome_traf": 3,
-   "reason": "Same thread; A leaves breadcrumb and list artifacts."
+   "content_ours": 5,
+   "content_traf": 5,
+   "chrome_ours": 5,
+   "chrome_traf": 4,
+   "reason": "B keeps author names with posts; A has dates but no authors and whitespace noise."
   },
   {
    "pid": "wcxb-4963",
    "type": "service",
    "url": "https://coheating.com/sun-river-city-oregon/",
    "winner": "trafilatura",
-   "content_ours": 5,
+   "content_ours": 4,
    "content_traf": 5,
-   "chrome_ours": 3,
+   "chrome_ours": 2,
    "chrome_traf": 4,
-   "reason": "B leaves call-now and contact links; A is cleaner."
+   "reason": "A keeps the page body and reviews; B adds service-request widgets, city list and 'days ago' junk."
   },
   {
    "pid": "wcxb-5682",
@@ -3747,32 +3747,32 @@
    "url": "https://www.dreamhost.com/blog/wordpress-alternatives/",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 4,
+   "content_traf": 5,
    "chrome_ours": 4,
    "chrome_traf": 3,
-   "reason": "A has hosting promo blocks and no title."
+   "reason": "B keeps title and cleaner formatting; A ends with hosting promo and sign-up CTA."
   },
   {
    "pid": "wcxb-5415",
    "type": "documentation",
    "url": "https://www.typescriptlang.org/docs/",
-   "winner": "chromerag",
+   "winner": "trafilatura",
    "content_ours": 4,
-   "content_traf": 2,
-   "chrome_ours": 3,
-   "chrome_traf": 4,
-   "reason": "A loses the doc link lists; B keeps them."
+   "content_traf": 4,
+   "chrome_ours": 2,
+   "chrome_traf": 5,
+   "reason": "A keeps only the card descriptions; B dumps the navigation link lists."
   },
   {
    "pid": "wcxb-5073",
    "type": "forum",
    "url": "https://forums.sailinganarchy.com/threads/cooking-with-cast-iron.239441/page-3",
-   "winner": "tie",
-   "content_ours": 4,
+   "winner": "chromerag",
+   "content_ours": 5,
    "content_traf": 4,
-   "chrome_ours": 3,
-   "chrome_traf": 3,
-   "reason": "Both keep forum posts with some noise."
+   "chrome_ours": 4,
+   "chrome_traf": 4,
+   "reason": "B keeps many more thread posts with authors; A drops many posts."
   },
   {
    "pid": "wcxb-5636",
@@ -3781,9 +3781,9 @@
    "winner": "tie",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 4,
+   "chrome_ours": 5,
    "chrome_traf": 4,
-   "reason": "Equivalent article content."
+   "reason": "Same article text; A has byline/date but broken bullets, B is cleaner."
   },
   {
    "pid": "wcxb-5162",
@@ -3792,42 +3792,42 @@
    "winner": "tie",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "Near-identical; A has stray date fragments."
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "Both extract the full article equally."
   },
   {
    "pid": "wcxb-5342",
    "type": "service",
    "url": "https://activategood.org/",
    "winner": "chromerag",
-   "content_ours": 4,
+   "content_ours": 5,
    "content_traf": 3,
-   "chrome_ours": 3,
-   "chrome_traf": 4,
-   "reason": "B has more page content; some CTA chrome."
+   "chrome_ours": 4,
+   "chrome_traf": 3,
+   "reason": "B keeps events and blog sections; A drops them and keeps newsletter chrome."
   },
   {
    "pid": "wcxb-5182",
    "type": "forum",
    "url": "https://english.meta.stackexchange.com/questions/15596/are-there-any-differences-between-u-s-grammar-usage-and-british-grammar-usa",
-   "winner": "tie",
-   "content_ours": 4,
-   "content_traf": 4,
+   "winner": "trafilatura",
+   "content_ours": 5,
+   "content_traf": 5,
    "chrome_ours": 3,
-   "chrome_traf": 3,
-   "reason": "A has network blurb; B has vote and comment junk."
+   "chrome_traf": 4,
+   "reason": "Same Q and answers; B has badge and comment-link noise, A has one network blurb."
   },
   {
    "pid": "wcxb-5175",
    "type": "forum",
    "url": "https://travel.stackexchange.com/questions/74384/tourist-visa-requirements-for-thailand",
    "winner": "tie",
-   "content_ours": 4,
-   "content_traf": 4,
+   "content_ours": 5,
+   "content_traf": 5,
    "chrome_ours": 3,
    "chrome_traf": 3,
-   "reason": "Comparable; each has different minor noise."
+   "reason": "Same answers; A has network blurb, B has vote/comment noise."
   },
   {
    "pid": "wcxb-5289",
@@ -3838,7 +3838,7 @@
    "content_traf": 4,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "A keeps the article title; otherwise same."
+   "reason": "A keeps title and author; B omits the heading and byline."
   },
   {
    "pid": "wcxb-5545",
@@ -3849,29 +3849,29 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B keeps title and section headings."
+   "reason": "B keeps title, subtitle and headings; A loses them."
   },
   {
    "pid": "wcxb-5407",
    "type": "article",
    "url": "https://oneuptime.com/blog/post/2026-01-26-rust-ownership-borrowing-guide/view",
-   "winner": "tie",
-   "content_ours": 4,
+   "winner": "chromerag",
+   "content_ours": 5,
    "content_traf": 4,
-   "chrome_ours": 4,
+   "chrome_ours": 3,
    "chrome_traf": 4,
-   "reason": "Both keep the tutorial; B fragments code."
+   "reason": "B keeps title and subtitle; A includes blog-contribution boilerplate, B has 'On this page' and entities."
   },
   {
    "pid": "wcxb-5577",
    "type": "article",
    "url": "https://www.hannahillphotography.com/blog-education/balance-as-a-working-mom",
-   "winner": "trafilatura",
-   "content_ours": 4,
+   "winner": "tie",
+   "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 3,
    "chrome_traf": 4,
-   "reason": "B adds stray counter, date and gallery text."
+   "reason": "Same story; B adds a stray '0' and 'Gallery Block' but also the date."
   },
   {
    "pid": "wcxb-5537",
@@ -3881,19 +3881,19 @@
    "content_ours": 4,
    "content_traf": 5,
    "chrome_ours": 3,
-   "chrome_traf": 4,
-   "reason": "A includes reply/share comment chrome."
+   "chrome_traf": 3,
+   "reason": "B keeps title and headings; both carry newsletter promos at the end."
   },
   {
    "pid": "wcxb-5648",
    "type": "article",
    "url": "https://opensource.com/alternatives/slack",
-   "winner": "chromerag",
+   "winner": "tie",
    "content_ours": 5,
-   "content_traf": 4,
-   "chrome_ours": 4,
+   "content_traf": 5,
+   "chrome_ours": 3,
    "chrome_traf": 4,
-   "reason": "A keeps title and subtitle."
+   "reason": "A keeps title but adds tags/author links; B drops title but is cleaner."
   },
   {
    "pid": "wcxb-5435",
@@ -3901,65 +3901,65 @@
    "url": "https://www.heretto.com/blog/api-documentation",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 3,
+   "content_traf": 4,
    "chrome_ours": 4,
-   "chrome_traf": 5,
-   "reason": "B keeps title, author and date."
+   "chrome_traf": 4,
+   "reason": "B keeps title and author; A lacks them, B has trailing related-post stubs."
   },
   {
    "pid": "wcxb-5644",
    "type": "article",
    "url": "https://remotewize.com/slack-alternatives/",
-   "winner": "tie",
-   "content_ours": 4,
-   "content_traf": 4,
-   "chrome_ours": 4,
+   "winner": "chromerag",
+   "content_ours": 5,
+   "content_traf": 3,
+   "chrome_ours": 3,
    "chrome_traf": 4,
-   "reason": "Both keep the article content."
+   "reason": "A keeps the comparison cards with pricing; B drops them, A has footer chrome."
   },
   {
    "pid": "wcxb-5649",
    "type": "article",
    "url": "https://ifttt.com/explore/top-slack-alternatives",
    "winner": "tie",
-   "content_ours": 4,
-   "content_traf": 4,
+   "content_ours": 5,
+   "content_traf": 5,
    "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "Identical."
+   "reason": "The two extractions are essentially identical."
   },
   {
    "pid": "wcxb-5019",
    "type": "forum",
    "url": "https://beersmith.com/forum/index.php?threads/simple-home-brew-recipe.16986/",
-   "winner": "tie",
+   "winner": "chromerag",
    "content_ours": 4,
-   "content_traf": 4,
-   "chrome_ours": 3,
-   "chrome_traf": 3,
-   "reason": "Both keep the thread with forum profile noise."
+   "content_traf": 3,
+   "chrome_ours": 4,
+   "chrome_traf": 2,
+   "reason": "A has a compact thread; B repeats quotes and keeps the out-of-date-browser notice."
   },
   {
    "pid": "wcxb-5690",
    "type": "article",
    "url": "https://www.emailtooltester.com/en/blog/hubspot-alternatives/",
    "winner": "tie",
-   "content_ours": 4,
+   "content_ours": 5,
    "content_traf": 4,
-   "chrome_ours": 4,
-   "chrome_traf": 3,
-   "reason": "Similar content; B adds changelog lines."
+   "chrome_ours": 3,
+   "chrome_traf": 2,
+   "reason": "Both keep the article; B adds a changelog list, A adds author bios."
   },
   {
    "pid": "wcxb-5202",
    "type": "collection",
    "url": "https://www.theworlds50best.com/",
    "winner": "tie",
-   "content_ours": 4,
-   "content_traf": 4,
-   "chrome_ours": 4,
-   "chrome_traf": 4,
-   "reason": "Identical."
+   "content_ours": 5,
+   "content_traf": 5,
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "The two extractions are identical."
   },
   {
    "pid": "wcxb-5511",
@@ -3968,53 +3968,53 @@
    "winner": "trafilatura",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 4,
+   "chrome_ours": 3,
    "chrome_traf": 5,
-   "reason": "B adds link-label chrome."
+   "reason": "A is the clean error message; B keeps link labels and stray whitespace."
   },
   {
    "pid": "wcxb-5549",
    "type": "article",
    "url": "https://klementoninvesting.substack.com/p/philosophical-economics-the-golden",
    "winner": "trafilatura",
-   "content_ours": 4,
+   "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 3,
-   "chrome_traf": 4,
-   "reason": "A keeps the title and omits comment section; B drops the title and adds comment chrome."
+   "chrome_ours": 5,
+   "chrome_traf": 5,
+   "reason": "A keeps the article title; otherwise identical."
   },
   {
    "pid": "wcxb-5151",
    "type": "forum",
    "url": "https://backpackinglight.com/forums/topic/377/",
    "winner": "chromerag",
-   "content_ours": 5,
-   "content_traf": 4,
+   "content_ours": 4,
+   "content_traf": 5,
    "chrome_ours": 4,
    "chrome_traf": 3,
-   "reason": "B keeps post authors and has less membership/guideline chrome."
+   "reason": "B keeps post authors and omits the membership and moderation boilerplate that A keeps."
   },
   {
    "pid": "wcxb-5580",
    "type": "article",
    "url": "https://littlesunshine.com/blog/tips-for-working-moms-balancing-work-and-family-life/",
-   "winner": "tie",
-   "content_ours": 4,
+   "winner": "trafilatura",
+   "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Near identical; B keeps the date."
+   "reason": "B keeps the date; the body is identical."
   },
   {
    "pid": "wcxb-5542",
    "type": "article",
    "url": "https://larrykotlikoff.substack.com/p/economics-based-financial-planning",
    "winner": "trafilatura",
-   "content_ours": 4,
+   "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 3,
+   "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "B has title and no trailing comment chrome; A has Share/Reply residue and no title."
+   "reason": "B keeps title and subtitle and omits stray Share lines."
   },
   {
    "pid": "wcxb-5678",
@@ -4022,10 +4022,10 @@
    "url": "https://www.squarespace.com/blog/wordpress-alternatives",
    "winner": "chromerag",
    "content_ours": 5,
-   "content_traf": 3,
+   "content_traf": 5,
    "chrome_ours": 4,
    "chrome_traf": 3,
-   "reason": "B keeps title and pricing details; A starts with newsletter form chrome and loses pricing."
+   "reason": "B has title and body; A opens with newsletter-form junk and lacks the title."
   },
   {
    "pid": "wcxb-4920",
@@ -4034,20 +4034,20 @@
    "winner": "tie",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 5,
-   "chrome_traf": 5,
-   "reason": "Both extract the same article content."
+   "chrome_ours": 4,
+   "chrome_traf": 4,
+   "reason": "Essentially identical content."
   },
   {
    "pid": "wcxb-4939",
    "type": "service",
    "url": "https://btrpestcontrol.com/",
    "winner": "chromerag",
-   "content_ours": 5,
-   "content_traf": 3,
+   "content_ours": 4,
+   "content_traf": 5,
    "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "B keeps service prices and hero text; A drops prices for several services."
+   "reason": "B keeps the hero summary and the seasonal package price that A drops."
   },
   {
    "pid": "wcxb-5208",
@@ -4056,20 +4056,20 @@
    "winner": "chromerag",
    "content_ours": 3,
    "content_traf": 1,
-   "chrome_ours": 3,
+   "chrome_ours": 4,
    "chrome_traf": 1,
-   "reason": "B is only popup/cookie text; A has heading and intro."
+   "reason": "A has the page heading and intro; B is only popups and cookie text."
   },
   {
    "pid": "wcxb-4925",
    "type": "service",
    "url": "https://www.northamerican.com/household-moving/long-distance-moving",
-   "winner": "chromerag",
+   "winner": "trafilatura",
    "content_ours": 4,
-   "content_traf": 3,
+   "content_traf": 4,
    "chrome_ours": 4,
-   "chrome_traf": 3,
-   "reason": "A has headings and a structured table; B flattens tables and loses headings."
+   "chrome_traf": 4,
+   "reason": "B keeps the intro and process steps; A has repeated quote headings; roughly even."
   },
   {
    "pid": "wcxb-5345",
@@ -4080,29 +4080,29 @@
    "content_traf": 2,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "A keeps only the nonprofit paragraph; B keeps the full page content."
+   "reason": "B has both volunteer and nonprofit sections; A has only the nonprofit paragraph."
   },
   {
    "pid": "wcxb-5241",
    "type": "listing",
    "url": "https://entrepreneur.nyu.edu/library/incubators-workspace-accelerators/",
    "winner": "trafilatura",
-   "content_ours": 3,
+   "content_ours": 4,
    "content_traf": 4,
    "chrome_ours": 4,
    "chrome_traf": 4,
-   "reason": "B includes the intro and accelerator descriptions as well as the listings."
+   "reason": "B keeps the intro and program list, though some text is duplicated."
   },
   {
    "pid": "wcxb-5127",
    "type": "forum",
    "url": "https://forum.seymourduncan.com/threads/solid-state-vs-tube.51042/",
-   "winner": "tie",
-   "content_ours": 5,
+   "winner": "trafilatura",
+   "content_ours": 3,
    "content_traf": 4,
-   "chrome_ours": 3,
-   "chrome_traf": 5,
-   "reason": "B keeps usernames but adds trailing junk; A cleaner but loses attribution."
+   "chrome_ours": 2,
+   "chrome_traf": 4,
+   "reason": "A has clean post text; B adds user titles and trailing username junk."
   },
   {
    "pid": "wcxb-5659",
@@ -4113,29 +4113,29 @@
    "content_traf": 3,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "A keeps headline, section headings and feature highlights; B omits them."
+   "reason": "A keeps the feature highlights and help section that B drops."
   },
   {
    "pid": "wcxb-5540",
    "type": "article",
    "url": "https://phinancenet.substack.com/p/financial-economics-what-kind-of",
-   "winner": "trafilatura",
+   "winner": "tie",
    "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "B additionally keeps the page title and event date."
+   "reason": "Same content; B only adds a title line."
   },
   {
    "pid": "wcxb-5444",
    "type": "article",
    "url": "https://www.helpndoc.com/news-and-articles/2025-11-18-how-to-create-documentation-in-15-minutes-with-helpndoc-beginners-quickstart-guide/",
-   "winner": "tie",
+   "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 3,
+   "chrome_ours": 4,
    "chrome_traf": 3,
-   "reason": "Both keep the tutorial and some trailing related-post chrome."
+   "reason": "B omits the related-post teasers and categories that A keeps."
   },
   {
    "pid": "wcxb-5266",
@@ -4145,8 +4145,8 @@
    "content_ours": 5,
    "content_traf": 5,
    "chrome_ours": 5,
-   "chrome_traf": 5,
-   "reason": "Both keep the article; A has byline, B has closing contact note."
+   "chrome_traf": 4,
+   "reason": "A has a byline, B a trailing author contact line; same body."
   },
   {
    "pid": "wcxb-5167",
@@ -4155,20 +4155,20 @@
    "winner": "chromerag",
    "content_ours": 5,
    "content_traf": 4,
-   "chrome_ours": 5,
+   "chrome_ours": 4,
    "chrome_traf": 5,
-   "reason": "A keeps the title and byline."
+   "reason": "A keeps the title and date; the body is the same."
   },
   {
    "pid": "wcxb-5564",
    "type": "article",
    "url": "https://www.backpackerswanderlust.com/group-tour-solo-travel-southeast-asia/",
-   "winner": "tie",
+   "winner": "trafilatura",
    "content_ours": 5,
    "content_traf": 5,
-   "chrome_ours": 5,
-   "chrome_traf": 5,
-   "reason": "Near identical article extraction."
+   "chrome_ours": 3,
+   "chrome_traf": 4,
+   "reason": "B keeps a long related-links list as chrome."
   },
   {
    "pid": "wcxb-5287",
@@ -4179,7 +4179,7 @@
    "content_traf": 5,
    "chrome_ours": 5,
    "chrome_traf": 5,
-   "reason": "Near identical; minor subheading difference."
+   "reason": "Same content."
   }
  ]
 }

@@ -262,25 +262,81 @@ def fig_retrieval(report: dict) -> str:
 
 
 # --------------------------------------------------------------------------- Fig. 5
+JUDGE_FAMILIES = (
+    ("claude", "Claude", "#7c3aed"),
+    ("gpt", "GPT", "#1a7f37"),
+    ("gemini", "Gemini", "#c77d0a"),
+)
+JUDGE_TYPE_ORDER = ("article", "documentation", "service", "forum", "product", "collection", "listing", "ALL")
+JUDGE_PANELS = (
+    ("(a)", "Fresh pages (328), vs Trafilatura", "final2", ("claude", "gpt", "gemini")),
+    ("(b)", "WCXB clean (367), vs Trafilatura", "wcxb_clean", ("claude", "gpt")),
+)
+
+
+def _judge_rows(panel: dict, families: tuple[str, ...]) -> list[tuple[str, int]]:
+    rows: list[tuple[str, int]] = []
+    for ty in JUDGE_TYPE_ORDER:
+        for fam in families:
+            block = panel.get(fam)
+            if block and ty in block:
+                rows.append((ty, block[ty]["n"]))
+                break
+    return rows
+
+
 def fig_judge(final: dict) -> str:
-    rows = [("Landing pages (100)", "vs Trafilatura", final["judge"]["all:trafilatura"], "#eb6834"),
-            ("Landing pages (100)", "vs MarkItDown", final["judge"]["all:markitdown"], "#1baf7a"),
-            ("WCXB test (72)", "vs Trafilatura", final["judge_wcxb_test_deduplicated"]["summary"]["all:trafilatura"], "#eb6834"),
-            ("WCXB test (72)", "vs MarkItDown", final["judge_wcxb_test_deduplicated"]["summary"]["all:markitdown"], "#1baf7a")]
-    h, top, label_w = 124, 22, 128
-    x0, w = label_w + 6, WIDTH - label_w - 20
-    body: list[str] = [_text(x0, 10, "Pairwise LLM judge (one model, tool names hidden): share of pages preferred (grey = tie)", size=7.5, fill=INK_2)]
-    for i, (group, label, r, other) in enumerate(rows):
-        y = top + i * 20
-        body.append(_text(label_w, y + 9, f"{group}, {label}", size=7, anchor="end"))
-        x = x0
-        for key, color in (("chromerag_wins", "#2a78d6"), ("ties", "#c9c8c2"), ("baseline_wins", other)):
-            seg = r[key] * w
-            body.append(f'<rect x="{x:.1f}" y="{y}" width="{seg:.1f}" height="13" fill="{color}"/>')
-            if r[key] >= 0.08:
-                body.append(_text(x + seg / 2, y + 9.5, f"{r[key] * 100:.0f}%", size=7, anchor="middle", fill="#ffffff" if key != "ties" else INK))
-            x += seg
-    body.append(f'<rect x="{x0}" y="{top + 88}" width="8" height="8" fill="#2a78d6"/>' + _text(x0 + 12, top + 95, "ChromeRAG preferred", size=7))
+    judge = final["judge_multifamily"]
+    label_w, gap = 92, 16
+    pw = (WIDTH - 2 * label_w - gap) / 2  # each panel has its own label column
+    row_h, top = 15, 30
+    panels = []
+    for tag, title, key, families in JUDGE_PANELS:
+        panel = judge[key]
+        rows = _judge_rows(panel, families)
+        panels.append((tag, title, panel, families, rows))
+    h = top + max(len(p[4]) for p in panels) * row_h + 46
+    xmin, xmax = -1.0, 1.0
+    body: list[str] = []
+    for pi, (tag, title, panel, families, rows) in enumerate(panels):
+        x0 = label_w + pi * (pw + label_w + gap)
+        plot_w = pw - 8
+        sx = lambda v, _x0=x0, _w=plot_w: _x0 + (v - xmin) / (xmax - xmin) * _w  # noqa: E731
+        body.append(
+            f'<text x="{x0 - label_w + 4:.1f}" y="12" font-size="7.5" fill="{INK_2}">'
+            f'<tspan font-size="9" font-weight="bold" fill="{INK}">{tag}</tspan>'
+            f'<tspan dx="6">{escape(title)}</tspan></text>'
+        )
+        z = sx(0)
+        body.append(f'<line x1="{z:.1f}" y1="{top - 4}" x2="{z:.1f}" y2="{top + len(rows) * row_h}" stroke="{MUTED}" stroke-width="0.8"/>')
+        for tick in (-1, -0.5, 0, 0.5, 1):
+            tx = sx(tick)
+            body.append(f'<line x1="{tx:.1f}" y1="{top - 4}" x2="{tx:.1f}" y2="{top + len(rows) * row_h}" stroke="{GRID}" stroke-width="0.6"/>')
+            body.append(_text(tx, top + len(rows) * row_h + 9, f"{tick:+.1f}" if tick else "0", size=6.5, anchor="middle", fill=INK_2))
+        body.append(_text(x0 + plot_w / 2, top + len(rows) * row_h + 20, "Net score (wins − losses) / pairs", size=7, anchor="middle", fill=INK_2))
+        for i, (ty, n) in enumerate(rows):
+            y = top + i * row_h + row_h / 2
+            label = ("All" if ty == "ALL" else ty.capitalize()) + f" ({n})"
+            body.append(_text(x0 - 6, y + 2.5, label, size=7, anchor="end", weight="bold" if ty == "ALL" else "normal"))
+            offset = 0
+            for fam_key, fam_name, color in JUDGE_FAMILIES:
+                if fam_key not in families:
+                    continue
+                block = panel.get(fam_key)
+                if not block or ty not in block:
+                    continue
+                r = block[ty]
+                net, lo, hi = r["net"], r["net_ci95"][0], r["net_ci95"][1]
+                cy = y + offset
+                body.append(f'<line x1="{sx(lo):.1f}" y1="{cy:.1f}" x2="{sx(hi):.1f}" y2="{cy:.1f}" stroke="{color}" stroke-width="1.4" opacity="0.55"/>')
+                body.append(f'<circle cx="{sx(net):.1f}" cy="{cy:.1f}" r="2.8" fill="{color}" stroke="{SURFACE}" stroke-width="0.7"/>')
+                offset += 4
+        body.append(f'<line x1="{x0}" y1="{top - 4}" x2="{x0}" y2="{top + len(rows) * row_h}" stroke="{INK_2}" stroke-width="0.8"/>')
+    lx = label_w
+    for fam_key, fam_name, color in JUDGE_FAMILIES:
+        body.append(f'<circle cx="{lx:.1f}" cy="{h - 8:.1f}" r="2.8" fill="{color}"/>')
+        body.append(_text(lx + 6, h - 5.5, f"{fam_name} (bars: 95% interval)" if fam_key == JUDGE_FAMILIES[-1][0] else fam_name, size=7, fill=INK_2))
+        lx += 52
     return _svg(h, body)
 
 

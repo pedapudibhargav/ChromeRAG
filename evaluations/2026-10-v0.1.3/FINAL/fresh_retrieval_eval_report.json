@@ -8,62 +8,62 @@
   },
   "tools": {
     "chromerag_coverage": {
-      "chunks": 874,
-      "indexed_words": 155228,
+      "chunks": 804,
+      "indexed_words": 140692,
       "scores": {
         "title": {
-          "context_chrome@5": 0.001,
-          "hit@1": 0.757,
-          "hit@5": 0.913,
-          "mrr@5": 0.82
+          "context_chrome@5": 0.002,
+          "hit@1": 0.786,
+          "hit@5": 0.961,
+          "mrr@5": 0.857
         },
         "all": {
-          "context_chrome@5": 0.001,
+          "context_chrome@5": 0.003,
           "hit@1": 0.819,
-          "hit@5": 0.916,
-          "mrr@5": 0.855
+          "hit@5": 0.909,
+          "mrr@5": 0.853
         },
         "heading": {
-          "context_chrome@5": 0.001,
-          "hit@1": 0.756,
-          "hit@5": 0.893,
-          "mrr@5": 0.804
+          "context_chrome@5": 0.003,
+          "hit@1": 0.759,
+          "hit@5": 0.878,
+          "mrr@5": 0.803
         },
         "passage": {
-          "context_chrome@5": 0.001,
-          "hit@1": 0.932,
-          "hit@5": 0.949,
-          "mrr@5": 0.94
+          "context_chrome@5": 0.003,
+          "hit@1": 0.916,
+          "hit@5": 0.928,
+          "mrr@5": 0.92
         }
       }
     },
     "chromerag": {
-      "chunks": 772,
-      "indexed_words": 136498,
+      "chunks": 742,
+      "indexed_words": 129389,
       "scores": {
         "title": {
-          "context_chrome@5": 0.001,
-          "hit@1": 0.699,
-          "hit@5": 0.883,
-          "mrr@5": 0.766
+          "context_chrome@5": 0.002,
+          "hit@1": 0.806,
+          "hit@5": 0.961,
+          "mrr@5": 0.872
         },
         "all": {
-          "context_chrome@5": 0.001,
-          "hit@1": 0.781,
-          "hit@5": 0.889,
-          "mrr@5": 0.822
+          "context_chrome@5": 0.003,
+          "hit@1": 0.804,
+          "hit@5": 0.894,
+          "mrr@5": 0.84
         },
         "heading": {
-          "context_chrome@5": 0.001,
-          "hit@1": 0.729,
+          "context_chrome@5": 0.003,
+          "hit@1": 0.753,
           "hit@5": 0.869,
-          "mrr@5": 0.781
+          "mrr@5": 0.798
         },
         "passage": {
-          "context_chrome@5": 0.001,
-          "hit@1": 0.89,
-          "hit@5": 0.92,
-          "mrr@5": 0.902
+          "context_chrome@5": 0.004,
+          "hit@1": 0.873,
+          "hit@5": 0.899,
+          "mrr@5": 0.884
         }
       }
     },
@@ -158,306 +158,77 @@
       }
     }
   },
-  "dense": {
-    "model": "text-embedding-3-small",
-    "tools": {
-      "chromerag_coverage": {
-        "chunks": 874,
-        "indexed_words": 155228,
-        "scores": {
-          "title": {
-            "context_chrome@5": 0.001,
-            "hit@1": 0.709,
-            "hit@5": 0.864,
-            "mrr@5": 0.768
-          },
-          "all": {
-            "context_chrome@5": 0.001,
-            "hit@1": 0.491,
-            "hit@5": 0.708,
-            "mrr@5": 0.575
-          },
-          "heading": {
-            "context_chrome@5": 0.001,
-            "hit@1": 0.445,
-            "hit@5": 0.655,
-            "mrr@5": 0.53
-          },
-          "passage": {
-            "context_chrome@5": 0.001,
-            "hit@1": 0.46,
-            "hit@5": 0.713,
-            "mrr@5": 0.552
-          }
-        }
-      },
-      "chromerag": {
-        "chunks": 772,
-        "indexed_words": 136498,
-        "scores": {
-          "title": {
-            "context_chrome@5": 0.001,
-            "hit@1": 0.68,
-            "hit@5": 0.864,
-            "mrr@5": 0.744
-          },
-          "all": {
-            "context_chrome@5": 0.001,
-            "hit@1": 0.481,
-            "hit@5": 0.723,
-            "mrr@5": 0.573
-          },
-          "heading": {
-            "context_chrome@5": 0.001,
-            "hit@1": 0.433,
-            "hit@5": 0.68,
-            "mrr@5": 0.528
-          },
-          "passage": {
-            "context_chrome@5": 0.0,
-            "hit@1": 0.46,
-            "hit@5": 0.722,
-            "mrr@5": 0.56
-          }
-        }
-      },
-      "trafilatura": {
-        "chunks": 692,
-        "indexed_words": 121949,
-        "scores": {
-          "title": {
-            "context_chrome@5": 0.01,
-            "hit@1": 0.699,
-            "hit@5": 0.903,
-            "mrr@5": 0.782
-          },
-          "all": {
-            "context_chrome@5": 0.008,
-            "hit@1": 0.506,
-            "hit@5": 0.698,
-            "mrr@5": 0.579
-          },
-          "heading": {
-            "context_chrome@5": 0.009,
-            "hit@1": 0.488,
-            "hit@5": 0.662,
-            "mrr@5": 0.555
-          },
-          "passage": {
-            "context_chrome@5": 0.006,
-            "hit@1": 0.447,
-            "hit@5": 0.658,
-            "mrr@5": 0.525
-          }
-        }
-      },
-      "markitdown": {
-        "chunks": 1949,
-        "indexed_words": 630616,
-        "scores": {
-          "title": {
-            "context_chrome@5": 0.021,
-            "hit@1": 0.583,
-            "hit@5": 0.777,
-            "mrr@5": 0.664
-          },
-          "all": {
-            "context_chrome@5": 0.015,
-            "hit@1": 0.493,
-            "hit@5": 0.701,
-            "mrr@5": 0.573
-          },
-          "heading": {
-            "context_chrome@5": 0.015,
-            "hit@1": 0.497,
-            "hit@5": 0.674,
-            "mrr@5": 0.564
-          },
-          "passage": {
-            "context_chrome@5": 0.013,
-            "hit@1": 0.447,
-            "hit@5": 0.705,
-            "mrr@5": 0.545
-          }
-        }
-      },
-      "readability": {
-        "chunks": 617,
-        "indexed_words": 106453,
-        "scores": {
-          "title": {
-            "context_chrome@5": 0.01,
-            "hit@1": 0.621,
-            "hit@5": 0.777,
-            "mrr@5": 0.686
-          },
-          "all": {
-            "context_chrome@5": 0.005,
-            "hit@1": 0.437,
-            "hit@5": 0.645,
-            "mrr@5": 0.515
-          },
-          "heading": {
-            "context_chrome@5": 0.005,
-            "hit@1": 0.418,
-            "hit@5": 0.631,
-            "mrr@5": 0.493
-          },
-          "passage": {
-            "context_chrome@5": 0.003,
-            "hit@1": 0.384,
-            "hit@5": 0.608,
-            "mrr@5": 0.471
-          }
-        }
-      }
-    },
-    "paired_bootstrap": [
-      {
-        "comparison": "chromerag_coverage - chromerag",
-        "metric": "hit@5",
-        "mean_diff": -0.015,
-        "ci95": [
-          -0.038,
-          0.01
-        ]
-      },
-      {
-        "comparison": "chromerag_coverage - chromerag",
-        "metric": "context_chrome@5",
-        "mean_diff": 0.0,
-        "ci95": [
-          0.0,
-          0.0
-        ]
-      },
-      {
-        "comparison": "chromerag_coverage - trafilatura",
-        "metric": "hit@5",
-        "mean_diff": 0.01,
-        "ci95": [
-          -0.024,
-          0.047
-        ]
-      },
-      {
-        "comparison": "chromerag_coverage - trafilatura",
-        "metric": "context_chrome@5",
-        "mean_diff": -0.007,
-        "ci95": [
-          -0.011,
-          -0.004
-        ]
-      },
-      {
-        "comparison": "chromerag_coverage - markitdown",
-        "metric": "hit@5",
-        "mean_diff": 0.007,
-        "ci95": [
-          -0.022,
-          0.037
-        ]
-      },
-      {
-        "comparison": "chromerag_coverage - markitdown",
-        "metric": "context_chrome@5",
-        "mean_diff": -0.014,
-        "ci95": [
-          -0.018,
-          -0.011
-        ]
-      },
-      {
-        "comparison": "chromerag_coverage - readability",
-        "metric": "hit@5",
-        "mean_diff": 0.063,
-        "ci95": [
-          0.029,
-          0.102
-        ]
-      },
-      {
-        "comparison": "chromerag_coverage - readability",
-        "metric": "context_chrome@5",
-        "mean_diff": -0.004,
-        "ci95": [
-          -0.008,
-          -0.001
-        ]
-      }
-    ]
-  },
   "paired_bootstrap": [
     {
       "comparison": "chromerag_coverage - chromerag",
       "metric": "hit@5",
-      "mean_diff": 0.027,
+      "mean_diff": 0.015,
       "ci95": [
-        0.014,
-        0.04
+        0.006,
+        0.026
       ]
     },
     {
       "comparison": "chromerag_coverage - chromerag",
       "metric": "context_chrome@5",
-      "mean_diff": 0.0,
+      "mean_diff": -0.0,
       "ci95": [
-        0.0,
-        0.0
+        -0.001,
+        0.001
       ]
     },
     {
       "comparison": "chromerag_coverage - trafilatura",
       "metric": "hit@5",
-      "mean_diff": 0.084,
+      "mean_diff": 0.076,
       "ci95": [
-        0.045,
-        0.123
+        0.038,
+        0.115
       ]
     },
     {
       "comparison": "chromerag_coverage - trafilatura",
       "metric": "context_chrome@5",
-      "mean_diff": -0.01,
+      "mean_diff": -0.008,
       "ci95": [
-        -0.014,
-        -0.006
+        -0.012,
+        -0.004
       ]
     },
     {
       "comparison": "chromerag_coverage - markitdown",
       "metric": "hit@5",
-      "mean_diff": -0.033,
+      "mean_diff": -0.04,
       "ci95": [
-        -0.06,
-        -0.007
+        -0.07,
+        -0.011
       ]
     },
     {
       "comparison": "chromerag_coverage - markitdown",
       "metric": "context_chrome@5",
-      "mean_diff": -0.021,
+      "mean_diff": -0.02,
       "ci95": [
-        -0.025,
-        -0.018
+        -0.023,
+        -0.016
       ]
     },
     {
       "comparison": "chromerag_coverage - readability",
       "metric": "hit@5",
-      "mean_diff": 0.156,
+      "mean_diff": 0.148,
       "ci95": [
-        0.11,
-        0.204
+        0.105,
+        0.197
       ]
     },
     {
       "comparison": "chromerag_coverage - readability",
       "metric": "context_chrome@5",
-      "mean_diff": -0.007,
+      "mean_diff": -0.005,
       "ci95": [
-        -0.013,
-        -0.002
+        -0.011,
+        -0.0
       ]
     }
   ]

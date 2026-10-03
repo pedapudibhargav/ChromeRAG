@@ -194,6 +194,7 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: 
       <a href="#how">How it works</a>
       <a href="#benchmark">Benchmark</a>
       <a href="#retrieval">Retrieval</a>
+      <a href="#judging">Blinded judging</a>
       <a href="#templates">Site templates</a>
       <a href="#explorer">Page explorer</a>
       <a href="#cite">Cite</a>
@@ -339,6 +340,20 @@ result.diagnostics    <span class="c"># what was removed, and why</span></pre>
         <div class="card"><h3 style="margin-top:0">Chrome in top-5 context <span class="muted small">lower is better</span></h3><div class="bars" id="ret-chrome"></div></div>
       </div>
       <p class="small muted" id="ret-note"></p>
+    </div>
+  </section>
+
+  <section id="judging">
+    <div class="wrap">
+      <h2>Blinded judging</h2>
+      <p class="section-lede">Three judge families score blinded pairwise comparisons (tool names hidden, order randomised). Net score is wins minus losses over pages, from −1 to +1; whiskers are 95% bootstrap intervals. Rival is Trafilatura except where noted.</p>
+      <div class="grid-2">
+        <div class="card"><h3 style="margin-top:0">Fresh pages <span class="muted small">328 pages</span></h3><div class="ci" id="judge-final2"></div></div>
+        <div class="card"><h3 style="margin-top:0">WCXB clean <span class="muted small">367 pages</span></h3><div class="ci" id="judge-wcxb"></div></div>
+      </div>
+      <h3>vs Readability on fresh pages <span class="muted small">GPT judge only</span></h3>
+      <div class="card"><div class="ci" id="judge-read"></div></div>
+      <p class="small muted" id="judge-note"></p>
     </div>
   </section>
 
@@ -508,6 +523,45 @@ python -m poc.run_stce_eval --raw data/stce_crawl</pre>
       });
     });
     draw("wcxb_test_deduplicated");
+    var jm = fin.judge_multifamily || {};
+    var judgeTypes = ["article", "documentation", "service", "forum", "product", "collection", "listing", "ALL"];
+    var judgeFamilies = { claude: "Claude", gpt: "GPT", gemini: "Gemini", gpt_vs_readability: "GPT" };
+    function judgeLabel(ty, n) { return (ty === "ALL" ? "All pages" : ty) + " (" + n + ")"; }
+    function renderJudgeCI(mountId, panel, families, rival) {
+      var mount = document.getElementById(mountId);
+      if (!mount || !panel) return;
+      var rows = [];
+      judgeTypes.forEach(function (ty) {
+        families.forEach(function (fam) {
+          var block = panel[fam];
+          if (!block || !block[ty]) return;
+          var r = block[ty];
+          rows.push({ label: judgeLabel(ty, r.n) + " · " + judgeFamilies[fam], net: r.net, lo: r.net_ci95[0], hi: r.net_ci95[1] });
+        });
+      });
+      if (!rows.length) { mount.innerHTML = '<p class="muted small">Results not available.</p>'; return; }
+      var lo = -1, hi = 1;
+      rows.forEach(function (r) { lo = Math.min(lo, r.lo); hi = Math.max(hi, r.hi); });
+      var pad = (hi - lo) * 0.05; lo -= pad; hi += pad;
+      var pos = function (v) { return ((v - lo) / (hi - lo)) * 100; };
+      rows.forEach(function (r) {
+        var row = el("div", { "class": "ci-row" });
+        row.innerHTML =
+          "<span>" + esc(r.label) + ' <span class="muted">· vs ' + esc(rival) + "</span></span>" +
+          '<span class="ci-axis" aria-hidden="true"><span class="zero" style="left:' + pos(0) + '%"></span><span class="range" style="left:' + pos(r.lo) + "%;width:" + (pos(r.hi) - pos(r.lo)) + '%"></span><span class="dot" style="left:' + pos(r.net) + '%"></span></span>' +
+          '<span class="num small">' + signed(r.net) + " [" + signed(r.lo) + ", " + signed(r.hi) + "]</span>";
+        mount.appendChild(row);
+      });
+    }
+    renderJudgeCI("judge-final2", jm.final2, ["claude", "gpt", "gemini"], "Trafilatura");
+    renderJudgeCI("judge-wcxb", jm.wcxb_clean, ["claude", "gpt"], "Trafilatura");
+    renderJudgeCI("judge-read", jm.final2, ["gpt_vs_readability"], "Readability");
+    var f2 = jm.final2 && jm.final2.claude && jm.final2.claude.ALL;
+    var wc = jm.wcxb_clean && jm.wcxb_clean.claude && jm.wcxb_clean.claude.ALL;
+    var note = document.getElementById("judge-note");
+    if (note && f2 && wc) {
+      note.textContent = "All-pages net (Claude): fresh " + signed(f2.net) + " [" + signed(f2.net_ci95[0]) + ", " + signed(f2.net_ci95[1]) + "]; WCXB clean " + signed(wc.net) + " [" + signed(wc.net_ci95[0]) + ", " + signed(wc.net_ci95[1]) + "]. Gemini on fresh pages is " + (jm.final2.gemini ? "included above" : "still running") + ".";
+    }
   }).catch(function () { var n = document.getElementById("wcxb"); if (n) n.hidden = true; });
 
   // ---------------------------------------------------------------- benchmark

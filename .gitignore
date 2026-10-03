@@ -16,6 +16,9 @@ data/outputs/
 data/chrome_models/
 data/stce_crawl/
 data/landing_raw/
+data/extra_raw/
+data/extra_raw_final/
+data/extra_raw_final2/
 
 # Corp TLS / private tooling (never publish)
 infra/certs/

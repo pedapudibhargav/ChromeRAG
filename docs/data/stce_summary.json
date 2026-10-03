@@ -53,19 +53,19 @@
     "n_pages_changed": 8,
     "summary_scoreable": {
       "coverage": {
-        "content_recall": 0.776,
+        "content_recall": 0.747,
         "noise_retention": 0.002,
-        "f_balanced": 0.868,
-        "tokens": 2240.745,
-        "site_repeated_5grams": 1.511,
-        "site_repeated_share": 0.005
+        "f_balanced": 0.84,
+        "tokens": 2083.766,
+        "site_repeated_5grams": 1.447,
+        "site_repeated_share": 0.004
       },
       "coverage_stce": {
-        "content_recall": 0.778,
+        "content_recall": 0.743,
         "noise_retention": 0.002,
-        "f_balanced": 0.87,
-        "tokens": 2235.234,
-        "site_repeated_5grams": 1.511,
+        "f_balanced": 0.837,
+        "tokens": 2077.489,
+        "site_repeated_5grams": 1.447,
         "site_repeated_share": 0.005
       },
       "trafilatura": {
@@ -227,11 +227,11 @@
         "signatures": 29
       },
       "docs.docker.com/compose": {
-        "pages": 7,
+        "pages": 12,
         "signatures": 26
       },
       "docs.docker.com/engine": {
-        "pages": 10,
+        "pages": 11,
         "signatures": 25
       },
       "docs.docker.com/get-started": {
@@ -383,7 +383,7 @@
         "signatures": 8
       },
       "knative.dev/docs": {
-        "pages": 13,
+        "pages": 14,
         "signatures": 19
       },
       "kubernetes.io/docs": {
@@ -593,23 +593,23 @@
     },
     "n_pages": 1791,
     "n_scoreable": 1727,
-    "n_pages_changed": 314,
+    "n_pages_changed": 138,
     "summary_scoreable": {
       "coverage": {
-        "content_recall": 0.805,
-        "noise_retention": 0.01,
-        "f_balanced": 0.876,
-        "tokens": 2654.825,
-        "site_repeated_5grams": 12.558,
-        "site_repeated_share": 0.021
+        "content_recall": 0.79,
+        "noise_retention": 0.009,
+        "f_balanced": 0.866,
+        "tokens": 2583.532,
+        "site_repeated_5grams": 10.507,
+        "site_repeated_share": 0.02
       },
       "coverage_stce": {
-        "content_recall": 0.805,
-        "noise_retention": 0.009,
-        "f_balanced": 0.877,
-        "tokens": 2648.474,
-        "site_repeated_5grams": 12.318,
-        "site_repeated_share": 0.021
+        "content_recall": 0.791,
+        "noise_retention": 0.008,
+        "f_balanced": 0.867,
+        "tokens": 2580.541,
+        "site_repeated_5grams": 10.419,
+        "site_repeated_share": 0.02
       },
       "trafilatura": {
         "content_recall": 0.759,

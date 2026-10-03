@@ -32,7 +32,7 @@ IMAGES = [
     ),
     (
         "fig2_wcxb_test.png",
-        "Figure 2. Word-level F1 on the 373 WCXB test pages whose URL is not in the development split, overall and by "
+        "Figure 2. Word-level F1 on the 372 WCXB test pages whose URL is not in the development split, overall and by "
         "page type (n in brackets; product has 2 pages and collection 9, so those rows are indicative only). Each dot is "
         "the mean over the pages of one type; ChromeRAG is in balanced mode and its value is printed.",
     ),
@@ -42,15 +42,10 @@ IMAGES = [
         "the ChromeRAG threshold goes from 0.15 to 0.90, against the single operating points of Trafilatura and Readability.",
     ),
     (
-        "fig4_retrieval.png",
-        "Figure 4. BM25 retrieval over each tool's ~200-word chunks on the 178 fresh-company landing pages, 668 known-item "
-        "queries. (a) Share of queries whose page is in the top five chunks (ChromeRAG in coverage mode). (b) Share of "
-        "the retrieved top-five text that is navigation, header or footer chrome.",
-    ),
-    (
         "fig5_judge.png",
-        "Figure 5. Pairwise judgement by one language model, tool names hidden, of ChromeRAG against Trafilatura and MarkItDown: "
-        "100 landing pages (coverage mode) and 72 WCXB test pages absent from the development folder (balanced mode); grey marks ties.",
+        "Figure 4. Net score (wins minus losses over pairs; +1 means always preferred) of ChromeRAG against Trafilatura "
+        "under blinded pairwise judging by three model families, with 95% bootstrap intervals: (a) 328 fresh pages, "
+        "(b) 367 WCXB test pages absent from the development folder (Gemini was not run on (b)).",
     ),
 ]
 

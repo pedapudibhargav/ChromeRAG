@@ -8,62 +8,62 @@
   },
   "tools": {
     "chromerag_coverage": {
-      "chunks": 2010,
-      "indexed_words": 373000,
+      "chunks": 1898,
+      "indexed_words": 347446,
       "scores": {
         "heading": {
           "context_chrome@5": 0.005,
-          "hit@1": 0.795,
-          "hit@5": 0.924,
-          "mrr@5": 0.848
+          "hit@1": 0.773,
+          "hit@5": 0.915,
+          "mrr@5": 0.832
         },
         "all": {
-          "context_chrome@5": 0.005,
-          "hit@1": 0.872,
-          "hit@5": 0.947,
+          "context_chrome@5": 0.006,
+          "hit@1": 0.873,
+          "hit@5": 0.946,
           "mrr@5": 0.904
         },
         "passage": {
-          "context_chrome@5": 0.004,
-          "hit@1": 0.945,
-          "hit@5": 0.967,
-          "mrr@5": 0.955
+          "context_chrome@5": 0.006,
+          "hit@1": 0.955,
+          "hit@5": 0.97,
+          "mrr@5": 0.961
         },
         "title": {
-          "context_chrome@5": 0.004,
-          "hit@1": 0.884,
-          "hit@5": 0.955,
-          "mrr@5": 0.916
+          "context_chrome@5": 0.007,
+          "hit@1": 0.929,
+          "hit@5": 0.964,
+          "mrr@5": 0.944
         }
       }
     },
     "chromerag": {
-      "chunks": 1712,
-      "indexed_words": 314428,
+      "chunks": 1634,
+      "indexed_words": 295937,
       "scores": {
         "heading": {
-          "context_chrome@5": 0.001,
-          "hit@1": 0.795,
-          "hit@5": 0.912,
-          "mrr@5": 0.845
+          "context_chrome@5": 0.003,
+          "hit@1": 0.789,
+          "hit@5": 0.918,
+          "mrr@5": 0.842
         },
         "all": {
-          "context_chrome@5": 0.001,
-          "hit@1": 0.863,
-          "hit@5": 0.935,
-          "mrr@5": 0.894
+          "context_chrome@5": 0.004,
+          "hit@1": 0.882,
+          "hit@5": 0.948,
+          "mrr@5": 0.909
         },
         "passage": {
-          "context_chrome@5": 0.001,
-          "hit@1": 0.942,
-          "hit@5": 0.961,
-          "mrr@5": 0.951
+          "context_chrome@5": 0.003,
+          "hit@1": 0.961,
+          "hit@5": 0.97,
+          "mrr@5": 0.964
         },
         "title": {
-          "context_chrome@5": 0.0,
-          "hit@1": 0.83,
-          "hit@5": 0.929,
-          "mrr@5": 0.872
+          "context_chrome@5": 0.007,
+          "hit@1": 0.929,
+          "hit@5": 0.973,
+          "mrr@5": 0.946
         }
       }
     },
@@ -162,72 +162,72 @@
     {
       "comparison": "chromerag_coverage - chromerag",
       "metric": "hit@5",
-      "mean_diff": 0.012,
+      "mean_diff": -0.003,
       "ci95": [
-        0.002,
-        0.021
+        -0.006,
+        0.0
       ]
     },
     {
       "comparison": "chromerag_coverage - chromerag",
       "metric": "context_chrome@5",
-      "mean_diff": 0.004,
+      "mean_diff": 0.002,
       "ci95": [
-        0.002,
-        0.006
+        0.001,
+        0.003
       ]
     },
     {
       "comparison": "chromerag_coverage - trafilatura",
       "metric": "hit@5",
-      "mean_diff": 0.026,
+      "mean_diff": 0.025,
       "ci95": [
-        0.001,
-        0.051
+        0.005,
+        0.047
       ]
     },
     {
       "comparison": "chromerag_coverage - trafilatura",
       "metric": "context_chrome@5",
-      "mean_diff": -0.001,
+      "mean_diff": -0.0,
       "ci95": [
-        -0.004,
+        -0.002,
         0.002
       ]
     },
     {
       "comparison": "chromerag_coverage - markitdown",
       "metric": "hit@5",
-      "mean_diff": -0.017,
+      "mean_diff": -0.018,
       "ci95": [
-        -0.037,
-        0.003
+        -0.036,
+        0.0
       ]
     },
     {
       "comparison": "chromerag_coverage - markitdown",
       "metric": "context_chrome@5",
-      "mean_diff": -0.021,
+      "mean_diff": -0.02,
       "ci95": [
-        -0.025,
+        -0.024,
         -0.017
       ]
     },
     {
       "comparison": "chromerag_coverage - readability",
       "metric": "hit@5",
-      "mean_diff": 0.172,
+      "mean_diff": 0.171,
       "ci95": [
         0.13,
-        0.216
+        0.213
       ]
     },
     {
       "comparison": "chromerag_coverage - readability",
       "metric": "context_chrome@5",
-      "mean_diff": -0.001,
+      "mean_diff": -0.0,
       "ci95": [
-        -0.004,
+        -0.003,
         0.002
       ]
     }
