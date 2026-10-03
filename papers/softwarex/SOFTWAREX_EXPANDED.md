@@ -212,44 +212,44 @@ During the preparation of this work the author used Anthropic Claude (Claude Cod
 
 ## References
 
-1. P. Lewis, E. Perez, A. Piktus, F. Petroni, V. Karpukhin, N. Goyal, H. Küttler, M. Lewis, W. Yih, T. Rocktäschel, S. Riedel, and D. Kiela, "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks," in *Advances in Neural Information Processing Systems 33 (NeurIPS 2020)*, 2020, pp. 9459–9474. arXiv: 2005.11401.
+[1] Lewis P, Perez E, Piktus A, Petroni F, Karpukhin V, Goyal N, et al. Retrieval-augmented generation for knowledge-intensive NLP tasks. Advances in Neural Information Processing Systems 2020;33:9459–74. arXiv:2005.11401.
 
-2. C. Kohlschütter, P. Fankhauser, and W. Nejdl, "Boilerplate Detection Using Shallow Text Features," in *Proc. 3rd ACM Int. Conf. Web Search and Data Mining (WSDM)*, 2010, pp. 441–450. doi: 10.1145/1718487.1718542.
+[2] Kohlschütter C, Fankhauser P, Nejdl W. Boilerplate detection using shallow text features. Proc 3rd ACM Int Conf Web Search and Data Mining (WSDM), 2010, p. 441–50. https://doi.org/10.1145/1718487.1718542.
 
-3. T. Vogels, O.-E. Ganea, and C. Eickhoff, "Web2Text: Deep Structured Boilerplate Removal," in *Advances in Information Retrieval (ECIR 2018)*, LNCS, 2018, pp. 167–179. doi: 10.1007/978-3-319-76941-7_13.
+[3] Vogels T, Ganea O-E, Eickhoff C. Web2Text: deep structured boilerplate removal. Advances in Information Retrieval (ECIR 2018), LNCS, 2018, p. 167–79. https://doi.org/10.1007/978-3-319-76941-7_13.
 
-4. J. Leonhardt, A. Anand, and M. Khosla, "Boilerplate Removal using a Neural Sequence Labeling Model," in *Companion Proc. The Web Conf. 2020 (WWW '20)*, 2020, pp. 226–229. doi: 10.1145/3366424.3383547.
+[4] Leonhardt J, Anand A, Khosla M. Boilerplate removal using a neural sequence labeling model. Companion Proc The Web Conf 2020 (WWW '20), 2020, p. 226–9. https://doi.org/10.1145/3366424.3383547.
 
-5. A. Barbaresi, "Trafilatura: A Web Scraping Library and Command-Line Tool for Text Discovery and Extraction," in *Proc. ACL-IJCNLP 2021: System Demonstrations*, 2021, pp. 122–131. doi: 10.18653/v1/2021.acl-demo.15.
+[5] Barbaresi A. Trafilatura: a web scraping library and command-line tool for text discovery and extraction. Proc ACL-IJCNLP 2021: System Demonstrations, 2021, p. 122–31. https://doi.org/10.18653/v1/2021.acl-demo.15.
 
-6. Y. Baburov et al., *python-readability* (readability-lxml), Python port of Arc90 Readability, GitHub, accessed 2026-10-02. [Online]. Available: https://github.com/buriy/python-readability
+[6] Baburov Y, et al. python-readability (readability-lxml): Python port of Arc90 Readability. GitHub, https://github.com/buriy/python-readability [accessed 2 October 2026].
 
-7. J. Bevendorff, S. Gupta, J. Kiesel, and B. Stein, "An Empirical Comparison of Web Content Extraction Algorithms," in *Proc. 46th Int. ACM SIGIR Conf.*, 2023, pp. 2594–2603. doi: 10.1145/3539618.3591920.
+[7] Bevendorff J, Gupta S, Kiesel J, Stein B. An empirical comparison of web content extraction algorithms. Proc 46th Int ACM SIGIR Conf, 2023, p. 2594–603. https://doi.org/10.1145/3539618.3591920.
 
-8. Microsoft, *MarkItDown*: Python tool for converting files and office documents to Markdown, GitHub, accessed 2026-10-02. [Online]. Available: https://github.com/microsoft/markitdown
+[8] Microsoft. MarkItDown: Python tool for converting files and office documents to Markdown. GitHub, https://github.com/microsoft/markitdown [accessed 2 October 2026].
 
-9. Crawl4AI, "Fit Markdown" (PruningContentFilter), documentation, accessed 2026-10-02. [Online]. Available: https://docs.crawl4ai.com/core/fit-markdown/
+[9] Crawl4AI. Fit Markdown (PruningContentFilter), documentation, https://docs.crawl4ai.com/core/fit-markdown/ [accessed 2 October 2026].
 
-10. M. Foley, "WCXB: A Multi-Type Web Content Extraction Benchmark," arXiv: 2605.21097, May 2026. Data: CC-BY-4.0.
+[10] Foley M. WCXB: a multi-type web content extraction benchmark. arXiv:2605.21097, May 2026. Data: CC-BY-4.0.
 
-11. M. Foley, *rs-trafilatura*: web content extraction in Rust with page-type classification, GitHub, accessed 2026-10-02. [Online]. Available: https://github.com/Murrough-Foley/rs-trafilatura
+[11] Foley M. rs-trafilatura: web content extraction in Rust with page-type classification. GitHub, https://github.com/Murrough-Foley/rs-trafilatura [accessed 2 October 2026].
 
-12. M. Liu et al., "Dripper: Token-Efficient Main HTML Extraction with a Lightweight LM," arXiv: 2511.23119, 2025.
+[12] Liu M, et al. Dripper: token-efficient main HTML extraction with a lightweight LM. arXiv:2511.23119, 2025.
 
-13. Z. Bar-Yossef and S. Rajagopalan, "Template Detection via Data Mining and its Applications," in *Proc. 11th Int. World Wide Web Conf. (WWW)*, 2002, pp. 580–591. doi: 10.1145/511446.511522.
+[13] Bar-Yossef Z, Rajagopalan S. Template detection via data mining and its applications. Proc 11th Int World Wide Web Conf (WWW), 2002, p. 580–91. https://doi.org/10.1145/511446.511522.
 
-14. L. Yi, B. Liu, and X. Li, "Eliminating Noisy Information in Web Pages for Data Mining," in *Proc. 9th ACM SIGKDD Int. Conf. Knowledge Discovery and Data Mining*, 2003, pp. 296–305. doi: 10.1145/956750.956785.
+[14] Yi L, Liu B, Li X. Eliminating noisy information in web pages for data mining. Proc 9th ACM SIGKDD Int Conf Knowledge Discovery and Data Mining, 2003, p. 296–305. https://doi.org/10.1145/956750.956785.
 
-15. J. Alarte, J. Silva, and S. Tamarit, "What Web Template Extractor Should I Use? A Benchmarking and Comparison for Five Template Extractors," *ACM Trans. Web*, vol. 13, no. 2, Art. 9, 2019. doi: 10.1145/3316810.
+[15] Alarte J, Silva J, Tamarit S. What web template extractor should I use? A benchmarking and comparison for five template extractors. ACM Trans Web 2019;13(2):Art. 9. https://doi.org/10.1145/3316810.
 
-16. J. Tan, Z. Dou, W. Wang, M. Wang, W. Chen, and J.-R. Wen, "HtmlRAG: HTML is Better Than Plain Text for Modeling Retrieved Knowledge in RAG Systems," in *Proc. ACM Web Conf. 2025 (WWW '25)*, 2025, pp. 1733–1746. doi: 10.1145/3696410.3714546.
+[16] Tan J, Dou Z, Wang W, Wang M, Chen W, Wen J-R. HtmlRAG: HTML is better than plain text for modeling retrieved knowledge in RAG systems. Proc ACM Web Conf 2025 (WWW '25), 2025, p. 1733–46. https://doi.org/10.1145/3696410.3714546.
 
-17. K. Weinberger, A. Dasgupta, J. Langford, A. Smola, and J. Attenberg, "Feature Hashing for Large Scale Multitask Learning," in *Proc. 26th Int. Conf. Machine Learning (ICML)*, 2009, pp. 1113–1120. doi: 10.1145/1553374.1553516.
+[17] Weinberger K, Dasgupta A, Langford J, Smola A, Attenberg J. Feature hashing for large scale multitask learning. Proc 26th Int Conf Machine Learning (ICML), 2009, p. 1113–20. https://doi.org/10.1145/1553374.1553516.
 
-18. B. C. Peddapudi, *ChromeRAG*, version 0.1.4, Zenodo, 3 October 2026. doi: 10.5281/zenodo.23126161 (all versions: 10.5281/zenodo.22970289). Source: https://github.com/pedapudibhargav/ChromeRAG
+[18] Peddapudi BC. ChromeRAG, version 0.1.4. Zenodo, 3 October 2026. https://doi.org/10.5281/zenodo.23126161 (all versions: https://doi.org/10.5281/zenodo.22970289). Source: https://github.com/pedapudibhargav/ChromeRAG.
 
-19. Anthropic, "Introducing Contextual Retrieval," 19 September 2024. [Online]. Available: https://www.anthropic.com/news/contextual-retrieval
+[19] Anthropic. Introducing contextual retrieval, 19 September 2024. https://www.anthropic.com/news/contextual-retrieval.
 
-20. F. Wang, Z. Shi, B. Wang, N. Wang, and H. Xiao, "ReaderLM-v2: Small Language Model for HTML to Markdown and JSON," arXiv: 2503.01151, 2025.
+[20] Wang F, Shi Z, Wang B, Wang N, Xiao H. ReaderLM-v2: small language model for HTML to Markdown and JSON. arXiv:2503.01151, 2025.
 
-21. N. Reimers and I. Gurevych, "Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks," in *Proc. EMNLP-IJCNLP 2019*, 2019, pp. 3980–3990. doi: 10.18653/v1/D19-1410.
+[21] Reimers N, Gurevych I. Sentence-BERT: sentence embeddings using Siamese BERT-networks. Proc EMNLP-IJCNLP 2019, 2019, p. 3980–90. https://doi.org/10.18653/v1/D19-1410.

@@ -115,7 +115,7 @@ def main() -> int:
 
     # References cited
     if "References" in texts:
-        refs = [t for t in texts[texts.index("References") + 1 :] if re.match(r"^\d+\.", t)]
+        refs = [t for t in texts[texts.index("References") + 1 :] if re.match(r"^(\[\d+\]|\d+\.)", t)]
         body_text = " ".join(texts[: texts.index("References")])
         cited: set[int] = set()
         for grp in re.findall(r"\[([\d,\s–-]+)\]", body_text):
