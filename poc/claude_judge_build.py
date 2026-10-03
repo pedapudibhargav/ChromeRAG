@@ -31,6 +31,9 @@ def _clip(text: str) -> str:
     return text if len(text) <= OUTPUT_HEAD_CHARS - 1000 + TAIL else text[: OUTPUT_HEAD_CHARS - 1000] + "\n[...]\n" + text[-TAIL:]
 
 
+_FINAL2_KINDS = {"articles": "article", "forums": "forum", "listings": "listing", "services": "service"}
+
+
 def pages(name: str, n_mix: int = 250):
     if name == "mix":  # a seeded sample over the three untouched evaluation sets, for rival comparisons
         pool = [p for part in ("wcxb_clean", "docs_final", "products_final") for p in pages(part)]
@@ -40,6 +43,12 @@ def pages(name: str, n_mix: int = 250):
     if name == "wcxb_clean":
         for p in load_split("test", drop_leaked=True):
             yield f"wcxb-{p.id}", p.page_type, p.url, p.html
+    elif name == "final2":
+        for kind, ptype in _FINAL2_KINDS.items():
+            for meta in sorted((ROOT / "data" / "extra_raw_final2" / kind).glob("*.meta.json")):
+                m = json.loads(meta.read_text())
+                html = (meta.parent / f"{m['id']}.html").read_text(encoding="utf-8", errors="ignore")
+                yield f"{kind}-{m['id']}", ptype, m["url"], html
     else:
         kind = "docs" if name.startswith("docs") else "products"
         raw = "extra_raw_final" if name.endswith("_final") else "extra_raw"
@@ -51,7 +60,7 @@ def pages(name: str, n_mix: int = 250):
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--set", required=True, choices=["wcxb_clean", "docs", "products", "docs_final", "products_final", "mix"])
+    ap.add_argument("--set", required=True, choices=["wcxb_clean", "docs", "products", "docs_final", "products_final", "final2", "mix"])
     ap.add_argument("--batch-size", type=int, default=25)
     ap.add_argument("--rival", default="trafilatura", choices=sorted(BASELINES))
     ap.add_argument("--out", default="/tmp/cr/judge")

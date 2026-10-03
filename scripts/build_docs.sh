@@ -15,6 +15,7 @@ export PYTHONPATH="${ROOT}/src:${ROOT}${PYTHONPATH:+:$PYTHONPATH}"
 mkdir -p docs/data
 
 echo "==> Export evaluation results into docs/data"
+"$PYTHON" -m poc.export_final_results
 "$PYTHON" -m poc.export_site_results
 
 echo "==> Run pytest"

@@ -40,6 +40,7 @@ from chromerag.density import (
     strip_non_content_tags,
 )
 from chromerag.dvdf import NoiseAnchorIndex
+from chromerag.generic_chrome import drop_generic_chrome, infer_page_kind_hint
 from chromerag.hidden import remove_hidden_nodes, remove_skip_links
 from chromerag.input_quality import InputQualityReport, assess_input_html
 from chromerag.lbc import TwoStageModel, default_two_stage
@@ -50,6 +51,7 @@ from chromerag.schema_fusion import fuse_front_matter
 from chromerag.site_chrome import SiteChromeModel, apply_site_chrome, site_group_key
 from chromerag.tables import replace_tables_with_linearized, unwrap_layout_tables
 from chromerag.textio import decode_html
+from chromerag.trafilatura_ideas import apply_trafilatura_ideas
 from chromerag.treestats import TreeStats
 
 
@@ -273,8 +275,8 @@ class ChromeRAG:
 
         rule_hits: list[RuleHit] = []
         rule_totals: dict[str, int] = {}
+        root_tag = content_root if isinstance(content_root, Tag) else None
         if cfg.enable_rules:
-            root_tag = content_root if isinstance(content_root, Tag) else None
             rule_hits, rule_totals = self.rule_index.apply(
                 soup,
                 content_root=root_tag,
@@ -283,6 +285,12 @@ class ChromeRAG:
             )
             if rule_hits:
                 stats = None  # the tree changed
+
+        traf_stats = apply_trafilatura_ideas(
+            soup, cfg, root_tag, stats=stats or TreeStats(body)
+        )
+        if any(traf_stats.values()):
+            stats = None
 
         elem_cache = ElementCache()
         stce_removed = 0
@@ -297,6 +305,11 @@ class ChromeRAG:
                 stce_removed = apply_site_chrome(soup, self.site_chrome)
                 if stce_removed:
                     stats = None
+
+        page_kind = infer_page_kind_hint(soup)
+        generic_chrome = drop_generic_chrome(soup, root_tag, page_kind, cfg=cfg)
+        if any(generic_chrome.values()):
+            stats = None
 
         prune_noise_subtrees(
             soup,
@@ -378,6 +391,8 @@ class ChromeRAG:
             "stce_group": stce_group,
             "stce_removed": stce_removed,
             "stce_signatures": len(self.site_chrome.signatures) if self.site_chrome else 0,
+            "generic_chrome": generic_chrome,
+            "page_kind_hint": page_kind,
             "input_quality": input_quality.as_dict(),
             "body_words": body_words,
             "rejected_sample": [

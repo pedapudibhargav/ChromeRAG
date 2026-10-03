@@ -1,6 +1,6 @@
 """Aggregate the Claude sub-agent judgements (poc/claude_judge_build.py) into win rates by page type.
 
-  python -m poc.claude_judge_aggregate --set wcxb_clean --dir /tmp/cr/judge --out evaluations/.../FINAL/claude_judge_wcxb_clean.json
+  python -m poc.claude_judge_aggregate --set wcxb_clean --dir /tmp/cr/judge --out evaluations/.../FINAL/claude_judge_v014d_wcxb_clean.json
 """
 
 from __future__ import annotations
@@ -17,7 +17,7 @@ import numpy as np
 def load(dir_: str, name: str):
     key = json.loads((Path(dir_) / "key" / f"{name}.json").read_text())
     rows = []
-    for f in sorted(glob.glob(f"{dir_}/results/{name}_*.json")):
+    for f in sorted(glob.glob(f"{dir_}/results/{name}_[0-9]*.json")):
         for r in json.loads(Path(f).read_text()):
             k = key.get(r["pid"])
             if not k:

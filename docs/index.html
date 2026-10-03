@@ -117,7 +117,8 @@ h3 { font-size: 17px; margin: 28px 0 10px; }
 .code .copy { position: absolute; top: 10px; right: 10px; }
 .c { color: var(--muted); }
 
-.pipeline { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.pipeline { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+@media (min-width: 900px) { .pipeline { grid-template-columns: repeat(6, 1fr); } }
 .stage { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px; }
 .stage.accent { border-color: var(--accent); background: var(--accent-soft); }
 .stage .n { font-size: 12px; font-weight: 700; color: var(--muted); }
@@ -213,6 +214,7 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: 
       <a class="btn" href="#benchmark">See the benchmark</a>
     </div>
     <div class="badges">
+      <span class="badge">v0.1.4</span>
       <span class="badge">Python ≥ 3.11</span>
       <span class="badge">No model download</span>
       <span class="badge">Works offline</span>
@@ -268,13 +270,14 @@ result.diagnostics    <span class="c"># what was removed, and why</span></pre>
   <section id="how">
     <div class="wrap">
       <h2>How it works</h2>
-      <p class="section-lede">Five stages, each a small module. Everything is deterministic and runs on CPU; the vector filter uses feature hashing, so there is nothing to download.</p>
+      <p class="section-lede">Six stages, each a small module. Everything is deterministic and runs on CPU; the learned block filter ships as a small NumPy bundle with nothing to download.</p>
       <div class="pipeline">
         <div class="stage"><div class="n">1</div><div class="t">Input-quality gate</div><div class="d">Flags thin pages and JavaScript shells before anything is removed.</div></div>
         <div class="stage"><div class="n">2</div><div class="t">Schema harvest</div><div class="d">JSON-LD and Microdata become YAML front-matter.</div></div>
-        <div class="stage accent"><div class="n">3</div><div class="t">Clean + site template</div><div class="d">Strips scripts; applies a learned site model if you give it one.</div></div>
-        <div class="stage"><div class="n">4</div><div class="t">Structural + density prune</div><div class="d">Landmarks, link density and a lexical boilerplate filter.</div></div>
-        <div class="stage"><div class="n">5</div><div class="t">Tables + Markdown</div><div class="d">Tables become <code>Row n -&gt; header: value</code> lines.</div></div>
+        <div class="stage accent"><div class="n">3</div><div class="t">Clean + site chrome</div><div class="d">Rule-based stripping plus an optional learned site template model.</div></div>
+        <div class="stage"><div class="n">4</div><div class="t">Chrome prune + root ladder</div><div class="d">Removes landmarks and repeated chrome; walks content-root candidates.</div></div>
+        <div class="stage accent"><div class="n">5</div><div class="t">Learned block filter</div><div class="d">Gradient-boosted trees over block features; NumPy-only inference. Set <code>enable_lbc=False</code> to fall back to the older density filter.</div></div>
+        <div class="stage"><div class="n">6</div><div class="t">Tables + Markdown</div><div class="d">Tables become <code>Row n -&gt; header: value</code> lines.</div></div>
       </div>
       <div class="learn"><strong style="color:var(--ink)">chromerag learn</strong> (optional) finds blocks that repeat, with the same text, on most pages of a site section and look like chrome. At extraction time a match is removed only if it is close to its learned size and does not hold the page's main content.</div>
     </div>
@@ -283,10 +286,11 @@ result.diagnostics    <span class="c"># what was removed, and why</span></pre>
   <section id="wcxb">
     <div class="wrap">
       <h2>Human-reviewed benchmark (WCXB)</h2>
-      <p class="section-lede">Word-level F1 against human-reviewed main content on <a href="https://arxiv.org/abs/2605.21097">WCXB</a>, seven page types. <strong>Test</strong>: 511 held-out pages, the model trained on development pages only and scored once after freezing the code. <strong>Development</strong>: five-fold cross-validation grouped by site, so no page is scored by a model that saw its site.</p>
+      <p class="section-lede">Word-level F1 against human-reviewed main content on <a href="https://arxiv.org/abs/2605.21097">WCXB</a>, seven page types. <strong>Test (clean)</strong>: 372 held-out pages with no byte-identical copy in development. <strong>Test (all)</strong>: all 511 test pages. <strong>Development</strong>: five-fold cross-validation grouped by site.</p>
       <div class="toolbar">
         <div class="seg" role="group" aria-label="Split">
-          <button type="button" aria-pressed="true" data-wsplit="wcxb_test">Test (511 pages)</button>
+          <button type="button" aria-pressed="true" data-wsplit="wcxb_test_deduplicated">WCXB test, clean (372 pages)</button>
+          <button type="button" aria-pressed="false" data-wsplit="wcxb_test">WCXB test, all (511 pages)</button>
           <button type="button" aria-pressed="false" data-wsplit="wcxb_dev_cv">Development (1,495 pages, cross-validated)</button>
         </div>
       </div>
@@ -384,7 +388,7 @@ python -m poc.run_stce_eval --raw data/stce_crawl</pre>
           <li>ChromeRAG does not run JavaScript. It warns about shell pages but cannot recover their content.</li>
           <li>The benchmark uses structural anchors, not human-labelled spans. Pages without landmarks are under-represented, and extractors that also use landmarks may have an advantage.</li>
           <li>Most benchmark pages are documentation; other page types are too few for separate conclusions.</li>
-          <li>The boilerplate filter compares lexical hashed vectors, not semantic embeddings, and retrieval is evaluated with BM25 only.</li>
+          <li>The boilerplate filter scores block features with gradient-boosted trees, not semantic embeddings, and retrieval is evaluated with BM25 only.</li>
           <li>Only HTML is handled. Use other converters for PDF and Office files.</li>
         </ul>
       </details>
@@ -406,6 +410,7 @@ python -m poc.run_stce_eval --raw data/stce_crawl</pre>
   url     = {https://github.com/pedapudibhargav/ChromeRAG},
   license = {MIT},
   doi     = {10.5281/zenodo.22970289},
+  version = {0.1.4},
   year    = {2026}
 }</pre>
       </div>
@@ -415,7 +420,7 @@ python -m poc.run_stce_eval --raw data/stce_crawl</pre>
 
 <footer>
   <div class="wrap">
-    <span>ChromeRAG · MIT licence · <a href="https://github.com/pedapudibhargav/ChromeRAG">GitHub</a> · <a href="https://pypi.org/project/chromerag/">PyPI</a> · <a href="https://github.com/pedapudibhargav/ChromeRAG/issues">Issues</a> · <a href="https://doi.org/10.5281/zenodo.22970289">DOI</a></span>
+    <span>ChromeRAG v0.1.4 · MIT licence · <a href="https://github.com/pedapudibhargav/ChromeRAG">GitHub</a> · <a href="https://pypi.org/project/chromerag/">PyPI</a> · <a href="https://github.com/pedapudibhargav/ChromeRAG/issues">Issues</a> · <a href="https://doi.org/10.5281/zenodo.22970289">DOI</a></span>
     <span>Bhargava Chary Peddapudi · <a href="https://orcid.org/0009-0002-8523-8415">ORCID</a></span>
   </div>
 </footer>
@@ -502,7 +507,7 @@ python -m poc.run_stce_eval --raw data/stce_crawl</pre>
         draw(btn.getAttribute("data-wsplit"));
       });
     });
-    draw("wcxb_test");
+    draw("wcxb_test_deduplicated");
   }).catch(function () { var n = document.getElementById("wcxb"); if (n) n.hidden = true; });
 
   // ---------------------------------------------------------------- benchmark

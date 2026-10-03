@@ -1,4 +1,4 @@
-"""Collect the 0.1.3 evaluation results into one small file for the site and the paper figures.
+"""Collect WCXB and landing evaluation results into one small file for the site and paper figures.
 
 Reads evaluations/2026-10-v0.1.3/ (WCXB dev cross-validation, frontier, final test, held-out and fresh
 landing, judge, retrieval) and writes docs/data/final_results.json. Nothing is recomputed from raw HTML.

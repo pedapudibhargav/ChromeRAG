@@ -1,0 +1,172 @@
+- id: tf.share.sociable
+  action: drop
+  scope: inside_root
+  match:
+    - {class_token: "sociable"}
+    - {class_token: "share-bar"}
+  max_chars: 1200
+  risk: safe
+  evidence: "adapted from Trafilatura xpaths.py discard patterns (Apache-2.0)"
+  fixture: tests/rules/tf_share.html
+
+- id: tf.share.viral
+  action: drop
+  scope: inside_root
+  match:
+    - {class_regex: "viral"}
+  max_chars: 800
+  risk: safe
+  evidence: "adapted from Trafilatura xpaths.py discard patterns (Apache-2.0)"
+  fixture: tests/rules/tf_share.html
+
+- id: tf.related.teaser
+  action: drop
+  scope: inside_root
+  match:
+    - {class_regex: "teaser"}
+    - {id: "teaser"}
+  max_chars: 1000
+  risk: guarded
+  evidence: "adapted from Trafilatura xpaths.py discard patterns (Apache-2.0)"
+  fixture: tests/rules/tf_related.html
+
+- id: tf.related.popular
+  action: drop
+  scope: inside_root
+  match:
+    - {class_token: "most-popular"}
+    - {class_regex: "related-stories|next-stories|most-popular"}
+  max_chars: 1500
+  risk: guarded
+  evidence: "adapted from Trafilatura xpaths.py discard patterns (Apache-2.0)"
+  fixture: tests/rules/tf_related.html
+
+- id: tf.comments.thread
+  action: drop
+  scope: inside_root
+  match:
+    - {id: "^disqus_thread"}
+    - {class_token: "comment-list"}
+    - {class_token: "comments-content"}
+  max_chars: 2500
+  risk: guarded
+  evidence: "adapted from Trafilatura xpaths.py discard patterns (Apache-2.0)"
+  fixture: tests/rules/tf_comments.html
+
+- id: tf.comments.respond
+  action: drop
+  scope: inside_root
+  match:
+    - {id: "^respond"}
+  max_chars: 1200
+  risk: guarded
+  evidence: "adapted from Trafilatura xpaths.py discard patterns (Apache-2.0)"
+  fixture: tests/rules/tf_comments.html
+
+- id: tf.newsletter.block
+  action: drop
+  scope: inside_root
+  match:
+    - {class_token: "newsletter"}
+    - {class_regex: "newsletter-signup|email-signup"}
+  max_chars: 1200
+  risk: safe
+  evidence: "adapted from Trafilatura xpaths.py discard patterns (Apache-2.0)"
+  fixture: tests/rules/tf_newsletter.html
+
+- id: tf.sidebar.rail
+  action: drop
+  scope: inside_root
+  match:
+    - {class_token: "sidebar"}
+    - {class_regex: "sidebar-widget|widget-area"}
+  max_chars: 2000
+  risk: guarded
+  evidence: "adapted from Trafilatura xpaths.py discard patterns (Apache-2.0)"
+  fixture: tests/rules/tf_sidebar.html
+
+- id: tf.ads.outbrain
+  action: drop
+  scope: inside_root
+  match:
+    - {class_token: "outbrain"}
+    - {class_regex: "OUTBRAIN"}
+  max_chars: 1500
+  risk: safe
+  evidence: "adapted from Trafilatura xpaths.py discard patterns (Apache-2.0)"
+  fixture: tests/rules/tf_ads.html
+
+- id: tf.ads.taboola
+  action: drop
+  scope: inside_root
+  match:
+    - {class_token: "taboola"}
+    - {class_regex: "trc_related|tbl-read-more"}
+  max_chars: 1500
+  risk: safe
+  evidence: "adapted from Trafilatura xpaths.py discard patterns (Apache-2.0)"
+  fixture: tests/rules/tf_ads.html
+
+- id: tf.author.byline
+  action: drop
+  scope: inside_root
+  match:
+    - {class_token: "byline"}
+    - {class_token: "author-box"}
+  max_chars: 600
+  risk: guarded
+  evidence: "adapted from Trafilatura xpaths.py discard patterns (Apache-2.0)"
+  fixture: tests/rules/tf_author.html
+
+- id: tf.pagination.nav
+  action: drop
+  scope: inside_root
+  match:
+    - {class_token: "pagination"}
+    - {class_regex: "post-nav|pager"}
+  max_chars: 800
+  risk: safe
+  evidence: "adapted from Trafilatura xpaths.py discard patterns (Apache-2.0)"
+  fixture: tests/rules/tf_pagination.html
+
+- id: tf.skip.back_to_top
+  action: drop
+  scope: inside_root
+  match:
+    - {class_regex: "back-to-top|back_to_top|scroll-top"}
+  max_chars: 400
+  risk: safe
+  evidence: "adapted from Trafilatura xpaths.py discard patterns (Apache-2.0)"
+  fixture: tests/rules/tf_skip.html
+
+- id: tf.footer.legal
+  action: drop
+  scope: inside_root
+  match:
+    - {class_token: "site-footer"}
+    - {class_regex: "footer-links|legal-footer"}
+  max_chars: 900
+  risk: guarded
+  evidence: "adapted from Trafilatura xpaths.py discard patterns (Apache-2.0)"
+  fixture: tests/rules/tf_footer.html
+
+- id: tf.tools.print
+  action: drop
+  scope: inside_root
+  match:
+    - {class_regex: "print-share|bookmark-link|email-post|share-tools"}
+  max_chars: 600
+  risk: safe
+  evidence: "adapted from Trafilatura xpaths.py discard patterns (Apache-2.0)"
+  fixture: tests/rules/tf_tools.html
+
+- id: tf.tags.cloud
+  action: drop
+  scope: inside_root
+  match:
+    - {class_token: "tag-list"}
+    - {class_regex: "tag-cloud|post-tags"}
+  max_chars: 800
+  risk: guarded
+  evidence: "adapted from Trafilatura xpaths.py discard patterns (Apache-2.0)"
+  fixture: tests/rules/tf_tags.html

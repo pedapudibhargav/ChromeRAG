@@ -6,6 +6,9 @@ Content-root candidate token vocabulary in `src/chromerag/content_root.py` is ad
 Trafilatura's `BODY_XPATH` selectors in `trafilatura/xpaths.py`.
 https://github.com/adbar/trafilatura
 
+Discard-pattern vocabulary in `src/chromerag/rules/trafilatura_inspired.yaml` is adapted from
+Trafilatura's XPath discard lists in `trafilatura/xpaths.py` (Apache-2.0, Adrien Barbaresi).
+
 ## WCXB (CC-BY-4.0)
 
 The evaluation scripts in `poc/` read the Web Content Extraction Benchmark (M. Foley, arXiv:2605.21097,
