@@ -113,6 +113,23 @@ docs = ChromeRAGReader().load_data(["pages/pricing.html"])
 Front-matter (title, type, dates, breadcrumb) becomes document metadata, so a text splitter copies it
 onto every chunk.
 
+### Chunks for vector databases
+
+ChromeRAG can split extracted Markdown into heading-aware chunks sized for embedding. Prepend the
+heading path to the embedded text (page title → h2 → h3) for better retrieval: on a held-out test of
+400 questions over 3,395 documentation chunks from sites not used in training, dense MRR rose from
+0.853 to 0.913 and BM25 MRR by +0.060 (95% CI excludes 0). Questions were written by Claude from
+each chunk and its page title.
+
+```python
+result = ChromeRAG().extract(html, url="https://docs.example.com/guide")
+for chunk in result.chunks():
+    vector_db.upsert(text=chunk.embed_text, metadata=chunk.to_dict())
+# chunk.embed_text == "Page Title > Section > Subsection\n<body markdown>"
+```
+
+CLI: `chromerag extract page.html --chunks` writes one JSON object per line (JSONL).
+
 ### Frequently asked
 
 **Does it need a model download or a GPU?** No. The model is a 150 KB array file inside the wheel.

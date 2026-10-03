@@ -1,7 +1,10 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from chromerag.chunking import Chunk
 
 
 @dataclass
@@ -33,3 +36,10 @@ class ExtractResult:
     # Operator-facing warnings (e.g. JS shell / thin HTML from upstream fetch).
     warnings: list[str] = field(default_factory=list)
     input_quality: dict[str, Any] = field(default_factory=dict)
+
+    def chunks(self, **kw) -> list["Chunk"]:
+        """Structure-aware chunks for vector indexing (see ``chromerag.chunking``)."""
+        from chromerag.chunking import chunk_markdown
+
+        title = str(self.front_matter.get("title") or "").strip()
+        return chunk_markdown(self.markdown, title=title, **kw)

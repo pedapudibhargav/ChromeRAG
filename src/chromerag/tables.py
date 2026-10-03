@@ -6,9 +6,26 @@ from bs4 import BeautifulSoup, Tag
 
 from chromerag.domutil import tags_named
 
+_MAX_PIPE_COLS = 12
+_MAX_PIPE_ROWS = 200
+
 
 def _cell_text(cell: Tag) -> str:
     return " ".join(cell.get_text(" ", strip=True).split())
+
+
+def _cell_span(cell: Tag, attr: str) -> int:
+    raw = cell.get(attr)
+    if raw is None:
+        return 1
+    try:
+        return max(1, int(raw))
+    except (TypeError, ValueError):
+        return 1
+
+
+def _escape_pipe_cell(text: str) -> str:
+    return text.replace("|", "\\|")
 
 
 _BLOCK_IN_CELL = ("p", "div", "h1", "h2", "h3", "h4", "h5", "h6", "ul", "ol", "blockquote", "pre", "table")
@@ -45,14 +62,9 @@ def _unwrap_layout_table(table: Tag) -> None:
             part.name = "div"
 
 
-def linearize_table(table: Tag, index: int = 1) -> str:
-    caption = table.find("caption")
-    title = caption.get_text(" ", strip=True) if caption else f"Table {index}"
-
+def _table_grid(table: Tag) -> tuple[list[str], list[list[str]]]:
+    """Return header labels and body rows as plain cell text."""
     rows = _own_rows(table)
-    if not rows:
-        return ""
-
     headers: list[str] = []
     body_rows: list[list[str]] = []
     header_row = table.find("thead")
@@ -71,6 +83,74 @@ def linearize_table(table: Tag, index: int = 1) -> str:
 
     for tr in data_trs:
         body_rows.append([_cell_text(c) for c in tr.find_all(["td", "th"])])
+    return headers, body_rows
+
+
+def _has_merged_cells(table: Tag) -> bool:
+    for cell in table.find_all(["td", "th"]):
+        if _cell_span(cell, "colspan") > 1 or _cell_span(cell, "rowspan") > 1:
+            return True
+    return False
+
+
+def _cell_is_single_line(text: str) -> bool:
+    return "\n" not in text and "\r" not in text
+
+
+def can_render_pipe_table(table: Tag) -> bool:
+    """True when the table is a small rectangular grid suitable for GFM pipe output."""
+    if is_layout_table(table) or _has_merged_cells(table):
+        return False
+    rows = _own_rows(table)
+    if not rows or len(rows) > _MAX_PIPE_ROWS:
+        return False
+    headers, body_rows = _table_grid(table)
+    if headers:
+        ncols = len(headers)
+        if ncols > _MAX_PIPE_COLS:
+            return False
+        if not all(_cell_is_single_line(h) for h in headers):
+            return False
+    elif body_rows:
+        ncols = len(body_rows[0])
+        if ncols > _MAX_PIPE_COLS:
+            return False
+    else:
+        return False
+
+    for row in body_rows:
+        if len(row) != ncols:
+            return False
+        if not all(_cell_is_single_line(c) for c in row):
+            return False
+    return bool(headers or body_rows)
+
+
+def render_pipe_table(table: Tag) -> str:
+    headers, body_rows = _table_grid(table)
+    lines: list[str] = []
+    if headers:
+        lines.append("| " + " | ".join(_escape_pipe_cell(h) for h in headers) + " |")
+        lines.append("| " + " | ".join("---" for _ in headers) + " |")
+        for row in body_rows:
+            if not any(row):
+                continue
+            lines.append("| " + " | ".join(_escape_pipe_cell(c) for c in row) + " |")
+    else:
+        for row in body_rows:
+            if not any(row):
+                continue
+            lines.append("| " + " | ".join(_escape_pipe_cell(c) for c in row) + " |")
+    return "\n".join(lines)
+
+
+def linearize_table(table: Tag, index: int = 1) -> str:
+    caption = table.find("caption")
+    title = caption.get_text(" ", strip=True) if caption else f"Table {index}"
+
+    headers, body_rows = _table_grid(table)
+    if not headers and not body_rows:
+        return ""
 
     lines = [f"[Table: {title}]"]
     for i, row in enumerate(body_rows, start=1):
@@ -90,6 +170,14 @@ def linearize_table(table: Tag, index: int = 1) -> str:
     return "\n".join(lines)
 
 
+def format_table(table: Tag, index: int = 1, *, table_format: str = "markdown") -> str:
+    if table_format == "markdown" and can_render_pipe_table(table):
+        text = render_pipe_table(table)
+        if text:
+            return text
+    return linearize_table(table, index=index)
+
+
 def unwrap_layout_tables(soup: BeautifulSoup) -> int:
     """Turn layout tables into plain divs so their content is scored like any other block."""
     count = 0
@@ -100,8 +188,12 @@ def unwrap_layout_tables(soup: BeautifulSoup) -> int:
     return count
 
 
-def replace_tables_with_linearized(soup: BeautifulSoup) -> int:
-    """Replace each <table> with a <pre> of linearized KV text. Returns count."""
+def replace_tables_with_linearized(
+    soup: BeautifulSoup,
+    *,
+    table_format: str = "markdown",
+) -> int:
+    """Replace each <table> with a <pre> of table text. Returns count."""
     count = 0
     for i, table in enumerate(tags_named(soup, ("table",)), start=1):
         if table.attrs is None:
@@ -109,7 +201,7 @@ def replace_tables_with_linearized(soup: BeautifulSoup) -> int:
         if is_layout_table(table):
             _unwrap_layout_table(table)
             continue
-        text = linearize_table(table, index=i)
+        text = format_table(table, index=i, table_format=table_format)
         if not text:
             table.decompose()
             continue

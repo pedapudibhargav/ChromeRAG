@@ -28,3 +28,12 @@ Performance work (single-pass statistics, cached densities) is output-identical:
 15. **Confidence** — `diagnostics["lbc"]` reports the model's expected precision, recall and F1 for the page.
 
 16. **Corpus refresh** — `awesome-python` and `awesome-selfhosted` in `data/raw` were re-fetched by the 2026-10-02 corpus run (live pages change); their hashes changed, the code did not.
+
+# Allowed golden hash changes (v0.1.4 output quality)
+
+17. **Code blocks** keep their line breaks; **lists** keep ordered numbering (`start`) and nesting.
+18. **Page title** — the page's own `h1` is kept by the block classifier; a section heading above kept content is kept (`lbc_rescue_headings`), and the lead paragraph under the title is kept (`lbc_rescue_lead`).
+19. **Shallow-div writer** — a `div` that wraps custom elements but holds blocks below no longer collapses into one text blob.
+20. **`<header>` of an `<article>`** that holds the page `h1` is content, not chrome.
+21. **Tables** render as GitHub pipe tables when the grid is rectangular (`table_format="markdown"`); other tables keep the key-value form.
+22. **Documentation-framework rules** (table of contents, feedback and pagination widgets of Docusaurus, MkDocs, Starlight, VitePress, Mintlify, Cloudflare, Grafana, DigitalOcean docs) in `rules/docs_generators.yaml`.

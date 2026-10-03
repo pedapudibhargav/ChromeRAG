@@ -79,6 +79,11 @@ def _noise_index_for(threshold: float) -> NoiseAnchorIndex:
 
 # Pages with fewer blocks than this are kept whole by the learned classifier.
 LBC_MIN_BLOCKS = 4
+_HEADING_TAGS = frozenset({"h1", "h2", "h3", "h4", "h5", "h6"})
+_LBC_HEADING_RESCUE_MIN = 0.08
+_LBC_TITLE_FALLBACK_MIN = 0.03
+_LBC_LEAD_MIN = 0.10
+_LBC_LEAD_MIN_WORDS = 8
 # Below this expected F1 the page gets a warning (on WCXB dev such pages score 0.57 on average, the rest 0.88).
 LOW_CONFIDENCE_F1 = 0.70
 
@@ -103,6 +108,7 @@ class ChromeRAG:
         enable_dvdf: bool | None = None,
         enable_schema: bool | None = None,
         enable_tables: bool | None = None,
+        table_format: str | None = None,
         inject_heading_paths: bool | None = None,
     ) -> None:
         cfg = config or PipelineConfig.from_strictness(strictness)
@@ -118,6 +124,8 @@ class ChromeRAG:
             cfg.enable_schema = enable_schema
         if enable_tables is not None:
             cfg.enable_tables = enable_tables
+        if table_format is not None:
+            cfg.table_format = table_format
         if inject_heading_paths is not None:
             cfg.inject_heading_paths = inject_heading_paths
 
@@ -139,25 +147,90 @@ class ChromeRAG:
         X, box = block_features(blocks, body, stats, root)
         chars = np.array([len(b.text) for b in blocks])
         proba = self.lbc_model.predict(X.astype("float64"), chars, box)
-        kept = 0
         seen: set[str] = set()
+        title_block = self._title_block(soup, blocks) if cfg.lbc_keep_title else None
+        if title_block is None and cfg.lbc_keep_title and cfg.lbc_title_fallback:
+            title_block = self._title_fallback(body, root, blocks, proba)
+        base_keep: list[bool] = []
         for block, p in zip(blocks, proba, strict=True):
             key = " ".join(block.text.lower().split())
-            if p < cfg.lbc_threshold or (cfg.lbc_drop_repeats and len(key) >= 30 and key in seen):
-                block.tag.decompose()
-            else:
-                kept += 1
+            if block is title_block:
+                base_keep.append(True)
                 seen.add(key)
+            elif p < cfg.lbc_threshold or (cfg.lbc_drop_repeats and len(key) >= 30 and key in seen):
+                base_keep.append(False)
+            else:
+                base_keep.append(True)
+                seen.add(key)
+        keep = list(base_keep)
+        if cfg.lbc_rescue_headings:
+            for i, (block, p) in enumerate(zip(blocks, proba, strict=True)):
+                if keep[i] or p >= cfg.lbc_threshold or p < _LBC_HEADING_RESCUE_MIN:
+                    continue
+                if block.tag.name not in _HEADING_TAGS:
+                    continue
+                for j in range(i + 1, min(i + 3, len(blocks))):
+                    if base_keep[j]:
+                        keep[i] = True
+                        break
+        if cfg.lbc_rescue_lead and title_block is not None:
+            for i, block in enumerate(blocks):
+                if block is not title_block:
+                    continue
+                j = i + 1
+                if j >= len(blocks) or keep[j]:
+                    break
+                lead, p = blocks[j], proba[j]
+                if lead.tag.name in {"p", "div"} and len(lead.text.split()) >= _LBC_LEAD_MIN_WORDS and p >= _LBC_LEAD_MIN:
+                    keep[j] = True
+                break
+        for block, k in zip(blocks, keep, strict=True):
+            if not k:
+                block.tag.decompose()
+        kept = sum(keep)
         # What the model expects of its own output, from its probabilities: a page with many
         # blocks near 0.5 gets a low expected F1 and deserves a look.
         words = np.maximum(np.array([len(b.text.split()) for b in blocks], dtype=np.float64), 1.0)
-        kept_mask = np.array([b.tag.attrs is not None for b in blocks])
+        kept_mask = np.array(keep)
         tp = float((words * proba)[kept_mask].sum())
         ref = float((words * proba).sum())
         out_words = float(words[kept_mask].sum())
         exp_p, exp_r = tp / max(out_words, 1.0), tp / max(ref, 1.0)
         exp_f = 2 * exp_p * exp_r / max(exp_p + exp_r, 1e-9)
         return len(blocks), kept, {"expected_precision": exp_p, "expected_recall": exp_r, "expected_f1": exp_f}
+
+    @staticmethod
+    def _title_block(soup: BeautifulSoup, blocks: list[Any]) -> Any:
+        """The page's own heading: the first ``h1`` whose words mostly occur in ``<title>``. It is kept so that
+        every chunk source carries its title, whatever the classifier thinks of a three-word heading."""
+        node = soup.find("title")
+        title = {w for w in re.findall(r"\w+", node.get_text(' ', strip=True).lower())} if node else set()
+        if not title:
+            return None
+        for block in blocks:
+            if block.tag.name == "h1":
+                words = re.findall(r"\w+", block.text.lower())
+                if len(words) >= 2 and sum(w in title for w in words) / len(words) >= 0.5:
+                    return block
+        return None
+
+    @staticmethod
+    def _title_fallback(body: Tag, content_root: Tag | None, blocks: list[Any], proba: np.ndarray) -> Any:
+        """First ``h1`` inside the content root (or body) with enough words and a non-trivial score."""
+        root = content_root if content_root is not None else body
+        for i, block in enumerate(blocks):
+            if block.tag.name != "h1":
+                continue
+            if root is not body:
+                parent = block.tag.parent
+                while parent is not None and parent is not root:
+                    parent = parent.parent
+                if parent is not root:
+                    continue
+            words = re.findall(r"\w+", block.text.lower())
+            if len(words) >= 2 and proba[i] >= _LBC_TITLE_FALLBACK_MIN:
+                return block
+        return None
 
     def _noise_index(self, cfg: PipelineConfig) -> NoiseAnchorIndex | None:
         if not cfg.enable_dvdf:
@@ -276,7 +349,11 @@ class ChromeRAG:
                     continue
                 tag.decompose()
 
-        n_tables = replace_tables_with_linearized(soup) if cfg.enable_tables else 0
+        n_tables = (
+            replace_tables_with_linearized(soup, table_format=cfg.table_format)
+            if cfg.enable_tables
+            else 0
+        )
         root_tag = content_root if isinstance(content_root, Tag) else None
         body_md = soup_to_markdown(
             soup,

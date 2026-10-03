@@ -5,6 +5,7 @@ Fetching/crawling is intentionally out of scope (use your crawler / poc harness)
 """
 
 from chromerag.batch import learn_then_extract
+from chromerag.chunking import Chunk, chunk_markdown
 from chromerag.config import ContentPriority, PageType, PipelineConfig, Strictness
 from chromerag.extractor import ChromeRAG
 from chromerag.input_quality import InputQualityReport, assess_input_html
@@ -18,6 +19,8 @@ from chromerag.site_chrome import (
 
 __all__ = [
     "ChromeRAG",
+    "Chunk",
+    "chunk_markdown",
     "ExtractResult",
     "PipelineConfig",
     "ContentPriority",

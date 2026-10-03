@@ -48,7 +48,7 @@ def test_loader_moves_front_matter_into_metadata(loader_module: types.ModuleType
     assert doc.metadata["source"] == url
     assert doc.metadata["title"] == "Plans and pricing"
     assert not doc.page_content.startswith("---")
-    assert "Monthly price (USD): 49" in doc.page_content
+    assert "| Team |" in doc.page_content and "| 49 |" in doc.page_content
 
 
 def test_loader_can_skip_javascript_shells(loader_module: types.ModuleType, tmp_path: Path) -> None:

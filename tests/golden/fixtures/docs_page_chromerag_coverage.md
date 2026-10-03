@@ -11,6 +11,7 @@ Dedicated servers include 10 Gbps unmetered bandwidth in the primary region.
 
 ## Pricing matrix
 
-[Table: Table 1]
-Row 1 -> SKU: srv.large | Cores: 8 | Monthly: 120
-Row 2 -> SKU: srv.xlarge | Cores: 16 | Monthly: 220
+| SKU | Cores | Monthly |
+| --- | --- | --- |
+| srv.large | 8 | 120 |
+| srv.xlarge | 16 | 220 |

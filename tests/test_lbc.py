@@ -108,3 +108,86 @@ def test_layout_table_is_unwrapped_not_duplicated() -> None:
             "</body></html>")
     md = ChromeRAG(config=PipelineConfig(enable_lbc=False)).extract(html).markdown
     assert md.count("exactly one time") == 1
+
+
+def test_highlighted_code_keeps_its_lines() -> None:
+    para = "Run the command below to install the package on your machine and verify it works. " * 3
+    html = (f"<html><head><title>Install guide</title></head><body><main><h1>Install guide</h1><p>{para}</p>"
+            '<pre><code><span class="k">pip</span> <span class="nb">install</span> chromerag\npython -m chromerag --version</code></pre>'
+            f"<p>{para}</p></main></body></html>")
+    md = ChromeRAG().extract(html).markdown
+    assert "pip install chromerag\npython -m chromerag --version" in md
+
+
+def test_page_title_heading_is_kept() -> None:
+    para = "Backups are kept for thirty days and can be restored from the settings page at any time. " * 3
+    html = (f"<html><head><title>Backup retention - Docs</title></head><body><main><h1>Backup retention</h1><p>{para}</p>"
+            f"<p>{para}</p><p>{para}</p></main></body></html>")
+    assert "# Backup retention" in ChromeRAG().extract(html).markdown
+
+
+def test_ordered_and_nested_lists_keep_their_shape() -> None:
+    para = "Follow the steps below to configure the service for production use and review the options. " * 3
+    html = (f"<html><head><title>Steps</title></head><body><main><h1>Steps</h1><p>{para}</p><ol><li>Install the package</li>"
+            "<li>Configure the service<ul><li>Set the port</li></ul></li><li>Start the service</li></ol>"
+            f"<p>{para}</p></main></body></html>")
+    md = ChromeRAG().extract(html).markdown
+    assert "1. Install the package" in md and "2. Configure the service" in md and "  - Set the port" in md
+
+
+def test_lbc_rescue_headings_keeps_section_heading_above_body() -> None:
+    para = "This paragraph explains the configuration options in detail and should score well above threshold. " * 4
+    html = (
+        "<html><head><title>Guide</title></head><body>"
+        "<nav><a href='/'>Home</a><a href='/docs'>Docs</a><a href='/about'>About</a></nav>"
+        f"<main><h1>Guide</h1><h2>Setup steps</h2><p>{para}</p><p>{para}</p></main>"
+        "<footer><p>Copyright notice all rights reserved privacy terms contact us today</p></footer></body></html>"
+    )
+    on = ChromeRAG(config=PipelineConfig(lbc_threshold=0.60, lbc_rescue_lead=False, lbc_title_fallback=False)).extract(html).markdown
+    off = ChromeRAG(
+        config=PipelineConfig(
+            lbc_threshold=0.60, lbc_rescue_headings=False, lbc_rescue_lead=False, lbc_title_fallback=False
+        )
+    ).extract(html).markdown
+    assert "## Setup steps" in on
+    assert "## Setup steps" not in off
+
+
+def test_lbc_title_fallback_keeps_content_root_h1_without_title_match() -> None:
+    para = "Backups are kept for thirty days and can be restored from the settings page at any time. " * 4
+    toc = "<p>Table of contents introduction setup configuration restore faq related articles guides</p>"
+    html = (
+        "<html><head><title>Product Guide - Acme Corp</title></head><body>"
+        "<nav><a href='/'>Home</a><a href='/docs'>Docs</a><a href='/blog'>Blog</a><a href='/about'>About</a></nav>"
+        f"<main><h1>Getting Started</h1>{toc}<p>{para}</p><p>{para}</p></main>"
+        "<footer><p>Copyright 2026 Example Inc. All rights reserved. Privacy Terms Contact Support</p></footer>"
+        "</body></html>"
+    )
+    on = ChromeRAG(config=PipelineConfig(lbc_rescue_headings=False, lbc_rescue_lead=False)).extract(html).markdown
+    off = ChromeRAG(
+        config=PipelineConfig(lbc_rescue_headings=False, lbc_rescue_lead=False, lbc_title_fallback=False)
+    ).extract(html).markdown
+    assert "# Getting Started" in on
+    assert "# Getting Started" not in off
+
+
+def test_lbc_rescue_lead_keeps_summary_after_title() -> None:
+    lead = "Share on Twitter Share on Facebook Copy link Email this page Print PDF Download now"
+    para = "The detailed body text continues with more information about the topic and provides examples for readers. " * 4
+    html = (
+        "<html><head><title>Product Overview</title></head><body>"
+        "<nav><a href='/'>Home</a><a href='/docs'>Docs</a><a href='/blog'>Blog</a><a href='/about'>About</a></nav>"
+        f"<main><h1>Product Overview</h1><div>{lead}</div><p>{para}</p><p>{para}</p></main>"
+        "<footer><p>Copyright 2026 Example Inc. All rights reserved. Privacy Terms Contact Support</p></footer>"
+        "</body></html>"
+    )
+    on = ChromeRAG(
+        config=PipelineConfig(lbc_threshold=0.55, lbc_rescue_headings=False, lbc_title_fallback=False)
+    ).extract(html).markdown
+    off = ChromeRAG(
+        config=PipelineConfig(
+            lbc_threshold=0.55, lbc_rescue_headings=False, lbc_rescue_lead=False, lbc_title_fallback=False
+        )
+    ).extract(html).markdown
+    assert "Share on Twitter" in on
+    assert "Share on Twitter" not in off

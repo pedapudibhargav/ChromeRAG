@@ -183,6 +183,10 @@ def looks_like_noise(
     if not isinstance(tag, Tag) or not tag.name:
         return False
 
+    # An <article>'s own <header> holds the page title (Docusaurus, MkDocs, Hugo themes): that is content.
+    if tag.name == "header" and tag.find("h1") is not None and tag.find_parent(["article", "main"]) is not None:
+        return False
+
     # Never treat the primary content landmark (or a wrapper around it) as chrome.
     if tag.name == "main" or (tag.get("role") or "").lower() == "main":
         return False

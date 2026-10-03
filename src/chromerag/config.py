@@ -62,6 +62,7 @@ class PipelineConfig:
 
     enable_schema: bool = True
     enable_tables: bool = True
+    table_format: str = "markdown"  # markdown (GFM pipe) | linearized
     enable_dvdf: bool = True
     enable_stce: bool = True  # applied only when a SiteChromeModel is provided
     enable_rules: bool = True
@@ -80,6 +81,10 @@ class PipelineConfig:
 
     # Learned block classifier: drop blocks whose content probability is below this
     lbc_threshold: float = 0.50
+    lbc_keep_title: bool = True  # keep the page's own h1 (it matches <title>) whatever the classifier says
+    lbc_title_fallback: bool = True  # when no h1 matches <title>, keep the first content-root h1 with p >= 0.03
+    lbc_rescue_headings: bool = True  # keep short headings above kept body when p is in [0.08, threshold)
+    lbc_rescue_lead: bool = True  # keep the p/div block after a kept title h1 when it looks like a lead
     lbc_drop_repeats: bool = True  # drop a block whose text already appeared earlier on the page
     lbc_whole_page: bool = True  # classify blocks outside the detected content root too
 

@@ -50,7 +50,7 @@ def test_learn_creates_missing_output_dir_and_batch_uses_model(tmp_path: Path) -
     assert "Widget Summit" not in pricing  # repeated in-content paragraph removed by STCE
     single = ChromeRAG().extract((EXAMPLES / "pricing.html").read_text(encoding="utf-8")).markdown
     assert "Widget Summit" in single  # the learned filter keeps it: it reads like content
-    assert "Monthly price (USD): 49" in pricing  # table linearized, content kept
+    assert "| Team |" in pricing and "| 49 |" in pricing  # pipe table, content kept
 
 
 def test_extract_writes_into_missing_dir(tmp_path: Path) -> None:

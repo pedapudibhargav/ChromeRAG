@@ -6,5 +6,158 @@
     - {class_token: "pagination-nav"}
   max_chars: 2500
   risk: guarded
-  evidence: "Docusaurus theme-doc-footer / pagination-nav class tokens"
+  evidence: "Docusaurus theme-doc-footer / pagination-nav class tokens on databricks.com/docs"
   fixture: tests/rules/docs_docusaurus_footer.html
+
+- id: docs.docusaurus.toc
+  action: drop
+  scope: inside_root
+  match:
+    - {class_token: "theme-doc-toc-desktop"}
+    - {class_token: "theme-doc-toc-mobile"}
+    - {class_token: "tocCollapsible"}
+  max_chars: 2500
+  risk: guarded
+  evidence: "Docusaurus theme-doc-toc-desktop/mobile and tocCollapsible on-page TOC widgets"
+  fixture: tests/rules/docs_docusaurus_toc.html
+
+- id: docs.docusaurus.back_to_top
+  action: drop
+  scope: inside_root
+  match:
+    - {class_token: "theme-back-to-top-button"}
+  max_chars: 500
+  risk: safe
+  evidence: "Docusaurus theme-back-to-top-button floating scroll control"
+  fixture: tests/rules/docs_docusaurus_back_to_top.html
+
+- id: docs.mkdocs.toc
+  action: drop
+  scope: inside_root
+  match:
+    - {class_token: "md-sidebar--secondary"}
+  max_chars: 4000
+  risk: guarded
+  evidence: "MkDocs Material md-sidebar--secondary right-rail On this page TOC on fastapi.tiangolo.com"
+  fixture: tests/rules/docs_mkdocs_toc.html
+
+- id: docs.mkdocs.view_markdown
+  action: drop
+  scope: inside_root
+  match:
+    - {class_token: "view-as-markdown"}
+  max_chars: 800
+  risk: safe
+  evidence: "MkDocs Material view-as-markdown toolbar link on elastic.co/guide pages"
+  fixture: tests/rules/docs_mkdocs_view_markdown.html
+
+- id: docs.mkdocs.edit_page
+  action: drop
+  scope: inside_root
+  match:
+    - {class_token: "edit-this-page"}
+  max_chars: 800
+  risk: safe
+  evidence: "MkDocs Material edit-this-page source link on elastic.co/guide pages"
+  fixture: tests/rules/docs_mkdocs_edit_page.html
+
+- id: docs.grafana.feedback
+  action: drop
+  scope: inside_root
+  match:
+    - {class_token: "docs__feedback"}
+  max_chars: 2500
+  risk: guarded
+  evidence: "Grafana docs docs__feedback Was this page helpful widget on grafana.com/docs"
+  fixture: tests/rules/docs_grafana_feedback.html
+
+- id: docs.starlight.toc
+  action: drop
+  scope: inside_root
+  match:
+    - {tag: "starlight-toc"}
+    - {tag: "mobile-starlight-toc"}
+  max_chars: 4000
+  risk: guarded
+  evidence: "Astro Starlight starlight-toc custom element on-page TOC on docs.netlify.com"
+  fixture: tests/rules/docs_starlight_toc.html
+
+- id: docs.vitepress.local_nav
+  action: drop
+  scope: inside_root
+  match:
+    - {class_token: "VPLocalNav"}
+  max_chars: 1500
+  risk: guarded
+  evidence: "VitePress VPLocalNav mobile On this page dropdown on vuejs.org/guide"
+  fixture: tests/rules/docs_vitepress_local_nav.html
+
+- id: docs.mintlify.toc
+  action: drop
+  scope: inside_root
+  match:
+    - {id: "^table-of-contents-content$"}
+  max_chars: 2500
+  risk: guarded
+  evidence: "Mintlify ul#table-of-contents-content on-page TOC on docs.langchain.com"
+  fixture: tests/rules/docs_mintlify_toc.html
+
+- id: docs.mintlify.feedback
+  action: drop
+  scope: inside_root
+  match:
+    - {class_token: "feedback-toolbar"}
+  max_chars: 1500
+  risk: guarded
+  evidence: "Mintlify feedback-toolbar Was this page helpful block on docs.langchain.com"
+  fixture: tests/rules/docs_mintlify_feedback.html
+
+- id: docs.mintlify.pagination
+  action: drop
+  scope: inside_root
+  match:
+    - {tag: "nav", id: "^pagination$"}
+  max_chars: 1500
+  risk: guarded
+  evidence: "Mintlify nav#pagination previous/next pager on docs.langchain.com"
+  fixture: tests/rules/docs_mintlify_pagination.html
+
+- id: docs.cloudflare.toc
+  action: drop
+  scope: inside_root
+  match:
+    - {class_token: "toc-container"}
+  max_chars: 2500
+  risk: guarded
+  evidence: "Cloudflare developers docs aside toc-container On this page navigation"
+  fixture: tests/rules/docs_cloudflare_toc.html
+
+- id: docs.cloudflare.feedback
+  action: drop
+  scope: inside_root
+  match:
+    - {id: "^feedback-form-content$"}
+  max_chars: 1500
+  risk: guarded
+  evidence: "Cloudflare developers docs feedback-form-content helpful widget"
+  fixture: tests/rules/docs_cloudflare_feedback.html
+
+- id: docs.cloudflare.view_markdown
+  action: drop
+  scope: inside_root
+  match:
+    - {tag: "a", text_exact: "View as Markdown"}
+  max_chars: 200
+  risk: safe
+  evidence: "Cloudflare developers docs View as Markdown page action link"
+  fixture: tests/rules/docs_cloudflare_view_markdown.html
+
+- id: docs.digitalocean.feedback
+  action: drop
+  scope: inside_root
+  match:
+    - {tag: "div", class_token: "feedback"}
+  max_chars: 500
+  risk: guarded
+  evidence: "DigitalOcean documentation div.feedback Give Feedback widget on docs.digitalocean.com"
+  fixture: tests/rules/docs_digitalocean_feedback.html

@@ -34,6 +34,7 @@ def _build_config(args: argparse.Namespace) -> PipelineConfig:
         enable_lbc=not getattr(args, "no_lbc", False),
         inject_heading_paths=getattr(args, "heading_paths", False),
         include_links=getattr(args, "links", False),
+        table_format=getattr(args, "table_format", "markdown"),
     )
     if getattr(args, "priority", None):
         return PipelineConfig.from_priority(args.priority, **overrides)
@@ -63,6 +64,12 @@ def _add_shared_flags(p: argparse.ArgumentParser) -> None:
     p.add_argument("--no-lbc", action="store_true", help="use the 0.1.2 density filter instead of the learned block filter")
     p.add_argument("--heading-paths", action="store_true")
     p.add_argument("--links", action="store_true", help="keep link targets as [text](url)")
+    p.add_argument(
+        "--table-format",
+        choices=("markdown", "linearized"),
+        default="markdown",
+        help="table output: GFM pipe (markdown) or legacy linearized KV (linearized)",
+    )
 
 
 def _load_fixture_dir(raw_dir: Path) -> list[BatchPage]:
@@ -137,7 +144,20 @@ def cmd_extract(args: argparse.Namespace) -> int:
         if total:
             sys.stderr.write(f"removed total: {total} chars ({result.diagnostics.get('removed_rules', 0)} rules)\n")
 
-    if args.output:
+    if getattr(args, "chunks", False):
+        lines = []
+        for chunk in result.chunks():
+            row = chunk.to_dict()
+            row["url"] = result.url
+            lines.append(json.dumps(row, ensure_ascii=False))
+        payload = "\n".join(lines) + ("\n" if lines else "")
+        if args.output:
+            out_path = Path(args.output)
+            out_path.parent.mkdir(parents=True, exist_ok=True)
+            out_path.write_text(payload, encoding="utf-8")
+        else:
+            sys.stdout.write(payload)
+    elif args.output:
         out_path = Path(args.output)
         out_path.parent.mkdir(parents=True, exist_ok=True)
         out_path.write_text(result.markdown, encoding="utf-8")
@@ -297,6 +317,11 @@ def main(argv: list[str] | None = None) -> int:
         "--fail-on-thin",
         action="store_true",
         help="Exit 3 when input HTML looks thin / like a JS shell (still prints WARNINGs by default)",
+    )
+    p_ex.add_argument(
+        "--chunks",
+        action="store_true",
+        help="Write JSONL chunks (one object per line) instead of Markdown",
     )
     _add_shared_flags(p_ex)
     p_ex.set_defaults(func=cmd_extract)
