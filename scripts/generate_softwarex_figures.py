@@ -186,7 +186,7 @@ def fig_wcxb_test(final: dict) -> str:
 # --------------------------------------------------------------------------- Fig. 3
 def fig_frontier(final: dict) -> str:
     h = 200
-    x0, y0, w, ph = 46, 14, WIDTH - 130, 150
+    x0, y0, w, ph = 46, 14, WIDTH - 62, 150
     xmin, xmax, ymin, ymax = 0.68, 1.0, 0.76, 0.90
     sx = lambda v: x0 + (v - xmin) / (xmax - xmin) * w  # noqa: E731
     sy = lambda v: y0 + ph - (v - ymin) / (ymax - ymin) * ph  # noqa: E731
@@ -214,11 +214,9 @@ def fig_frontier(final: dict) -> str:
         p, r = dev[key]["p"], dev[key]["r"]
         body.append(f'<circle cx="{sx(r):.1f}" cy="{sy(p):.1f}" r="4" fill="{color}" stroke="{SURFACE}" stroke-width="1"/>')
         body.append(_text(sx(r) - 7, sy(p) + 12, label, size=7.5, anchor="end") if key == "trafilatura" else _text(sx(r) + 7, sy(p) + 2.5, label, size=7.5))
-    body.append(_text(x0 + w + 8, y0 + 12, "ChromeRAG:", size=7.5, weight="bold", fill="#2a78d6"))
-    body.append(_text(x0 + w + 8, y0 + 23, "threshold 0.15 to 0.90", size=7, fill=INK_2))
-    body.append(_text(x0 + w + 8, y0 + 34, "(coverage 0.30,", size=7, fill=INK_2))
-    body.append(_text(x0 + w + 8, y0 + 44, "balanced 0.50,", size=7, fill=INK_2))
-    body.append(_text(x0 + w + 8, y0 + 54, "precision 0.70)", size=7, fill=INK_2))
+    nx, ny = sx(0.93), sy(0.80)  # note sits in the empty lower-right of the plot
+    body.append(_text(nx, ny, "ChromeRAG: threshold 0.15 to 0.90", size=7, weight="bold", fill="#2a78d6", anchor="middle"))
+    body.append(_text(nx, ny + 10, "(coverage 0.30, balanced 0.50, precision 0.70)", size=7, fill=INK_2, anchor="middle"))
     return _svg(h, body)
 
 
@@ -299,6 +297,7 @@ def fig_judge(final: dict) -> str:
     xmin, xmax = -1.0, 1.0
     body: list[str] = []
     for pi, (tag, title, panel, families, rows) in enumerate(panels):
+        rh = row_h * max(len(p[4]) for p in panels) / len(rows)  # same plot height in both panels
         x0 = label_w + pi * (pw + label_w + gap)
         plot_w = pw - 8
         sx = lambda v, _x0=x0, _w=plot_w: _x0 + (v - xmin) / (xmax - xmin) * _w  # noqa: E731
@@ -308,14 +307,14 @@ def fig_judge(final: dict) -> str:
             f'<tspan dx="6">{escape(title)}</tspan></text>'
         )
         z = sx(0)
-        body.append(f'<line x1="{z:.1f}" y1="{top - 4}" x2="{z:.1f}" y2="{top + len(rows) * row_h}" stroke="{MUTED}" stroke-width="0.8"/>')
+        body.append(f'<line x1="{z:.1f}" y1="{top - 4}" x2="{z:.1f}" y2="{top + len(rows) * rh}" stroke="{MUTED}" stroke-width="0.8"/>')
         for tick in (-1, -0.5, 0, 0.5, 1):
             tx = sx(tick)
-            body.append(f'<line x1="{tx:.1f}" y1="{top - 4}" x2="{tx:.1f}" y2="{top + len(rows) * row_h}" stroke="{GRID}" stroke-width="0.6"/>')
-            body.append(_text(tx, top + len(rows) * row_h + 9, f"{tick:+.1f}" if tick else "0", size=6.5, anchor="middle", fill=INK_2))
-        body.append(_text(x0 + plot_w / 2, top + len(rows) * row_h + 20, "Net score (wins − losses) / pairs", size=7, anchor="middle", fill=INK_2))
+            body.append(f'<line x1="{tx:.1f}" y1="{top - 4}" x2="{tx:.1f}" y2="{top + len(rows) * rh}" stroke="{GRID}" stroke-width="0.6"/>')
+            body.append(_text(tx, top + len(rows) * rh + 9, f"{tick:+.1f}" if tick else "0", size=6.5, anchor="middle", fill=INK_2))
+        body.append(_text(x0 + plot_w / 2, top + len(rows) * rh + 20, "Net score (wins − losses) / pairs", size=7, anchor="middle", fill=INK_2))
         for i, (ty, n) in enumerate(rows):
-            y = top + i * row_h + row_h / 2
+            y = top + i * rh + rh / 2
             label = ("All" if ty == "ALL" else ty.capitalize()) + f" ({n})"
             body.append(_text(x0 - 6, y + 2.5, label, size=7, anchor="end", weight="bold" if ty == "ALL" else "normal"))
             offset = 0
@@ -331,7 +330,7 @@ def fig_judge(final: dict) -> str:
                 body.append(f'<line x1="{sx(lo):.1f}" y1="{cy:.1f}" x2="{sx(hi):.1f}" y2="{cy:.1f}" stroke="{color}" stroke-width="1.4" opacity="0.55"/>')
                 body.append(f'<circle cx="{sx(net):.1f}" cy="{cy:.1f}" r="2.8" fill="{color}" stroke="{SURFACE}" stroke-width="0.7"/>')
                 offset += 4
-        body.append(f'<line x1="{x0}" y1="{top - 4}" x2="{x0}" y2="{top + len(rows) * row_h}" stroke="{INK_2}" stroke-width="0.8"/>')
+        body.append(f'<line x1="{x0}" y1="{top - 4}" x2="{x0}" y2="{top + len(rows) * rh}" stroke="{INK_2}" stroke-width="0.8"/>')
     lx = label_w
     for fam_key, fam_name, color in JUDGE_FAMILIES:
         body.append(f'<circle cx="{lx:.1f}" cy="{h - 8:.1f}" r="2.8" fill="{color}"/>')

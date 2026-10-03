@@ -53,3 +53,6 @@ data/landing_fresh_raw/
 
 # blind human-rating app: third-party pages and ratings stay local
 data/human_eval/
+
+# Elsevier template (download; not redistributed)
+papers/softwarex/template/*.docx

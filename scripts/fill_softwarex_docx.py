@@ -324,7 +324,7 @@ def _table(rows: list[list[str]]) -> etree._Element:
     tblPr = etree.SubElement(tbl, f"{W}tblPr")
     etree.SubElement(tblPr, f"{W}tblW").attrib.update({f"{W}w": "5000", f"{W}type": "pct"})
     borders = etree.SubElement(tblPr, f"{W}tblBorders")
-    for side in ("top", "left", "bottom", "right", "insideH", "insideV"):
+    for side in ("top", "bottom", "insideH"):  # horizontal rules only (the journal asks for no vertical rules)
         etree.SubElement(borders, f"{W}{side}").attrib.update(
             {f"{W}val": "single", f"{W}sz": "4", f"{W}space": "0", f"{W}color": "808080"}
         )
