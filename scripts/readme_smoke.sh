@@ -22,12 +22,12 @@ OUT="$WORK/out"
 step "Quick start 1: one page"
 "$BIN/chromerag" extract examples/site/pricing.html -o "$OUT/pricing.md" --priority balanced --json-meta > /dev/null
 grep -q "title: Plans and pricing" "$OUT/pricing.md"
-grep -q "Monthly price (USD): 49" "$OUT/pricing.md"
+grep -q "| Team | 20,000 | 49 |" "$OUT/pricing.md"
 
 step "Quick start 2: learn the site template, then batch"
 "$BIN/chromerag" learn examples/site -o "$OUT/site_chrome.json" --min-pages 3
 "$BIN/chromerag" batch examples/site -o "$OUT/batch" --chrome-model "$OUT/site_chrome.json"
-grep -q "Monthly price (USD): 49" "$OUT/batch/pricing/chromerag.md"
+grep -q "| Team | 20,000 | 49 |" "$OUT/batch/pricing/chromerag.md"
 if grep -q "Widget Summit" "$OUT/batch/pricing/chromerag.md"; then
   echo "repeated promo strip was not removed by the site model"; exit 1
 fi
@@ -50,7 +50,7 @@ result = ChromeRAG(config=PipelineConfig.from_priority(ContentPriority.BALANCED)
     html, url="https://docs.example.com/docs/pricing"
 )
 assert result.front_matter["title"] == "Plans and pricing", result.front_matter
-assert "Monthly price (USD): 49" in result.markdown
+assert "| Team | 20,000 | 49 |" in result.markdown
 print("front_matter:", result.front_matter)
 PY
 
