@@ -294,3 +294,17 @@ Found while preparing the paper (a reviewer-style check of the split):
   and 94% vs 4%. WCXB sample without duplicates (72 pages): Readability 68% vs 28% (49 / 20 pairs).
 * Clean test definition: ids absent from the public dev/ folder (`poc/wcxb_leaked_ids.json`, 139 ids) leaves 372 pages
   (an earlier URL-based filter gave 373).
+
+### 0.1.4 close-out (2026-10-03)
+
+* Speed: the new chrome passes raised the median from 36 to 76 ms. Size gates, ancestor sets and a text-after index in
+  `generic_chrome.py`/`trafilatura_ideas.py`/`treestats.py` bring it to about 52 ms (Trafilatura 32, Readability 31, MarkItDown 39;
+  `speed_final.json`, Apple M4 Pro, Python 3.14.7) and a page nested 20,000 levels deep from 79 s to 2 s; the test suite runs in 83 s
+  instead of 270 s. Checked before any score was touched: 960 output hashes (3 modes x 320 pages) equal to the previous code, the 972
+  judged outputs unchanged, 195 tests and ruff clean. No judge call was repeated.
+* STCE rerun on the 0.1.4 pipeline: 11 benchmark groups (47 scoreable pages) F_bal 0.840 without / 0.837 with the site model; crawl
+  125 groups, 1,727 scoreable pages, 138 changed: 0.866 / 0.867 (Trafilatura 0.841, MarkItDown 0.749); site-repeated text 2.0% / 2.0%.
+* Manuscript review by one language model (private notes) led to: 135 seed sites listed vs 106 that responded (the text said 106 for both),
+  masking details for the judges, a domain-clustered interval for the main F1 gap (+0.019 to +0.062, 316 domains), and a note that the
+  retrieval queries are self-retrieval. Not addressed by new data: no human judges, no answer-level RAG evaluation.
+* Fig. 5 (judge results) had colliding labels; it is now Fig. 4 of the manuscript (retrieval bars dropped from the paper to keep within 4,000 words).

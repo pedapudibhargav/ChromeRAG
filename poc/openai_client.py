@@ -23,6 +23,7 @@ API = "https://api.openai.com/v1"
 # USD per 1M tokens (OpenAI list prices, September 2026): (input, output)
 PRICES = {
     "gpt-5.6-luna": (0.20, 0.75),
+    "gpt-5.6-terra": (5.00, 25.00),  # assumed; used for one manuscript review
     "text-embedding-3-small": (0.02, 0.0),
 }
 SPEND_FILE = OUT / "openai_spend.json"
