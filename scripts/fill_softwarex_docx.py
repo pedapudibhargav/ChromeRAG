@@ -310,6 +310,14 @@ def _mono_para(text: str) -> etree._Element:
     return p
 
 
+def _keep_next(p: etree._Element) -> None:
+    """Ask Word to keep this paragraph on the same page as the next one."""
+    pPr = p.find(f"{W}pPr")
+    if pPr is None or pPr.find(f"{W}keepNext") is not None:
+        return
+    pPr.insert(1 if pPr.find(f"{W}pStyle") is not None else 0, etree.Element(f"{W}keepNext"))
+
+
 def _table(rows: list[list[str]]) -> etree._Element:
     """Plain bordered Word table (explicit borders; no new table styles)."""
     tbl = etree.Element(f"{W}tbl")
@@ -326,6 +334,10 @@ def _table(rows: list[list[str]]) -> etree._Element:
         etree.SubElement(grid, f"{W}gridCol").set(f"{W}w", str(9000 // ncols))
     for r_idx, cells in enumerate(rows):
         tr = etree.SubElement(tbl, f"{W}tr")
+        trPr = etree.SubElement(tr, f"{W}trPr")
+        etree.SubElement(trPr, f"{W}cantSplit")
+        if r_idx == 0:
+            etree.SubElement(trPr, f"{W}tblHeader")
         for c in range(ncols):
             tc = etree.SubElement(tr, f"{W}tc")
             tcPr = etree.SubElement(tc, f"{W}tcPr")
@@ -337,6 +349,8 @@ def _table(rows: list[list[str]]) -> etree._Element:
                 rpr = etree.Element(f"{W}rPr")
                 etree.SubElement(rpr, f"{W}b")
                 p.find(f"{W}r").insert(0, rpr)
+            if r_idx < len(rows) - 1:
+                _keep_next(p)  # with cantSplit rows, keeps the whole table on one page
             tc.append(p)
     return tbl
 
@@ -354,12 +368,15 @@ def _insert_blocks_after(anchor: etree._Element, blocks: list[tuple[str, str]]) 
             continue
         elif kind == "table":
             tbl = _table([row.split("\t") for row in text.split("\n")])
+            if cur.tag == f"{W}p":
+                _keep_next(cur)  # the "Table N." caption stays with its table
             cur.addnext(tbl)
             cur = tbl
             continue
         elif kind == "fig":
             img = _new_para(f"__FIG{text}_IMG__", style="Body")
             cap = _new_para(f"__FIG{text}_CAP__", style="Body")
+            _keep_next(img)
             cur.addnext(img)
             img.addnext(cap)
             cur = cap

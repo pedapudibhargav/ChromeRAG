@@ -85,7 +85,7 @@ def fig_architecture() -> str:
         ("3", "Clean +", "STCE", "hidden, rules,", "site model"),
         ("4", "Chrome", "prune", "landmarks,", "class words"),
         ("5", "Learned", "block filter", "trees score", "each block"),
-        ("6", "Tables +", "Markdown", "key–value,", "doc. order"),
+        ("6", "Tables +", "Markdown", "pipe tables,", "doc. order"),
     ]
     h = 150
     body: list[str] = [
@@ -156,10 +156,10 @@ def fig_wcxb_test(final: dict) -> str:
     row_h, top, label_w = 17, 30, 104
     h = top + len(rows) * row_h + 26
     x0, w = label_w + 8, WIDTH - label_w - 24
-    lo, hi = 0.2, 1.0
+    lo, hi = 0.1, 1.0
     sx = lambda v: x0 + (v - lo) / (hi - lo) * w  # noqa: E731
     body: list[str] = []
-    for t in (0.2, 0.4, 0.6, 0.8, 1.0):
+    for t in (0.2, 0.4, 0.6, 0.8, 1.0):  # axis starts at 0.1 so the lowest dot clears the labels
         body.append(f'<line x1="{sx(t):.1f}" y1="{top - 6}" x2="{sx(t):.1f}" y2="{top + len(rows) * row_h}" stroke="{GRID}" stroke-width="0.6"/>')
         body.append(_text(sx(t), top + len(rows) * row_h + 10, f"{t:.1f}", size=7, anchor="middle", fill=INK_2))
     body.append(_text(x0 + w / 2, top + len(rows) * row_h + 21, "Word-level F1, WCXB test pages not in the development split (small n for product and collection)", size=7.5, anchor="middle", fill=INK_2))
