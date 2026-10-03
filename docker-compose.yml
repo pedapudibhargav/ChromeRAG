@@ -5,7 +5,7 @@ services:
     container_name: chromerag
     build:
       context: .
-      dockerfile: ${CHROMERAG_DOCKERFILE:-Dockerfile.apt}
+      dockerfile: ${CHROMERAG_DOCKERFILE:-Dockerfile}
     image: chromerag:local
     volumes:
       - ./src:/app/src

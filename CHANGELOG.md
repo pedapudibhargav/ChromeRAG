@@ -55,7 +55,6 @@ Output-quality release: better structure, much less leftover chrome, heading-awa
 - Per-call configuration; hidden nodes and skip links are removed; content-root ladder.
 - Training and analysis tools: `poc/lbc_data.py`, `poc/train_lbc.py`, `poc/wcxb_diag.py`,
   `poc/wcxb_cv_report.py`, `poc/learn_tokens.py`, `poc/bench_speed.py`, `poc/golden.py`.
-- Docker: `Dockerfile.apt` for networks where PyPI is blocked.
 
 - `diagnostics["lbc"]` with the model's expected precision, recall and F1; a warning below expected F1 0.70.
 - Text between block elements is wrapped into blocks so it is no longer lost.

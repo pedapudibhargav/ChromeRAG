@@ -20,7 +20,7 @@ data/extra_raw/
 data/extra_raw_final/
 data/extra_raw_final2/
 
-# Corp TLS / private tooling (never publish)
+# Local TLS bundles (never publish)
 infra/certs/
 infra/certs/*.pem
 !infra/certs/.gitkeep
