@@ -1,0 +1,993 @@
+{
+  "generated_at": "2026-10-03T20:00:41+00:00",
+  "pytest_exit_code": 0,
+  "totals": {
+    "tests": 196,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 2,
+    "passed": 194
+  },
+  "cases": [
+    {
+      "classname": "",
+      "name": "tests.test_llamaindex_reader",
+      "status": "skipped"
+    },
+    {
+      "classname": "tests.test_chunking",
+      "name": "test_heading_path_and_depth",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_chunking",
+      "name": "test_dedupe_adjacent_title_and_h1",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_chunking",
+      "name": "test_strip_yaml_front_matter",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_chunking",
+      "name": "test_code_block_never_split",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_chunking",
+      "name": "test_table_block_never_split",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_chunking",
+      "name": "test_pipe_table_block_never_split",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_chunking",
+      "name": "test_small_trailing_section_merged_backward",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_chunking",
+      "name": "test_small_trailing_section_merged_forward",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_chunking",
+      "name": "test_empty_input",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_chunking",
+      "name": "test_min_words_fallback_single_chunk",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_chunking",
+      "name": "test_embed_text_and_to_dict",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_chunking",
+      "name": "test_extract_result_chunks",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_chunking",
+      "name": "test_cli_chunks_jsonl",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_chunking",
+      "name": "test_cli_chunks_stdout",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_content_wrapper_with_sidebar_class_is_not_pruned",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_small_sidebar_is_still_pruned",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_learn_creates_missing_output_dir_and_batch_uses_model",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_extract_writes_into_missing_dir",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_missing_chrome_model_is_a_clean_error",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_stce_keeps_match_far_larger_than_learned_block",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_stce_does_not_learn_shared_class_with_different_text",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_stce_counts_a_repeated_url_once",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_stce_learns_identical_short_text_without_chrome_markup",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_stce_keeps_content_that_only_shares_a_utility_class",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_stce_counts_near_duplicate_pages_once",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_stce_keeps_link_list_content_that_only_shares_a_layout_class",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_extractor",
+      "name": "test_version_semver_shape",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_extractor",
+      "name": "test_extract_keeps_main_content_drops_nav",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_extractor",
+      "name": "test_schema_front_matter_before_script_strip",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_extractor",
+      "name": "test_table_linearization",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_extractor",
+      "name": "test_precision_vs_coverage_keeps_core_content",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_extractor",
+      "name": "test_fuse_front_matter_reads_json_ld",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_extractor",
+      "name": "test_empty_html_does_not_crash",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_toc_dropped_with_label",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_toc_like_list_that_is_content_kept",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_pager_dropped_at_bottom",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_pager_mid_page_kept_without_class",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_comments_dropped_on_article",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_comments_kept_on_forum",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_related_posts_dropped",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_placeholder_dropped",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_config_flag_disables_rule[chrome_drop_toc-<html><body><main><h2>Contents</h2><ol>\\n            <li><a href=\"#a\">One</a></li><li><a href=\"#b\">Two</a></li>\\n            <li><a href=\"#c\">Three</a></li><li><a href=\"#d\">Four</a></li>\\n            <li><a href=\"#e\">Five</a></li></ol>\\n            <p>Body text with enough words to avoid toc-as-content guard easily.</p>\\n            </main></body></html>-contents-body text]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_config_flag_disables_rule[chrome_drop_pager-<html><body><main><p>Body text with enough words for extraction tests here.</p>\\n            <div class=\"pagination\"><a href=\"?p=1\">Previous</a><a href=\"?p=3\">Next page</a></div>\\n            </main></body></html>-next page-body text]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_config_flag_disables_rule[chrome_drop_comments-<html><body><article><h1>T</h1><p>Body text with enough words for extraction.</p>\\n            <div class=\"comments\"><p>Remove me please from the markdown output.</p></div>\\n            </article></body></html>-remove me please-body text]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_config_flag_disables_rule[chrome_drop_related-<html><body><article><h1>T</h1><p>Body text with enough words for extraction and\\n            a much longer article paragraph so the related links block stays under the word guard.</p>\\n            <h4>You may also like</h4><ul><li><a href=\"/x\">Link one</a></li><li><a href=\"/y\">Link two</a></li></ul>\\n            </article></body></html>-you may also like-body text]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_drop_generic_chrome_direct",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_cta_button_dropped",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_cta_in_sentence_kept",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_share_strip_dropped",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_social_topic_paragraph_kept",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_newsletter_form_dropped",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_newsletter_mention_in_article_kept",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_author_bio_dropped_after_article",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_byline_before_article_kept",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_back_to_top_dropped",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_language_switcher_dropped",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_new_rule_config_flag[chrome_drop_cta-<html><body><main><h1>T</h1><p>Body text with enough words for extraction tests here today and additional sentences so chrome blocks stay under the twenty percent removal guard on short fixture pages used throughout these unit tests for generic chrome rules without triggering the cumulative word budget safety limit during removal.</p>\\n            <button>Contact us</button></main></body></html>-contact us-body text-cta]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_new_rule_config_flag[chrome_drop_share-<html><body><article><h1>T</h1><p>Body text with enough words for extraction tests here today and additional sentences so chrome blocks stay under the twenty percent removal guard on short fixture pages used throughout these unit tests for generic chrome rules without triggering the cumulative word budget safety limit during removal.</p>\\n            <div><a>Facebook</a><a>Twitter</a><a>Share</a></div></article></body></html>-facebook-body text-share]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_new_rule_config_flag[chrome_drop_newsletter-<html><body><article><h1>T</h1><p>Body text with enough words for extraction tests here today and additional sentences so chrome blocks stay under the twenty percent removal guard on short fixture pages used throughout these unit tests for generic chrome rules without triggering the cumulative word budget safety limit during removal.</p>\\n            <div class=\"subscribe-box\"><p>Sign up for our newsletter today.</p></div></article></body></html>-sign up for our newsletter-body text-newsletter]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_new_rule_config_flag[chrome_drop_author_bio-<html><body><article><h1>T</h1><p>Body text with enough words for extraction tests here today and additional sentences so chrome blocks stay under the twenty percent removal guard on short fixture pages used throughout these unit tests for generic chrome rules without triggering the cumulative word budget safety limit during removal.</p>\\n            <div class=\"author-bio\"><p>Writer bio with short profile text only.</p></div></article></body></html>-writer bio-body text-author_bio]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_new_rule_config_flag[chrome_drop_nav_misc-<html><body><main><h1>T</h1><p>Body text with enough words for extraction tests here today and additional sentences so chrome blocks stay under the twenty percent removal guard on short fixture pages used throughout these unit tests for generic chrome rules without triggering the cumulative word budget safety limit during removal.</p>\\n            <a href=\"#top\">Top</a></main></body></html>-top-body text-nav_misc]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_trim_tail_drops_footer_chrome",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_trim_tail_keeps_short_real_conclusion",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_micro_block_drops_stray_glyph",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_micro_block_keeps_numbered_list_and_code",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_attr_junk_dropped",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_attr_junk_keeps_table",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_tail_micro_attr_config_flag[chrome_trim_tail-<html><body><article><h1>T</h1><p>Body text with enough words for extraction tests here today and additional sentences so chrome blocks stay under the twenty percent removal guard on short fixture pages used throughout these unit tests for generic chrome rules without triggering the cumulative word budget safety limit during removal.</p>\\n            <p>Second paragraph with enough words to count as substantive article body content here today and additional filler words so the trim-tail guard sees a real block instead of skipping the page for too few substantive sections.</p>\\n            <p>Third paragraph with enough words to count as substantive article body content here today and additional filler words so the trim-tail guard sees a real block instead of skipping the page for too few substantive sections.</p>\\n            <p>Tags: widgets, gadgets</p>\\n            <p>Share on social media</p></article></body></html>-tags: widgets-third paragraph-trim_tail]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_tail_micro_attr_config_flag[chrome_drop_micro_blocks-<html><body><main><h1>T</h1><p>Body text with enough words for extraction tests here today and additional sentences so chrome blocks stay under the twenty percent removal guard on short fixture pages used throughout these unit tests for generic chrome rules without triggering the cumulative word budget safety limit during removal.</p><p>|</p></main></body></html>-|-body text-micro_blocks]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_tail_micro_attr_config_flag[chrome_drop_attr_junk-<html><body><main><h1>T</h1><p>Body text with enough words for extraction tests here today and additional sentences so chrome blocks stay under the twenty percent removal guard on short fixture pages used throughout these unit tests for generic chrome rules without triggering the cumulative word budget safety limit during removal.</p>\\n            <p>class=foo-bar data-x=1 aria-hidden=true</p></main></body></html>-class=foo-bar-body text-attr_junk]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_golden",
+      "name": "test_golden_check",
+      "status": "skipped"
+    },
+    {
+      "classname": "tests.test_input_quality",
+      "name": "test_visible_text_matches_legacy_on_fixtures",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_input_quality",
+      "name": "test_js_shell_triggers_warning",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_input_quality",
+      "name": "test_rich_html_has_no_thin_warning",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_input_quality",
+      "name": "test_extract_result_surfaces_warnings",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_input_quality",
+      "name": "test_empty_html_warns",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_langchain_loader",
+      "name": "test_loader_moves_front_matter_into_metadata",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_langchain_loader",
+      "name": "test_loader_can_skip_javascript_shells",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_blocks_are_listed_in_document_order_without_nesting",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_feature_matrix_shape_and_box_ids",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_shipped_model_matches_feature_count",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_model_scores_prose_above_chrome",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_extraction_keeps_article_and_drops_page_furniture",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_classifier_can_be_switched_off",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_link_targets_are_off_by_default_and_available",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_content_after_a_stray_closing_html_tag_is_kept",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_page_wide_form_does_not_swallow_the_article",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_layout_table_is_unwrapped_not_duplicated",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_highlighted_code_keeps_its_lines",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_page_title_heading_is_kept",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_ordered_and_nested_lists_keep_their_shape",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_lbc_rescue_headings_keeps_section_heading_above_body",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_lbc_title_fallback_keeps_content_root_h1_without_title_match",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_lbc_rescue_lead_keeps_summary_after_title",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_offline",
+      "name": "test_extract_learn_and_batch_work_offline",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_offline",
+      "name": "test_token_estimate_is_deterministic",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_robustness",
+      "name": "test_per_call_config_uses_inferred_type_per_url",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_robustness",
+      "name": "test_hidden_nodes_removed_from_output",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_robustness",
+      "name": "test_skip_link_removed",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_robustness",
+      "name": "test_content_root_in_diagnostics",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_robustness",
+      "name": "test_very_deep_nesting_does_not_crash",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_robustness",
+      "name": "test_batch_survives_one_failing_page",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_robustness",
+      "name": "test_non_utf8_bytes_are_decoded_with_the_declared_charset",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_robustness",
+      "name": "test_learn_is_fast_on_unclosed_script_tags",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_robustness",
+      "name": "test_output_is_deterministic",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_ids_unique_and_documented",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[consent.onetrust]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[consent.cookiebot]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[consent.osano]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[docs.docusaurus.footer]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[docs.docusaurus.toc]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[docs.docusaurus.back_to_top]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[docs.mkdocs.toc]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[docs.mkdocs.view_markdown]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[docs.mkdocs.edit_page]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[docs.grafana.feedback]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[docs.starlight.toc]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[docs.vitepress.local_nav]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[docs.mintlify.toc]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[docs.mintlify.feedback]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[docs.mintlify.pagination]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[docs.cloudflare.toc]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[docs.cloudflare.feedback]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[docs.cloudflare.view_markdown]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[docs.digitalocean.feedback]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[share.social]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[share.related]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[tf.share.sociable]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[tf.share.viral]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[tf.related.teaser]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[tf.related.popular]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[tf.comments.thread]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[tf.comments.respond]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[tf.newsletter.block]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[tf.sidebar.rail]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[tf.ads.outbrain]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[tf.ads.taboola]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[tf.author.byline]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[tf.pagination.nav]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[tf.skip.back_to_top]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[tf.footer.legal]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[tf.tools.print]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[tf.tags.cloud]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_text_outside_rule_scope_is_kept",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_class_token_is_a_whole_class_name",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_tables",
+      "name": "test_rectangular_table_renders_pipe_markdown",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_tables",
+      "name": "test_colspan_table_stays_linearized",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_tables",
+      "name": "test_table_format_linearized_kwarg",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_tables",
+      "name": "test_pipe_cell_escapes_pipes",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_tables",
+      "name": "test_extractor_default_pipe_table",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_tables",
+      "name": "test_extractor_linearized_table_format",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_tables",
+      "name": "test_table_without_rows_does_not_crash",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_trafilatura_ideas",
+      "name": "test_link_blocks_drop_high_link_density_short_nav",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_trafilatura_ideas",
+      "name": "test_link_blocks_keep_editorial_list_in_main",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_trafilatura_ideas",
+      "name": "test_micro_drops_tiny_leaf_nodes",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_trafilatura_ideas",
+      "name": "test_flags_disable_passes",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html>\\n<html lang=\"en\">\\n<head><meta charset=\"utf-8\"><title>Docs \\u2014 Getting Started</title></head>\\n<body>\\n  <div id=\"onetrust-consent-sdk\" class=\"ot-sdk-container\">\\n    <p>We use cookies to improve your experience. Accept all cookies or manage preferences.</p>\\n    <button>Accept All</button>\\n  </div>\\n  <main>\\n    <article>\\n      <h1>Getting started</h1>\\n      <p>Install the CLI with pip and authenticate using your API token from the dashboard.</p>\\n      <p>Run your first deployment with a single command after configuring your project directory.</p>\\n    </article>\\n  </main>\\n</body>\\n</html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html>\\n<html lang=\"en\">\\n<head>\\n  <meta charset=\"utf-8\" />\\n  <title>Acme Cloud Docs</title>\\n  <script type=\"application/ld+json\">\\n  {\\n    \"@context\": \"https://schema.org\",\\n    \"@type\": \"TechArticle\",\\n    \"headline\": \"Bandwidth limits and SLA\",\\n    \"description\": \"Enterprise bandwidth caps and uptime SLA.\"\\n  }\\n  </script>\\n</head>\\n<body>\\n  <header>\\n    <nav>\\n      <a href=\"/\">Home</a>\\n      <a href=\"/pricing\">Pricing</a>\\n      <a href=\"/docs\">Docs</a>\\n      <a href=\"/login\">Sign in</a>\\n    </nav>\\n  </header>\\n  <main>\\n    <article>\\n      <h1>Bandwidth limits and SLA</h1>\\n      <p>\\n        Dedicated servers include 10 Gbps unmetered bandwidth in the primary region.\\n        Burst above commit is billed per GB. The contractual monthly uptime SLA is 99.99 percent.\\n      </p>\\n      <h2>Pricing matrix</h2>\\n      <table>\\n        <thead><tr><th>SKU</th><th>Cores</th><th>Monthly</th></tr></thead>\\n        <tbody>\\n          <tr><td>srv.large</td><td>8</td><td>120</td></tr>\\n          <tr><td>srv.xlarge</td><td>16</td><td>220</td></tr>\\n        </tbody>\\n      </table>\\n    </article>\\n  </main>\\n  <footer>\\n    <p>Copyright Acme Cloud. Privacy Policy. Cookie Settings. Follow us on Twitter LinkedIn.</p>\\n    <a href=\"/careers\">Careers</a>\\n    <a href=\"/legal\">Legal</a>\\n  </footer>\\n</body>\\n</html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html>\\n<html lang=\"en\">\\n<head><meta charset=\"utf-8\"><title>Hidden content test</title></head>\\n<body>\\n  <main>\\n    <h1>Visible guide</h1>\\n    <p>This paragraph is visible and should appear in the extracted Markdown output.</p>\\n    <div style=\"display: none\">\\n      <p>Hidden promo: Sign up now for 50 percent off enterprise plans today only.</p>\\n    </div>\\n    <p hidden>Hidden attribute text that should not dominate the output.</p>\\n    <div aria-hidden=\"true\" class=\"modal\"><p>Modal overlay marketing copy.</p></div>\\n    <section>\\n      <h2>Configuration</h2>\\n      <p>Set the environment variable API_KEY before running the client in production mode.</p>\\n    </section>\\n  </main>\\n</body>\\n</html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html>\\n<html lang=\"en\">\\n<head><meta charset=\"utf-8\"><title>Acme Platform \\u2014 Enterprise Cloud</title></head>\\n<body>\\n  <header class=\"site-header\">\\n    <nav><a href=\"/\">Home</a><a href=\"/pricing\">Pricing</a><a href=\"/login\">Sign in</a></nav>\\n  </header>\\n  <main>\\n    <section class=\"hero\">\\n      <h1>Build faster on Acme Platform</h1>\\n      <p>Deploy globally with one API. Scale from startup to enterprise without re-architecting.</p>\\n      <a class=\"btn cta\" href=\"/signup\">Get started for free</a>\\n    </section>\\n    <section class=\"features\">\\n      <h2>Why teams choose Acme</h2>\\n      <ul>\\n        <li><strong>Edge compute</strong> \\u2014 sub-10ms latency in 40 regions worldwide.</li>\\n        <li><strong>Managed databases</strong> \\u2014 Postgres, Redis, and object storage with automatic backups.</li>\\n        <li><strong>Security</strong> \\u2014 SOC 2 Type II, encryption at rest and in transit.</li>\\n      </ul>\\n    </section>\\n  </main>\\n  <footer><p>\\xa9 Acme Corp. Privacy \\xb7 Terms</p></footer>\\n</body>\\n</html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><div id=\"CybotCookiebotDialog\"><p data-chrome=\"Cookiebot consent banner text should be removed.\">Cookiebot consent banner text should be removed.</p><p>Manage your preferences and choose which categories you allow us to use on this website at any time.</p></div><p data-keep=\"Keep this Cookiebot documentation paragraph about OAuth scopes.\">Keep this Cookiebot documentation paragraph about OAuth scopes.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><div id=\"onetrust-consent-sdk\"><p data-chrome=\"We use cookies on this site for analytics purposes.\">We use cookies on this site for analytics purposes.</p><p>Manage your preferences and choose which categories you allow us to use on this website at any time.</p></div><p data-keep=\"Keep this documentation paragraph about API authentication tokens.\">Keep this documentation paragraph about API authentication tokens.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><div class=\"osano-cm-dialog\"><p data-chrome=\"Osano consent preferences dialog.\">Osano consent preferences dialog.</p><p>Manage your preferences and choose which categories you allow us to use on this website at any time.</p></div><p data-keep=\"Keep this Osano integration guide paragraph about webhook events.\">Keep this Osano integration guide paragraph about webhook events.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><p data-keep=\"Keep this Cloudflare documentation paragraph about authoritative nameserver delegation.\">Keep this Cloudflare documentation paragraph about authoritative nameserver delegation.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p><div id=\"feedback-form-content\"><p data-chrome=\"Was this helpful? Yes No\">Was this helpful? Yes No</p></div></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><p data-keep=\"Keep this Cloudflare documentation paragraph about DNS record propagation timing.\">Keep this Cloudflare documentation paragraph about DNS record propagation timing.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p><aside><div class=\"toc-container\"><h2 data-chrome=\"On this page Overview Features\">On this page Overview Features</h2></div></aside></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><p data-keep=\"Keep this Cloudflare documentation paragraph about anycast routing policies.\">Keep this Cloudflare documentation paragraph about anycast routing policies.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p><a data-chrome=\"View as Markdown\">View as Markdown</a></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><p data-keep=\"Keep this DigitalOcean documentation paragraph about droplet resize operations.\">Keep this DigitalOcean documentation paragraph about droplet resize operations.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p><div class=\"feedback\"><a data-chrome=\"Give Feedback\">Give Feedback</a></div></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><p data-keep=\"Keep this Docusaurus documentation paragraph about notebook runtime versions.\">Keep this Docusaurus documentation paragraph about notebook runtime versions.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p><div class=\"theme-back-to-top-button backToTopButton\"><span data-chrome=\"Back to top\">Back to top</span></div></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><p data-keep=\"Keep this Docusaurus documentation paragraph about configuration options.\">Keep this Docusaurus documentation paragraph about configuration options.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p><div class=\"theme-doc-footer\"><p data-chrome=\"Edit this page on GitHub and tell us what was unclear in this guide.\">Edit this page on GitHub and tell us what was unclear in this guide.</p><p>Last updated by the documentation team.</p></div></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><p data-keep=\"Keep this Docusaurus documentation paragraph about cluster configuration settings.\">Keep this Docusaurus documentation paragraph about cluster configuration settings.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p><div class=\"theme-doc-toc-mobile tocCollapsible\"><p data-chrome=\"On this page Getting started API reference\">On this page Getting started API reference</p></div></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><p data-keep=\"Keep this Grafana documentation paragraph about dashboard provisioning workflows.\">Keep this Grafana documentation paragraph about dashboard provisioning workflows.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p><div class=\"docs__feedback print-hidden\"><h2 data-chrome=\"Was this page helpful? Yes No\">Was this page helpful? Yes No</h2></div></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><p data-keep=\"Keep this Mintlify documentation paragraph about structured output schemas.\">Keep this Mintlify documentation paragraph about structured output schemas.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p><div class=\"feedback-toolbar\"><p data-chrome=\"Was this page helpful? Yes No\">Was this page helpful? Yes No</p></div></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><p data-keep=\"Keep this Mintlify documentation paragraph about streaming response handlers.\">Keep this Mintlify documentation paragraph about streaming response handlers.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p><nav id=\"pagination\"><a data-chrome=\"Install LangChain Next\">Install LangChain Next</a></nav></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><p data-keep=\"Keep this Mintlify documentation paragraph about agent middleware hooks.\">Keep this Mintlify documentation paragraph about agent middleware hooks.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p><ul class=\"toc\" id=\"table-of-contents-content\"><li data-chrome=\"On this page Create an agent Core benefits\">On this page Create an agent Core benefits</li></ul></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><p data-keep=\"Keep this MkDocs Material documentation paragraph about shard allocation awareness.\">Keep this MkDocs Material documentation paragraph about shard allocation awareness.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p><ul><li class=\"edit-this-page\"><a data-chrome=\"Edit this page on GitHub\">Edit this page on GitHub</a></li></ul></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><article><p data-keep=\"Keep this MkDocs Material documentation paragraph about dependency injection patterns.\">Keep this MkDocs Material documentation paragraph about dependency injection patterns.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p><div class=\"md-sidebar md-sidebar--secondary\"><div class=\"md-sidebar__inner\"><p data-chrome=\"On this page Run the code Install FastAPI\">On this page Run the code Install FastAPI</p></div></div></article></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><p data-keep=\"Keep this MkDocs Material documentation paragraph about index lifecycle management.\">Keep this MkDocs Material documentation paragraph about index lifecycle management.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p><ul><li class=\"view-as-markdown\"><a data-chrome=\"View as Markdown\">View as Markdown</a></li></ul></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><p data-keep=\"Keep this Starlight documentation paragraph about edge deployment templates.\">Keep this Starlight documentation paragraph about edge deployment templates.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p><starlight-toc><nav><p data-chrome=\"On this page Overview Deploy to Netlify\">On this page Overview Deploy to Netlify</p></nav></starlight-toc></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><p data-keep=\"Keep this VitePress documentation paragraph about composition API reactivity fundamentals.\">Keep this VitePress documentation paragraph about composition API reactivity fundamentals.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p><div class=\"VPLocalNav\"><span data-chrome=\"Menu On this page\">Menu On this page</span></div></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><div class=\"related-posts\"><p data-chrome=\"Related: Another article you might like from our blog archive.\">Related: Another article you might like from our blog archive.</p><p>Manage your preferences and choose which categories you allow us to use on this website at any time.</p></div><p data-keep=\"Keep this related-content paragraph describing API rate limits for enterprise tenants.\">Keep this related-content paragraph describing API rate limits for enterprise tenants.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><div class=\"social\"><p data-chrome=\"Share on Twitter Facebook LinkedIn\">Share on Twitter Facebook LinkedIn</p><p>Manage your preferences and choose which categories you allow us to use on this website at any time.</p></div><p data-keep=\"Keep this article paragraph about quarterly revenue growth and product roadmap updates.\">Keep this article paragraph about quarterly revenue growth and product roadmap updates.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><div class=\"outbrain\"><p data-chrome=\"Outbrain recommended content widget\">Outbrain recommended content widget</p></div><div class=\"taboola\"><p data-chrome=\"Taboola sponsored links rail\">Taboola sponsored links rail</p></div><p data-keep=\"Keep this ads paragraph about sponsored content labeling requirements.\">Keep this ads paragraph about sponsored content labeling requirements.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><div class=\"byline\"><p data-chrome=\"Byline author credit box\">Byline author credit box</p></div><p data-keep=\"Keep this author paragraph about editorial standards and fact checking process.\">Keep this author paragraph about editorial standards and fact checking process.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><div id=\"disqus_thread\"><p data-chrome=\"Disqus comment thread placeholder\">Disqus comment thread placeholder</p></div><div id=\"respond\"><p data-chrome=\"Leave a reply form header\">Leave a reply form header</p></div><p data-keep=\"Keep this comments-section paragraph about moderation policy and community guidelines.\">Keep this comments-section paragraph about moderation policy and community guidelines.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><div class=\"site-footer\"><p data-chrome=\"Site footer legal links and copyright\">Site footer legal links and copyright</p></div><p data-keep=\"Keep this footer paragraph about terms of service and privacy policy summaries.\">Keep this footer paragraph about terms of service and privacy policy summaries.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><div class=\"newsletter\"><p data-chrome=\"Subscribe to our weekly newsletter digest\">Subscribe to our weekly newsletter digest</p></div><p data-keep=\"Keep this newsletter paragraph about product release notes and changelog summaries.\">Keep this newsletter paragraph about product release notes and changelog summaries.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><div class=\"pagination\"><p data-chrome=\"Page 1 2 3 next pagination controls\">Page 1 2 3 next pagination controls</p></div><p data-keep=\"Keep this pagination paragraph about multi-page article navigation patterns.\">Keep this pagination paragraph about multi-page article navigation patterns.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><div class=\"story-teaser\"><p data-chrome=\"Teaser card linking to another headline\">Teaser card linking to another headline</p></div><div class=\"most-popular\"><p data-chrome=\"Most popular stories from our archive\">Most popular stories from our archive</p></div><p data-keep=\"Keep this related-content paragraph describing API rate limits for enterprise tenants.\">Keep this related-content paragraph describing API rate limits for enterprise tenants.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><div class=\"sociable\"><p data-chrome=\"Share via Sociable plugin toolbar\">Share via Sociable plugin toolbar</p></div><div class=\"viral-share\"><p data-chrome=\"Viral share buttons for this story\">Viral share buttons for this story</p></div><p data-keep=\"Keep this article paragraph about quarterly revenue growth and product roadmap updates.\">Keep this article paragraph about quarterly revenue growth and product roadmap updates.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><div class=\"sidebar\"><p data-chrome=\"Sidebar widget with promotional links\">Sidebar widget with promotional links</p></div><p data-keep=\"Keep this sidebar paragraph about navigation structure and information architecture.\">Keep this sidebar paragraph about navigation structure and information architecture.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><div class=\"back-to-top\"><p data-chrome=\"Back to top floating scroll button\">Back to top floating scroll button</p></div><p data-keep=\"Keep this skip paragraph about accessibility skip links and focus management.\">Keep this skip paragraph about accessibility skip links and focus management.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><div class=\"tag-list\"><p data-chrome=\"Tagged topics cloud navigation list\">Tagged topics cloud navigation list</p></div><p data-keep=\"Keep this tags paragraph about taxonomy metadata and content categorization.\">Keep this tags paragraph about taxonomy metadata and content categorization.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<!DOCTYPE html><html><body><main><div class=\"print-share\"><p data-chrome=\"Print email bookmark share tools\">Print email bookmark share tools</p></div><p data-keep=\"Keep this tools paragraph about print stylesheet and email article features.\">Keep this tools paragraph about print stylesheet and email article features.</p><p>The service stores each configuration in a versioned registry, and every change is validated against the schema before it is applied to running workers.</p><p>Operators can roll back to any earlier version, compare two versions side by side, and export the full history for audit review at any time.</p><p>Rate limits are enforced per tenant and per region, and the limits are reported in the response headers of every request that the gateway accepts.</p></main></body></html>\\n]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[<html><body>\\n<main><p>Fish &amp; chips &lt;b&gt; \"quoted\" 'single' <a href=\"/x?a=1&b=2\">link &amp; <a>nested</a></a></p>\\n<div class='x \"y\"' data-k=\"a'b&quot;c\" hidden data-empty=\"\">  spaced   <br>text<img src=a.png alt=\"\">\\n<pre>  raw\\n text </pre></div><a href=\"#\"></a><a></a><!-- gone --><span>\\xe9 \\xfc \\u4f60\\u597d &nbsp; nbsp</span>\\n<table><tr><td>1</td><td>2</td></tr></table></main><footer>foot <b>er</b></footer>\\n</body></html>]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_stay_valid_for_later_tags_when_visited_tag_is_removed",
+      "status": "passed"
+    }
+  ]
+}
