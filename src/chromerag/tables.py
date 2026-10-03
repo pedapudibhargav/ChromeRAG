@@ -73,6 +73,8 @@ def _table_grid(table: Tag) -> tuple[list[str], list[list[str]]]:
         headers = [_cell_text(c) for c in ths]
         data_trs = [tr for tr in rows if tr.find_parent("thead") is None]
     else:
+        if not rows:  # a <table> without rows (empty or only a caption) has nothing to linearize
+            return headers, body_rows
         first = rows[0]
         cells = first.find_all(["th", "td"])
         if first.find("th") or all(c.name == "th" for c in cells):

@@ -84,3 +84,10 @@ def test_extractor_linearized_table_format() -> None:
     ).extract(html).markdown
     assert "[Table:" in md
     assert "Plan: Team" in md
+
+
+def test_table_without_rows_does_not_crash() -> None:
+    from chromerag import ChromeRAG
+
+    html = "<html><body><main><h1>Page</h1><p>" + "Body text with enough words. " * 30 + "</p><table></table><table><caption>Empty</caption></table></main></body></html>"
+    assert "Body text" in ChromeRAG().extract(html).markdown
