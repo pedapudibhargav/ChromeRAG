@@ -2,7 +2,7 @@
 
 All notable changes to ChromeRAG. Versions follow [Semantic Versioning](https://semver.org/).
 
-## 0.1.4 — unreleased
+## 0.1.4 — 2026-10-03
 
 Output-quality release: better structure, much less leftover chrome, heading-aware chunks. The learned model file is unchanged.
 
