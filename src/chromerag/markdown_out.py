@@ -88,6 +88,46 @@ def _list_lines(el: Tag, depth: int = 0) -> list[str]:
 
 
 _BLOCK_NAMES = ["p", "ul", "ol", "li", "table", "pre", "blockquote", "h1", "h2", "h3", "h4", "h5", "h6", "dl"]
+# Content landmarks only: break open a list that wrongly wraps page body. Nav/aside/footer
+# inside a list are ordinary chrome, not a reason to flatten the whole list.
+_CONTENT_LANDMARKS = frozenset({"main", "article"})
+_CONTENT_WRAPPERS = frozenset({"div", "section"})
+
+
+def _list_is_layout_shell(node: Tag) -> bool:
+    """True when a list wraps page structure rather than a card/related-post list.
+
+    ``main`` anywhere under the list always counts. Multiple ``<li>`` each holding an
+    ``article`` is a card grid and stays an ordinary list.
+    """
+    if node.find("main") is not None:
+        return True
+    art_lis = [li for li in node.find_all("li") if li.find("article") is not None]
+    if len(art_lis) >= 2:
+        return False
+    for child in node.children:
+        if not isinstance(child, Tag):
+            continue
+        if child.name in _CONTENT_LANDMARKS:
+            return True
+        if child.name in _CONTENT_WRAPPERS | {"li"} and child.find(_CONTENT_LANDMARKS) is not None:
+            return True
+    return False
+
+
+def _content_branches(node: Tag) -> list[Tag]:
+    """Direct content landmarks or section/div wrappers around them (skip nav/promo siblings)."""
+    out: list[Tag] = []
+    for child in node.children:
+        if not isinstance(child, Tag):
+            continue
+        if child.name in _CONTENT_LANDMARKS:
+            out.append(child)
+        elif child.name in _CONTENT_WRAPPERS and child.find(_CONTENT_LANDMARKS) is not None:
+            out.append(child)
+        elif child.name == "li":
+            out.extend(_content_branches(child))
+    return out
 
 
 def element_to_markdown(el: Tag, links: bool = True) -> str:
@@ -168,10 +208,19 @@ def soup_to_markdown(
                 _mark(node)
             continue
         if name in {"ul", "ol"}:
+            if _list_is_layout_shell(node):
+                stack[0:0] = _content_branches(node)
+                continue
             if id(node) not in seen:
                 _mark(node)
             continue
         if name == "li":
+            # Expand only under a layout-shell <ul>/<ol>. Orphan carousel <li> cards stay skipped.
+            parent_list = node.find_parent(["ul", "ol"])
+            if parent_list is not None and _list_is_layout_shell(parent_list):
+                branches = _content_branches(node)
+                if branches:
+                    stack[0:0] = branches
             continue
         # Shallow content divs/sections (no nested block children) — common on SPAs
         if name in {"div", "section", "article"}:

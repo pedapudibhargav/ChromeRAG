@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import copy
 import re
+from dataclasses import replace
 from functools import lru_cache
 from typing import Any
 
@@ -58,6 +59,15 @@ from chromerag.treestats import TreeStats
 def estimate_tokens(text: str) -> int:
     """Approximate token count (characters / 4), computed offline."""
     return max(1, len(text) // 4)
+
+
+_FRONT_MATTER_RE = re.compile(r"^---\n.*?\n---\n*", re.S)
+
+
+def _markdown_body_words(md: str) -> int:
+    """Word count of extracted Markdown excluding YAML front matter."""
+    body = _FRONT_MATTER_RE.sub("", md or "", count=1)
+    return len(re.findall(r"\w+", body.lower()))
 
 
 def _body_word_count(soup: BeautifulSoup) -> int:
@@ -438,10 +448,11 @@ class ChromeRAG:
         cfg = _resolve_cfg(self.config, url, html)
         md, meta, result = self._extract_core(html, url, cfg)
         body_words = int(meta["body_words"])
-        out_words = len(re.findall(r"\w+", md.lower()))
+        out_words = _markdown_body_words(md)
         collapsed = result.tokens_estimate < 40 or (
             body_words > 0 and out_words < 0.15 * body_words
         )
+        retry_notes: list[str] = []
         if collapsed and not meta["input_quality"].is_thin:
             coverage_cfg = coverage_fallback(cfg)
             md2, _, result2 = self._extract_core(
@@ -454,13 +465,39 @@ class ChromeRAG:
             )
             if estimate_tokens(md2) > result.tokens_estimate:
                 result = result2
-                result.warnings = list(meta["input_quality"].warnings) + [
+                md = md2
+                out_words = _markdown_body_words(md)
+                retry_notes.append(
                     "Extraction collapsed with detected content root; retried with body root "
                     "and coverage thresholds."
-                ]
-                return result
+                )
+            # Only when output is still near-empty: ratio-vs-body alone is unsafe on
+            # chrome-heavy pages where a solid coverage retry is already << body_words.
+            near_empty = _markdown_body_words(result.markdown) < 40 or estimate_tokens(result.markdown) < 40
+            lbc_dropped = result.n_blocks_in > result.n_blocks_kept
+            if (
+                near_empty
+                and cfg.enable_lbc
+                and self.lbc_model is not None
+                and lbc_dropped
+            ):
+                wide_cfg = replace(coverage_cfg, enable_lbc=False)
+                md3, _, result3 = self._extract_core(
+                    html,
+                    url,
+                    wide_cfg,
+                    force_body_root=True,
+                    input_quality=meta["input_quality"],
+                    front=copy.deepcopy(meta["front"]),
+                )
+                if _markdown_body_words(md3) > _markdown_body_words(result.markdown):
+                    result = result3
+                    retry_notes.append(
+                        "Extraction still collapsed after coverage retry; retried with body root "
+                        "without the learned block filter."
+                    )
 
-        warnings = list(meta["input_quality"].warnings)
+        warnings = list(meta["input_quality"].warnings) + retry_notes
         if (
             not meta["input_quality"].is_thin
             and result.tokens_estimate < 40

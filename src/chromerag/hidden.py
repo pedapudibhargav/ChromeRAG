@@ -6,6 +6,7 @@ import re
 
 from bs4 import BeautifulSoup, Tag
 
+from chromerag.density import NOISE_ID_CLASS_RE, NOISE_TOKENS, _attr_tokens, _attrs_blob
 from chromerag.domutil import all_tags, tags_named
 
 _PROTECTED = frozenset({"html", "body", "main", "article"})
@@ -16,6 +17,18 @@ _SKIP_LINK = re.compile(
     re.I,
 )
 _ARIA_MODAL_TOKENS = frozenset({"modal", "dialog", "popup", "overlay"})
+_CHROME_TAGS = frozenset({"nav", "aside", "header", "footer"})
+_CHROME_ROLES = frozenset({"dialog", "navigation", "menu"})
+# Extra chrome tokens beyond density.NOISE_TOKENS (drawer / off-canvas / dialog).
+_CHROME_EXTRA_TOKENS = frozenset({"drawer", "offcanvas", "dialog"})
+_CHROME_EXTRA_RE = re.compile(r"off-?canvas|drawer", re.I)
+
+_HIDDEN_ARTICLE_MIN_CHARS = 1500
+_HIDDEN_ARTICLE_MAX_LINK_SHARE = 0.25
+# Visible body outside CSS-hidden nodes shorter than one short paragraph means the
+# page has no readable main content yet (SPA/CSS still hiding the real body).
+# 250 chars ≈ 40–50 words; sensitivity checked at half (125) and double (500).
+_HIDDEN_VISIBLE_TOO_THIN = 250
 
 
 def _class_tokens(tag: Tag) -> set[str]:
@@ -28,30 +41,81 @@ def _class_tokens(tag: Tag) -> set[str]:
     return tokens
 
 
-_HIDDEN_ARTICLE_MIN_CHARS = 1500
-_HIDDEN_ARTICLE_MAX_LINK_SHARE = 0.25
-
-
-def _is_hidden_article(tag: Tag) -> bool:
-    """A hidden block with long running text and few links is page content that a script reveals
-    (tab panels, expanders, lazy-shown articles), not a menu or a dialog."""
-    text_len = len(tag.get_text(" ", strip=True))
-    if text_len < _HIDDEN_ARTICLE_MIN_CHARS:
-        return False
-    link_len = sum(len(a.get_text(" ", strip=True)) for a in tag.find_all("a"))
-    return link_len / text_len < _HIDDEN_ARTICLE_MAX_LINK_SHARE
-
-
-def _is_hidden(tag: Tag) -> bool:
+def _is_css_hidden(tag: Tag) -> bool:
     if not getattr(tag, "attrs", None):
         return False
     style = tag.get("style") or ""
     if isinstance(style, list):
         style = " ".join(str(s) for s in style)
     style = str(style)
-    if tag.has_attr("hidden") or _DISPLAY_NONE.search(style) or _VISIBILITY_HIDDEN.search(style):
-        return not _is_hidden_article(tag)
+    return bool(tag.has_attr("hidden") or _DISPLAY_NONE.search(style) or _VISIBILITY_HIDDEN.search(style))
+
+
+def _is_chrome_by_meaning(tag: Tag) -> bool:
+    """True when a node is chrome (nav/chrome tokens/dialog), never to be rescued."""
+    if not isinstance(tag, Tag) or not tag.name:
+        return False
+    if tag.name in _CHROME_TAGS:
+        return True
+    role = ""
+    if getattr(tag, "attrs", None):
+        role = (tag.get("role") or "").lower()
+    if role in _CHROME_ROLES:
+        return True
+    tokens = _attr_tokens(tag)
+    if tokens & NOISE_TOKENS or tokens & _CHROME_EXTRA_TOKENS:
+        return True
+    blob = _attrs_blob(tag)
+    if blob and (NOISE_ID_CLASS_RE.search(blob) or _CHROME_EXTRA_RE.search(blob)):
+        return True
+    return False
+
+
+def _visible_body_chars(body: Tag) -> int:
+    """Chars in ``body`` outside topmost CSS-hidden subtrees (no rescue)."""
+    hidden_roots: list[Tag] = []
+    for tag in all_tags(body):
+        if not isinstance(tag, Tag) or tag.name in _PROTECTED or not _is_css_hidden(tag):
+            continue
+        if any(any(parent is h for h in hidden_roots) for parent in tag.parents):
+            continue
+        hidden_roots.append(tag)
+    total = len(body.get_text(" ", strip=True))
+    hidden = sum(len(h.get_text(" ", strip=True)) for h in hidden_roots)
+    return max(0, total - hidden)
+
+
+def _is_hidden_article(tag: Tag, *, visible_chars: int) -> bool:
+    """A hidden block with long running text is page content that a script reveals
+    (tab panels, expanders, lazy-shown articles), not a menu or a dialog.
+
+    Link-dense hidden blocks are rescued only when visible body text outside hidden
+    nodes is too thin to be the page (no visible main content).
+    """
+    if _is_chrome_by_meaning(tag):
+        return False
+    text_len = len(tag.get_text(" ", strip=True))
+    if text_len < _HIDDEN_ARTICLE_MIN_CHARS:
+        return False
+    link_len = sum(len(a.get_text(" ", strip=True)) for a in tag.find_all("a"))
+    link_share = link_len / text_len
+    if link_share < _HIDDEN_ARTICLE_MAX_LINK_SHARE:
+        return True
+    # Meaning-based dominant rule: only when the unhidden page is not yet a page.
+    if visible_chars < _HIDDEN_VISIBLE_TOO_THIN:
+        return True
+    return False
+
+
+def _is_hidden(tag: Tag, *, visible_chars: int) -> bool:
+    if not getattr(tag, "attrs", None):
+        return False
+    if _is_css_hidden(tag):
+        return not _is_hidden_article(tag, visible_chars=visible_chars)
     if (tag.get("aria-hidden") or "").lower() == "true":
+        # Chrome by meaning is never kept, matching the CSS-hidden rescue policy.
+        if _is_chrome_by_meaning(tag):
+            return True
         text_len = len(tag.get_text(" ", strip=True))
         if text_len < 120 or _class_tokens(tag) & _ARIA_MODAL_TOKENS:
             return True
@@ -59,12 +123,17 @@ def _is_hidden(tag: Tag) -> bool:
 
 
 def remove_hidden_nodes(soup: BeautifulSoup) -> int:
-    """Drop non-rendered subtrees. Returns count removed."""
+    """Drop non-rendered subtrees. Returns count removed.
+
+    Rescued wrappers stay, but nested hidden chrome still decomposes on later visits.
+    """
+    body = soup.body if isinstance(soup.body, Tag) else soup
+    visible_chars = _visible_body_chars(body) if isinstance(body, Tag) else 0
     removed = 0
     for tag in all_tags(soup):
         if not isinstance(tag, Tag) or tag.name in _PROTECTED:
             continue
-        if _is_hidden(tag):
+        if _is_hidden(tag, visible_chars=visible_chars):
             tag.decompose()
             removed += 1
     return removed
