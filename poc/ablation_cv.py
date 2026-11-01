@@ -15,7 +15,6 @@ import os
 import pickle
 import time
 import zlib
-from collections import defaultdict
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -90,6 +89,7 @@ def all_specs() -> list[AblationSpec]:
             AblationSpec("no_generic_chrome", {"enable_generic_chrome": False}),
             AblationSpec("no_rules", {"enable_rules": False}),
             AblationSpec("no_trafilatura_ideas", {"enable_trafilatura_rules": False}),
+            AblationSpec("no_table_rescue", {"lbc_rescue_tables": False}),
             AblationSpec(
                 "filter_only",
                 {
@@ -161,7 +161,7 @@ def _rule_index(spec: AblationSpec):
 
 def _score_page(page, spec: AblationSpec, models: dict):
     from chromerag import ChromeRAG, ContentPriority, PipelineConfig
-    from poc.wcxb import strip_front_matter, snippet_rate, word_f1
+    from poc.wcxb import snippet_rate, strip_front_matter, word_f1
 
     fold = _page_fold(page.url)
     cfg_kw = dict(spec.cfg)

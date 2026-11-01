@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
+import re
+
 from bs4 import BeautifulSoup, Tag
 
+from chromerag.density import NOISE_TOKENS, _attr_tokens
 from chromerag.domutil import tags_named
 
 _MAX_PIPE_COLS = 12
@@ -31,6 +34,8 @@ def _escape_pipe_cell(text: str) -> str:
 _BLOCK_IN_CELL = ("p", "div", "h1", "h2", "h3", "h4", "h5", "h6", "ul", "ol", "blockquote", "pre", "table")
 _TABLE_PARTS = ("table", "thead", "tbody", "tfoot", "tr", "td", "th", "caption")
 _LAYOUT_MIN_PROSE_CELLS = 1
+_CHROME_TABLE_TAGS = frozenset({"nav", "aside", "footer"})
+_NUMERIC_CELL_RE = re.compile(r"^[\s$€£¥]?\s*-?\d[\d,]*(?:\.\d+)?\s*%?\s*$")
 
 
 def _own_rows(table: Tag) -> list[Tag]:
@@ -54,6 +59,70 @@ def is_layout_table(table: Tag) -> bool:
         if len(cell.get_text(" ", strip=True)) > 300:
             return True
     return False
+
+
+# Link-heavy grids (footers, related-product tiles) stay dropped; real data tables sit well below this.
+_DATA_TABLE_MAX_LINK_DENSITY = 0.20
+_DATA_TABLE_MAX_LINK_FRAC = 0.25
+
+
+def table_in_chrome(table: Tag) -> bool:
+    """True when ``table`` or an ancestor is nav/aside/footer or carries chrome class tokens."""
+    node: Tag | None = table
+    while isinstance(node, Tag):
+        if node.name in _CHROME_TABLE_TAGS:
+            return True
+        if _attr_tokens(node) & NOISE_TOKENS:
+            return True
+        parent = node.parent
+        node = parent if isinstance(parent, Tag) else None
+    return False
+
+
+def _looks_numeric(text: str) -> bool:
+    return bool(text) and _NUMERIC_CELL_RE.match(text) is not None
+
+
+def _grid_is_data(headers: list[str], body_rows: list[list[str]], table: Tag) -> bool:
+    """Real tabular data: a header row / ``th`` cells, or at least one numeric cell."""
+    if headers or table.find("th") is not None:
+        return True
+    return any(_looks_numeric(c) for row in body_rows for c in row)
+
+
+def is_rescueable_data_table(table: Tag, link_density: float | None = None) -> bool:
+    """True for a compact data grid worth keeping when its section is kept.
+
+    Requires a header or numeric cells, at least two rows and two columns, rejects layout
+    tables, chrome ancestors, and link-dense grids (footers, related-item tiles).
+    ``link_density`` may be supplied by the caller; otherwise it is computed from the table.
+    """
+    if table_in_chrome(table) or is_layout_table(table):
+        return False
+    headers, body_rows = _table_grid(table)
+    n_rows = (1 if headers else 0) + len(body_rows)
+    if n_rows < 2:
+        return False
+    sample = headers or (body_rows[0] if body_rows else [])
+    ncols = len(sample)
+    if ncols < 2:
+        return False
+    if body_rows and any(len(r) != ncols for r in body_rows):
+        # ragged grids still qualify on max width when headered; use max for the check below
+        ncols = max(ncols, max(len(r) for r in body_rows))
+    if not _grid_is_data(headers, body_rows, table):
+        return False
+    n_cells = max(1, n_rows * ncols)
+    n_links = len(table.find_all("a"))
+    if n_links / n_cells > _DATA_TABLE_MAX_LINK_FRAC:
+        return False
+    if link_density is None:
+        text_len = len(table.get_text(" ", strip=True))
+        if text_len == 0:
+            return False
+        link_len = sum(len(a.get_text(" ", strip=True)) for a in table.find_all("a"))
+        link_density = min(1.0, link_len / max(1, text_len))
+    return link_density <= _DATA_TABLE_MAX_LINK_DENSITY
 
 
 def _unwrap_layout_table(table: Tag) -> None:
@@ -99,14 +168,15 @@ def _cell_is_single_line(text: str) -> bool:
     return "\n" not in text and "\r" not in text
 
 
-def can_render_pipe_table(table: Tag) -> bool:
-    """True when the table is a small rectangular grid suitable for GFM pipe output."""
+def _can_render_pipe_from_grid(
+    table: Tag, headers: list[str], body_rows: list[list[str]]
+) -> bool:
+    """True when a pre-built grid is a small rectangular GFM pipe candidate."""
     if is_layout_table(table) or _has_merged_cells(table):
         return False
-    rows = _own_rows(table)
-    if not rows or len(rows) > _MAX_PIPE_ROWS:
+    n_data = len(body_rows) + (1 if headers else 0)
+    if n_data == 0 or n_data > _MAX_PIPE_ROWS:
         return False
-    headers, body_rows = _table_grid(table)
     if headers:
         ncols = len(headers)
         if ncols > _MAX_PIPE_COLS:
@@ -128,8 +198,13 @@ def can_render_pipe_table(table: Tag) -> bool:
     return bool(headers or body_rows)
 
 
-def render_pipe_table(table: Tag) -> str:
+def can_render_pipe_table(table: Tag) -> bool:
+    """True when the table is a small rectangular grid suitable for GFM pipe output."""
     headers, body_rows = _table_grid(table)
+    return _can_render_pipe_from_grid(table, headers, body_rows)
+
+
+def _render_pipe_from_grid(headers: list[str], body_rows: list[list[str]]) -> str:
     lines: list[str] = []
     if headers:
         lines.append("| " + " | ".join(_escape_pipe_cell(h) for h in headers) + " |")
@@ -146,14 +221,14 @@ def render_pipe_table(table: Tag) -> str:
     return "\n".join(lines)
 
 
-def linearize_table(table: Tag, index: int = 1) -> str:
-    caption = table.find("caption")
-    title = caption.get_text(" ", strip=True) if caption else f"Table {index}"
-
+def render_pipe_table(table: Tag) -> str:
     headers, body_rows = _table_grid(table)
+    return _render_pipe_from_grid(headers, body_rows)
+
+
+def _linearize_from_grid(headers: list[str], body_rows: list[list[str]], title: str) -> str:
     if not headers and not body_rows:
         return ""
-
     lines = [f"[Table: {title}]"]
     for i, row in enumerate(body_rows, start=1):
         if not any(row):
@@ -172,12 +247,22 @@ def linearize_table(table: Tag, index: int = 1) -> str:
     return "\n".join(lines)
 
 
+def linearize_table(table: Tag, index: int = 1) -> str:
+    caption = table.find("caption")
+    title = caption.get_text(" ", strip=True) if caption else f"Table {index}"
+    headers, body_rows = _table_grid(table)
+    return _linearize_from_grid(headers, body_rows, title)
+
+
 def format_table(table: Tag, index: int = 1, *, table_format: str = "markdown") -> str:
-    if table_format == "markdown" and can_render_pipe_table(table):
-        text = render_pipe_table(table)
+    headers, body_rows = _table_grid(table)
+    if table_format == "markdown" and _can_render_pipe_from_grid(table, headers, body_rows):
+        text = _render_pipe_from_grid(headers, body_rows)
         if text:
             return text
-    return linearize_table(table, index=index)
+    caption = table.find("caption")
+    title = caption.get_text(" ", strip=True) if caption else f"Table {index}"
+    return _linearize_from_grid(headers, body_rows, title)
 
 
 def unwrap_layout_tables(soup: BeautifulSoup) -> int:

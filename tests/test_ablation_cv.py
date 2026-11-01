@@ -11,7 +11,8 @@ def test_ablation_config_catalog() -> None:
     assert "filter_only" in names
     assert "rules_only" in names
     assert "stack_stage2" in names
-    assert len(names) == 36
+    assert "no_table_rescue" in names
+    assert len(names) == 37
 
 
 def test_rule_prefix_count() -> None:

@@ -17,7 +17,6 @@ import sys
 import zlib
 from collections import Counter, defaultdict
 from concurrent.futures import ProcessPoolExecutor
-from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 

@@ -50,7 +50,7 @@ from chromerag.models import BlockScore, ExtractResult
 from chromerag.rules_engine import DEFAULT_INDEX, RuleHit, RuleIndex
 from chromerag.schema_fusion import fuse_front_matter
 from chromerag.site_chrome import SiteChromeModel, apply_site_chrome, site_group_key
-from chromerag.tables import replace_tables_with_linearized, unwrap_layout_tables
+from chromerag.tables import is_rescueable_data_table, replace_tables_with_linearized, unwrap_layout_tables
 from chromerag.textio import decode_html
 from chromerag.trafilatura_ideas import apply_trafilatura_ideas
 from chromerag.treestats import TreeStats
@@ -205,6 +205,9 @@ class ChromeRAG:
                 if lead.tag.name in {"p", "div"} and len(lead.text.split()) >= _LBC_LEAD_MIN_WORDS and p >= _LBC_LEAD_MIN:
                     keep[j] = True
                 break
+        tables_rescued = 0
+        if structure and cfg.lbc_rescue_tables and cfg.enable_tables:
+            keep, tables_rescued = self._rescue_data_tables(blocks, keep, stats, root, proba, cfg)
         for block, k in zip(blocks, keep, strict=True):
             if not k:
                 block.tag.decompose()
@@ -218,7 +221,16 @@ class ChromeRAG:
         out_words = float(words[kept_mask].sum())
         exp_p, exp_r = tp / max(out_words, 1.0), tp / max(ref, 1.0)
         exp_f = 2 * exp_p * exp_r / max(exp_p + exp_r, 1e-9)
-        return len(blocks), kept, {"expected_precision": exp_p, "expected_recall": exp_r, "expected_f1": exp_f}
+        return (
+            len(blocks),
+            kept,
+            {
+                "expected_precision": exp_p,
+                "expected_recall": exp_r,
+                "expected_f1": exp_f,
+                "tables_rescued": tables_rescued,
+            },
+        )
 
     @staticmethod
     def _title_block(soup: BeautifulSoup, blocks: list[Any]) -> Any:
@@ -252,6 +264,69 @@ class ChromeRAG:
             if len(words) >= 2 and proba[i] >= _LBC_TITLE_FALLBACK_MIN:
                 return block
         return None
+
+    @staticmethod
+    def _rescue_data_tables(
+        blocks: list[Any],
+        keep: list[bool],
+        stats: TreeStats,
+        content_root: Tag | None,
+        proba: np.ndarray,
+        cfg: PipelineConfig,
+    ) -> tuple[list[bool], int]:
+        """Keep dropped data tables under a kept section heading (same content root).
+
+        Reads the original ``keep`` list so rescues cannot cascade. When a heading and its
+        data table both sit just under the threshold, keeps the pair if the heading would
+        qualify for rescue once the table counted as its body.
+        """
+        base = list(keep)
+        out = list(keep)
+        rescued = 0
+
+        def _in_root(tag: Tag) -> bool:
+            if content_root is None:
+                return True
+            parent: Tag | None = tag
+            while parent is not None:
+                if parent is content_root:
+                    return True
+                parent = parent.parent if isinstance(parent.parent, Tag) else None
+            return False
+
+        def _nearest_heading(i: int) -> int | None:
+            for j in range(i - 1, -1, -1):
+                if blocks[j].tag.name in _HEADING_TAGS:
+                    return j
+            return None
+
+        for i, block in enumerate(blocks):
+            if base[i] or block.tag.name != "table":
+                continue
+            if not _in_root(block.tag):
+                continue
+            if not is_rescueable_data_table(block.tag, stats.link_density(block.tag)):
+                continue
+            h = _nearest_heading(i)
+            if h is None or not _in_root(blocks[h].tag):
+                continue
+            # Nearest heading above was kept (section body, including orphan fill).
+            if base[h]:
+                out[i] = True
+                rescued += 1
+                continue
+            # Pair-rescue: heading in the rescue band, table within its look-ahead window.
+            if not cfg.lbc_rescue_headings:
+                continue
+            p = float(proba[h])
+            if p < _LBC_HEADING_RESCUE_MIN or p >= cfg.lbc_threshold:
+                continue
+            if i - h > 2:
+                continue
+            out[h] = True
+            out[i] = True
+            rescued += 1
+        return out, rescued
 
     def _noise_index(self, cfg: PipelineConfig) -> NoiseAnchorIndex | None:
         if not cfg.enable_dvdf:

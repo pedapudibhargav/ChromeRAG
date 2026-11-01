@@ -34,13 +34,19 @@
   "shared_domain_dev_pages_before_exclusion": 233,
   "near_duplicate_train_ids": [],
   "scikit_learn_version": "1.9.1",
-  "lbc_feature_matrix_pages": 1232,
-  "lbc_extraction_failed_ids": ["0638", "4020", "4147", "4278", "4314", "4838"],
+  "lbc_feature_matrix_pages": 1233,
+  "lbc_extraction_failed_ids": [
+    "0638",
+    "4147",
+    "4278",
+    "4314",
+    "4838"
+  ],
   "shipped_lbc_stage1_npz": {
     "path": "src/chromerag/assets/lbc_stage1.npz",
-    "bytes": 152978,
-    "sha256": "29760f65624015169d5980442209f666a6093803a22b8b9ca08b6e9294464367",
-    "verified_against": "data/outputs/lbc/verify_model/lbc_stage1.npz",
+    "bytes": 152432,
+    "sha256": "2e2fecb9386da21a75442373dbdc323b5284ffd5e95b1593f1290807c0265c8e",
+    "verified_against": "data/outputs/lbc/verify_a/lbc_stage1.npz",
     "verified_match": true
   },
   "fitted_artifacts": [

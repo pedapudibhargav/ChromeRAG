@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 import time
 import zlib
@@ -96,6 +97,8 @@ def _summarize(rows: list[dict[str, Any]], key: str = "f1") -> dict[str, Any]:
 
 
 def _score_one(row: dict[str, Any]) -> dict[str, Any]:
+    from poc.table_loss_survey import table_tokens_from_html
+
     fold = fold_for(row["url"])
     model = _fold_model(fold)
     out: dict[str, Any] = {
@@ -106,16 +109,25 @@ def _score_one(row: dict[str, Any]) -> dict[str, Any]:
         "modes": {},
         "ms": {},
     }
+    html_toks = table_tokens_from_html(row["html"])
+    gold = {w.lower() for w in re.findall(r"\b\w+\b", row["ref"]) if len(w) > 1}
+    html_in_gold = html_toks & gold
     for name, priority in PRIORITIES:
         cfg = PipelineConfig.from_priority(priority)
         rag = ChromeRAG(config=cfg, lbc_model=model)
         t0 = time.perf_counter()
         try:
-            md = strip_front_matter(rag.extract(row["html"], url=row["url"]).markdown)
+            result = rag.extract(row["html"], url=row["url"])
+            md = strip_front_matter(result.markdown)
+            tables_rescued = int((result.diagnostics.get("lbc") or {}).get("tables_rescued") or 0)
         except Exception:
             md = ""
+            tables_rescued = 0
         ms = (time.perf_counter() - t0) * 1000.0
         p, r, f1 = word_f1(md, row["ref"])
+        kept = {w.lower() for w in re.findall(r"\b\w+\b", md) if len(w) > 1}
+        lost = html_in_gold - kept
+        table_ret = (1 - len(lost) / len(html_in_gold)) if html_in_gold else None
         out["modes"][name] = {
             "p": p,
             "r": r,
@@ -123,6 +135,8 @@ def _score_one(row: dict[str, Any]) -> dict[str, Any]:
             "without": snippet_rate(md, row["without"]),
             "words": len(md.split()),
             "ms": ms,
+            "table_retention": table_ret,
+            "tables_rescued": tables_rescued,
         }
         out["ms"][name] = ms
     return out
@@ -139,14 +153,19 @@ def _agg_mode(scored: list[dict], mode: str) -> dict[str, Any]:
             "f1": s["modes"][mode]["f1"],
             "without": s["modes"][mode]["without"],
             "ms": s["modes"][mode]["ms"],
+            "table_retention": s["modes"][mode].get("table_retention"),
+            "tables_rescued": s["modes"][mode].get("tables_rescued", 0),
         }
         for s in scored
     ]
+    ret_vals = [r["table_retention"] for r in rows if r["table_retention"] is not None]
     overall = {
         "mean_f1": float(np.mean([r["f1"] for r in rows])),
         "mean_precision": float(np.mean([r["p"] for r in rows])),
         "mean_recall": float(np.mean([r["r"] for r in rows])),
         "mean_without": float(np.mean([r["without"] for r in rows])),
+        "mean_table_retention": float(np.mean(ret_vals)) if ret_vals else None,
+        "tables_rescued_total": int(sum(r["tables_rescued"] for r in rows)),
         "f1_under_0_1": int(sum(1 for r in rows if r["f1"] < 0.1)),
         "ms_median": float(np.median([r["ms"] for r in rows])),
         "ms_p99": float(np.percentile([r["ms"] for r in rows], 99)),
