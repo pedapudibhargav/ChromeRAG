@@ -204,7 +204,7 @@ def fig_frontier(final: dict) -> str:
         if xmin <= r <= xmax and ymin <= p <= ymax:
             pts.append((float(t), r, p))
     pts.sort()
-    body.append('<polyline points="' + " ".join(f"{sx(r):.1f},{sy(p):.1f}" for _, r, p in pts) + f'" fill="none" stroke="#2a78d6" stroke-width="1.6"/>')
+    body.append('<polyline points="' + " ".join(f"{sx(r):.1f},{sy(p):.1f}" for _, r, p in pts) + '" fill="none" stroke="#2a78d6" stroke-width="1.6"/>')
     for t, r, p in pts:
         body.append(f'<circle cx="{sx(r):.1f}" cy="{sy(p):.1f}" r="2.6" fill="#2a78d6" stroke="{SURFACE}" stroke-width="0.8"/>')
         body.append(_text(sx(r) + 4, sy(p) - 3, f"{t:.2f}", size=6, fill=INK_2))

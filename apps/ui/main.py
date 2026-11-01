@@ -12,9 +12,9 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
-from poc.baselines import BASELINES, estimate_tokens, noise_keyword_hits
 from chromerag import ChromeRAG
-from chromerag.config import ContentPriority, PipelineConfig, Strictness
+from chromerag.config import ContentPriority, PipelineConfig
+from poc.baselines import BASELINES, estimate_tokens, noise_keyword_hits
 
 ROOT = Path(__file__).resolve().parents[2]
 RAW = ROOT / "data" / "raw"

@@ -2,7 +2,13 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
+
+
+def path_key(path: str | Path) -> str:
+    """Normalize path strings for URL lookup (forward slashes on all platforms)."""
+    return Path(path).as_posix()
 
 
 def flat(value: Any) -> str | int | float | bool | None:

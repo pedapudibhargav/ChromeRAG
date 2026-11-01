@@ -42,7 +42,7 @@ def loader_module(monkeypatch: pytest.MonkeyPatch) -> types.ModuleType:
 def test_loader_moves_front_matter_into_metadata(loader_module: types.ModuleType) -> None:
     path = EXAMPLES / "pricing.html"
     url = "https://docs.example.com/docs/pricing"
-    docs = loader_module.ChromeRAGLoader([path], urls={str(path): url}).load()
+    docs = loader_module.ChromeRAGLoader([path], urls={path.as_posix(): url}).load()
     assert len(docs) == 1
     doc = docs[0]
     assert doc.metadata["source"] == url

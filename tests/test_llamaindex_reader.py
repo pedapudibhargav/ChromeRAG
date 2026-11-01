@@ -15,7 +15,7 @@ FIXTURES = Path(__file__).parent / "fixtures"
 
 def test_reader_returns_markdown_and_source() -> None:
     path = FIXTURES / "docs_page.html"
-    docs = ChromeRAGReader().load_data([path], urls={str(path): "https://docs.example.com/x"})
+    docs = ChromeRAGReader().load_data([path], urls={path.as_posix(): "https://docs.example.com/x"})
     assert len(docs) == 1
     assert docs[0].metadata["source"] == "https://docs.example.com/x"
     assert docs[0].text.strip()

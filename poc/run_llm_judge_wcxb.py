@@ -18,7 +18,7 @@ from pathlib import Path
 
 from poc.baselines import BASELINES
 from poc.openai_client import BudgetExceeded, OpenAI, spent
-from poc.run_llm_judge import MODEL, SEED, SWAP_SHARE, SYSTEM, _FRONT_MATTER, _judge, summarize, visible_text
+from poc.run_llm_judge import _FRONT_MATTER, MODEL, SEED, SWAP_SHARE, _judge, summarize, visible_text
 from poc.wcxb import load_split
 
 ROOT = Path(__file__).resolve().parents[1]

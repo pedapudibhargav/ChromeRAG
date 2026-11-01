@@ -8,17 +8,18 @@ from __future__ import annotations
 import argparse
 import glob
 import json
-from collections import defaultdict
 from pathlib import Path
 
 import numpy as np
 
+_JUDGE_RNG = np.random.default_rng(0)
+
 
 def load(dir_: str, name: str):
-    key = json.loads((Path(dir_) / "key" / f"{name}.json").read_text())
+    key = json.loads((Path(dir_) / "key" / f"{name}.json").read_text(encoding="utf-8"))
     rows = []
     for f in sorted(glob.glob(f"{dir_}/results/{name}_[0-9]*.json")):
-        for r in json.loads(Path(f).read_text()):
+        for r in json.loads(Path(f).read_text(encoding="utf-8")):
             k = key.get(r["pid"])
             if not k:
                 continue
@@ -32,7 +33,9 @@ def load(dir_: str, name: str):
     return rows
 
 
-def summarize(rows, rng=np.random.default_rng(0)):
+def summarize(rows, rng=None):
+    if rng is None:
+        rng = _JUDGE_RNG
     out = {}
     types = sorted({r["type"] for r in rows})
     for t in [*types, "ALL"]:
@@ -40,11 +43,14 @@ def summarize(rows, rng=np.random.default_rng(0)):
         if not rs:
             continue
         w = sum(r["winner"] == "chromerag" for r in rs)
-        l = sum(r["winner"] == "trafilatura" for r in rs)
+        losses = sum(r["winner"] == "trafilatura" for r in rs)
         score = np.array([1 if r["winner"] == "chromerag" else -1 if r["winner"] == "trafilatura" else 0 for r in rs], float)
         bs = [score[rng.integers(0, len(score), len(score))].mean() for _ in range(4000)]
-        mean = lambda k: float(np.mean([r[k] for r in rs if isinstance(r[k], (int, float))]))
-        out[t] = {"n": len(rs), "wins": w, "losses": l, "ties": len(rs) - w - l, "net": float(score.mean()),
+
+        def mean(k: str) -> float:
+            return float(np.mean([r[k] for r in rs if isinstance(r[k], (int, float))]))
+
+        out[t] = {"n": len(rs), "wins": w, "losses": losses, "ties": len(rs) - w - losses, "net": float(score.mean()),
                   "net_ci95": [float(np.percentile(bs, 2.5)), float(np.percentile(bs, 97.5))],
                   "content_ours": mean("content_ours"), "content_traf": mean("content_traf"),
                   "chrome_ours": mean("chrome_ours"), "chrome_traf": mean("chrome_traf")}
@@ -64,7 +70,7 @@ def main() -> None:
     for t, v in s.items():
         print(f"{t:14s}{v['n']:5d}{v['wins']:5d}{v['losses']:5d}{v['ties']:5d}  {v['net']:+.2f} [{v['net_ci95'][0]:+.2f},{v['net_ci95'][1]:+.2f}]   {v['content_ours']:.2f}/{v['content_traf']:.2f}        {v['chrome_ours']:.2f}/{v['chrome_traf']:.2f}")
     if a.out:
-        Path(a.out).write_text(json.dumps({"summary": s, "judgements": rows}, indent=1))
+        Path(a.out).write_text(json.dumps({"summary": s, "judgements": rows}, indent=1), encoding="utf-8")
 
 
 if __name__ == "__main__":

@@ -11,9 +11,9 @@ sequence occurs in it). Rows are weighted by word count because the benchmark sc
 from __future__ import annotations
 
 import argparse
-from pathlib import Path
 import zlib
 from concurrent.futures import ProcessPoolExecutor
+from pathlib import Path
 
 import numpy as np
 

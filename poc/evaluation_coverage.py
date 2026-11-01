@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import csv
 import json
-from collections import Counter, defaultdict
+from collections import Counter
 from pathlib import Path
 from urllib.parse import urlparse
 

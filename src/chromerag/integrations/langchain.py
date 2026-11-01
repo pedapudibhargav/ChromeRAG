@@ -22,7 +22,7 @@ from typing import Any
 
 from chromerag.config import ContentPriority, PipelineConfig
 from chromerag.extractor import ChromeRAG
-from chromerag.integrations._metadata import flat
+from chromerag.integrations._metadata import flat, path_key
 from chromerag.site_chrome import SiteChromeModel
 
 try:
@@ -51,7 +51,7 @@ class ChromeRAGLoader(BaseLoader):
     ) -> None:
         paths = [file_paths] if isinstance(file_paths, (str, Path)) else list(file_paths)
         self.file_paths = [Path(p) for p in paths]
-        self.urls = {str(Path(k)): v for k, v in (urls or {}).items()}
+        self.urls = {path_key(k): v for k, v in (urls or {}).items()}
         self.extractor = ChromeRAG(
             config=PipelineConfig.from_priority(priority), site_chrome=site_chrome
         )
@@ -60,7 +60,7 @@ class ChromeRAGLoader(BaseLoader):
 
     def lazy_load(self) -> Iterator[Document]:
         for path in self.file_paths:
-            url = self.urls.get(str(path))
+            url = self.urls.get(path.as_posix())
             html = path.read_text(encoding=self.encoding, errors="replace")
             result = self.extractor.extract(html, url=url)
             if self.skip_thin and result.input_quality.get("is_thin"):
