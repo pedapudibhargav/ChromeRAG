@@ -43,14 +43,14 @@ def page_domain(page) -> str:
 def build() -> dict:
     psl = load_psl()
     dev = [p for p in load_split("dev") if len(tokenize(p.main_content)) >= 30]
-    test = [p for p in load_split("test") if len(tokenize(p.main_content)) >= 30]
+    test_pages = load_split("test")
     leaked = frozenset(json.loads(LEAKED.read_text(encoding="utf-8")))
 
     counts_by_type = Counter(p.page_type for p in dev)
     start_n = len(dev)
     start_by_type = dict(counts_by_type)
 
-    test_domains = {page_domain(p) for p in test if page_domain(p)}
+    test_domains = {page_domain(p) for p in test_pages if page_domain(p)}
     shared_domain_pages = [p for p in dev if page_domain(p) in test_domains]
 
     ids = {p.id for p in dev}
@@ -60,7 +60,7 @@ def build() -> dict:
     after_domain = {p.id for p in dev if p.id in after_leak and page_domain(p) not in test_domains}
     removed_domain = after_leak - after_domain
 
-    test_shingles = [(p.id, _shingles(p.main_content)) for p in test]
+    test_shingles = [(p.id, _shingles(p.main_content)) for p in test_pages]
     near_dup_ids: list[str] = []
     kept = set(after_domain)
     for p in dev:

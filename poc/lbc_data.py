@@ -80,14 +80,17 @@ def _one(page):
     return page.id, page.page_type, half(site), rows["X"], y, w, [len(t) for t in rows["texts"]], rows["box"], zlib.crc32(site.encode()) % 5
 
 
-def build(split: str, out: str, ids_path: str | None = None) -> None:
+def build(split: str, out: str, ids_path: str | None = None, jobs: int | None = None) -> None:
     pages = list(load_split(split))
     if ids_path:
         allow = frozenset(json.loads(Path(ids_path).read_text(encoding="utf-8")))
         pages = [p for p in pages if p.id in allow]
     pages = [p for p in pages if len(tokenize(p.main_content)) >= 30]
-    with ProcessPoolExecutor() as pool:
-        results = [r for r in pool.map(_one, pages, chunksize=8) if r is not None]
+    if jobs == 1:
+        results = [r for r in map(_one, pages) if r is not None]
+    else:
+        with ProcessPoolExecutor(max_workers=jobs) as pool:
+            results = [r for r in pool.map(_one, pages, chunksize=8) if r is not None]
     X = np.concatenate([r[3] for r in results])
     y = np.concatenate([r[4] for r in results])
     w = np.concatenate([r[5] for r in results])
@@ -108,8 +111,9 @@ def main() -> None:
     ap.add_argument("--split", default="dev")
     ap.add_argument("--ids", default=None, help="JSON list of page ids to include")
     ap.add_argument("--out", default="data/outputs/lbc/lbc_dev.npz")
+    ap.add_argument("--jobs", type=int, default=None, help="worker processes (1 = in-process sequential)")
     a = ap.parse_args()
-    build(a.split, a.out, a.ids)
+    build(a.split, a.out, a.ids, a.jobs)
 
 
 if __name__ == "__main__":

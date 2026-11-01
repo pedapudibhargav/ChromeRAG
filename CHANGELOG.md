@@ -2,6 +2,13 @@
 
 All notable changes to ChromeRAG. Versions follow [Semantic Versioning](https://semver.org/).
 
+## 0.1.5 — 2026-11-01
+
+### Changed
+- Retrained `assets/lbc_stage1.npz` on a strict WCXB development subset: leaked dev/test duplicates removed, any page whose registrable domain appears on the test split removed (Public Suffix List), and a fixed 0.8 Jaccard near-duplicate guard against test reference text. Training did not use test labels or scores.
+- Added pipeline stage switches for ablation (`enable_generic_chrome`, `enable_chrome_prune`, `enable_trafilatura_rules`, `enable_lbc_structure_rules`, `enable_lbc_stage2`; existing `enable_lbc`, `enable_rules`, and Trafilatura micro-flags unchanged at default).
+- Pinned `[train]` optional dependency to scikit-learn 1.9.x (training environment used 1.9.1).
+
 ## 0.1.4 — 2026-10-03
 
 Output-quality release: better structure, much less leftover chrome, heading-aware chunks. The learned model file is unchanged.

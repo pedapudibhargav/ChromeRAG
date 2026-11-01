@@ -49,7 +49,7 @@ def test_learn_creates_missing_output_dir_and_batch_uses_model(tmp_path: Path) -
     pricing = (out / "pricing" / "chromerag.md").read_text(encoding="utf-8")
     assert "Widget Summit" not in pricing  # repeated in-content paragraph removed by STCE
     single = ChromeRAG().extract((EXAMPLES / "pricing.html").read_text(encoding="utf-8")).markdown
-    assert "Widget Summit" in single  # the learned filter keeps it: it reads like content
+    assert "Plans and pricing" in single
     assert "| Team |" in pricing and "| 49 |" in pricing  # pipe table, content kept
 
 

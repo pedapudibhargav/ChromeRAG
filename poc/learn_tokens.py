@@ -19,9 +19,8 @@ import hashlib
 import json
 import re
 from collections import Counter, defaultdict
-from urllib.parse import urlparse
-
 from pathlib import Path
+from urllib.parse import urlparse
 
 from bs4 import Tag
 
