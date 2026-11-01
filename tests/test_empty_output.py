@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import numpy as np
+from bs4 import BeautifulSoup
 
 from chromerag import ChromeRAG, ContentPriority, PipelineConfig
 from chromerag.density import looks_like_noise, parse_html, prune_noise_subtrees
@@ -328,3 +329,217 @@ def test_third_pass_skipped_when_lbc_dropped_nothing() -> None:
     )
     result = rag.extract(html)
     assert not any("without the learned block filter" in w for w in result.warnings)
+
+
+def test_whitespace_only_emphasis_keeps_word_separation() -> None:
+    from chromerag.density import parse_html
+    from chromerag.markdown_out import _inline
+
+    bold = _inline(parse_html("<p>Private clouds<b> </b>are cool</p>").find("p"))
+    italic = _inline(parse_html("<p>Private clouds<em> </em>are cool</p>").find("p"))
+    assert "****" not in bold
+    assert "**" not in bold
+    assert "clouds are" in bold
+    assert italic == "Private clouds are cool" or (
+        "clouds are" in italic and italic.count("*") == 0
+    )
+
+
+def test_adjacent_bold_tags_do_not_glue_markers() -> None:
+    from chromerag.density import parse_html
+    from chromerag.markdown_out import _inline
+
+    text = _inline(parse_html("<p><b>foo</b><b>bar</b></p>").find("p"))
+    assert "****" not in text
+    assert "foo" in text and "bar" in text
+
+
+def test_break_span_separates_joined_sentences() -> None:
+    from chromerag.density import parse_html
+    from chromerag.markdown_out import _inline
+
+    text = _inline(
+        parse_html('<p>emotional regulation.<span class="br"></span>The brain can change</p>').find("p")
+    )
+    assert "regulation.The" not in text
+    assert "regulation." in text and "The brain" in text
+
+
+def test_duplicate_h1_emitted_once() -> None:
+    html = """<!doctype html><html><body><main>
+    <h1>Same Title Page Heading</h1>
+    <p>First body paragraph with enough words for extraction thresholds easily today.</p>
+    <h1>Same Title Page Heading</h1>
+    <p>Second body paragraph with enough words for extraction thresholds easily today.</p>
+    </main></body></html>"""
+    md = ChromeRAG(config=PipelineConfig(enable_dvdf=False, enable_lbc=False)).extract(html).markdown
+    assert md.count("# Same Title Page Heading") == 1
+
+
+def test_js_shell_warning_cleared_when_body_has_prose() -> None:
+    # Noscript-held article text is extracted, so a JS-shell warning must not stick.
+    prose = "Certificate renewal steps for ACME clients that order chains from the authority. " * 20
+    html = f"""<!doctype html><html><body>
+    <div id="root"></div>
+    <noscript><main><h1>Forum topic</h1><p>{prose}</p></main></noscript>
+    <script>{"x" * 2000}</script>
+    </body></html>"""
+    result = ChromeRAG(config=PipelineConfig(enable_dvdf=False, enable_lbc=False)).extract(html)
+    assert "Certificate renewal" in result.markdown
+    assert not any("JavaScript-rendered shell" in w for w in result.warnings)
+
+
+def test_empty_body_warns_using_body_words_not_front_matter_tokens() -> None:
+    # Chrome-only body still yields body_words before prune; front matter keeps tokens high.
+    prose = "Roasted coffee beans sold by the bag since 2012 for fans of bold flavor everywhere. "
+    links = " ".join(f'<a href="/p/{i}">Shop product number {i} today</a>' for i in range(50))
+    html = f"""<!doctype html><html><head>
+    <title>Shop Coffee Collection Storefront</title>
+    <meta name="description" content="{prose * 3}">
+    <script type="application/ld+json">{{
+      "@context":"https://schema.org","@type":"CollectionPage",
+      "name":"Shop Coffee Collection Storefront",
+      "description":"{prose * 3}",
+      "url":"https://example.com/collections/coffee"
+    }}</script>
+    </head><body>
+    <main id="MainContent" class="content-for-layout"></main>
+    <nav class="menu" role="navigation">{links}</nav>
+    <footer class="site-footer">{links}</footer>
+    </body></html>"""
+    result = ChromeRAG(
+        config=PipelineConfig.from_priority(ContentPriority.BALANCED),
+        lbc_model=_DropAllModel(),  # type: ignore[arg-type]
+    ).extract(html, url="https://example.com/collections/coffee")
+    body = result.markdown
+    if body.startswith("---"):
+        body = body.split("---", 2)[-1]
+    import re
+
+    assert len(re.findall(r"\w+", body)) < 40
+    assert result.tokens_estimate >= 40  # front matter alone can look "large"
+    assert any("very little Markdown" in w for w in result.warnings)
+
+
+def test_rules_never_drop_html_body_main_or_content_root() -> None:
+    from chromerag.density import parse_html
+    from chromerag.rules_engine import Rule, RuleIndex
+    from chromerag.treestats import TreeStats
+
+    html = """<!doctype html><html class="evil"><body class="evil"><main class="evil" id="root">
+    <p>Keep this article paragraph with enough words for extraction thresholds.</p>
+    <div class="evil">Drop me chrome</div>
+    </main></body></html>"""
+    soup = parse_html(html)
+    main = soup.find("main")
+    assert main is not None
+    rules = [
+        Rule(
+            id="test.drop_evil",
+            action="drop",
+            scope="anywhere",
+            match=[{"class_token": "evil"}],
+            max_chars=100000,
+            evidence="synthetic",
+            fixture="n/a",
+        )
+    ]
+    idx = RuleIndex(rules)
+    idx.apply(soup, content_root=main, page_type="article", stats=TreeStats(soup.body or soup))
+    assert soup.find("html") is not None
+    assert soup.find("body") is not None
+    assert soup.find("main") is not None
+    assert "Keep this article paragraph" in soup.get_text(" ", strip=True)
+
+
+def test_table_rescue_skips_repeat_dropped_duplicate() -> None:
+    import numpy as np
+
+    from chromerag.blockfeatures import Block
+    from chromerag.density import parse_html
+    from chromerag.extractor import ChromeRAG as Extractor
+    from chromerag.tables import is_rescueable_data_table
+    from chromerag.treestats import TreeStats
+
+    cell = "Team plan with forty nine dollars monthly for shared seats"
+    html = f"""<html><body><main>
+    <h2>Specs</h2>
+    <table><tr><th>Plan</th><th>Price</th></tr><tr><td>{cell}</td><td>49</td></tr></table>
+    <h2>Other</h2>
+    <table><tr><th>Plan</th><th>Price</th></tr><tr><td>{cell}</td><td>49</td></tr></table>
+    </main></body></html>"""
+    soup = parse_html(html)
+    body = soup.body
+    assert body is not None
+    tables = soup.find_all("table")
+    assert all(is_rescueable_data_table(t) for t in tables)
+    blocks = [
+        Block(soup.find("h2"), "Specs"),
+        Block(tables[0], tables[0].get_text(" ", strip=True)),
+        Block(soup.find_all("h2")[1], "Other"),
+        Block(tables[1], tables[1].get_text(" ", strip=True)),
+    ]
+    # First table kept; second identical text was repeat-dropped.
+    keep = [True, True, True, False]
+    proba = np.array([0.9, 0.2, 0.9, 0.2])
+    out, n = Extractor._rescue_data_tables(
+        blocks, keep, TreeStats(body), soup.find("main"), proba, PipelineConfig()
+    )
+    assert out[3] is False
+    assert n == 0
+
+
+def test_main_dl_and_figure_render_in_markdown() -> None:
+    html = """<!doctype html><html><body><main>
+    <h2>Glossary</h2>
+    <dl><dt>Term</dt><dd>Definition with enough words for the block classifier.</dd></dl>
+    <figure><img alt="diagram"><figcaption>Figure caption explaining the diagram.</figcaption></figure>
+    <p>Supporting paragraph with enough words for extraction thresholds easily today.</p>
+    </main></body></html>"""
+    md = ChromeRAG(config=PipelineConfig(enable_dvdf=False, enable_lbc=False)).extract(html).markdown
+    assert "**Term**" in md and "Definition with enough words" in md
+    assert "Figure caption explaining" in md
+
+
+def test_large_main_table_keeps_at_least_thirty_thousand_rows() -> None:
+    import time
+
+    rows = "".join(f"<tr><td>A{i}</td><td>B{i}</td></tr>" for i in range(30000))
+    html = (
+        "<html><body><main><table><tr><th>A</th><th>B</th></tr>"
+        + rows
+        + "</table></main></body></html>"
+    )
+    start = time.perf_counter()
+    md = ChromeRAG(config=PipelineConfig(enable_dvdf=False, enable_lbc=False)).extract(html).markdown
+    assert time.perf_counter() - start < 5.0
+    assert "A29999" in md and "B29999" in md
+    assert "[Table truncated after" not in md
+
+
+def _wrapped_page(inner: str) -> str:
+    body = "<p>" + "Alpha beta gamma delta epsilon zeta eta theta iota kappa. " * 30 + "</p>"
+    return f"<html><body><main><h1>Topic heading</h1>{body}{inner}{body}</main></body></html>"
+
+
+def test_figure_wrapping_content_keeps_the_content():
+    from chromerag.markdown_out import soup_to_markdown
+
+    soup = BeautifulSoup("<figure><p>Wrapped body words here.</p><figcaption>Cap text</figcaption></figure>", "lxml")
+    md = soup_to_markdown(soup)
+    assert "Wrapped body words here." in md and "Cap text" in md
+
+
+def test_dl_wrapping_blocks_keeps_every_block():
+    from chromerag.markdown_out import soup_to_markdown
+
+    soup = BeautifulSoup("<dl><dd><p>First para here.</p><p>Second para here.</p></dd></dl>", "lxml")
+    md = soup_to_markdown(soup)
+    assert "First para here." in md and "Second para here." in md
+
+
+def test_large_table_keeps_every_row():
+    rows = "".join(f"<tr><td>r{i}</td><td>CELL{i}x</td></tr>" for i in range(5000))
+    html = _wrapped_page(f"<h2>Data</h2><table><tr><th>a</th><th>b</th></tr>{rows}</table>")
+    md = ChromeRAG().extract(html).markdown
+    assert all(f"CELL{i}x" in md for i in (0, 2500, 4999))

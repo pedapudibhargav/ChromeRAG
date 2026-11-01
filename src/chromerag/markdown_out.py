@@ -16,20 +16,58 @@ def front_matter_yaml(data: dict) -> str:
     return f"---\n{dumped}\n---\n\n"
 
 
-def _inline(el: Tag | NavigableString, links: bool = True) -> str:
+_BREAK_CLASS_TOKENS = frozenset({"br", "linebreak", "line-break", "newline"})
+_INLINE_DEPTH_CAP = 4000
+trim_notes: list[str] = []
+
+
+def consume_trim_notes() -> list[str]:
+    out = list(trim_notes)
+    trim_notes.clear()
+    return out
+
+
+def _class_tokens(el: Tag) -> set[str]:
+    raw = el.get("class") or []
+    if isinstance(raw, str):
+        raw = raw.split()
+    return {str(c).lower() for c in raw}
+
+
+def _emph_wrap(marker: str, inner: str) -> str:
+    if not inner.strip():
+        return inner if inner else ""
+    return f"{marker}{inner.strip()}{marker}"
+
+
+def _break_adjacent_markers(text: str) -> str:
+    if "****" not in text:
+        return text
+    prev = None
+    while prev != text:
+        prev = text
+        text = text.replace("****", "** **")
+    return text
+
+
+def _inline(el: Tag | NavigableString, links: bool = True, _depth: int = 0) -> str:
     if isinstance(el, NavigableString):
         return str(el)
     if not isinstance(el, Tag):
         return ""
+    if _depth > _INLINE_DEPTH_CAP:
+        if not trim_notes:
+            trim_notes.append("Deep inline nesting was truncated during Markdown rendering.")
+        return el.get_text(" ", strip=True)[:200]
     name = el.name or ""
     if name in {"script", "style"}:
         return ""
-    if name == "br":
+    if name == "br" or (name == "span" and _class_tokens(el) & _BREAK_CLASS_TOKENS):
         return "\n"
     if name in {"strong", "b"}:
-        return f"**{''.join(_inline(c, links) for c in el.children).strip()}**"
+        return _emph_wrap("**", "".join(_inline(c, links, _depth + 1) for c in el.children))
     if name in {"em", "i"}:
-        return f"*{' '.join(_inline(c, links) for c in el.children).strip()}*"
+        return _emph_wrap("*", "".join(_inline(c, links, _depth + 1) for c in el.children))
     if name == "code" and el.parent and el.parent.name != "pre":
         return f"`{el.get_text()}`"
     if name == "a":
@@ -38,7 +76,7 @@ def _inline(el: Tag | NavigableString, links: bool = True) -> str:
         if links and href and text:
             return f"[{text}]({href})"
         return text
-    return "".join(_inline(c, links) for c in el.children)
+    return _break_adjacent_markers("".join(_inline(c, links, _depth + 1) for c in el.children))
 
 
 def _is_pipe_table(text: str) -> bool:
@@ -87,7 +125,24 @@ def _list_lines(el: Tag, depth: int = 0) -> list[str]:
     return lines
 
 
-_BLOCK_NAMES = ["p", "ul", "ol", "li", "table", "pre", "blockquote", "h1", "h2", "h3", "h4", "h5", "h6", "dl"]
+_BLOCK_NAMES = [
+    "p",
+    "ul",
+    "ol",
+    "li",
+    "table",
+    "pre",
+    "blockquote",
+    "h1",
+    "h2",
+    "h3",
+    "h4",
+    "h5",
+    "h6",
+    "dl",
+    "figure",
+    "figcaption",
+]
 # Content landmarks only: break open a list that wrongly wraps page body. Nav/aside/footer
 # inside a list are ordinary chrome, not a reason to flatten the whole list.
 _CONTENT_LANDMARKS = frozenset({"main", "article"})
@@ -130,13 +185,44 @@ def _content_branches(node: Tag) -> list[Tag]:
     return out
 
 
+def _dl_to_markdown(el: Tag, links: bool = True) -> str:
+    lines: list[str] = []
+    term: str | None = None
+    for child in el.children:
+        if not isinstance(child, Tag):
+            continue
+        if child.name == "dt":
+            term = child.get_text(" ", strip=True)
+        elif child.name == "dd":
+            defin = _break_adjacent_markers("".join(_inline(c, links) for c in child.children)).strip()
+            if defin:
+                lines.append(f"- **{term}**: {defin}" if term else f"- {defin}")
+            elif term:
+                lines.append(f"- **{term}**")
+            term = None
+    if term:
+        lines.append(f"- **{term}**")
+    if lines:
+        return "\n".join(lines) + "\n\n"
+    text = el.get_text(" ", strip=True)
+    return f"{text}\n\n" if text else ""
+
+
+_DL_BLOCK_CHILDREN = ("p", "ul", "ol", "table", "pre", "blockquote", "div", "section", "dl", "h1", "h2", "h3", "h4", "h5", "h6")
+
+
+def _is_simple_dl(el: Tag) -> bool:
+    """A term list rendered as one block. A ``dl`` that holds blocks is a layout wrapper: walk it instead."""
+    return el.find(_DL_BLOCK_CHILDREN) is None
+
+
 def element_to_markdown(el: Tag, links: bool = True) -> str:
     name = el.name or ""
     if name in {"h1", "h2", "h3", "h4", "h5", "h6"}:
         level = int(name[1])
         return f"{'#' * level} {el.get_text(' ', strip=True)}\n\n"
     if name == "p":
-        return f"{''.join(_inline(c, links) for c in el.children).strip()}\n\n"
+        return f"{_break_adjacent_markers(''.join(_inline(c, links) for c in el.children)).strip()}\n\n"
     if name == "pre":
         text = _preformatted_text(el)
         if _is_table_pre(text):
@@ -146,6 +232,11 @@ def element_to_markdown(el: Tag, links: bool = True) -> str:
         return f"- {el.get_text(' ', strip=True)}\n"
     if name in {"ul", "ol"}:
         return "\n".join(_list_lines(el)) + "\n\n"
+    if name == "dl":
+        return _dl_to_markdown(el, links)
+    if name == "figcaption":
+        text = _break_adjacent_markers("".join(_inline(c, links) for c in el.children)).strip()
+        return f"*{text}*\n\n" if text else ""
     if name == "blockquote":
         body = el.get_text(" ", strip=True)
         return "> " + body.replace("\n", "\n> ") + "\n\n"
@@ -173,8 +264,10 @@ def soup_to_markdown(
     parts: list[str] = []
     seen: set[int] = set()
     heading_stack: list[tuple[int, str]] = []  # (level, text)
+    last_h1: str | None = None
 
     def _mark(el: Tag) -> None:
+        nonlocal last_h1
         name = el.name or ""
         if name in {"h1", "h2", "h3", "h4", "h5", "h6"}:
             level = int(name[1])
@@ -182,9 +275,14 @@ def soup_to_markdown(
             if not text:
                 seen.add(id(el))
                 return
+            if name == "h1" and last_h1 is not None and text == last_h1:
+                seen.add(id(el))
+                return
             while heading_stack and heading_stack[-1][0] >= level:
                 heading_stack.pop()
             heading_stack.append((level, text))
+            if name == "h1":
+                last_h1 = text
             parts.append(element_to_markdown(el, links))
             seen.add(id(el))
             return
@@ -203,7 +301,9 @@ def soup_to_markdown(
         if not isinstance(node, Tag):
             continue
         name = node.name or ""
-        if name in {"h1", "h2", "h3", "h4", "h5", "h6", "p", "pre", "blockquote"}:
+        if name in {"h1", "h2", "h3", "h4", "h5", "h6", "p", "pre", "blockquote", "figcaption"} or (
+            name == "dl" and _is_simple_dl(node)
+        ):
             if id(node) not in seen:
                 _mark(node)
             continue
@@ -245,6 +345,9 @@ def soup_to_markdown(
                     "h6",
                     "pre",
                     "blockquote",
+                    "dl",
+                    "figure",
+                    "figcaption",
                 }
             ]
             # A div whose children are custom elements (<awsdocs-view>, <app-root>) has no direct block
@@ -262,6 +365,6 @@ def soup_to_markdown(
         # Depth first, in document order: push the children in front of the siblings still waiting.
         stack[0:0] = [child for child in node.children if isinstance(child, Tag)]
 
-    md = "".join(parts)
+    md = _break_adjacent_markers("".join(parts))
     md = re.sub(r"\n{3,}", "\n\n", md).strip() + "\n"
     return md

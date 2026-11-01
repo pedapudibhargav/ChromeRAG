@@ -91,3 +91,51 @@ def test_table_without_rows_does_not_crash() -> None:
 
     html = "<html><body><main><h1>Page</h1><p>" + "Body text with enough words. " * 30 + "</p><table></table><table><caption>Empty</caption></table></main></body></html>"
     assert "Body text" in ChromeRAG().extract(html).markdown
+
+
+def test_empty_columns_omitted_from_linearized_and_pipe() -> None:
+    text = _table(
+        "<table><tr><th>A</th><th>B</th><th></th></tr>"
+        "<tr><td>1</td><td>2</td><td></td></tr>"
+        "<tr><td>3</td><td>4</td><td></td></tr></table>"
+    )
+    assert "col3" not in text
+    assert "| A | B |" in text
+    assert text.count("|") >= 6
+
+
+def test_spacer_rows_still_allow_pipe_table() -> None:
+    text = _table(
+        "<table><tr><th>Svc</th><th>Pct</th></tr>"
+        "<tr><td>Art</td><td>10%</td></tr>"
+        "<tr><td></td><td></td></tr>"
+        "<tr><td>Books</td><td>20%</td></tr>"
+        "<tr><td>Cars</td><td>30%</td></tr>"
+        "<tr><td>Desks</td><td>40%</td></tr></table>"
+    )
+    assert text.startswith("| Svc | Pct |")
+    assert "| --- | --- |" in text
+    assert "[Table:" not in text
+
+
+def test_blank_header_row_does_not_emit_separator_only_pipe() -> None:
+    text = _table(
+        "<table><tr><th></th><th></th></tr>"
+        "<tr><td>Excellent</td><td>Average</td></tr></table>"
+    )
+    assert not text.startswith("| ---")
+    assert "Excellent" in text
+
+
+def test_pipe_table_inside_list_keeps_header_above_separator() -> None:
+    html = (
+        "<html><body><main><ul><li>Rating 4.6"
+        "<pre>| COVERAGE | AGE |\n| --- | --- |\n| Excellent | Average |</pre>"
+        "</li></ul>"
+        "<p>" + "Body text with enough words for extraction thresholds. " * 8 + "</p>"
+        "</main></body></html>"
+    )
+    md = ChromeRAG(config=PipelineConfig(enable_dvdf=False, enable_lbc=False)).extract(html).markdown
+    assert "| COVERAGE | AGE |" in md
+    # Header line must appear before the separator (not glued away).
+    assert md.index("| COVERAGE | AGE |") < md.index("| --- | --- |")

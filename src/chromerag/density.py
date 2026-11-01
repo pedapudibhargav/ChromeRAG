@@ -396,11 +396,18 @@ _SHALLOW_CHILD_TAGS = frozenset({"div", "section", "p", "ul", "ol", "table", "ar
 def _is_shallow_text_block(tag: Tag, stats: TreeStats | None = None) -> bool:
     """True if div/section has direct text and few nested block children."""
     child_blocks = 0
+    direct_text = False
     for child in tag.children:
         if isinstance(child, Tag) and child.name in _SHALLOW_CHILD_TAGS:
             child_blocks += 1
             if child_blocks > 1:
                 return False
+        elif isinstance(child, NavigableString) and child.strip():
+            direct_text = True
+    # A lone block child with no text of its own is a pass-through wrapper; only the inner
+    # node is a candidate, which keeps deep unclosed-tag chains linear.
+    if child_blocks == 1 and not direct_text:
+        return False
     text_len = stats.text_len(tag) if stats is not None else len(tag.get_text(" ", strip=True))
     return text_len >= 40
 

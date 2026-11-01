@@ -1127,6 +1127,12 @@ def _drop_placeholders(root: Tag, counts: dict[str, int]) -> None:
                     tag.decompose()
 
 
+# Deep wrapper / nested-table trees make per-tag get_text walks quadratic; skip chrome
+# heuristics only on such trees (content still extracted by later stages). Large flat pages
+# are normal and stay in scope.
+_MAX_CHROME_DEPTH = 400
+
+
 def drop_generic_chrome(
     soup: BeautifulSoup,
     content_root: Tag | None,
@@ -1154,8 +1160,17 @@ def drop_generic_chrome(
     if root is None or not isinstance(root, Tag):
         return counts
 
+    # Time-safe bound: the depth walk is O(n); chrome passes that call get_text per tag are not.
+    stack = [(root, 0)]
+    while stack:
+        node, depth = stack.pop()
+        if depth > _MAX_CHROME_DEPTH:
+            counts["chrome_time_safe_skip"] = 1
+            return counts
+        stack.extend((c, depth + 1) for c in node.children if isinstance(c, Tag))
+
     stats = TreeStats(root)
-    root_words = _word_count(root.get_text(" ", strip=True))
+    root_words = stats.words(root) if hasattr(stats, "words") else _word_count(root.get_text(" ", strip=True))
 
     if cfg.chrome_drop_toc:
         _drop_toc(root, stats, root_words, counts)

@@ -11,6 +11,17 @@ from chromerag.domutil import tags_named
 
 _MAX_PIPE_COLS = 12
 _MAX_PIPE_ROWS = 200
+# Hard caps so pathological tables stay time-safe (truncate + caller may warn).
+_MAX_EMIT_ROWS = 100_000
+_MAX_NESTED_TABLE_UNWRAP = 80
+
+trim_notes: list[str] = []
+
+
+def consume_trim_notes() -> list[str]:
+    out = list(trim_notes)
+    trim_notes.clear()
+    return out
 
 
 def _cell_text(cell: Tag) -> str:
@@ -39,8 +50,21 @@ _NUMERIC_CELL_RE = re.compile(r"^[\s$€£¥]?\s*-?\d[\d,]*(?:\.\d+)?\s*%?\s*$")
 
 
 def _own_rows(table: Tag) -> list[Tag]:
-    """Rows that belong to ``table`` itself, not to a table nested inside it."""
-    return [tr for tr in table.find_all("tr") if tr.find_parent("table") is table]
+    """Rows that belong to ``table`` itself, not to a table nested inside it.
+
+    Stops after ``_MAX_EMIT_ROWS + 1`` own rows so huge tables stay time-safe; callers
+    that emit text add a truncation marker when the cap binds. Walks ``descendants``
+    (a generator) instead of ``find_all`` so a 30k-row table does not materialise every row.
+    """
+    rows: list[Tag] = []
+    for node in table.descendants:
+        if not isinstance(node, Tag) or node.name != "tr":
+            continue
+        if node.find_parent("table") is table:
+            rows.append(node)
+            if len(rows) > _MAX_EMIT_ROWS:
+                break
+    return rows
 
 
 def is_layout_table(table: Tag) -> bool:
@@ -126,9 +150,53 @@ def is_rescueable_data_table(table: Tag, link_density: float | None = None) -> b
 
 
 def _unwrap_layout_table(table: Tag) -> None:
+    """Rename this table and its direct parts to divs; leave nested tables intact.
+
+    Nested data tables inside a layout shell must survive so they can be linearized later.
+    Deeply nested layout forests use the one-shot path in ``unwrap_layout_tables`` instead.
+    """
     for part in [table, *table.find_all(_TABLE_PARTS)]:
-        if part.find_parent("table") is table or part is table:
+        if part is table or part.find_parent("table") is table:
             part.name = "div"
+
+
+def _drop_empty_columns(
+    headers: list[str], body_rows: list[list[str]]
+) -> tuple[list[str], list[list[str]]]:
+    """Omit columns that are empty in the header and in every body cell.
+
+    Does not invent blank header labels for body cells past ``len(headers)`` —
+    those stay as short-header extras so linearize can emit ``colN`` only when
+    the cell has text (and omit empty trailing ``colN`` pads).
+    """
+    if not headers and not body_rows:
+        return headers, body_rows
+    header_width = len(headers)
+    body_width = max((len(r) for r in body_rows), default=0)
+    ncols = max(header_width, body_width)
+    if ncols == 0:
+        return headers, body_rows
+    keep: list[int] = []
+    for i in range(ncols):
+        h = headers[i].strip() if i < header_width else ""
+        has_body = any((r[i].strip() if i < len(r) else "") for r in body_rows)
+        if i < header_width:
+            if h or has_body:
+                keep.append(i)
+        elif has_body:
+            keep.append(i)
+    if not keep:
+        return [], []
+    new_headers = [headers[i] for i in keep if i < header_width]
+    while new_headers and not new_headers[-1].strip():
+        idx_in_keep = len(new_headers) - 1
+        idx = keep[idx_in_keep]
+        if any((r[idx].strip() if idx < len(r) else "") for r in body_rows):
+            break
+        new_headers.pop()
+        keep.pop(idx_in_keep)
+    new_rows = [[(r[i] if i < len(r) else "") for i in keep] for r in body_rows]
+    return new_headers, new_rows
 
 
 def _table_grid(table: Tag) -> tuple[list[str], list[list[str]]]:
@@ -154,6 +222,9 @@ def _table_grid(table: Tag) -> tuple[list[str], list[list[str]]]:
 
     for tr in data_trs:
         body_rows.append([_cell_text(c) for c in tr.find_all(["td", "th"])])
+    # Keep blank header labels (do not clear to []): pipe render already requires a
+    # non-empty header, and linearized ``: value | colN: …`` cues help LBC drop chrome grids.
+    headers, body_rows = _drop_empty_columns(headers, body_rows)
     return headers, body_rows
 
 
@@ -174,8 +245,14 @@ def _can_render_pipe_from_grid(
     """True when a pre-built grid is a small rectangular GFM pipe candidate."""
     if is_layout_table(table) or _has_merged_cells(table):
         return False
-    n_data = len(body_rows) + (1 if headers else 0)
+    # Empty spacer rows do not disqualify an otherwise rectangular data grid.
+    rows = [r for r in body_rows if any(c.strip() for c in r)]
+    n_data = len(rows) + (1 if headers else 0)
     if n_data == 0 or n_data > _MAX_PIPE_ROWS:
+        return False
+    # Blank <th> row (all-empty headers) → not a pipe table (linearize with colN cues).
+    # No header row at all → allow body-only pipe (visual header often lives in row 1).
+    if headers and not any(h.strip() for h in headers):
         return False
     if headers:
         ncols = len(headers)
@@ -183,19 +260,22 @@ def _can_render_pipe_from_grid(
             return False
         if not all(_cell_is_single_line(h) for h in headers):
             return False
-    elif body_rows:
-        ncols = len(body_rows[0])
+    elif rows:
+        # Single-row headerless grids are usually nav/chrome strips, not data tables.
+        if len(rows) < 2:
+            return False
+        ncols = len(rows[0])
         if ncols > _MAX_PIPE_COLS:
             return False
     else:
         return False
 
-    for row in body_rows:
+    for row in rows:
         if len(row) != ncols:
             return False
         if not all(_cell_is_single_line(c) for c in row):
             return False
-    return bool(headers or body_rows)
+    return bool(headers or rows)
 
 
 def can_render_pipe_table(table: Tag) -> bool:
@@ -205,19 +285,22 @@ def can_render_pipe_table(table: Tag) -> bool:
 
 
 def _render_pipe_from_grid(headers: list[str], body_rows: list[list[str]]) -> str:
+    body = [r for r in body_rows if any(c.strip() for c in r)]
+    truncated = len(body) > _MAX_EMIT_ROWS
+    to_emit = body[:_MAX_EMIT_ROWS]
     lines: list[str] = []
     if headers:
         lines.append("| " + " | ".join(_escape_pipe_cell(h) for h in headers) + " |")
         lines.append("| " + " | ".join("---" for _ in headers) + " |")
-        for row in body_rows:
-            if not any(row):
-                continue
-            lines.append("| " + " | ".join(_escape_pipe_cell(c) for c in row) + " |")
+        width = len(headers)
+        for row in to_emit:
+            cells = list(row[:width]) + [""] * max(0, width - len(row))
+            lines.append("| " + " | ".join(_escape_pipe_cell(c) for c in cells) + " |")
     else:
-        for row in body_rows:
-            if not any(row):
-                continue
+        for row in to_emit:
             lines.append("| " + " | ".join(_escape_pipe_cell(c) for c in row) + " |")
+    if truncated:
+        lines.append(f"[Table truncated after {_MAX_EMIT_ROWS} rows]")
     return "\n".join(lines)
 
 
@@ -226,24 +309,43 @@ def render_pipe_table(table: Tag) -> str:
     return _render_pipe_from_grid(headers, body_rows)
 
 
+def _linearize_pair(header: str, value: str) -> str | None:
+    """Format one cell; keep values even when the header label is blank.
+
+    Empty headers still use the ``h: v`` shape (``: value``) so row-label columns
+    stay visible and the block classifier sees the same cue as historically.
+    """
+    h = (header or "").strip()
+    v = (value or "").strip()
+    if not h and not v:
+        return None
+    return f"{h}: {v}"
+
+
 def _linearize_from_grid(headers: list[str], body_rows: list[list[str]], title: str) -> str:
     if not headers and not body_rows:
         return ""
+    body = [r for r in body_rows if any(c.strip() for c in r)]
+    truncated = len(body) > _MAX_EMIT_ROWS
+    to_emit = body[:_MAX_EMIT_ROWS]
     lines = [f"[Table: {title}]"]
-    for i, row in enumerate(body_rows, start=1):
-        if not any(row):
-            continue
-        if headers and len(headers) == len(row):
-            pairs = [f"{h}: {v}" for h, v in zip(headers, row) if h or v]
+    for i, row in enumerate(to_emit, start=1):
+        pairs: list[str] = []
+        width = max(len(headers), len(row))
+        for idx in range(width):
+            v = row[idx] if idx < len(row) else ""
+            if idx < len(headers):
+                piece = _linearize_pair(headers[idx], v)
+            elif not v.strip():
+                continue
+            else:
+                piece = v.strip()
+            if piece is not None:
+                pairs.append(piece)
+        if pairs:
             lines.append(f"Row {i} -> " + " | ".join(pairs))
-        elif headers and len(headers) > 0:
-            pairs = []
-            for idx, v in enumerate(row):
-                h = headers[idx] if idx < len(headers) else f"col{idx+1}"
-                pairs.append(f"{h}: {v}")
-            lines.append(f"Row {i} -> " + " | ".join(pairs))
-        else:
-            lines.append(f"Row {i} -> " + " | ".join(row))
+    if truncated:
+        lines.append(f"[Table truncated after {_MAX_EMIT_ROWS} rows]")
     return "\n".join(lines)
 
 
@@ -256,9 +358,13 @@ def linearize_table(table: Tag, index: int = 1) -> str:
 
 def format_table(table: Tag, index: int = 1, *, table_format: str = "markdown") -> str:
     headers, body_rows = _table_grid(table)
+    body = [r for r in body_rows if any(c.strip() for c in r)]
+    truncated = len(body) > _MAX_EMIT_ROWS
     if table_format == "markdown" and _can_render_pipe_from_grid(table, headers, body_rows):
         text = _render_pipe_from_grid(headers, body_rows)
         if text:
+            if truncated and "[Table truncated after" not in text:
+                text += f"\n[Table truncated after {_MAX_EMIT_ROWS} rows]"
             return text
     caption = table.find("caption")
     title = caption.get_text(" ", strip=True) if caption else f"Table {index}"
@@ -267,9 +373,21 @@ def format_table(table: Tag, index: int = 1, *, table_format: str = "markdown") 
 
 def unwrap_layout_tables(soup: BeautifulSoup) -> int:
     """Turn layout tables into plain divs so their content is scored like any other block."""
+    tables = [t for t in tags_named(soup, ("table",)) if t.attrs is not None]
+    # Deep *nested* tables only (not many sibling tables on a listing page).
+    deeply_nested = bool(tables) and len(tables[0].find_all("table")) >= _MAX_NESTED_TABLE_UNWRAP
+    if deeply_nested:
+        trim_notes.append(
+            "Deeply nested table markup was unwrapped without linearizing inner grids (time-safe path)."
+        )
+        for tag in soup.find_all(("table", "thead", "tbody", "tfoot", "tr", "td", "th", "caption")):
+            tag.name = "div"
+        return len(tables)
     count = 0
-    for table in tags_named(soup, ("table",)):
-        if table.attrs is not None and is_layout_table(table):
+    for table in tables:
+        if table.name != "table":
+            continue
+        if is_layout_table(table):
             _unwrap_layout_table(table)
             count += 1
     return count
@@ -282,13 +400,25 @@ def replace_tables_with_linearized(
 ) -> int:
     """Replace each <table> with a <pre> of table text. Returns count."""
     count = 0
-    for i, table in enumerate(tags_named(soup, ("table",)), start=1):
-        if table.attrs is None:
+    index = 0
+    # Snapshot once; unwrap may rename nested tables mid-walk.
+    tables = [t for t in tags_named(soup, ("table",)) if t.attrs is not None]
+    deeply_nested = bool(tables) and len(tables[0].find_all("table")) >= _MAX_NESTED_TABLE_UNWRAP
+    if deeply_nested:
+        trim_notes.append(
+            "Deeply nested table markup was unwrapped without linearizing inner grids (time-safe path)."
+        )
+        for tag in soup.find_all(("table", "thead", "tbody", "tfoot", "tr", "td", "th", "caption")):
+            tag.name = "div"
+        return 0
+    for table in tables:
+        if table.attrs is None or table.name != "table":
             continue
         if is_layout_table(table):
             _unwrap_layout_table(table)
             continue
-        text = format_table(table, index=i, table_format=table_format)
+        index += 1
+        text = format_table(table, index=index, table_format=table_format)
         if not text:
             table.decompose()
             continue

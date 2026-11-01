@@ -52,7 +52,8 @@ def test_toc_dropped_with_label() -> None:
     </main></body></html>"""
     md = _md(html)
     assert "on this page" not in md
-    assert "alpha section" not in md or "alpha body" in md
+    assert "alpha section" not in md
+    assert "alpha body" in md
 
 
 def test_toc_like_list_that_is_content_kept() -> None:

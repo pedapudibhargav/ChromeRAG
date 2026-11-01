@@ -33,7 +33,9 @@ from chromerag.config import (
 )
 from chromerag.content_root import find_content_root
 from chromerag.density import (
+    NOISE_TOKENS,
     ElementCache,
+    _attr_tokens,
     candidate_blocks,
     parse_html,
     prune_noise_subtrees,
@@ -45,12 +47,21 @@ from chromerag.generic_chrome import drop_generic_chrome, infer_page_kind_hint
 from chromerag.hidden import remove_hidden_nodes, remove_skip_links
 from chromerag.input_quality import InputQualityReport, assess_input_html
 from chromerag.lbc import TwoStageModel, default_two_stage
+from chromerag.markdown_out import consume_trim_notes as consume_md_trim_notes
 from chromerag.markdown_out import front_matter_yaml, soup_to_markdown
 from chromerag.models import BlockScore, ExtractResult
 from chromerag.rules_engine import DEFAULT_INDEX, RuleHit, RuleIndex
 from chromerag.schema_fusion import fuse_front_matter
 from chromerag.site_chrome import SiteChromeModel, apply_site_chrome, site_group_key
-from chromerag.tables import is_rescueable_data_table, replace_tables_with_linearized, unwrap_layout_tables
+from chromerag.tables import (
+    _own_rows,
+    is_rescueable_data_table,
+    replace_tables_with_linearized,
+    unwrap_layout_tables,
+)
+from chromerag.tables import (
+    consume_trim_notes as consume_table_trim_notes,
+)
 from chromerag.textio import decode_html
 from chromerag.trafilatura_ideas import apply_trafilatura_ideas
 from chromerag.treestats import TreeStats
@@ -62,12 +73,18 @@ def estimate_tokens(text: str) -> int:
 
 
 _FRONT_MATTER_RE = re.compile(r"^---\n.*?\n---\n*", re.S)
+# Visible body large enough that a JS-shell / thin-input warning is misleading.
+_BODY_WORDS_RICH = 80
+
+
+def _markdown_body(md: str) -> str:
+    """Markdown with YAML front matter stripped."""
+    return _FRONT_MATTER_RE.sub("", md or "", count=1)
 
 
 def _markdown_body_words(md: str) -> int:
     """Word count of extracted Markdown excluding YAML front matter."""
-    body = _FRONT_MATTER_RE.sub("", md or "", count=1)
-    return len(re.findall(r"\w+", body.lower()))
+    return len(re.findall(r"\w+", _markdown_body(md).lower()))
 
 
 def _body_word_count(soup: BeautifulSoup) -> int:
@@ -75,6 +92,11 @@ def _body_word_count(soup: BeautifulSoup) -> int:
     if body is None or not isinstance(body, Tag):
         return 0
     return len(re.findall(r"\w+", body.get_text(" ", strip=True).lower()))
+
+
+def _sanitize_unicode(text: str) -> str:
+    """Drop lone surrogates so UTF-8 encoding never raises."""
+    return text.encode("utf-8", errors="replace").decode("utf-8")
 
 
 def _resolve_cfg(base: PipelineConfig, url: str | None, html: str) -> PipelineConfig:
@@ -98,6 +120,11 @@ _LBC_LEAD_MIN = 0.10
 _LBC_LEAD_MIN_WORDS = 8
 # Below this expected F1 the page gets a warning (on WCXB dev such pages score 0.57 on average, the rest 0.88).
 LOW_CONFIDENCE_F1 = 0.70
+_SEMANTIC_LEAF = frozenset({"dt", "dd"})
+_LBC_LONG_TABLE_ROWS = 500
+_PRODUCT_DL_MAX_PAIRS = 10
+_PRODUCT_DL_MAX_TERM = 40
+_PRODUCT_DL_MAX_DEF = 80
 
 
 class StopExtraction(Exception):
@@ -206,8 +233,11 @@ class ChromeRAG:
                     keep[j] = True
                 break
         tables_rescued = 0
+        semantic_rescued = 0
         if structure and cfg.lbc_rescue_tables and cfg.enable_tables:
             keep, tables_rescued = self._rescue_data_tables(blocks, keep, stats, root, proba, cfg)
+        if structure and cfg.lbc_rescue_headings:
+            keep, semantic_rescued = self._rescue_semantic_blocks(blocks, keep, root, cfg)
         for block, k in zip(blocks, keep, strict=True):
             if not k:
                 block.tag.decompose()
@@ -229,6 +259,7 @@ class ChromeRAG:
                 "expected_recall": exp_r,
                 "expected_f1": exp_f,
                 "tables_rescued": tables_rescued,
+                "semantic_rescued": semantic_rescued,
             },
         )
 
@@ -278,11 +309,18 @@ class ChromeRAG:
 
         Reads the original ``keep`` list so rescues cannot cascade. When a heading and its
         data table both sit just under the threshold, keeps the pair if the heading would
-        qualify for rescue once the table counted as its body.
+        qualify for rescue once the table counted as its body. Section bounds: the next
+        heading ends the window. Repeat-dropped duplicates are not resurrected.
         """
         base = list(keep)
         out = list(keep)
         rescued = 0
+        kept_texts = {
+            " ".join(blocks[i].text.lower().split())
+            for i, k in enumerate(base)
+            if k and len(blocks[i].text) >= 30
+        }
+        heading_idxs = [i for i, b in enumerate(blocks) if b.tag.name in _HEADING_TAGS]
 
         def _in_root(tag: Tag) -> bool:
             if content_root is None:
@@ -300,22 +338,42 @@ class ChromeRAG:
                     return j
             return None
 
+        def _section_end(h: int) -> int:
+            for j in heading_idxs:
+                if j > h:
+                    return j
+            return len(blocks)
+
         for i, block in enumerate(blocks):
             if base[i] or block.tag.name != "table":
                 continue
             if not _in_root(block.tag):
                 continue
+            key = " ".join(block.text.lower().split())
+            # Do not resurrect a table whose text was already kept (repeat-drop).
+            if len(key) >= 30 and key in kept_texts:
+                continue
             if not is_rescueable_data_table(block.tag, stats.link_density(block.tag)):
+                continue
+            # A grid this long is data whatever the model thinks of its section heading.
+            if len(_own_rows(block.tag)) >= _LBC_LONG_TABLE_ROWS:
+                out[i] = True
+                rescued += 1
                 continue
             h = _nearest_heading(i)
             if h is None or not _in_root(blocks[h].tag):
+                continue
+            # Next heading ends the section; tables past it belong elsewhere.
+            if i >= _section_end(h):
                 continue
             # Nearest heading above was kept (section body, including orphan fill).
             if base[h]:
                 out[i] = True
                 rescued += 1
+                if len(key) >= 30:
+                    kept_texts.add(key)
                 continue
-            # Pair-rescue: heading in the rescue band, table within its look-ahead window.
+            # Pair-rescue: heading in the rescue band, table still inside its section.
             if not cfg.lbc_rescue_headings:
                 continue
             p = float(proba[h])
@@ -324,6 +382,76 @@ class ChromeRAG:
             if i - h > 2:
                 continue
             out[h] = True
+            out[i] = True
+            rescued += 1
+            if len(key) >= 30:
+                kept_texts.add(key)
+        return out, rescued
+
+    @staticmethod
+    def _is_product_metafield_dl(dl: Tag) -> bool:
+        if _attr_tokens(dl) & NOISE_TOKENS:
+            return True
+        dts = dl.find_all("dt", recursive=False) or dl.find_all("dt")
+        dds = dl.find_all("dd", recursive=False) or dl.find_all("dd")
+        if len(dts) > _PRODUCT_DL_MAX_PAIRS:
+            return True
+        if len(dts) >= 4 and dds:
+            if all(len(dt.get_text(" ", strip=True)) <= _PRODUCT_DL_MAX_TERM for dt in dts):
+                if all(len(dd.get_text(" ", strip=True)) <= _PRODUCT_DL_MAX_DEF for dd in dds):
+                    return True
+        return False
+
+    @staticmethod
+    def _rescue_semantic_blocks(
+        blocks: list[Any],
+        keep: list[bool],
+        content_root: Tag | None,
+        cfg: PipelineConfig,
+    ) -> tuple[list[bool], int]:
+        """Keep glossary ``dl`` pairs under a kept section heading (not product spec grids)."""
+        base = list(keep)
+        out = list(keep)
+        rescued = 0
+        heading_idxs = [i for i, b in enumerate(blocks) if b.tag.name in _HEADING_TAGS]
+
+        def _in_root(tag: Tag) -> bool:
+            if content_root is None:
+                return True
+            parent: Tag | None = tag
+            while parent is not None:
+                if parent is content_root:
+                    return True
+                parent = parent.parent if isinstance(parent.parent, Tag) else None
+            return False
+
+        def _nearest_heading(i: int) -> int | None:
+            for j in range(i - 1, -1, -1):
+                if blocks[j].tag.name in _HEADING_TAGS:
+                    return j
+            return None
+
+        def _section_end(h: int) -> int:
+            for j in heading_idxs:
+                if j > h:
+                    return j
+            return len(blocks)
+
+        for i, block in enumerate(blocks):
+            if base[i] or block.tag.name not in _SEMANTIC_LEAF:
+                continue
+            if not _in_root(block.tag):
+                continue
+            name = block.tag.name
+            if name in {"dt", "dd"}:
+                dl = block.tag.find_parent("dl")
+                if dl is None or ChromeRAG._is_product_metafield_dl(dl):
+                    continue
+            h = _nearest_heading(i)
+            if h is None or not base[h] or not _in_root(blocks[h].tag):
+                continue
+            if i >= _section_end(h):
+                continue
             out[i] = True
             rescued += 1
         return out, rescued
@@ -343,6 +471,8 @@ class ChromeRAG:
         input_quality: InputQualityReport | None = None,
         front: dict[str, Any] | None = None,
     ) -> tuple[str, dict[str, Any], ExtractResult]:
+        consume_table_trim_notes()
+        consume_md_trim_notes()
         soup = parse_html(html)
         if input_quality is None:
             input_quality = assess_input_html(html, soup=soup)
@@ -526,16 +656,43 @@ class ChromeRAG:
     def extract(self, html: str | bytes, url: str | None = None) -> ExtractResult:
         if not isinstance(html, str):
             html = decode_html(html)
+        html = _sanitize_unicode(html)
         cfg = _resolve_cfg(self.config, url, html)
+        try:
+            return self._extract_with_retries(html, url, cfg)
+        except (RecursionError, UnicodeEncodeError, UnicodeDecodeError) as exc:
+            warn = (
+                f"Extraction aborted ({type(exc).__name__}); returning empty Markdown. "
+                "Input may be deeply nested or contain invalid Unicode."
+            )
+            return ExtractResult(
+                url=url,
+                markdown="",
+                front_matter={},
+                n_blocks_in=0,
+                n_blocks_kept=0,
+                n_tables=0,
+                tokens_estimate=1,
+                method="chromerag",
+                warnings=[warn],
+                input_quality={},
+                diagnostics={"abort": type(exc).__name__},
+            )
+
+    def _extract_with_retries(
+        self, html: str, url: str | None, cfg: PipelineConfig
+    ) -> ExtractResult:
         md, meta, result = self._extract_core(html, url, cfg)
         body_words = int(meta["body_words"])
         out_words = _markdown_body_words(md)
-        collapsed = result.tokens_estimate < 40 or (
-            body_words > 0 and out_words < 0.15 * body_words
-        )
+        # Front matter alone can inflate tokens_estimate; collapse uses body words.
+        collapsed = out_words < 40 or (body_words > 0 and out_words < 0.15 * body_words)
         retry_notes: list[str] = []
+        # Keep the is_thin retry gate (noscript-heavy pages can look thin pre-unwrap but extract
+        # well); still clear misleading JS-shell warnings after a rich body is observed.
         if collapsed and not meta["input_quality"].is_thin:
             coverage_cfg = coverage_fallback(cfg)
+            first_out = out_words
             md2, _, result2 = self._extract_core(
                 html,
                 url,
@@ -544,23 +701,32 @@ class ChromeRAG:
                 input_quality=meta["input_quality"],
                 front=copy.deepcopy(meta["front"]),
             )
-            if estimate_tokens(md2) > result.tokens_estimate:
+            # Compare on body words; only take the retry when the first pass was near-empty or
+            # the retry is clearly longer (avoids trading precision for chrome-heavy coverage).
+            md2_words = _markdown_body_words(md2)
+            # Prefer body-word growth; also accept token growth so coverage retries that
+            # add structured/table text still win when word counts are close.
+            if (md2_words > first_out and (first_out < 40 or md2_words > 1.5 * first_out)) or (
+                estimate_tokens(md2) > result.tokens_estimate and md2_words >= first_out
+            ):
                 result = result2
                 md = md2
-                out_words = _markdown_body_words(md)
+                out_words = md2_words
                 retry_notes.append(
                     "Extraction collapsed with detected content root; retried with body root "
                     "and coverage thresholds."
                 )
             # Only when output is still near-empty: ratio-vs-body alone is unsafe on
             # chrome-heavy pages where a solid coverage retry is already << body_words.
-            near_empty = _markdown_body_words(result.markdown) < 40 or estimate_tokens(result.markdown) < 40
+            near_empty = _markdown_body_words(result.markdown) < 40
             lbc_dropped = result.n_blocks_in > result.n_blocks_kept
+            # Pass-one found 0 blocks (empty main / over-prune): still allow a no-LBC retry.
+            no_blocks = result.n_blocks_in == 0
             if (
                 near_empty
                 and cfg.enable_lbc
                 and self.lbc_model is not None
-                and lbc_dropped
+                and (lbc_dropped or no_blocks)
             ):
                 wide_cfg = replace(coverage_cfg, enable_lbc=False)
                 md3, _, result3 = self._extract_core(
@@ -578,11 +744,21 @@ class ChromeRAG:
                         "without the learned block filter."
                     )
 
-        warnings = list(meta["input_quality"].warnings) + retry_notes
-        if (
-            not meta["input_quality"].is_thin
-            and result.tokens_estimate < 40
-            and result.n_blocks_kept <= 1
+        out_words = _markdown_body_words(result.markdown)
+        result.markdown = _sanitize_unicode(result.markdown)
+        # Drop misleading thin/JS-shell warnings when the cleaned body has real prose.
+        iq_warnings = list(meta["input_quality"].warnings)
+        if body_words >= _BODY_WORDS_RICH or out_words >= 40:
+            iq_warnings = [
+                w
+                for w in iq_warnings
+                if "JavaScript-rendered shell" not in w and "thin for RAG ingest" not in w
+            ]
+        warnings = iq_warnings + retry_notes
+        input_looks_thin = meta["input_quality"].is_thin and body_words < _BODY_WORDS_RICH
+        # Depend on body words (not tokens_estimate): front matter alone can look large.
+        if out_words < 40 and result.n_blocks_kept <= 1 and (
+            body_words >= _BODY_WORDS_RICH or not input_looks_thin
         ):
             warnings.append(
                 "Extraction produced very little Markdown despite non-thin input HTML. "
@@ -594,7 +770,18 @@ class ChromeRAG:
                 f"Low extraction confidence (expected F1 {expected_f1:.2f}): the model is unsure which "
                 "blocks are content on this page. Check the output or try another priority."
             )
+        if "[Table truncated after" in result.markdown:
+            warnings.append(
+                "One or more tables were truncated to a time-safe row budget."
+            )
+        warnings.extend(consume_table_trim_notes())
+        warnings.extend(consume_md_trim_notes())
+        if result.diagnostics.get("generic_chrome", {}).get("chrome_time_safe_skip"):
+            warnings.append(
+                "Generic chrome heuristics were skipped on a very large DOM (time-safe path)."
+            )
         result.warnings = warnings
+        result.tokens_estimate = estimate_tokens(result.markdown)
         return result
 
     def extract_file(self, path: str, url: str | None = None) -> ExtractResult:

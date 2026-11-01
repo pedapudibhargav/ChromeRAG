@@ -255,8 +255,18 @@ class RuleIndex:
             root_ids = {id(t) for t in all_tags(content_root)}
             root_ids.add(id(content_root))
 
+        # Structural landmarks and the chosen content root must never be dropped by rules.
+        protected: set[int] = set()
+        if content_root is not None:
+            protected.add(id(content_root))
+        for name in ("html", "body", "main"):
+            for node in soup.find_all(name):
+                protected.add(id(node))
+
         for tag in all_tags(soup):
             if tag.attrs is None:  # inside a subtree removed earlier in this walk
+                continue
+            if id(tag) in protected:
                 continue
             ident = str(tag.get("id") or "")
             raw_classes = tag.get("class") or []
