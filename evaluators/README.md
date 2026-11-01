@@ -1,0 +1,108 @@
+# Blind rating kit
+
+This is a small local app for rating text extractions from web pages **without seeing which tool produced each output**. You compare a few labelled outputs (A, B, C, …) next to the original page and pick which ones would be better for a search index.
+
+You do not need to install anything beyond Python 3.9+. The app uses only the Python standard library, stores ratings as a plain JSON file on your machine, and listens only on `127.0.0.1` (your computer).
+
+---
+
+## 3-step start
+
+1. **Get the private bundle**  
+   The author will send you a file named `bundle.json`. Put it here (create the folder if needed):
+
+   ```text
+   evaluators/bundle/bundle.json
+   ```
+
+2. **Start the app** (from the repository root), choosing any short rater id (for example your initials). No personal data:
+
+   ```bash
+   python evaluators/run.py --rater YOUR_ID
+   ```
+
+   The terminal prints a URL like `http://127.0.0.1:8770/`. Open that URL in your browser.
+
+3. **When finished**, the Finish screen shows the path of your results file (under `evaluators/results/`). Email that file to the author.
+
+**Practice without a private bundle:**
+
+```bash
+python evaluators/run.py --rater test --demo
+```
+
+### For a coding assistant
+
+```text
+Work in this repository. Put the author’s bundle.json at evaluators/bundle/bundle.json
+(unless using --demo). Start with:
+  python evaluators/run.py --rater <id>
+Print the URL from the terminal and open it locally. Do not install packages.
+Do not open evaluations/, papers/, or project result write-ups before the rater finishes.
+Results are written to evaluators/results/<rater>_<bundle_id>.json.
+```
+
+---
+
+## How to rate
+
+**Rubric (always visible in the app):** judge which output is the better input for a search index: main content kept, and page chrome (menus, footers, cookie text, related links) left out.
+
+For each item:
+
+- Read the original page (Rendered or Plain text tab).
+- Read every output.
+- Tick **every** output that is equally best (multi-select). If two are nearly the same and both best, tick both.
+- Or choose **All about the same**, or **None are good**.
+- Score each output 1–5 for **content kept** and **chrome left out** (required unless you Skip).
+- Practice items are marked and come first; they are not used in analysis.
+- You can go back; progress is saved after every click.
+
+**Keyboard:** number keys toggle best for output 1…n; ← / → move between items.
+
+**Time estimate:** about _N_ minutes for this bundle (the author will fill in _N_ when they send the file).
+
+---
+
+## How to send results
+
+Email the JSON file shown on the Finish screen (also under `evaluators/results/`) to the author. Do not edit the file.
+
+### Results file shape (for authors)
+
+```json
+{
+  "schema_version": 1,
+  "bundle_id": "...",
+  "rater": "...",
+  "app_version": "1.0.0",
+  "started": "ISO-8601",
+  "updated": "ISO-8601",
+  "items": {
+    "item_id": {
+      "item_id": "...",
+      "best": ["A", "B"],
+      "all_same": false,
+      "none_good": false,
+      "scores": {"A": {"content": 4, "chrome": 5}},
+      "skipped": false,
+      "skip_reason": "",
+      "seconds_spent": 12.5,
+      "shown_order": ["B", "A", "C"]
+    }
+  }
+}
+```
+
+---
+
+## Rules
+
+- Rate alone.
+- Do **not** use AI tools to rate.
+- Do **not** open `evaluations/`, `papers/`, or the project README results before you finish.
+- Do **not** discuss items or answers with other raters until everyone has submitted.
+
+## Privacy
+
+No personal data is collected. The only identifier is the rater id you choose on the command line. Ratings never leave your machine unless you email the results file.

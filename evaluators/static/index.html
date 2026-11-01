@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Blind extraction rating</title>
+<style>
+:root{--bg:#fbfbfa;--panel:#fff;--line:#dedcd6;--ink:#1f1f1d;--mut:#6b6a65;--acc:#2a78d6;--ok:#1a7f37;--warn:#9a6700}
+@media (prefers-color-scheme:dark){:root{--bg:#161615;--panel:#1f1f1d;--line:#37362f;--ink:#ececea;--mut:#9a9992;--acc:#6aa7f0;--ok:#4cc072;--warn:#d4a72c}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,Segoe UI,Roboto,sans-serif}
+header{position:sticky;top:0;z-index:5;background:var(--panel);border-bottom:1px solid var(--line);padding:8px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+header h1{font-size:15px;margin:0}.sp{flex:1}.pill{background:var(--bg);border:1px solid var(--line);border-radius:99px;padding:2px 10px;font-size:12px;color:var(--mut)}
+.pill.warn{color:var(--warn);border-color:var(--warn)}
+button{font:inherit;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:6px;padding:5px 10px;cursor:pointer}button.pri{background:var(--acc);border-color:var(--acc);color:#fff}button:disabled{opacity:.4}
+main{padding:12px 14px;display:grid;gap:12px}
+.rubric{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:13px}
+.src{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden}.src .bar{display:flex;gap:8px;align-items:center;padding:6px 10px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.src .bar a{color:var(--acc);font-size:12px}
+iframe,.srcview{width:100%;height:36vh;border:0;background:#fff}.srcview{background:var(--panel);color:var(--ink);overflow:auto;white-space:pre-wrap;font:12px/1.4 ui-monospace,Menlo,monospace;padding:8px}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.col{background:var(--panel);border:1px solid var(--line);border-radius:8px;display:flex;flex-direction:column;min-height:0}
+.col.best{outline:2px solid var(--ok)}.col h2{margin:0;padding:6px 10px;font-size:14px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.txt{height:40vh;overflow:auto;padding:8px 10px;white-space:pre-wrap;word-break:break-word;font:12.5px/1.45 ui-monospace,Menlo,monospace}
+.rate{padding:8px 10px;border-top:1px solid var(--line);display:grid;gap:6px}.rate label{display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:12px;color:var(--mut)}
+.stars{display:flex;gap:3px}.stars button{padding:1px 7px;font-size:12px}.stars button.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.foot{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.choices{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.choices label{display:flex;gap:6px;align-items:center;font-size:13px}
+.hint{color:var(--mut);font-size:12px}.saved{color:var(--ok);font-size:12px}
+.finish{max-width:640px;margin:40px auto;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:24px}
+.finish code{display:block;background:var(--bg);padding:10px;border-radius:6px;word-break:break-all;margin:12px 0}
+.diffbox{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 10px;white-space:pre-wrap;font:11px/1.35 ui-monospace,Menlo,monospace;max-height:28vh;overflow:auto}
+</style></head><body>
+<header>
+  <h1>Blind extraction rating</h1>
+  <span class="pill" id="prog">–</span>
+  <span class="pill warn" id="cal" hidden>Practice</span>
+  <span class="sp"></span>
+  <button id="prev">← Prev</button>
+  <button id="next">Next →</button>
+  <button class="pri" id="finish">Finish</button>
+</header>
+<main id="main">
+  <div class="rubric" id="rubric"></div>
+  <section class="src">
+    <div class="bar">
+      <b>Original page</b>
+      <button data-v="render" class="pri">Rendered</button>
+      <button data-v="text">Plain text</button>
+      <span class="hint" id="urlhint"></span>
+    </div>
+    <iframe id="frame" sandbox="" referrerpolicy="no-referrer" title="original page"></iframe>
+    <div class="srcview" id="srcview" hidden></div>
+  </section>
+  <section class="cols" id="cols"></section>
+  <section class="choices">
+    <label><input type="checkbox" id="all_same"> All about the same</label>
+    <label><input type="checkbox" id="none_good"> None are good</label>
+    <label><input type="checkbox" id="diff_on"> Show differences</label>
+  </section>
+  <pre class="diffbox" id="diffbox" hidden></pre>
+  <section class="foot">
+    <span class="hint">Tick every output that is equally best. Keys: number keys toggle best, <b>←/→</b> navigate. Scores (1–5) required unless skipped.</span>
+    <input id="skip_reason" placeholder="Skip reason (optional)" style="flex:1;min-width:160px;height:34px;font:inherit;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:4px 8px">
+    <button id="skip">Skip</button>
+    <span class="saved" id="saved"></span>
+  </section>
+</main>
+<section class="finish" id="done" hidden>
+  <h2>Thank you</h2>
+  <p>Your ratings were saved to this file. Email it to the person who sent you the bundle:</p>
+  <code id="respath"></code>
+  <p class="hint">You can close this page and stop the app (Ctrl+C in the terminal).</p>
+</section>
+<script>
+const $=s=>document.querySelector(s);
+let session=null, items=[], cur=0, state=null, view="render", labels=[], startedAt=0, saveTimer=null;
+
+const api=(p,o)=>fetch(p,o).then(async r=>{
+  const t=await r.text();
+  try{return JSON.parse(t)}catch(e){throw new Error(t||r.status)}
+});
+
+function emptyState(labs){
+  const scores={}; for(const L of labs) scores[L]={};
+  return {best:[], all_same:false, none_good:false, scores, skipped:false, skip_reason:"", shown_order:labs.slice()};
+}
+
+async function init(){
+  session=await api("/api/session");
+  $("#rubric").textContent=session.rubric;
+  items=session.items;
+  const first=items.findIndex(i=>!i.done);
+  cur=first<0?0:first;
+  await load();
+}
+
+async function load(){
+  if(cur>=items.length){ showFinish(); return; }
+  const id=items[cur].item_id;
+  const d=await api("/api/item/"+encodeURIComponent(id));
+  labels=d.shown_order.slice();
+  startedAt=performance.now();
+  state=d.rating?Object.assign(emptyState(labels),{
+    best:(d.rating.best||[]).slice(),
+    all_same:!!d.rating.all_same,
+    none_good:!!d.rating.none_good,
+    scores:Object.assign(emptyState(labels).scores, d.rating.scores||{}),
+    skipped:!!d.rating.skipped,
+    skip_reason:d.rating.skip_reason||"",
+    shown_order:labels.slice()
+  }):emptyState(labels);
+
+  $("#prog").textContent=`Item ${cur+1} of ${items.length} · saved ${items.filter(i=>i.done).length}`;
+  $("#cal").hidden=!d.is_calibration;
+  $("#urlhint").textContent=d.source_url?("URL: "+d.source_url):"";
+  $("#frame").src="/html/"+encodeURIComponent(id);
+  $("#srcview").textContent="";
+  $("#srcview").dataset.id=id;
+  $("#all_same").checked=state.all_same;
+  $("#none_good").checked=state.none_good;
+  $("#skip_reason").value=state.skip_reason;
+  setView(view);
+  renderCols(d);
+  paint();
+  maybeDiff();
+}
+
+function renderCols(d){
+  const c=$("#cols"); c.innerHTML="";
+  labels.forEach((L,idx)=>{
+    const o=d.outputs[L];
+    const col=document.createElement("div");
+    col.className="col"; col.id="col"+L;
+    col.innerHTML=`<h2><label><input type="checkbox" class="bestcb" data-l="${L}"> <span>Output ${L}</span></label><span class="hint">${o.words} words</span></h2><div class="txt"></div><div class="rate"><label>Content kept <span class="stars" data-k="content" data-l="${L}"></span></label><label>Chrome left out <span class="stars" data-k="chrome" data-l="${L}"></span></label></div>`;
+    col.querySelector(".txt").textContent=o.text;
+    c.appendChild(col);
+    col.querySelector(".bestcb").onchange=()=>{
+      const on=col.querySelector(".bestcb").checked;
+      if(on){ if(!state.best.includes(L)) state.best.push(L); state.all_same=false; state.none_good=false; state.skipped=false; }
+      else state.best=state.best.filter(x=>x!==L);
+      $("#all_same").checked=state.all_same; $("#none_good").checked=state.none_good;
+      paint(); save();
+    };
+  });
+  document.querySelectorAll(".stars").forEach(s=>{
+    for(let n=1;n<=5;n++){
+      const b=document.createElement("button"); b.textContent=n;
+      b.onclick=()=>{ state.scores[s.dataset.l][s.dataset.k]=n; state.skipped=false; paint(); save(); };
+      s.appendChild(b);
+    }
+  });
+}
+
+function paint(){
+  for(const L of labels){
+    const col=$("#col"+L); if(!col) continue;
+    const on=state.best.includes(L);
+    col.classList.toggle("best", on);
+    const cb=col.querySelector(".bestcb"); if(cb) cb.checked=on;
+    col.querySelectorAll(".stars").forEach(s=>{
+      [...s.children].forEach((b,i)=>b.classList.toggle("on", state.scores[L][s.dataset.k]===i+1));
+    });
+  }
+}
+
+function scoresComplete(){
+  if(state.skipped) return true;
+  return labels.every(L=>state.scores[L].content>=1 && state.scores[L].chrome>=1);
+}
+
+function selectionOk(){
+  if(state.skipped) return true;
+  return state.all_same || state.none_good || state.best.length>0;
+}
+
+async function save(){
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(async()=>{
+    state.skip_reason=$("#skip_reason").value;
+    state.seconds_spent=(state.seconds_spent||0)+((performance.now()-startedAt)/1000);
+    startedAt=performance.now();
+    const payload={item_id:items[cur].item_id, ...state, shown_order:labels.slice()};
+    await api("/api/rate",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+    items[cur].done=selectionOk() && scoresComplete();
+    $("#saved").textContent="saved";
+    setTimeout(()=>$("#saved").textContent="",900);
+    $("#prog").textContent=`Item ${cur+1} of ${items.length} · saved ${items.filter(i=>i.done).length}`;
+  },120);
+}
+
+function setView(v){
+  view=v;
+  document.querySelectorAll("[data-v]").forEach(b=>b.classList.toggle("pri", b.dataset.v===v));
+  $("#frame").hidden=v!=="render";
+  $("#srcview").hidden=v!=="text";
+  if(v==="text" && !$("#srcview").textContent){
+    fetch("/text/"+encodeURIComponent(items[cur].item_id)).then(r=>r.text()).then(t=>$("#srcview").textContent=t);
+  }
+}
+document.querySelectorAll("[data-v]").forEach(b=>b.onclick=()=>setView(b.dataset.v));
+
+$("#all_same").onchange=()=>{
+  state.all_same=$("#all_same").checked;
+  if(state.all_same){ state.best=[]; state.none_good=false; state.skipped=false; $("#none_good").checked=false; }
+  paint(); save();
+};
+$("#none_good").onchange=()=>{
+  state.none_good=$("#none_good").checked;
+  if(state.none_good){ state.best=[]; state.all_same=false; state.skipped=false; $("#all_same").checked=false; }
+  paint(); save();
+};
+$("#skip_reason").addEventListener("input",()=>{ state.skip_reason=$("#skip_reason").value; save(); });
+$("#skip").onclick=()=>{ state.skipped=true; state.best=[]; state.all_same=false; state.none_good=false; paint(); save(); };
+
+async function maybeDiff(){
+  const on=$("#diff_on").checked;
+  const box=$("#diffbox");
+  if(!on || labels.length<2){ box.hidden=true; box.textContent=""; return; }
+  const d=await api(`/api/diff?item=${encodeURIComponent(items[cur].item_id)}&a=${encodeURIComponent(labels[0])}&b=${encodeURIComponent(labels[1])}`);
+  box.textContent=d.diff||"(no differences)";
+  box.hidden=false;
+}
+$("#diff_on").onchange=maybeDiff;
+
+const go=async d=>{
+  if(d>0 && !(selectionOk() && scoresComplete()) && !confirm("This item is incomplete (best choice and 1–5 scores, or skip). Move on anyway?")) return;
+  await new Promise(r=>{ clearTimeout(saveTimer); save(); setTimeout(r,160); });
+  const n=cur+d; if(n>=0 && n<items.length){ cur=n; await load(); }
+  else if(n>=items.length) showFinish();
+};
+$("#prev").onclick=()=>go(-1);
+$("#next").onclick=()=>go(1);
+$("#finish").onclick=async()=>{
+  const missing=items.filter(i=>!i.done).length;
+  if(missing && !confirm(missing+" item(s) incomplete. Finish anyway?")) return;
+  await new Promise(r=>{ clearTimeout(saveTimer); save(); setTimeout(r,160); });
+  showFinish();
+};
+
+function showFinish(){
+  $("#main").hidden=true;
+  $("#done").hidden=false;
+  $("#respath").textContent=session.results_path;
+}
+
+document.addEventListener("keydown",e=>{
+  if(e.target.tagName==="INPUT" || e.target.tagName==="TEXTAREA") return;
+  if(e.key>="1" && e.key<="9"){
+    const idx=+e.key-1; if(idx<labels.length){
+      const L=labels[idx];
+      if(state.best.includes(L)) state.best=state.best.filter(x=>x!==L);
+      else { state.best.push(L); state.all_same=false; state.none_good=false; state.skipped=false; $("#all_same").checked=false; $("#none_good").checked=false; }
+      paint(); save();
+    }
+  } else if(e.key==="ArrowRight") go(1);
+  else if(e.key==="ArrowLeft") go(-1);
+});
+
+init();
+</script></body></html>

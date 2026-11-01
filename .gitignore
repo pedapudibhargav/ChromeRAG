@@ -54,5 +54,12 @@ data/landing_fresh_raw/
 # blind human-rating app: third-party pages and ratings stay local
 data/human_eval/
 
+# evaluators: private bundles, results, and any key.json stay local
+evaluators/bundle/**
+!evaluators/bundle/.gitkeep
+evaluators/results/**
+!evaluators/results/.gitkeep
+**/key.json
+
 # Elsevier template (download; not redistributed)
 papers/softwarex/template/*.docx

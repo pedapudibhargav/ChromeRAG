@@ -374,6 +374,7 @@ TLS-intercepting proxy, point `SSL_EXTRA_CA` at the proxy's CA bundle before fet
 ```
 src/chromerag/     # library (HTML in → Markdown and chunks out)
 examples/          # small synthetic site for the quick start
+evaluators/        # blind human-rating kit (stdlib app + author build/analyse); see evaluators/README.md
 tests/             # unit, CLI, rule-fixture and golden-output tests
 poc/               # fetch, baselines, benchmarks, judging, retrieval and STCE evaluations (not needed at runtime)
 docs/              # one-page GitHub Pages site (index.html) + published results (data/)
