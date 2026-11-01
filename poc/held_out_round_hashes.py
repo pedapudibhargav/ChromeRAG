@@ -20,8 +20,8 @@ import re
 import shutil
 import statistics
 import subprocess
-import tempfile
 import sys
+import tempfile
 from collections import defaultdict
 from pathlib import Path
 
