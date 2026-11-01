@@ -27,7 +27,7 @@ articles.
 | Precision / coverage priority knobs | |
 
 **Paper:** *ChromeRAG: A Learned Boilerplate Filter for Web RAG Ingestion* (submitted to SoftwareX)  
-**Release:** [`v0.1.4`](https://github.com/pedapudibhargav/ChromeRAG/tree/v0.1.4)  
+**Release:** [`v0.1.5`](https://github.com/pedapudibhargav/ChromeRAG/tree/v0.1.5)  
 **Author:** [Bhargava Chary Peddapudi](https://orcid.org/0009-0002-8523-8415)
 
 ---
@@ -185,8 +185,8 @@ filter splits the page into *blocks* (paragraphs, headings, list items, quotes, 
 each with gradient-boosted trees over about 530 numbers (its text, its place in the tree, the names of its
 ancestors, the heading above it, its neighbours). A block is kept when its score reaches the threshold of the
 chosen priority: `coverage` 0.30, `balanced` 0.50, `precision` 0.70. The page title, a heading above kept content
-and the lead paragraph are always kept. 37 YAML rules (consent managers, share bars, documentation-framework
-widgets, 16 rules adapted from Trafilatura's discard patterns, credited in `NOTICE`) and generic detectors remove
+and the lead paragraph are always kept. 13 YAML rules (consent managers, share/related blocks, 10 rules adapted from
+Trafilatura's discard patterns, credited in `NOTICE`) and generic detectors remove
 tables of contents, pagers, comment sections, related-post blocks, call-to-action buttons, share strips,
 newsletter blocks, author boxes and page tails.
 
@@ -197,12 +197,24 @@ newsletter blocks, author boxes and page tails.
   nested lists and GitHub Markdown tables; link targets are omitted unless requested, repeated blocks are
   written once, and the Markdown follows document order.
 
-Retrain (needs `pip install -e ".[train]"` and WCXB in `data/wcxb/`):
+Retrain the shipped strict model (needs `pip install -e ".[train]"` and WCXB in `data/wcxb/`). From the repository root with `PYTHONPATH=src:.`:
 
 ```bash
-python -m poc.lbc_data --split dev                      # block table -> data/outputs/lbc/lbc_dev.npz
-python -m poc.train_lbc --fit-all --out-dir src/chromerag/assets
-python -m poc.run_wcxb_eval --split dev --out /tmp/wcxb_dev.json   # sanity check (in-sample after --fit-all)
+bash poc/rebuild_strict.sh          # full sequence: ids, feature table, 5 fold models, fit-all verify,
+                                    # strict_dev_cv.json, ablation_cv, golden (long; logs to data/outputs/)
+# Or step by step:
+python -m poc.strict_split --write  # refreshes poc/wcxb_strict_train_ids.json (keeps manifest provenance fields)
+python -m poc.lbc_data --split dev  # -> data/outputs/lbc/lbc_strict.npz (default strict ids)
+for k in 0 1 2 3 4; do
+  python -m poc.train_lbc --data data/outputs/lbc/lbc_strict.npz --holdout-fold "$k" \
+    --out-dir "data/outputs/lbc/cv/fold_$k"
+done
+python -m poc.train_lbc --data data/outputs/lbc/lbc_strict.npz --fit-all --out-dir data/outputs/lbc/verify_a
+cmp data/outputs/lbc/verify_a/lbc_stage1.npz src/chromerag/assets/lbc_stage1.npz
+python -m poc.update_strict_manifest --verify-npz data/outputs/lbc/verify_a/lbc_stage1.npz
+python -m poc.run_strict_dev_cv --jobs 6
+python -m poc.ablation_cv --no-cache --train-stack --jobs 6
+python -m poc.golden --write
 ```
 
 **WCXB data.** Get WCXB v1.0 (CC-BY-4.0, https://arxiv.org/abs/2605.21097) into `data/wcxb/{dev,test}/{ground-truth/*.json,html/*.html.gz}`.

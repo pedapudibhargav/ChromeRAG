@@ -14,7 +14,6 @@ import json
 import os
 import pickle
 import time
-import zlib
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -35,17 +34,12 @@ BOOTSTRAP_ITERS = 5000
 BOOTSTRAP_SEED = 0
 
 TF_RULE_PREFIXES = (
-    "tf.share",
-    "tf.related",
     "tf.comments",
-    "tf.newsletter",
     "tf.sidebar",
-    "tf.ads",
     "tf.author",
     "tf.pagination",
     "tf.skip",
     "tf.footer",
-    "tf.tools",
     "tf.tags",
 )
 
@@ -62,9 +56,9 @@ CHROME_ABLATIONS = (
     ("chrome_no_attr_junk", "chrome_drop_attr_junk"),
 )
 
+# YAML file stems skipped in ablation (``docs_generators`` removed in 0.1.5; deciding ablation run: commit 7ca7e9e).
 YAML_SKIP_ABLATIONS = (
     ("no_yaml_consent", frozenset({"consent"})),
-    ("no_yaml_docs_generators", frozenset({"docs_generators"})),
     ("no_yaml_share_related", frozenset({"share_related"})),
     ("no_yaml_trafilatura_inspired", frozenset({"trafilatura_inspired"})),
 )
@@ -129,9 +123,9 @@ def _spec_map() -> dict[str, AblationSpec]:
 
 
 def _page_fold(url: str) -> int:
-    from poc.learn_tokens import site_of
+    from poc.learn_tokens import cv_fold
 
-    return zlib.crc32(site_of(url).encode()) % 5
+    return cv_fold(url)
 
 
 def _load_pages():
@@ -351,9 +345,9 @@ def _aggregate(
     baseline = per_config["baseline"]
     page_ids = sorted(baseline.keys())
     types = sorted({baseline[i]["type"] for i in page_ids})
-    from poc.learn_tokens import site_of
+    from poc.learn_tokens import cv_site_of
 
-    site_of_id = {p.id: site_of(p.url) for p in pages}
+    site_of_id = {p.id: cv_site_of(p.url) for p in pages}
     cv_rows = json.loads(CV_PATH.read_text(encoding="utf-8"))
     bad = [r["id"] for r in cv_rows if abs(r["chromerag"]["f1"] - baseline[r["id"]]["f1"]) > 1e-6]
     if len(cv_rows) != len(page_ids) or bad:

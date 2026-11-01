@@ -1,10 +1,10 @@
 """Measure empty-output fixes on WCXB strict-dev train ids only.
 
-Uses held-out fold models ``data/outputs/lbc/cv/fold_{crc32(site)%5}``.
+Uses held-out fold models ``data/outputs/lbc/cv/fold_{cv_fold(url)}``.
 Never opens WCXB test pages. Compares against ``strict_dev_cv.json``.
 
-  PYTHONPATH=src:../sk-overlay:. \\
-    /path/to/.venv/bin/python -m poc.empty_output_eval --jobs 6
+  pip install -e ".[train,baselines]"
+  python -m poc.empty_output_eval --jobs 6
 """
 
 from __future__ import annotations
@@ -12,9 +12,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
-import sys
 import time
-import zlib
 from collections import defaultdict
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
@@ -22,17 +20,12 @@ from typing import Any
 
 import numpy as np
 
+from chromerag import ChromeRAG, ContentPriority, PipelineConfig
+from chromerag.lbc import TwoStageModel
+from poc.learn_tokens import cv_fold, cv_site_of
+from poc.wcxb import load_split, snippet_rate, strip_front_matter, word_f1
+
 ROOT = Path(__file__).resolve().parents[1]
-SK_OVERLAY = ROOT.parent / "sk-overlay"
-
-for p in (str(SK_OVERLAY), str(ROOT / "src"), str(ROOT)):
-    if p not in sys.path:
-        sys.path.insert(0, p)
-
-from chromerag import ChromeRAG, ContentPriority, PipelineConfig  # noqa: E402
-from chromerag.lbc import TwoStageModel  # noqa: E402
-from poc.learn_tokens import site_of  # noqa: E402
-from poc.wcxb import load_split, snippet_rate, strip_front_matter, word_f1  # noqa: E402
 
 STRICT_CV = ROOT / "evaluations" / "2026-10-v0.1.3" / "strict_dev_cv.json"
 TRAIN_IDS = ROOT / "poc" / "wcxb_strict_train_ids.json"
@@ -50,7 +43,7 @@ _model_pattern = ""
 
 
 def fold_for(url: str) -> int:
-    return zlib.crc32(site_of(url).encode()) % 5
+    return cv_fold(url)
 
 
 def _worker_init(pattern: str) -> None:
@@ -253,7 +246,7 @@ def main() -> None:
             "ref": p.main_content,
             "without": p.without_snippets,
             "type": p.page_type,
-            "site": site_of(p.url),
+            "site": cv_site_of(p.url),
         }
         for p in pages
     ]

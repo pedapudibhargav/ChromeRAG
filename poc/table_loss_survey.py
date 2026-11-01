@@ -1,10 +1,10 @@
 """Survey HTML data-table token retention on WCXB strict-dev train ids only.
 
-Uses held-out fold models ``data/outputs/lbc/cv/fold_{crc32(site)%5}``.
+Uses held-out fold models ``data/outputs/lbc/cv/fold_{cv_fold(url)}``.
 Never opens WCXB test pages. Writes ``data/outputs/table_loss_survey.json``.
 
-  PYTHONPATH=src:../sk-overlay:. \\
-    /path/to/.venv/bin/python -m poc.table_loss_survey --jobs 6
+  pip install -e ".[train,baselines]"
+  python -m poc.table_loss_survey --jobs 6
 """
 
 from __future__ import annotations
@@ -12,7 +12,6 @@ from __future__ import annotations
 import argparse
 import json
 import re
-import sys
 from collections import defaultdict
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
@@ -21,23 +20,18 @@ from typing import Any
 import numpy as np
 from bs4 import BeautifulSoup
 
-ROOT = Path(__file__).resolve().parents[1]
-SK_OVERLAY = ROOT.parent / "sk-overlay"
-
-for p in (str(SK_OVERLAY), str(ROOT / "src"), str(ROOT)):
-    if p not in sys.path:
-        sys.path.insert(0, p)
-
-from chromerag import ChromeRAG, ContentPriority, PipelineConfig  # noqa: E402
-from chromerag.tables import _own_rows, is_layout_table  # noqa: E402
-from poc.empty_output_eval import (  # noqa: E402
+from chromerag import ChromeRAG, ContentPriority, PipelineConfig
+from chromerag.tables import _own_rows, is_layout_table
+from poc.empty_output_eval import (
     DEFAULT_MODELS,
     _fold_model,
     _worker_init,
     fold_for,
     load_train_pages,
 )
-from poc.wcxb import strip_front_matter  # noqa: E402
+from poc.wcxb import strip_front_matter
+
+ROOT = Path(__file__).resolve().parents[1]
 
 OUT_JSON = ROOT / "data" / "outputs" / "table_loss_survey.json"
 _TABLE_TOKEN_RE = re.compile(r"\b\w+\b")

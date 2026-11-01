@@ -5,14 +5,13 @@ For each page: clean it with the normal pipeline, list its blocks, describe each
 content when most of its word trigrams occur in the reference (short blocks: the whole word
 sequence occurs in it). Rows are weighted by word count because the benchmark scores words.
 
-  python -m poc.lbc_data --split dev --out data/outputs/lbc/lbc_dev.npz
+  python -m poc.lbc_data --split dev
 """
 
 from __future__ import annotations
 
 import argparse
 import json
-import zlib
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
@@ -22,7 +21,7 @@ from chromerag import ChromeRAG, ContentPriority, PipelineConfig
 from chromerag.blockfeatures import block_features, find_blocks
 from chromerag.extractor import StopExtraction
 from chromerag.treestats import TreeStats
-from poc.learn_tokens import half, site_of
+from poc.learn_tokens import cv_fold, half, site_of
 from poc.wcxb import load_split, tokenize
 
 POSITIVE_SHARE = 0.5
@@ -76,8 +75,7 @@ def _one(page):
     if "X" not in rows or len(rows["texts"]) == 0:
         return None
     y, w = label_blocks(rows["texts"], page.main_content, page.without_snippets)
-    site = site_of(page.url)
-    return page.id, page.page_type, half(site), rows["X"], y, w, [len(t) for t in rows["texts"]], rows["box"], zlib.crc32(site.encode()) % 5
+    return page.id, page.page_type, half(site_of(page.url)), rows["X"], y, w, [len(t) for t in rows["texts"]], rows["box"], cv_fold(page.url)
 
 
 def build(split: str, out: str, ids_path: str | None = None, jobs: int | None = None) -> None:
@@ -109,8 +107,8 @@ def build(split: str, out: str, ids_path: str | None = None, jobs: int | None = 
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--split", default="dev")
-    ap.add_argument("--ids", default=None, help="JSON list of page ids to include")
-    ap.add_argument("--out", default="data/outputs/lbc/lbc_dev.npz")
+    ap.add_argument("--ids", default="poc/wcxb_strict_train_ids.json", help="JSON list of page ids to include")
+    ap.add_argument("--out", default="data/outputs/lbc/lbc_strict.npz")
     ap.add_argument("--jobs", type=int, default=None, help="worker processes (1 = in-process sequential)")
     a = ap.parse_args()
     build(a.split, a.out, a.ids, a.jobs)

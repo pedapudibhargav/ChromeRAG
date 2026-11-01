@@ -11,13 +11,12 @@ from __future__ import annotations
 
 import argparse
 import json
-import zlib
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
 from chromerag import ChromeRAG, ContentPriority, PipelineConfig
 from chromerag.lbc import TwoStageModel
-from poc.learn_tokens import site_of
+from poc.learn_tokens import cv_fold
 from poc.wcxb import load_split, strip_front_matter, word_f1
 
 THRESHOLDS = (0.15, 0.25, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90)
@@ -32,7 +31,7 @@ def _model(fold: int) -> TwoStageModel:
 
 
 def _one(page):
-    fold = zlib.crc32(site_of(page.url).encode()) % 5
+    fold = cv_fold(page.url)
     model = _model(fold)
     row = {"id": page.id, "type": page.page_type, "fold": fold, "thr": {}}
     for thr in THRESHOLDS:

@@ -34,8 +34,23 @@ CONTENT_MIN = 0.80
 
 
 def site_of(url: str) -> str:
+    """Hostname (netloc without ``www.``) for token-learning site sets."""
     host = urlparse(url).netloc.lower().removeprefix("www.")
     return host
+
+
+def cv_site_of(url: str) -> str:
+    """Registrable domain for WCXB CV folds and site-level bootstrap."""
+    from poc.psl import registrable_domain
+
+    dom = registrable_domain(url)
+    return dom if dom else site_of(url)
+
+
+def cv_fold(url: str) -> int:
+    import zlib
+
+    return zlib.crc32(cv_site_of(url).encode()) % 5
 
 
 def half(site: str) -> str:
