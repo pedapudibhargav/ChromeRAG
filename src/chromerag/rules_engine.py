@@ -59,9 +59,11 @@ class RuleHit:
     chars: int
 
 
-def load_rules(rules_dir: Path = _RULES_PKG) -> list[Rule]:
+def load_rules(rules_dir: Path = _RULES_PKG, *, skip_stems: frozenset[str] | None = None) -> list[Rule]:
     rules: list[Rule] = []
     for path in sorted(rules_dir.glob("*.yaml")):
+        if skip_stems and path.stem in skip_stems:
+            continue
         payload = yaml.safe_load(path.read_text(encoding="utf-8")) or []
         for item in payload:
             rules.append(
@@ -219,6 +221,7 @@ class RuleIndex:
         page_type: str = "unknown",
         platform: str = "unknown",
         disabled_groups: set[str] | None = None,
+        disabled_prefixes: set[str] | None = None,
         stats: TreeStats | None = None,
     ) -> tuple[list[RuleHit], dict[str, int]]:
         """Remove matching elements. Returns (hits, characters removed per rule id).
@@ -229,9 +232,16 @@ class RuleIndex:
         hits: list[RuleHit] = []
         totals: dict[str, int] = {}
         disabled = disabled_groups or set()
+        prefixes = disabled_prefixes or set()
+
+        def _off(rule: Rule) -> bool:
+            if rule.group in disabled:
+                return True
+            return any(rule.id == p or rule.id.startswith(p + ".") for p in prefixes)
+
         active = [
             not (
-                rule.group in disabled
+                _off(rule)
                 or (rule.applies_when.get("page_type") and page_type not in rule.applies_when["page_type"])
                 or (rule.applies_when.get("platform") and platform not in rule.applies_when["platform"])
             )
