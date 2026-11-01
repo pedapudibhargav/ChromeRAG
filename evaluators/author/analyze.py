@@ -253,10 +253,14 @@ def analyse(
     # Mean scores per tool
     score_acc: dict[str, list[tuple[float, float]]] = defaultdict(list)
     times: list[float] = []
-    for items in per_rater.values():
-        for u in items.values():
+    missing_notes: list[dict[str, str]] = []
+    for rater, items in per_rater.items():
+        for iid, u in items.items():
             times.append(u["seconds_spent"])
             for tool, sc in u["scores_by_tool"].items():
+                note = str(sc.get("missing") or "").strip()
+                if note:
+                    missing_notes.append({"rater": rater, "item_id": iid, "tool": tool, "note": note})
                 if "content" in sc and "chrome" in sc:
                     score_acc[tool].append((float(sc["content"]), float(sc["chrome"])))
 
@@ -278,6 +282,7 @@ def analyse(
         "focus_pair": f"{ta}_vs_{tb}",
         "repeat_consistency": repeat_consistency,
         "mean_scores": mean_scores,
+        "missing_notes": missing_notes,
         "time_per_item_seconds": {
             "mean": float(np.mean(times)) if times else None,
             "n": len(times),

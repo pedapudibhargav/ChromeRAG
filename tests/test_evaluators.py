@@ -142,7 +142,7 @@ class TestAppHandler(unittest.TestCase):
         iid = session["items"][0]["item_id"]
         item = json.loads(self._get(f"/api/item/{iid}")[1])
         labs = item["shown_order"]
-        scores = {L: {"content": 3, "chrome": 4} for L in labs}
+        scores = {L: {"content": 3, "chrome": 4, "missing": "price table"} for L in labs}
         code, out = self._post(
             "/api/rate",
             {
@@ -161,6 +161,7 @@ class TestAppHandler(unittest.TestCase):
         self.assertTrue(out["ok"])
         saved = json.loads(Path(rating._STATE["results_path"]).read_text(encoding="utf-8"))
         self.assertEqual(saved["items"][iid]["best"], labs[:2])
+        self.assertEqual(saved["items"][iid]["scores"][labs[0]]["missing"], "price table")
         blob = json.dumps(saved).lower()
         for bad in FORBIDDEN:
             self.assertNotIn(bad, blob)
@@ -258,6 +259,7 @@ class TestAnalyzerSynthetic(unittest.TestCase):
         self.assertEqual(focus["krippendorff_alpha"], 1.0)
         # calibration must not affect means of chromerag content (only p1/p2)
         self.assertEqual(report["mean_scores"]["chromerag"]["n"], 4)  # 2 raters × 2 items
+        self.assertEqual(report["missing_notes"], [])
 
 
 class TestNoSrcImportInApp(unittest.TestCase):

@@ -51,10 +51,10 @@ Results are written to evaluators/results/<rater>_<bundle_id>.json.
 | Score | Content kept | Noise left in |
 |---|---|---|
 | 5 | Everything useful is there | None |
-| 4 | Small loss nobody would ask about: caption, byline | Harmless, under about 5% of the text: breadcrumb, share label |
-| 3 | One useful fact gone: price, table row, step | Tolerable, about 5 to 15%: footer, short menu, cannot be mistaken for content |
-| 2 | Main section or most of a table gone | Disruptive, about 15 to 40%: long link lists bury the content |
-| 1 | Most content gone | Over about 40%, or misleading: other products' prices, related articles or comments read as facts |
+| 4 | Small loss nobody would ask about: caption, byline, decorative line | Harmless, under about 5% of the text: breadcrumb, share label |
+| 3 | One useful fact gone: price, table row, step, short paragraph | Tolerable, about 5 to 15%: footer, short menu, cannot be mistaken for content |
+| 2 | Main section or most of a table gone | Disruptive, about 15 to 40%, or long link lists bury the content |
+| 1 | Most content gone, or text from the wrong page | Over about 40%, or text about other things that could give a wrong answer: other products' prices, related articles, comments read as facts |
 
 Noise is acceptable if it would not change an answer: levels 3 to 5. The percentages are rough guides, so do not count words.
 
