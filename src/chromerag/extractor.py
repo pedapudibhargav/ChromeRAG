@@ -104,6 +104,8 @@ class ChromeRAG:
         strictness: Strictness | str = Strictness.BALANCED,
         site_chrome: SiteChromeModel | None = None,
         rule_index: RuleIndex | None = None,
+        rule_disabled_groups: set[str] | None = None,
+        rule_disabled_prefixes: set[str] | None = None,
         lbc_model: TwoStageModel | None = None,
         density: Any = None,
         dvdf_threshold: float | None = None,
@@ -134,6 +136,8 @@ class ChromeRAG:
         self.config = cfg
         self.site_chrome = site_chrome
         self.rule_index = rule_index or DEFAULT_INDEX
+        self._rule_disabled_groups = rule_disabled_groups
+        self._rule_disabled_prefixes = rule_disabled_prefixes
         self.lbc_model = lbc_model if lbc_model is not None else default_two_stage()
         self._capture: Any = None
 
@@ -287,6 +291,8 @@ class ChromeRAG:
                 content_root=root_tag,
                 page_type=cfg.page_type.value,
                 stats=stats,
+                disabled_groups=self._rule_disabled_groups,
+                disabled_prefixes=self._rule_disabled_prefixes,
             )
             if rule_hits:
                 stats = None  # the tree changed
