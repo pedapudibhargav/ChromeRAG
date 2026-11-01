@@ -20,7 +20,7 @@ ROOT = Path(__file__).resolve().parents[1]
 FINAL_REL = Path("evaluations/2026-10-v0.1.3/FINAL")
 OUT_CSV = ROOT / "evaluations/2026-10-v0.1.3/HELD_OUT_LEDGER.csv"
 WORKLOG = ROOT / "evaluations/2026-10-v0.1.3/WORKLOG.md"
-MAIN_DEFAULT = Path("/Users/bpeddapudi/Documents/projects/HTML-vector-density-filter")
+MAIN_DEFAULT = ROOT  # set CHROMERAG_MAIN_CHECKOUT when running from a worktree: clones lose file times
 
 COLUMNS = [
     "run_time",

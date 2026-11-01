@@ -20,18 +20,17 @@ import re
 import shutil
 import statistics
 import subprocess
+import tempfile
 import sys
 from collections import defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-MAIN = Path(os.environ.get("CHROMERAG_MAIN_CHECKOUT", "/Users/bpeddapudi/Documents/projects/HTML-vector-density-filter"))
+# Checkout that holds the git-ignored data and the original file times.
+MAIN = Path(os.environ.get("CHROMERAG_MAIN_CHECKOUT", str(ROOT)))
 FINAL = ROOT / "evaluations/2026-10-v0.1.3/FINAL"
 OUT_JSON = ROOT / "evaluations/2026-10-v0.1.3/held_out_round_hashes.json"
-WORKTREE_ROOT = Path(
-    "/private/tmp/claude-501/-Users-bpeddapudi-Documents-projects-HTML-vector-density-filter/"
-    "d809f5a1-49e3-440c-a2fb-79528ece3beb/scratchpad/p01-commits"
-)
+WORKTREE_ROOT = Path(tempfile.gettempdir()) / "chromerag-p01-commits"
 CANDIDATE_COMMITS = ("9b0afed", "d396e64")
 _FRONT = re.compile(r"\A---\n.*?\n---\n+", re.S)
 _FINAL2_KINDS = {"articles": "article", "forums": "forum", "listings": "listing", "services": "service"}
