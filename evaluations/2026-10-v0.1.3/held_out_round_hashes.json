@@ -98,20 +98,20 @@
       "subject": "Record final WCXB test results"
     }
   ],
-  "caveat_uncommitted_window": "Judge rounds v014c/v014d ran at 19:05\u201319:48 on 2026-10-02 while the only committed extractor tip was 9b0afed (17:14); d396e64 landed at 20:26. A 9b0afed checkout may not be the exact code of those rounds.",
+  "caveat_uncommitted_window": "Judge rounds v014c/v014d ran at 19:05–19:48 on 2026-10-02 while the only committed extractor tip was 9b0afed (17:14); d396e64 landed at 20:26. The session log shows those rounds ran on a working tree already holding coding tasks 4 to 6, not on 9b0afed, and that tree was not kept. So 9b0afed is a lower bound on the code of those rounds, the differ counts overstate the change between rounds, and the winner split is indicative only.",
   "round_commit_mapping": {
     "v014c": {
-      "mtime_window": "2026-10-02T19:04\u201319:05",
+      "mtime_window": "2026-10-02T19:04–19:05",
       "nearest_committed": "9b0afed",
       "caveat": "v014c ran ~19:05, after 9b0afed (17:14) and before d396e64 (20:26); working tree may have contained uncommitted changes, so 9b0afed may not be exact"
     },
     "v014d": {
-      "mtime_window": "2026-10-02T19:16\u201319:48",
+      "mtime_window": "2026-10-02T19:16–19:48",
       "nearest_committed": "9b0afed",
-      "caveat": "v014d ran 19:16\u201319:48 between 9b0afed and d396e64; 9b0afed checkout may not be the exact code of those rounds"
+      "caveat": "v014d ran 19:16–19:48 between 9b0afed and d396e64; 9b0afed checkout may not be the exact code of those rounds"
     },
     "final": {
-      "mtime_window": "2026-10-02T20:37\u201320:49",
+      "mtime_window": "2026-10-02T20:37–20:49",
       "nearest_committed": "d396e64",
       "caveat": "final judges after d396e64 (20:26); treating d396e64 as the committed baseline"
     }
@@ -131,7 +131,7 @@
     "tmp_cr_judge": false,
     "main_tmp_batches": false,
     "preserved_outputs": false,
-    "note": "Aggregated FINAL/*_final2.json judgements keep winner/scores/reason only \u2014 not A/B extraction text. poc/claude_judge_build writes batches under /tmp/cr/judge (gitignored, ephemeral). No preserved batch/key trees found for a direct hash comparison."
+    "note": "Aggregated FINAL/*_final2.json judgements keep winner/scores/reason only — not A/B extraction text. poc/claude_judge_build writes batches under /tmp/cr/judge (gitignored, ephemeral). No preserved batch/key trees found for a direct hash comparison."
   },
   "per_commit_n_extracted": {
     "9b0afed": 328,

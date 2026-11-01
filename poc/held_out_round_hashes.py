@@ -410,8 +410,10 @@ print(json.dumps(out))
         "oct2_commits_in_freeze_to_v014": oct2,
         "caveat_uncommitted_window": (
             "Judge rounds v014c/v014d ran at 19:05–19:48 on 2026-10-02 while the only committed "
-            "extractor tip was 9b0afed (17:14); d396e64 landed at 20:26. A 9b0afed checkout may not "
-            "be the exact code of those rounds."
+            "extractor tip was 9b0afed (17:14); d396e64 landed at 20:26. The session log shows those rounds ran on a working "
+            "tree already holding coding tasks 4 to 6, not on 9b0afed, and that tree was not kept. So 9b0afed is a "
+            "lower bound on the code of those rounds, the differ counts overstate the change between rounds, and "
+            "the winner split is indicative only."
         ),
         "round_commit_mapping": round_commit,
         "preserved_judge_items": preserved,
