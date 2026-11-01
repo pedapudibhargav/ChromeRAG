@@ -1,11 +1,10 @@
 """WCXB strict-dev error analysis: where balanced ChromeRAG loses to Trafilatura.
 
 Uses pages in poc/wcxb_strict_train_ids.json only. Scores each page with the held-out
-site-grouped fold model (zlib.crc32(site_of(url)) % 5), matching strict_dev_cv.json protocol.
-Stage attribution via config ablations; fix candidates tested with in-script overrides only.
+site-grouped fold model (``cv_fold(url)``), matching strict_dev_cv.json protocol.
 
-Run from repo root:
-  PYTHONPATH=src:../sk-overlay:. .venv/bin/python -m poc.error_analysis_dev --jobs 6
+  pip install -e ".[train,baselines]"
+  python -m poc.error_analysis_dev --jobs 6
 """
 
 from __future__ import annotations
@@ -13,8 +12,6 @@ from __future__ import annotations
 import argparse
 import json
 import os
-import sys
-import zlib
 from collections import Counter, defaultdict
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
@@ -22,17 +19,13 @@ from typing import Any
 
 import numpy as np
 
-ROOT = Path(__file__).resolve().parents[1]
-SK_OVERLAY = ROOT.parent / "sk-overlay"
-for p in (str(SK_OVERLAY), str(ROOT / "src"), str(ROOT)):
-    if p not in sys.path:
-        sys.path.insert(0, p)
+from chromerag import ChromeRAG, ContentPriority, PipelineConfig
+from chromerag.lbc import TwoStageModel
+from poc.baselines import BASELINES
+from poc.learn_tokens import cv_fold, cv_site_of
+from poc.wcxb import load_split, snippet_rate, strip_front_matter, tokenize, word_f1
 
-from chromerag import ChromeRAG, ContentPriority, PipelineConfig  # noqa: E402
-from chromerag.lbc import TwoStageModel  # noqa: E402
-from poc.baselines import BASELINES  # noqa: E402
-from poc.learn_tokens import site_of  # noqa: E402
-from poc.wcxb import load_split, snippet_rate, strip_front_matter, tokenize, word_f1  # noqa: E402
+ROOT = Path(__file__).resolve().parents[1]
 
 STRICT_CV = ROOT / "evaluations" / "2026-10-v0.1.3" / "strict_dev_cv.json"
 TRAIN_IDS = ROOT / "poc" / "wcxb_strict_train_ids.json"
@@ -80,7 +73,7 @@ FIXES: dict[str, dict[str, Any]] = {
 
 
 def fold_for(url: str) -> int:
-    return zlib.crc32(site_of(url).encode()) % 5
+    return cv_fold(url)
 
 
 def load_train_pages(wcxb_root: Path) -> list:
@@ -318,7 +311,7 @@ def eval_fixes(pages, jobs: int, model_pattern: str) -> dict[str, Any]:
             "html": p.html,
             "ref": p.main_content,
             "without": p.without_snippets,
-            "site": site_of(p.url),
+            "site": cv_site_of(p.url),
         }
         for p in pages
     ]
@@ -371,7 +364,7 @@ def build_markdown(
     lines = [
         "# WCXB strict dev: balanced vs Trafilatura (worst-gap analysis)",
         "",
-        "Pages: `poc/wcxb_strict_train_ids.json` only. Fold: `crc32(site) % 5` held-out LBC models.",
+        "Pages: `poc/wcxb_strict_train_ids.json` only. Fold: `cv_fold(url)` held-out LBC models.",
         "",
         "## Causes (worst-gap cohort)",
         "",

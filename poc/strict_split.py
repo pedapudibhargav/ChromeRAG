@@ -99,6 +99,14 @@ def build() -> dict:
     return manifest, sorted(kept)
 
 
+_MANIFEST_PROVENANCE_KEYS = (
+    "lbc_feature_matrix_pages",
+    "lbc_extraction_failed_ids",
+    "shipped_lbc_stage1_npz",
+    "fitted_artifacts",
+)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--write", action="store_true")
@@ -107,6 +115,11 @@ def main() -> None:
     if a.write:
         TRAIN_IDS_OUT.write_text(json.dumps(ids, indent=1) + "\n", encoding="utf-8")
         MANIFEST_OUT.parent.mkdir(parents=True, exist_ok=True)
+        if MANIFEST_OUT.is_file():
+            prev = json.loads(MANIFEST_OUT.read_text(encoding="utf-8"))
+            for key in _MANIFEST_PROVENANCE_KEYS:
+                if key in prev:
+                    manifest[key] = prev[key]
         MANIFEST_OUT.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
         print(len(ids), "train ids ->", TRAIN_IDS_OUT.name)
         print("manifest ->", MANIFEST_OUT.name)

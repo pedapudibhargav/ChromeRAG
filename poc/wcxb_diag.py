@@ -60,17 +60,15 @@ def run(split: str, out: str, half: str = "all", fold: int | None = None, ids_pa
     import json
     from pathlib import Path
 
+    from poc.learn_tokens import cv_fold, site_of
     from poc.learn_tokens import half as site_half
-    from poc.learn_tokens import site_of
 
     pages = load_split(split)
     if ids_path:
         allow = frozenset(json.loads(Path(ids_path).read_text(encoding="utf-8")))
         pages = [p for p in pages if p.id in allow]
     if fold is not None:
-        import zlib
-
-        pages = [p for p in pages if zlib.crc32(site_of(p.url).encode()) % 5 == fold]
+        pages = [p for p in pages if cv_fold(p.url) == fold]
     elif half != "all":
         pages = [p for p in pages if site_half(site_of(p.url)) == half]
     if jobs == 1:
