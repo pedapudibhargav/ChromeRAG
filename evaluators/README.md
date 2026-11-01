@@ -62,6 +62,7 @@ For each item:
 
 - Read the original page (Rendered or Plain text tab).
 - Read every output.
+- If the original page looks blank or broken, use **Open saved page in new tab**. **Open live site** shows the page as it is today, which may differ from the saved copy; rate against the saved copy.
 - Tick **every** output that is equally best (multi-select). If two are nearly the same and both best, tick both.
 - Or choose **All about the same**, or **None are good**.
 - Score each output 1–5 for **content kept** and **noise left in** (required unless you Skip). You can add an optional note if something important is missing.

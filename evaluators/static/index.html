@@ -52,6 +52,8 @@ iframe,.srcview{width:100%;height:36vh;border:0;background:#fff}.srcview{backgro
       <b>Original page</b>
       <button data-v="render" class="pri">Rendered</button>
       <button data-v="text">Plain text</button>
+      <a id="opentab" target="_blank" rel="noopener noreferrer">Open saved page in new tab</a>
+      <a id="openlive" target="_blank" rel="noopener noreferrer">Open live site</a>
       <span class="hint" id="urlhint"></span>
     </div>
     <iframe id="frame" sandbox="" referrerpolicy="no-referrer" title="original page"></iframe>
@@ -120,6 +122,9 @@ async function load(){
   $("#cal").hidden=!d.is_calibration;
   $("#urlhint").textContent=d.source_url?("URL: "+d.source_url):"";
   $("#frame").src="/html/"+encodeURIComponent(id);
+  $("#opentab").href="/html/"+encodeURIComponent(id);
+  $("#openlive").href=d.source_url||"#";
+  $("#openlive").hidden=!d.source_url;
   $("#srcview").textContent="";
   $("#srcview").dataset.id=id;
   $("#all_same").checked=state.all_same;
