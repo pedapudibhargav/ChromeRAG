@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+from contextvars import ContextVar
 
 from bs4 import BeautifulSoup, Tag
 
@@ -13,15 +14,28 @@ _MAX_PIPE_COLS = 12
 _MAX_PIPE_ROWS = 200
 # Hard caps so pathological tables stay time-safe (truncate + caller may warn).
 _MAX_EMIT_ROWS = 100_000
+# Ancestor-table nesting depth that triggers the all-div time-safe unwrap (not sibling count).
 _MAX_NESTED_TABLE_UNWRAP = 80
 
-trim_notes: list[str] = []
+_trim_notes_var: ContextVar[list[str] | None] = ContextVar("chromerag_table_trim_notes", default=None)
+
+
+def _trim_notes() -> list[str]:
+    notes = _trim_notes_var.get()
+    if notes is None:
+        notes = []
+        _trim_notes_var.set(notes)
+    return notes
 
 
 def consume_trim_notes() -> list[str]:
-    out = list(trim_notes)
-    trim_notes.clear()
-    return out
+    notes = _trim_notes_var.get()
+    _trim_notes_var.set([])
+    return list(notes or [])
+
+
+def reset_trim_notes() -> None:
+    _trim_notes_var.set([])
 
 
 def _cell_text(cell: Tag) -> str:
@@ -49,22 +63,44 @@ _CHROME_TABLE_TAGS = frozenset({"nav", "aside", "footer"})
 _NUMERIC_CELL_RE = re.compile(r"^[\s$€£¥]?\s*-?\d[\d,]*(?:\.\d+)?\s*%?\s*$")
 
 
-def _own_rows(table: Tag) -> list[Tag]:
-    """Rows that belong to ``table`` itself, not to a table nested inside it.
+def _own_rows_capped(table: Tag) -> tuple[list[Tag], bool]:
+    """Own ``tr`` rows plus whether more rows exist beyond the emit budget.
 
-    Stops after ``_MAX_EMIT_ROWS + 1`` own rows so huge tables stay time-safe; callers
-    that emit text add a truncation marker when the cap binds. Walks ``descendants``
-    (a generator) instead of ``find_all`` so a 30k-row table does not materialise every row.
+    Collects up to ``_MAX_EMIT_ROWS + 1`` rows (header + body budget). One extra sighting
+    sets ``capped`` so callers can warn even when the header later consumes a slot.
     """
     rows: list[Tag] = []
+    capped = False
     for node in table.descendants:
         if not isinstance(node, Tag) or node.name != "tr":
             continue
         if node.find_parent("table") is table:
-            rows.append(node)
-            if len(rows) > _MAX_EMIT_ROWS:
+            if len(rows) >= _MAX_EMIT_ROWS + 1:
+                capped = True
                 break
+            rows.append(node)
+    return rows, capped
+
+
+def _own_rows(table: Tag) -> list[Tag]:
+    """Rows that belong to ``table`` itself, not to a table nested inside it."""
+    rows, _ = _own_rows_capped(table)
     return rows
+
+
+def _max_table_nesting_depth(tables: list[Tag]) -> int:
+    """Deepest ancestor-table chain among ``tables`` (0 = no table nested in another)."""
+    deepest = 0
+    for table in tables:
+        depth = 0
+        parent = table.parent
+        while isinstance(parent, Tag):
+            if parent.name == "table":
+                depth += 1
+            parent = parent.parent
+        if depth > deepest:
+            deepest = depth
+    return deepest
 
 
 def is_layout_table(table: Tag) -> bool:
@@ -123,7 +159,7 @@ def is_rescueable_data_table(table: Tag, link_density: float | None = None) -> b
     """
     if table_in_chrome(table) or is_layout_table(table):
         return False
-    headers, body_rows = _table_grid(table)
+    headers, body_rows, _ = _table_grid(table)
     n_rows = (1 if headers else 0) + len(body_rows)
     if n_rows < 2:
         return False
@@ -199,9 +235,9 @@ def _drop_empty_columns(
     return new_headers, new_rows
 
 
-def _table_grid(table: Tag) -> tuple[list[str], list[list[str]]]:
-    """Return header labels and body rows as plain cell text."""
-    rows = _own_rows(table)
+def _table_grid(table: Tag) -> tuple[list[str], list[list[str]], bool]:
+    """Return header labels, body rows as plain cell text, and whether own-row collection hit the cap."""
+    rows, capped = _own_rows_capped(table)
     headers: list[str] = []
     body_rows: list[list[str]] = []
     header_row = table.find("thead")
@@ -211,7 +247,7 @@ def _table_grid(table: Tag) -> tuple[list[str], list[list[str]]]:
         data_trs = [tr for tr in rows if tr.find_parent("thead") is None]
     else:
         if not rows:  # a <table> without rows (empty or only a caption) has nothing to linearize
-            return headers, body_rows
+            return headers, body_rows, capped
         first = rows[0]
         cells = first.find_all(["th", "td"])
         if first.find("th") or all(c.name == "th" for c in cells):
@@ -225,7 +261,7 @@ def _table_grid(table: Tag) -> tuple[list[str], list[list[str]]]:
     # Keep blank header labels (do not clear to []): pipe render already requires a
     # non-empty header, and linearized ``: value | colN: …`` cues help LBC drop chrome grids.
     headers, body_rows = _drop_empty_columns(headers, body_rows)
-    return headers, body_rows
+    return headers, body_rows, capped
 
 
 def _has_merged_cells(table: Tag) -> bool:
@@ -280,13 +316,22 @@ def _can_render_pipe_from_grid(
 
 def can_render_pipe_table(table: Tag) -> bool:
     """True when the table is a small rectangular grid suitable for GFM pipe output."""
-    headers, body_rows = _table_grid(table)
+    headers, body_rows, _ = _table_grid(table)
     return _can_render_pipe_from_grid(table, headers, body_rows)
 
 
-def _render_pipe_from_grid(headers: list[str], body_rows: list[list[str]]) -> str:
+def _note_table_truncated() -> None:
+    note = f"One or more tables were truncated to {_MAX_EMIT_ROWS} rows (time-safe budget)."
+    notes = _trim_notes()
+    if note not in notes:
+        notes.append(note)
+
+
+def _render_pipe_from_grid(
+    headers: list[str], body_rows: list[list[str]], *, row_capped: bool = False
+) -> str:
     body = [r for r in body_rows if any(c.strip() for c in r)]
-    truncated = len(body) > _MAX_EMIT_ROWS
+    truncated = row_capped or len(body) > _MAX_EMIT_ROWS
     to_emit = body[:_MAX_EMIT_ROWS]
     lines: list[str] = []
     if headers:
@@ -301,12 +346,13 @@ def _render_pipe_from_grid(headers: list[str], body_rows: list[list[str]]) -> st
             lines.append("| " + " | ".join(_escape_pipe_cell(c) for c in row) + " |")
     if truncated:
         lines.append(f"[Table truncated after {_MAX_EMIT_ROWS} rows]")
+        _note_table_truncated()
     return "\n".join(lines)
 
 
 def render_pipe_table(table: Tag) -> str:
-    headers, body_rows = _table_grid(table)
-    return _render_pipe_from_grid(headers, body_rows)
+    headers, body_rows, capped = _table_grid(table)
+    return _render_pipe_from_grid(headers, body_rows, row_capped=capped)
 
 
 def _linearize_pair(header: str, value: str) -> str | None:
@@ -322,11 +368,13 @@ def _linearize_pair(header: str, value: str) -> str | None:
     return f"{h}: {v}"
 
 
-def _linearize_from_grid(headers: list[str], body_rows: list[list[str]], title: str) -> str:
+def _linearize_from_grid(
+    headers: list[str], body_rows: list[list[str]], title: str, *, row_capped: bool = False
+) -> str:
     if not headers and not body_rows:
         return ""
     body = [r for r in body_rows if any(c.strip() for c in r)]
-    truncated = len(body) > _MAX_EMIT_ROWS
+    truncated = row_capped or len(body) > _MAX_EMIT_ROWS
     to_emit = body[:_MAX_EMIT_ROWS]
     lines = [f"[Table: {title}]"]
     for i, row in enumerate(to_emit, start=1):
@@ -346,38 +394,40 @@ def _linearize_from_grid(headers: list[str], body_rows: list[list[str]], title: 
             lines.append(f"Row {i} -> " + " | ".join(pairs))
     if truncated:
         lines.append(f"[Table truncated after {_MAX_EMIT_ROWS} rows]")
+        _note_table_truncated()
     return "\n".join(lines)
 
 
 def linearize_table(table: Tag, index: int = 1) -> str:
     caption = table.find("caption")
     title = caption.get_text(" ", strip=True) if caption else f"Table {index}"
-    headers, body_rows = _table_grid(table)
-    return _linearize_from_grid(headers, body_rows, title)
+    headers, body_rows, capped = _table_grid(table)
+    return _linearize_from_grid(headers, body_rows, title, row_capped=capped)
 
 
 def format_table(table: Tag, index: int = 1, *, table_format: str = "markdown") -> str:
-    headers, body_rows = _table_grid(table)
+    headers, body_rows, capped = _table_grid(table)
     body = [r for r in body_rows if any(c.strip() for c in r)]
-    truncated = len(body) > _MAX_EMIT_ROWS
+    truncated = capped or len(body) > _MAX_EMIT_ROWS
     if table_format == "markdown" and _can_render_pipe_from_grid(table, headers, body_rows):
-        text = _render_pipe_from_grid(headers, body_rows)
+        text = _render_pipe_from_grid(headers, body_rows, row_capped=capped)
         if text:
             if truncated and "[Table truncated after" not in text:
                 text += f"\n[Table truncated after {_MAX_EMIT_ROWS} rows]"
+                _note_table_truncated()
             return text
     caption = table.find("caption")
     title = caption.get_text(" ", strip=True) if caption else f"Table {index}"
-    return _linearize_from_grid(headers, body_rows, title)
+    return _linearize_from_grid(headers, body_rows, title, row_capped=capped)
 
 
 def unwrap_layout_tables(soup: BeautifulSoup) -> int:
     """Turn layout tables into plain divs so their content is scored like any other block."""
     tables = [t for t in tags_named(soup, ("table",)) if t.attrs is not None]
-    # Deep *nested* tables only (not many sibling tables on a listing page).
-    deeply_nested = bool(tables) and len(tables[0].find_all("table")) >= _MAX_NESTED_TABLE_UNWRAP
+    # Deep *ancestor* nesting only (not many sibling tables under one layout shell).
+    deeply_nested = _max_table_nesting_depth(tables) >= _MAX_NESTED_TABLE_UNWRAP
     if deeply_nested:
-        trim_notes.append(
+        _trim_notes().append(
             "Deeply nested table markup was unwrapped without linearizing inner grids (time-safe path)."
         )
         for tag in soup.find_all(("table", "thead", "tbody", "tfoot", "tr", "td", "th", "caption")):
@@ -403,9 +453,9 @@ def replace_tables_with_linearized(
     index = 0
     # Snapshot once; unwrap may rename nested tables mid-walk.
     tables = [t for t in tags_named(soup, ("table",)) if t.attrs is not None]
-    deeply_nested = bool(tables) and len(tables[0].find_all("table")) >= _MAX_NESTED_TABLE_UNWRAP
+    deeply_nested = _max_table_nesting_depth(tables) >= _MAX_NESTED_TABLE_UNWRAP
     if deeply_nested:
-        trim_notes.append(
+        _trim_notes().append(
             "Deeply nested table markup was unwrapped without linearizing inner grids (time-safe path)."
         )
         for tag in soup.find_all(("table", "thead", "tbody", "tfoot", "tr", "td", "th", "caption")):

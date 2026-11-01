@@ -60,7 +60,7 @@ def run(split: str, out: str, half: str = "all", fold: int | None = None, ids_pa
     import json
     from pathlib import Path
 
-    from poc.learn_tokens import cv_fold, site_of
+    from poc.learn_tokens import cv_fold, cv_site_of
     from poc.learn_tokens import half as site_half
 
     pages = load_split(split)
@@ -70,7 +70,7 @@ def run(split: str, out: str, half: str = "all", fold: int | None = None, ids_pa
     if fold is not None:
         pages = [p for p in pages if cv_fold(p.url) == fold]
     elif half != "all":
-        pages = [p for p in pages if site_half(site_of(p.url)) == half]
+        pages = [p for p in pages if site_half(cv_site_of(p.url)) == half]
     if jobs == 1:
         rows = [_one(p) for p in pages]
     else:

@@ -538,6 +538,51 @@ def test_dl_wrapping_blocks_keeps_every_block():
     assert "First para here." in md and "Second para here." in md
 
 
+def test_dl_with_paragraph_dd_keeps_all_terms_and_defs():
+    from chromerag.markdown_out import soup_to_markdown
+
+    html = "<dl><dt>T1</dt><dd>D1</dd><dt>T2</dt><dd><p>D2</p></dd></dl>"
+    md = soup_to_markdown(BeautifulSoup(html, "lxml"))
+    assert all(tok in md for tok in ("T1", "D1", "T2", "D2"))
+
+
+def test_dl_consecutive_dts_keep_both_terms():
+    from chromerag.markdown_out import soup_to_markdown
+
+    html = "<dl><dt>T1</dt><dt>T2</dt><dd>D</dd></dl>"
+    md = soup_to_markdown(BeautifulSoup(html, "lxml"))
+    assert "T1" in md and "T2" in md and "D" in md
+
+
+def test_long_glossary_dl_not_treated_as_product_metafield():
+    from chromerag.extractor import ChromeRAG as Extractor
+
+    entries = "".join(
+        f"<dt>Glossary term number {i} with a long label</dt>"
+        f"<dd>Detailed definition number {i} explaining the concept with plenty of words for rescue.</dd>"
+        for i in range(12)
+    )
+    soup = BeautifulSoup(f"<dl>{entries}</dl>", "lxml")
+    dl = soup.find("dl")
+    assert dl is not None
+    assert Extractor._is_product_metafield_dl(dl) is False
+
+
+def test_pre_literal_asterisks_not_broken():
+    from chromerag.markdown_out import soup_to_markdown
+
+    md = soup_to_markdown(BeautifulSoup("<main><pre>char ****p;</pre></main>", "lxml"))
+    assert "****" in md
+    assert "** **" not in md
+
+
+def test_inline_code_literal_asterisks_not_broken():
+    from chromerag.markdown_out import soup_to_markdown
+
+    md = soup_to_markdown(BeautifulSoup("<main><p>x <code>****</code> y</p></main>", "lxml"))
+    assert "`****`" in md
+
+
 def test_large_table_keeps_every_row():
     rows = "".join(f"<tr><td>r{i}</td><td>CELL{i}x</td></tr>" for i in range(5000))
     html = _wrapped_page(f"<h2>Data</h2><table><tr><th>a</th><th>b</th></tr>{rows}</table>")

@@ -103,22 +103,32 @@ def test_output_is_deterministic() -> None:
 
 
 def test_deep_emphasis_nesting_does_not_raise() -> None:
+    # Text long enough to survive density filtering; must remain after depth-cap fallback.
+    marker = "AAAADEEP_EMPHASIS_KEEP_ME_THROUGH_FILTERING_AAAA"
     html = (
         "<html><body><main><p>"
-        + "<b>" * 5000
-        + "Nested emphasis still yields text."
-        + "</b>" * 5000
+        + "<b>" * 1500
+        + marker
+        + "</b>" * 1500
         + "</p></main></body></html>"
     )
     result = ChromeRAG(config=PipelineConfig(enable_dvdf=False, enable_lbc=False)).extract(html)
     assert isinstance(result.markdown, str)
-    assert "Nested emphasis" in result.markdown or result.warnings
+    assert marker in result.markdown
 
 
 def test_deep_list_nesting_does_not_raise() -> None:
-    html = "<html><body><main>" + "<ul><li>" * 500 + "leaf item" + "</li></ul>" * 500 + "</main></body></html>"
+    marker = "AAAALIST_LEAF_KEEP_ME_THROUGH_FILTERING_AAAA"
+    html = (
+        "<html><body><main>"
+        + "<ul><li>" * 500
+        + marker
+        + "</li></ul>" * 500
+        + "</main></body></html>"
+    )
     result = ChromeRAG(config=PipelineConfig(enable_dvdf=False, enable_lbc=False)).extract(html)
     assert isinstance(result.markdown, str)
+    assert marker in result.markdown
 
 
 def test_lone_surrogate_does_not_raise_on_encode() -> None:

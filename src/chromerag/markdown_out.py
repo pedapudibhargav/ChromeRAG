@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+from contextvars import ContextVar
 
 import yaml
 from bs4 import BeautifulSoup, NavigableString, Tag
@@ -17,14 +18,28 @@ def front_matter_yaml(data: dict) -> str:
 
 
 _BREAK_CLASS_TOKENS = frozenset({"br", "linebreak", "line-break", "newline"})
-_INLINE_DEPTH_CAP = 4000
-trim_notes: list[str] = []
+# Stay well under the default recursion limit (~1000); deep trees fall back to get_text.
+_INLINE_DEPTH_CAP = 200
+_LIST_DEPTH_CAP = 200
+_trim_notes_var: ContextVar[list[str] | None] = ContextVar("chromerag_md_trim_notes", default=None)
+
+
+def _trim_notes() -> list[str]:
+    notes = _trim_notes_var.get()
+    if notes is None:
+        notes = []
+        _trim_notes_var.set(notes)
+    return notes
 
 
 def consume_trim_notes() -> list[str]:
-    out = list(trim_notes)
-    trim_notes.clear()
-    return out
+    notes = _trim_notes_var.get()
+    _trim_notes_var.set([])
+    return list(notes or [])
+
+
+def reset_trim_notes() -> None:
+    _trim_notes_var.set([])
 
 
 def _class_tokens(el: Tag) -> set[str]:
@@ -37,10 +52,35 @@ def _class_tokens(el: Tag) -> set[str]:
 def _emph_wrap(marker: str, inner: str) -> str:
     if not inner.strip():
         return inner if inner else ""
-    return f"{marker}{inner.strip()}{marker}"
+    s = inner.strip()
+    # Nested same-marker emphasis already carries markers; re-wrapping would emit ****.
+    if s.startswith(marker) and s.endswith(marker) and len(s) >= 2 * len(marker):
+        return s
+    return f"{marker}{s}{marker}"
+
+
+def _join_inline_parts(parts: list[str]) -> str:
+    """Join inline pieces without creating adjacent emphasis runs (``****`` / ``**``)."""
+    if not parts:
+        return ""
+    out = parts[0]
+    for part in parts[1:]:
+        if not part:
+            continue
+        if not out:
+            out = part
+            continue
+        if (out.endswith("**") and part.startswith("**")) or (
+            out.endswith("*") and part.startswith("*") and not out.endswith("**") and not part.startswith("**")
+        ):
+            out = f"{out} {part}"
+        else:
+            out += part
+    return out
 
 
 def _break_adjacent_markers(text: str) -> str:
+    """Split accidental ``****`` from adjacent emphasis only; never call on pre/code text."""
     if "****" not in text:
         return text
     prev = None
@@ -56,18 +96,23 @@ def _inline(el: Tag | NavigableString, links: bool = True, _depth: int = 0) -> s
     if not isinstance(el, Tag):
         return ""
     if _depth > _INLINE_DEPTH_CAP:
-        if not trim_notes:
-            trim_notes.append("Deep inline nesting was truncated during Markdown rendering.")
-        return el.get_text(" ", strip=True)[:200]
+        notes = _trim_notes()
+        if not notes or notes[-1] != "Deep inline nesting was truncated during Markdown rendering.":
+            notes.append("Deep inline nesting was truncated during Markdown rendering.")
+        return el.get_text(" ", strip=True)
     name = el.name or ""
     if name in {"script", "style"}:
         return ""
     if name == "br" or (name == "span" and _class_tokens(el) & _BREAK_CLASS_TOKENS):
         return "\n"
     if name in {"strong", "b"}:
-        return _emph_wrap("**", "".join(_inline(c, links, _depth + 1) for c in el.children))
+        return _emph_wrap(
+            "**", _join_inline_parts([_inline(c, links, _depth + 1) for c in el.children])
+        )
     if name in {"em", "i"}:
-        return _emph_wrap("*", "".join(_inline(c, links, _depth + 1) for c in el.children))
+        return _emph_wrap(
+            "*", _join_inline_parts([_inline(c, links, _depth + 1) for c in el.children])
+        )
     if name == "code" and el.parent and el.parent.name != "pre":
         return f"`{el.get_text()}`"
     if name == "a":
@@ -76,7 +121,11 @@ def _inline(el: Tag | NavigableString, links: bool = True, _depth: int = 0) -> s
         if links and href and text:
             return f"[{text}]({href})"
         return text
-    return _break_adjacent_markers("".join(_inline(c, links, _depth + 1) for c in el.children))
+    joined = _join_inline_parts([_inline(c, links, _depth + 1) for c in el.children])
+    # Do not rewrite literal asterisks that live inside inline code spans.
+    if el.find("code") is not None:
+        return joined
+    return _break_adjacent_markers(joined)
 
 
 def _is_pipe_table(text: str) -> bool:
@@ -101,6 +150,13 @@ def _preformatted_text(el: Tag) -> str:
 
 def _list_lines(el: Tag, depth: int = 0) -> list[str]:
     """Lines of a list: ``1.`` for ordered lists, ``-`` otherwise, nested lists indented by two spaces."""
+    if depth > _LIST_DEPTH_CAP:
+        notes = _trim_notes()
+        msg = "Deep list nesting was truncated during Markdown rendering."
+        if msg not in notes:
+            notes.append(msg)
+        text = el.get_text(" ", strip=True)
+        return [f"- {text}"] if text else []
     lines: list[str] = []
     ordered = el.name == "ol"
     start = el.get("start")
@@ -185,30 +241,71 @@ def _content_branches(node: Tag) -> list[Tag]:
     return out
 
 
+_DL_BLOCK_CHILDREN = (
+    "p",
+    "ul",
+    "ol",
+    "table",
+    "pre",
+    "blockquote",
+    "div",
+    "section",
+    "dl",
+    "h1",
+    "h2",
+    "h3",
+    "h4",
+    "h5",
+    "h6",
+)
+
+
+def _dt_dd_to_markdown(el: Tag, links: bool = True) -> str:
+    """Render a single ``dt`` or ``dd`` when a non-simple ``dl`` is walked by the block scanner."""
+    name = el.name or ""
+    if name == "dt":
+        term = el.get_text(" ", strip=True)
+        return f"- **{term}**\n\n" if term else ""
+    if name == "dd":
+        # Block children are emitted by the walker; only render leaf definitions here.
+        if el.find(_DL_BLOCK_CHILDREN) is not None:
+            return ""
+        defin = _join_inline_parts([_inline(c, links) for c in el.children]).strip()
+        if el.find("code") is None:
+            defin = _break_adjacent_markers(defin).strip()
+        return f"- {defin}\n\n" if defin else ""
+    return ""
+
+
 def _dl_to_markdown(el: Tag, links: bool = True) -> str:
     lines: list[str] = []
-    term: str | None = None
+    pending_terms: list[str] = []
     for child in el.children:
         if not isinstance(child, Tag):
             continue
         if child.name == "dt":
             term = child.get_text(" ", strip=True)
+            if term:
+                pending_terms.append(term)
         elif child.name == "dd":
-            defin = _break_adjacent_markers("".join(_inline(c, links) for c in child.children)).strip()
-            if defin:
-                lines.append(f"- **{term}**: {defin}" if term else f"- {defin}")
-            elif term:
-                lines.append(f"- **{term}**")
-            term = None
-    if term:
+            defin = _join_inline_parts([_inline(c, links) for c in child.children]).strip()
+            if child.find("code") is None:
+                defin = _break_adjacent_markers(defin).strip()
+            if pending_terms:
+                for term in pending_terms:
+                    if defin:
+                        lines.append(f"- **{term}**: {defin}")
+                    else:
+                        lines.append(f"- **{term}**")
+                pending_terms = []
+            elif defin:
+                lines.append(f"- {defin}")
+    for term in pending_terms:
         lines.append(f"- **{term}**")
     if lines:
         return "\n".join(lines) + "\n\n"
     text = el.get_text(" ", strip=True)
     return f"{text}\n\n" if text else ""
-
-
-_DL_BLOCK_CHILDREN = ("p", "ul", "ol", "table", "pre", "blockquote", "div", "section", "dl", "h1", "h2", "h3", "h4", "h5", "h6")
 
 
 def _is_simple_dl(el: Tag) -> bool:
@@ -222,7 +319,10 @@ def element_to_markdown(el: Tag, links: bool = True) -> str:
         level = int(name[1])
         return f"{'#' * level} {el.get_text(' ', strip=True)}\n\n"
     if name == "p":
-        return f"{_break_adjacent_markers(''.join(_inline(c, links) for c in el.children)).strip()}\n\n"
+        joined = _join_inline_parts([_inline(c, links) for c in el.children])
+        if el.find("code") is None:
+            joined = _break_adjacent_markers(joined)
+        return f"{joined.strip()}\n\n"
     if name == "pre":
         text = _preformatted_text(el)
         if _is_table_pre(text):
@@ -234,8 +334,13 @@ def element_to_markdown(el: Tag, links: bool = True) -> str:
         return "\n".join(_list_lines(el)) + "\n\n"
     if name == "dl":
         return _dl_to_markdown(el, links)
+    if name in {"dt", "dd"}:
+        return _dt_dd_to_markdown(el, links)
     if name == "figcaption":
-        text = _break_adjacent_markers("".join(_inline(c, links) for c in el.children)).strip()
+        joined = _join_inline_parts([_inline(c, links) for c in el.children])
+        if el.find("code") is None:
+            joined = _break_adjacent_markers(joined)
+        text = joined.strip()
         return f"*{text}*\n\n" if text else ""
     if name == "blockquote":
         body = el.get_text(" ", strip=True)
@@ -307,6 +412,20 @@ def soup_to_markdown(
             if id(node) not in seen:
                 _mark(node)
             continue
+        if name in {"dt", "dd"}:
+            if id(node) not in seen:
+                body = _dt_dd_to_markdown(node, links)
+                if body.strip():
+                    if inject_heading_paths and heading_stack:
+                        path = " > ".join(t for _, t in heading_stack)
+                        parts.append(f"[Section: {path}]\n{body}")
+                    else:
+                        parts.append(body)
+                seen.add(id(node))
+                # Block-bearing ``dd`` still needs its children walked.
+                if name == "dd" and node.find(_DL_BLOCK_CHILDREN) is not None:
+                    stack[0:0] = [child for child in node.children if isinstance(child, Tag)]
+            continue
         if name in {"ul", "ol"}:
             if _list_is_layout_shell(node):
                 stack[0:0] = _content_branches(node)
@@ -365,6 +484,7 @@ def soup_to_markdown(
         # Depth first, in document order: push the children in front of the siblings still waiting.
         stack[0:0] = [child for child in node.children if isinstance(child, Tag)]
 
-    md = _break_adjacent_markers("".join(parts))
+    # Do not run _break_adjacent_markers on the full document: it would alter pre/code.
+    md = "".join(parts)
     md = re.sub(r"\n{3,}", "\n\n", md).strip() + "\n"
     return md

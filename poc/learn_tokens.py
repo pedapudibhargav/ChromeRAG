@@ -87,7 +87,7 @@ def scan(split: str, ids_path: str | None = None) -> dict[str, dict]:
         ref = set(tokenize(page.main_content))
         if len(ref) < 30:
             continue
-        site, h = site_of(page.url), None
+        site, h = cv_site_of(page.url), None
         h = half(site)
         soup = parse_html(page.html)
         strip_non_content_tags(soup)

@@ -56,7 +56,12 @@ def _fold_model(fold: int) -> TwoStageModel:
     if not expected.is_absolute():
         expected = ROOT / expected
     if fold not in _models:
-        _models[fold] = TwoStageModel.load(expected)
+        loaded = TwoStageModel.load(expected)
+        if loaded is None:
+            raise SystemExit(
+                f"missing fold model {expected}; refusing the shipped model, it saw held-out sites"
+            )
+        _models[fold] = loaded
     return _models[fold]
 
 
@@ -65,15 +70,29 @@ def load_train_pages(wcxb_root: Path) -> list:
     return [p for p in load_split("dev", root=wcxb_root) if p.id in allow]
 
 
-def site_bootstrap(deltas_by_site: dict[str, float], iters: int = 5000) -> tuple[float, float, float]:
-    sites = list(deltas_by_site.values())
-    if not sites:
+def site_bootstrap(
+    deltas_by_site: dict[str, list[float]], iters: int = 5000, seed: int = 0
+) -> tuple[float, float, float]:
+    """Page-weighted cluster bootstrap (sites resampled; mean weighted by page count).
+
+    Matches ``poc.ablation_cv._paired_bootstrap`` weighting so multi-page sites do not
+    shrink to a single equally-weighted point.
+    """
+    if not deltas_by_site:
         return (float("nan"), float("nan"), float("nan"))
-    mean = float(np.mean(sites))
-    rng = np.random.default_rng(0)
-    n = len(sites)
-    bs = [float(np.mean([sites[rng.integers(0, n)] for _ in range(n)])) for _ in range(iters)]
-    return mean, float(np.percentile(bs, 2.5)), float(np.percentile(bs, 97.5))
+    site_sums = np.array([float(sum(v)) for v in deltas_by_site.values()], dtype=np.float64)
+    site_sizes = np.array([float(len(v)) for v in deltas_by_site.values()], dtype=np.float64)
+    total = float(site_sizes.sum())
+    if total <= 0:
+        return (float("nan"), float("nan"), float("nan"))
+    mean = float(site_sums.sum() / total)
+    rng = np.random.default_rng(seed)
+    n = len(site_sums)
+    samples = np.empty(iters, dtype=np.float64)
+    for j in range(iters):
+        pick = rng.integers(0, n, n)
+        samples[j] = site_sums[pick].sum() / site_sizes[pick].sum()
+    return mean, float(np.percentile(samples, 2.5)), float(np.percentile(samples, 97.5))
 
 
 def _summarize(rows: list[dict[str, Any]], key: str = "f1") -> dict[str, Any]:
@@ -105,6 +124,7 @@ def _score_one(row: dict[str, Any]) -> dict[str, Any]:
     html_toks = table_tokens_from_html(row["html"])
     gold = {w.lower() for w in re.findall(r"\b\w+\b", row["ref"]) if len(w) > 1}
     html_in_gold = html_toks & gold
+    errors = 0
     for name, priority in PRIORITIES:
         cfg = PipelineConfig.from_priority(priority)
         rag = ChromeRAG(config=cfg, lbc_model=model)
@@ -113,9 +133,11 @@ def _score_one(row: dict[str, Any]) -> dict[str, Any]:
             result = rag.extract(row["html"], url=row["url"])
             md = strip_front_matter(result.markdown)
             tables_rescued = int((result.diagnostics.get("lbc") or {}).get("tables_rescued") or 0)
-        except Exception:
+        except Exception as exc:  # noqa: BLE001
             md = ""
             tables_rescued = 0
+            errors += 1
+            print(f"ERROR {row['id']} {name}: {type(exc).__name__}: {exc}", flush=True)
         ms = (time.perf_counter() - t0) * 1000.0
         p, r, f1 = word_f1(md, row["ref"])
         kept = {w.lower() for w in re.findall(r"\b\w+\b", md) if len(w) > 1}
@@ -132,6 +154,7 @@ def _score_one(row: dict[str, Any]) -> dict[str, Any]:
             "tables_rescued": tables_rescued,
         }
         out["ms"][name] = ms
+    out["extract_errors"] = errors
     return out
 
 
@@ -203,10 +226,8 @@ def _delta_vs_cv(
                     "delta_f1": delta,
                 }
             )
-    site_f1 = {s: float(np.mean(v)) for s, v in d_f1.items()}
-    site_wo = {s: float(np.mean(v)) for s, v in d_wo.items()}
-    m, lo, hi = site_bootstrap(site_f1)
-    wm, wlo, whi = site_bootstrap(site_wo)
+    m, lo, hi = site_bootstrap(dict(d_f1))
+    wm, wlo, whi = site_bootstrap(dict(d_wo))
     drops.sort(key=lambda r: r["delta_f1"])
     return {
         "delta_f1_mean": m,
@@ -259,6 +280,8 @@ def main() -> None:
             max_workers=args.jobs, initializer=_worker_init, initargs=(args.models,)
         ) as pool:
             scored = list(pool.map(_score_one, payload, chunksize=4))
+    n_errors = sum(int(s.get("extract_errors") or 0) for s in scored)
+    print(f"extract_errors={n_errors}", flush=True)
 
     before_timing = {}
     if args.before_timing and args.before_timing.is_file():

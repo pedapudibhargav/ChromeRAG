@@ -21,7 +21,7 @@ from chromerag import ChromeRAG, ContentPriority, PipelineConfig
 from chromerag.blockfeatures import block_features, find_blocks
 from chromerag.extractor import StopExtraction
 from chromerag.treestats import TreeStats
-from poc.learn_tokens import cv_fold, half, site_of
+from poc.learn_tokens import cv_fold, cv_site_of, half
 from poc.wcxb import load_split, tokenize
 
 POSITIVE_SHARE = 0.5
@@ -75,7 +75,7 @@ def _one(page):
     if "X" not in rows or len(rows["texts"]) == 0:
         return None
     y, w = label_blocks(rows["texts"], page.main_content, page.without_snippets)
-    return page.id, page.page_type, half(site_of(page.url)), rows["X"], y, w, [len(t) for t in rows["texts"]], rows["box"], cv_fold(page.url)
+    return page.id, page.page_type, half(cv_site_of(page.url)), rows["X"], y, w, [len(t) for t in rows["texts"]], rows["box"], cv_fold(page.url)
 
 
 def build(split: str, out: str, ids_path: str | None = None, jobs: int | None = None) -> None:

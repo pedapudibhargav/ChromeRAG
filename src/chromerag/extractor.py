@@ -49,6 +49,7 @@ from chromerag.input_quality import InputQualityReport, assess_input_html
 from chromerag.lbc import TwoStageModel, default_two_stage
 from chromerag.markdown_out import consume_trim_notes as consume_md_trim_notes
 from chromerag.markdown_out import front_matter_yaml, soup_to_markdown
+from chromerag.markdown_out import reset_trim_notes as reset_md_trim_notes
 from chromerag.models import BlockScore, ExtractResult
 from chromerag.rules_engine import DEFAULT_INDEX, RuleHit, RuleIndex
 from chromerag.schema_fusion import fuse_front_matter
@@ -61,6 +62,9 @@ from chromerag.tables import (
 )
 from chromerag.tables import (
     consume_trim_notes as consume_table_trim_notes,
+)
+from chromerag.tables import (
+    reset_trim_notes as reset_table_trim_notes,
 )
 from chromerag.textio import decode_html
 from chromerag.trafilatura_ideas import apply_trafilatura_ideas
@@ -122,7 +126,6 @@ _LBC_LEAD_MIN_WORDS = 8
 LOW_CONFIDENCE_F1 = 0.70
 _SEMANTIC_LEAF = frozenset({"dt", "dd"})
 _LBC_LONG_TABLE_ROWS = 500
-_PRODUCT_DL_MAX_PAIRS = 10
 _PRODUCT_DL_MAX_TERM = 40
 _PRODUCT_DL_MAX_DEF = 80
 
@@ -390,16 +393,18 @@ class ChromeRAG:
 
     @staticmethod
     def _is_product_metafield_dl(dl: Tag) -> bool:
+        """True for short Shopify-style spec grids; long glossary entries stay rescuable."""
         if _attr_tokens(dl) & NOISE_TOKENS:
             return True
         dts = dl.find_all("dt", recursive=False) or dl.find_all("dt")
         dds = dl.find_all("dd", recursive=False) or dl.find_all("dd")
-        if len(dts) > _PRODUCT_DL_MAX_PAIRS:
+        if not dts or not dds:
+            return False
+        short_terms = all(len(dt.get_text(" ", strip=True)) <= _PRODUCT_DL_MAX_TERM for dt in dts)
+        short_defs = all(len(dd.get_text(" ", strip=True)) <= _PRODUCT_DL_MAX_DEF for dd in dds)
+        # Count alone is not enough: a long glossary with >10 entries must remain rescuable.
+        if len(dts) >= 4 and short_terms and short_defs:
             return True
-        if len(dts) >= 4 and dds:
-            if all(len(dt.get_text(" ", strip=True)) <= _PRODUCT_DL_MAX_TERM for dt in dts):
-                if all(len(dd.get_text(" ", strip=True)) <= _PRODUCT_DL_MAX_DEF for dd in dds):
-                    return True
         return False
 
     @staticmethod
@@ -471,8 +476,8 @@ class ChromeRAG:
         input_quality: InputQualityReport | None = None,
         front: dict[str, Any] | None = None,
     ) -> tuple[str, dict[str, Any], ExtractResult]:
-        consume_table_trim_notes()
-        consume_md_trim_notes()
+        reset_table_trim_notes()
+        reset_md_trim_notes()
         soup = parse_html(html)
         if input_quality is None:
             input_quality = assess_input_html(html, soup=soup)
@@ -650,7 +655,14 @@ class ChromeRAG:
             input_quality=input_quality.as_dict(),
             diagnostics=diagnostics,
         )
-        meta = {"front": front, "input_quality": input_quality, "body_words": body_words}
+        # Capture this pass's notes before a retry clears the contextvars.
+        pass_notes = consume_table_trim_notes() + consume_md_trim_notes()
+        meta = {
+            "front": front,
+            "input_quality": input_quality,
+            "body_words": body_words,
+            "trim_notes": pass_notes,
+        }
         return md, meta, result
 
     def extract(self, html: str | bytes, url: str | None = None) -> ExtractResult:
@@ -683,6 +695,7 @@ class ChromeRAG:
         self, html: str, url: str | None, cfg: PipelineConfig
     ) -> ExtractResult:
         md, meta, result = self._extract_core(html, url, cfg)
+        chosen_trim_notes: list[str] = list(meta.get("trim_notes") or [])
         body_words = int(meta["body_words"])
         out_words = _markdown_body_words(md)
         # Front matter alone can inflate tokens_estimate; collapse uses body words.
@@ -693,7 +706,7 @@ class ChromeRAG:
         if collapsed and not meta["input_quality"].is_thin:
             coverage_cfg = coverage_fallback(cfg)
             first_out = out_words
-            md2, _, result2 = self._extract_core(
+            md2, meta2, result2 = self._extract_core(
                 html,
                 url,
                 coverage_cfg,
@@ -712,6 +725,7 @@ class ChromeRAG:
                 result = result2
                 md = md2
                 out_words = md2_words
+                chosen_trim_notes = list(meta2.get("trim_notes") or [])
                 retry_notes.append(
                     "Extraction collapsed with detected content root; retried with body root "
                     "and coverage thresholds."
@@ -729,7 +743,7 @@ class ChromeRAG:
                 and (lbc_dropped or no_blocks)
             ):
                 wide_cfg = replace(coverage_cfg, enable_lbc=False)
-                md3, _, result3 = self._extract_core(
+                md3, meta3, result3 = self._extract_core(
                     html,
                     url,
                     wide_cfg,
@@ -739,6 +753,7 @@ class ChromeRAG:
                 )
                 if _markdown_body_words(md3) > _markdown_body_words(result.markdown):
                     result = result3
+                    chosen_trim_notes = list(meta3.get("trim_notes") or [])
                     retry_notes.append(
                         "Extraction still collapsed after coverage retry; retried with body root "
                         "without the learned block filter."
@@ -770,12 +785,16 @@ class ChromeRAG:
                 f"Low extraction confidence (expected F1 {expected_f1:.2f}): the model is unsure which "
                 "blocks are content on this page. Check the output or try another priority."
             )
-        if "[Table truncated after" in result.markdown:
+        if "[Table truncated after" in result.markdown or any(
+            "truncated to" in n and "rows" in n for n in chosen_trim_notes
+        ):
             warnings.append(
                 "One or more tables were truncated to a time-safe row budget."
             )
-        warnings.extend(consume_table_trim_notes())
-        warnings.extend(consume_md_trim_notes())
+        warnings.extend(chosen_trim_notes)
+        # Drop any notes left by a rejected retry so they cannot leak into the next extract.
+        consume_table_trim_notes()
+        consume_md_trim_notes()
         if result.diagnostics.get("generic_chrome", {}).get("chrome_time_safe_skip"):
             warnings.append(
                 "Generic chrome heuristics were skipped on a very large DOM (time-safe path)."

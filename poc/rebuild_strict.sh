@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # Rebuild strict-dev LBC artifacts and evaluation JSON from WCXB in data/wcxb/.
 # Prerequisite: pip install -e ".[train,baselines,dev]" and PYTHONPATH=src:.
+#
+# strict_split loads WCXB test URLs only to collect registrable domains to exclude
+# from the train id set (domain leakage / near-dup gates). It never scores test pages.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
@@ -27,11 +30,14 @@ for k in 0 1 2 3 4; do
     --out-dir "data/outputs/lbc/cv/fold_$k" 2>&1 | tee -a "$LOG"
 done
 
-log "=== 4 full model (fit-all) + manifest hash fields ==="
+log "=== 4 full model (fit-all) + ship assets before manifest/golden ==="
 rm -rf data/outputs/lbc/verify_a data/outputs/lbc/verify_b
 "$PY" -m poc.train_lbc --data data/outputs/lbc/lbc_strict.npz --fit-all --out-dir data/outputs/lbc/verify_a 2>&1 | tee -a "$LOG"
 "$PY" -m poc.train_lbc --data data/outputs/lbc/lbc_strict.npz --fit-all --out-dir data/outputs/lbc/verify_b 2>&1 | tee -a "$LOG"
 cmp data/outputs/lbc/verify_a/lbc_stage1.npz data/outputs/lbc/verify_b/lbc_stage1.npz
+mkdir -p src/chromerag/assets
+cp -f data/outputs/lbc/verify_a/lbc_stage1.npz src/chromerag/assets/lbc_stage1.npz
+log "copied verify_a/lbc_stage1.npz -> src/chromerag/assets/lbc_stage1.npz"
 "$PY" -m poc.update_strict_manifest --verify-npz data/outputs/lbc/verify_a/lbc_stage1.npz 2>&1 | tee -a "$LOG"
 
 log "=== 5 strict dev CV scores ==="
@@ -52,4 +58,4 @@ log "=== 6 ablation CV ==="
 log "=== 7 golden fixtures ==="
 "$PY" -m poc.golden --write 2>&1 | tee -a "$LOG"
 
-log "=== DONE (copy verify_a/lbc_stage1.npz to src/chromerag/assets/ when bytes change) ==="
+log "=== DONE ==="
