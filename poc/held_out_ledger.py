@@ -464,6 +464,52 @@ def _worklog_only_rows() -> list[dict]:
     return []
 
 
+UNCOMMITTED = "uncommitted tree after 9b0afed, before d396e64"
+# Pacific times from the private development session log (UTC-7), which is the only record of these runs.
+SESSION_TEST_RUNS = [
+    ("2026-10-02T15:06", "after robustness fixes"),
+    ("2026-10-02T16:28", "during output-quality work"),
+    ("2026-10-02T16:45", "coding task 1, scored on test after the change"),
+    ("2026-10-02T16:59", "during output-quality work"),
+    ("2026-10-02T17:00", "coding task 3, scored on test after the change"),
+    ("2026-10-02T18:23", "coding task 4, scored on test after the change; brief cites judge reasons from 223 lost comparisons (source sets not confirmed)"),
+    ("2026-10-02T18:47", "coding task 6, scored on test after the change; brief used judge reasons from WCXB test pages"),
+    ("2026-10-02T19:17", "coding task 8; brief used judge reasons from WCXB test pages"),
+    ("2026-10-02T19:52", "coding task 10, Trafilatura-inspired rule groups kept only if F1 held on test and dev: selection on test"),
+    ("2026-10-02T20:50", "coding task 12, scored on test after the change, after the final judge round"),
+    ("2026-10-02T21:32", "coding task 13, speed work, outputs required byte-identical; scored on test"),
+]
+
+
+def _correct_from_session_log(rows: list[dict]) -> list[dict]:
+    """File times alone mislabel code: rounds before d396e64 ran on a working tree ahead of 9b0afed."""
+    for r in rows:
+        name = r["result_file"]
+        t = r["run_time"]
+        if r["tool_version_or_commit"] == "9b0afed" and "2026-10-02T19:00" <= t < "2026-10-02T20:26":
+            r["tool_version_or_commit"] = UNCOMMITTED
+            r["commit_basis"] = "session_log"
+            r["notes"] = (r["notes"] + " Code held coding-task changes not committed until d396e64.").strip()
+        elif name in ("wcxb_clean_f1_v014_final.json", "wcxb_test_v014_final.json"):
+            r["tool_version_or_commit"] = "d396e64 tree"
+            r["commit_basis"] = "session_log"
+        elif name.startswith(("landing_comparison_", "fresh_retrieval")) and t.startswith("2026-10-02T20:45"):
+            r["tool_version_or_commit"] = "d396e64 tree (rerun)"
+            r["commit_basis"] = "session_log"
+            r["notes"] = (r["notes"] + " Rerun after the rule changes; earlier run on b1432c3 was overwritten.").strip()
+    return rows
+
+
+def _session_log_rows() -> list[dict]:
+    rows = []
+    for when, note in SESSION_TEST_RUNS:
+        row = {c: "n/a" for c in COLUMNS}
+        row.update(run_time=when, time_source="session_log", set="wcxb_test", n_pages="511", commit_basis="session_log",
+                   tool_version_or_commit="uncommitted tree", result_file="not kept", net_overall="unknown", cost_usd="0", notes=note)
+        rows.append(row)
+    return rows
+
+
 def main() -> None:
     main_final = _main_final()
     commits = _commits_oct2()
@@ -478,7 +524,7 @@ def main() -> None:
         by_h[h] = (h, dt, s)
     commits = sorted(by_h.values(), key=lambda r: r[1])
 
-    rows = _file_rows(main_final, commits) + _deleted_rows(commits) + _worklog_only_rows()
+    rows = _correct_from_session_log(_file_rows(main_final, commits) + _deleted_rows(commits)) + _worklog_only_rows() + _session_log_rows()
     rows.sort(key=lambda r: (r["run_time"], r["result_file"], r["set"]))
     OUT_CSV.parent.mkdir(parents=True, exist_ok=True)
     with OUT_CSV.open("w", newline="", encoding="utf-8") as f:
