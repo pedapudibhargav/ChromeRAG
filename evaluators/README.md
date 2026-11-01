@@ -46,7 +46,17 @@ Results are written to evaluators/results/<rater>_<bundle_id>.json.
 
 ## How to rate
 
-**Rubric (always visible in the app):** judge which output is the better input for a search index: main content kept, and page chrome (menus, footers, cookie text, related links) left out.
+**The question (always visible in the app):** imagine a search assistant that can only read this text. People ask questions this page should answer. Which output would give right answers most reliably?
+
+| Score | Content kept | Noise left in |
+|---|---|---|
+| 5 | Everything useful is there | None |
+| 4 | Small loss nobody would ask about: caption, byline | Harmless, under about 5% of the text: breadcrumb, share label |
+| 3 | One useful fact gone: price, table row, step | Tolerable, about 5 to 15%: footer, short menu, cannot be mistaken for content |
+| 2 | Main section or most of a table gone | Disruptive, about 15 to 40%: long link lists bury the content |
+| 1 | Most content gone | Over about 40%, or misleading: other products' prices, related articles or comments read as facts |
+
+Noise is acceptable if it would not change an answer: levels 3 to 5. The percentages are rough guides, so do not count words.
 
 For each item:
 
@@ -54,7 +64,7 @@ For each item:
 - Read every output.
 - Tick **every** output that is equally best (multi-select). If two are nearly the same and both best, tick both.
 - Or choose **All about the same**, or **None are good**.
-- Score each output 1–5 for **content kept** and **chrome left out** (required unless you Skip).
+- Score each output 1–5 for **content kept** and **noise left in** (required unless you Skip). You can add an optional note if something important is missing.
 - Practice items are marked and come first; they are not used in analysis.
 - You can go back; progress is saved after every click.
 
@@ -84,7 +94,7 @@ Email the JSON file shown on the Finish screen (also under `evaluators/results/`
       "best": ["A", "B"],
       "all_same": false,
       "none_good": false,
-      "scores": {"A": {"content": 4, "chrome": 5}},
+      "scores": {"A": {"content": 4, "chrome": 5, "missing": ""}},
       "skipped": false,
       "skip_reason": "",
       "seconds_spent": 12.5,
@@ -106,3 +116,5 @@ Email the JSON file shown on the Finish screen (also under `evaluators/results/`
 ## Privacy
 
 No personal data is collected. The only identifier is the rater id you choose on the command line. Ratings never leave your machine unless you email the results file.
+
+In results, the `chrome` field is the noise score (5 = no noise).

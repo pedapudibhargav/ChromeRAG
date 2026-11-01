@@ -208,9 +208,8 @@ class Handler(BaseHTTPRequestHandler):
                     "results_path": str(_STATE["results_path"]),
                     "demo": _STATE["demo"],
                     "rubric": (
-                        "Judge which output is the better input for a search index: "
-                        "main content kept, and page chrome (menus, footers, cookie text, "
-                        "related links) left out."
+                        "Imagine a search assistant that can only read this text. People ask questions "
+                        "this page should answer. Which output would give right answers most reliably?"
                     ),
                     "items": items,
                 }

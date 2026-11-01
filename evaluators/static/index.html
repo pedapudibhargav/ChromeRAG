@@ -10,7 +10,7 @@ header h1{font-size:15px;margin:0}.sp{flex:1}.pill{background:var(--bg);border:1
 .pill.warn{color:var(--warn);border-color:var(--warn)}
 button{font:inherit;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:6px;padding:5px 10px;cursor:pointer}button.pri{background:var(--acc);border-color:var(--acc);color:#fff}button:disabled{opacity:.4}
 main{padding:12px 14px;display:grid;gap:12px}
-.rubric{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:13px}
+.rubric{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:13px}.guide{border-collapse:collapse;margin-top:6px;width:100%}.guide th,.guide td{border-top:1px solid var(--line);padding:3px 8px;text-align:left;vertical-align:top}.miss{font:inherit;width:100%;box-sizing:border-box;background:transparent;color:inherit;border:1px solid var(--line);border-radius:4px;padding:2px 6px}
 .src{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden}.src .bar{display:flex;gap:8px;align-items:center;padding:6px 10px;border-bottom:1px solid var(--line);flex-wrap:wrap}
 .src .bar a{color:var(--acc);font-size:12px}
 iframe,.srcview{width:100%;height:36vh;border:0;background:#fff}.srcview{background:var(--panel);color:var(--ink);overflow:auto;white-space:pre-wrap;font:12px/1.4 ui-monospace,Menlo,monospace;padding:8px}
@@ -39,6 +39,14 @@ iframe,.srcview{width:100%;height:36vh;border:0;background:#fff}.srcview{backgro
 </header>
 <main id="main">
   <div class="rubric" id="rubric"></div>
+  <details class="rubric" open><summary>Score guide (noise is acceptable if it would not change an answer: levels 3 to 5)</summary>
+    <table class="guide"><thead><tr><th>Score</th><th>Content kept</th><th>Noise left in</th></tr></thead><tbody>
+    <tr><td>5</td><td>Everything useful is there</td><td>None</td></tr>
+    <tr><td>4</td><td>Small loss nobody would ask about: caption, byline</td><td>Harmless, under about 5% of the text: breadcrumb, share label</td></tr>
+    <tr><td>3</td><td>One useful fact gone: price, table row, step</td><td>Tolerable, about 5 to 15%: footer, short menu, cannot be mistaken for content</td></tr>
+    <tr><td>2</td><td>Main section or most of a table gone</td><td>Disruptive, about 15 to 40%: long link lists bury the content</td></tr>
+    <tr><td>1</td><td>Most content gone</td><td>Over about 40%, or misleading: other products' prices, related articles or comments read as facts</td></tr>
+    </tbody></table></details>
   <section class="src">
     <div class="bar">
       <b>Original page</b>
@@ -129,7 +137,7 @@ function renderCols(d){
     const o=d.outputs[L];
     const col=document.createElement("div");
     col.className="col"; col.id="col"+L;
-    col.innerHTML=`<h2><label><input type="checkbox" class="bestcb" data-l="${L}"> <span>Output ${L}</span></label><span class="hint">${o.words} words</span></h2><div class="txt"></div><div class="rate"><label>Content kept <span class="stars" data-k="content" data-l="${L}"></span></label><label>Chrome left out <span class="stars" data-k="chrome" data-l="${L}"></span></label></div>`;
+    col.innerHTML=`<h2><label><input type="checkbox" class="bestcb" data-l="${L}"> <span>Output ${L}</span></label><span class="hint">${o.words} words</span></h2><div class="txt"></div><div class="rate"><label>Content kept (5 = all) <span class="stars" data-k="content" data-l="${L}"></span></label><label>Noise left in (5 = none) <span class="stars" data-k="chrome" data-l="${L}"></span></label><input class="miss" data-l="${L}" placeholder="Optional: is something important missing?"></div>`;
     col.querySelector(".txt").textContent=o.text;
     c.appendChild(col);
     col.querySelector(".bestcb").onchange=()=>{
@@ -139,6 +147,10 @@ function renderCols(d){
       $("#all_same").checked=state.all_same; $("#none_good").checked=state.none_good;
       paint(); save();
     };
+  });
+  document.querySelectorAll(".miss").forEach(m=>{
+    m.value=state.scores[m.dataset.l].missing||"";
+    m.oninput=()=>{ state.scores[m.dataset.l].missing=m.value; save(); };
   });
   document.querySelectorAll(".stars").forEach(s=>{
     for(let n=1;n<=5;n++){
