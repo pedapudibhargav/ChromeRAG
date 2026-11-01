@@ -11,6 +11,7 @@ sequence occurs in it). Rows are weighted by word count because the benchmark sc
 from __future__ import annotations
 
 import argparse
+import json
 import zlib
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
@@ -79,8 +80,12 @@ def _one(page):
     return page.id, page.page_type, half(site), rows["X"], y, w, [len(t) for t in rows["texts"]], rows["box"], zlib.crc32(site.encode()) % 5
 
 
-def build(split: str, out: str) -> None:
-    pages = [p for p in load_split(split) if len(tokenize(p.main_content)) >= 30]
+def build(split: str, out: str, ids_path: str | None = None) -> None:
+    pages = list(load_split(split))
+    if ids_path:
+        allow = frozenset(json.loads(Path(ids_path).read_text(encoding="utf-8")))
+        pages = [p for p in pages if p.id in allow]
+    pages = [p for p in pages if len(tokenize(p.main_content)) >= 30]
     with ProcessPoolExecutor() as pool:
         results = [r for r in pool.map(_one, pages, chunksize=8) if r is not None]
     X = np.concatenate([r[3] for r in results])
@@ -101,9 +106,10 @@ def build(split: str, out: str) -> None:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--split", default="dev")
+    ap.add_argument("--ids", default=None, help="JSON list of page ids to include")
     ap.add_argument("--out", default="data/outputs/lbc/lbc_dev.npz")
     a = ap.parse_args()
-    build(a.split, a.out)
+    build(a.split, a.out, a.ids)
 
 
 if __name__ == "__main__":

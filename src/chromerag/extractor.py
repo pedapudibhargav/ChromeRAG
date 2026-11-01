@@ -148,10 +148,15 @@ class ChromeRAG:
         root = content_root if isinstance(content_root, Tag) else None
         X, box = block_features(blocks, body, stats, root)
         chars = np.array([len(b.text) for b in blocks])
-        proba = self.lbc_model.predict(X.astype("float64"), chars, box)
+        proba = (
+            self.lbc_model.predict(X.astype("float64"), chars, box)
+            if cfg.enable_lbc_stage2 and self.lbc_model.second is not None
+            else self.lbc_model.first.predict_proba(X.astype("float64"))
+        )
         seen: set[str] = set()
-        title_block = self._title_block(soup, blocks) if cfg.lbc_keep_title else None
-        if title_block is None and cfg.lbc_keep_title and cfg.lbc_title_fallback:
+        structure = cfg.enable_lbc_structure_rules
+        title_block = self._title_block(soup, blocks) if structure and cfg.lbc_keep_title else None
+        if title_block is None and structure and cfg.lbc_keep_title and cfg.lbc_title_fallback:
             title_block = self._title_fallback(body, root, blocks, proba)
         base_keep: list[bool] = []
         for block, p in zip(blocks, proba, strict=True):
@@ -165,7 +170,7 @@ class ChromeRAG:
                 base_keep.append(True)
                 seen.add(key)
         keep = list(base_keep)
-        if cfg.lbc_rescue_headings:
+        if structure and cfg.lbc_rescue_headings:
             for i, (block, p) in enumerate(zip(blocks, proba, strict=True)):
                 if keep[i] or p >= cfg.lbc_threshold or p < _LBC_HEADING_RESCUE_MIN:
                     continue
@@ -175,7 +180,7 @@ class ChromeRAG:
                     if base_keep[j]:
                         keep[i] = True
                         break
-        if cfg.lbc_rescue_lead and title_block is not None:
+        if structure and cfg.lbc_rescue_lead and title_block is not None:
             for i, block in enumerate(blocks):
                 if block is not title_block:
                     continue
@@ -286,8 +291,10 @@ class ChromeRAG:
             if rule_hits:
                 stats = None  # the tree changed
 
-        traf_stats = apply_trafilatura_ideas(
-            soup, cfg, root_tag, stats=stats or TreeStats(body)
+        traf_stats = (
+            apply_trafilatura_ideas(soup, cfg, root_tag, stats=stats or TreeStats(body))
+            if cfg.enable_trafilatura_rules
+            else {}
         )
         if any(traf_stats.values()):
             stats = None
@@ -307,16 +314,19 @@ class ChromeRAG:
                     stats = None
 
         page_kind = infer_page_kind_hint(soup)
-        generic_chrome = drop_generic_chrome(soup, root_tag, page_kind, cfg=cfg)
+        generic_chrome = (
+            drop_generic_chrome(soup, root_tag, page_kind, cfg=cfg) if cfg.enable_generic_chrome else {}
+        )
         if any(generic_chrome.values()):
             stats = None
 
-        prune_noise_subtrees(
-            soup,
-            max_noise_block_chars=cfg.max_noise_block_chars,
-            cache=elem_cache,
-            stats=stats or TreeStats(body),
-        )
+        if cfg.enable_chrome_prune:
+            prune_noise_subtrees(
+                soup,
+                max_noise_block_chars=cfg.max_noise_block_chars,
+                cache=elem_cache,
+                stats=stats or TreeStats(body),
+            )
         if self._capture is not None or (cfg.enable_lbc and self.lbc_model is not None):
             wrap_loose_text(body)  # text between blocks becomes blocks, so the classifier sees it
         if self._capture is not None:  # training hook: hand over the cleaned page and stop

@@ -1,0 +1,37 @@
+{
+  "public_suffix_list_version": "2026-10-31_14-17-28_UTC",
+  "near_duplicate_jaccard_threshold": 0.8,
+  "counts": {
+    "dev_eligible_start": 1473,
+    "after_leaked_ids": 1334,
+    "after_test_domain_exclusion": 1239,
+    "after_near_duplicate_guard": 1239,
+    "removed_leaked_ids": 139,
+    "removed_test_domain": 95,
+    "removed_near_duplicate": 0
+  },
+  "per_page_type": {
+    "start": {
+      "article": 791,
+      "service": 162,
+      "listing": 94,
+      "forum": 112,
+      "product": 113,
+      "documentation": 91,
+      "collection": 110
+    },
+    "final": {
+      "article": 668,
+      "service": 153,
+      "listing": 86,
+      "product": 81,
+      "documentation": 74,
+      "forum": 100,
+      "collection": 77
+    }
+  },
+  "test_registrable_domains": 434,
+  "shared_domain_dev_pages_before_exclusion": 232,
+  "near_duplicate_train_ids": [],
+  "fitted_artifacts": []
+}

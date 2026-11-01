@@ -21,6 +21,8 @@ import re
 from collections import Counter, defaultdict
 from urllib.parse import urlparse
 
+from pathlib import Path
+
 from bs4 import Tag
 
 from chromerag.density import parse_html, strip_non_content_tags
@@ -57,12 +59,17 @@ def names_of(tag: Tag) -> list[str]:
     return list(dict.fromkeys(out))
 
 
-def scan(split: str) -> dict[str, dict]:
+def scan(split: str, ids_path: str | None = None) -> dict[str, dict]:
     stats: dict[str, dict] = defaultdict(
         lambda: {"noise": Counter(), "content": Counter(), "sites_noise": defaultdict(set),
                  "sites_content": defaultdict(set), "chars_noise": 0, "chars_content": 0, "types": Counter()}
     )
+    allow: frozenset[str] | None = None
+    if ids_path:
+        allow = frozenset(json.loads(Path(ids_path).read_text(encoding="utf-8")))
     for page in load_split(split):
+        if allow is not None and page.id not in allow:
+            continue
         ref = set(tokenize(page.main_content))
         if len(ref) < 30:
             continue
@@ -130,13 +137,14 @@ def summarize(stats: dict[str, dict], min_sites: int) -> list[dict]:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--split", default="dev", choices=["dev"])
+    ap.add_argument("--ids", default=None, help="JSON list of page ids to include")
     ap.add_argument("--min-sites", type=int, default=4)
     ap.add_argument("--subtokens", action="store_true")
     ap.add_argument("--out", default="/tmp/cr/tokens.json")
     a = ap.parse_args()
     global SPLIT
     SPLIT = a.subtokens
-    rows = summarize(scan(a.split), a.min_sites)
+    rows = summarize(scan(a.split, a.ids), a.min_sites)
     with open(a.out, "w", encoding="utf-8") as fh:
         json.dump(rows, fh, indent=1)
     print(len(rows), "names ->", a.out)

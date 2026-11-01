@@ -66,6 +66,9 @@ class PipelineConfig:
     enable_dvdf: bool = True
     enable_stce: bool = True  # applied only when a SiteChromeModel is provided
     enable_rules: bool = True
+    enable_generic_chrome: bool = True
+    enable_chrome_prune: bool = True
+    enable_trafilatura_rules: bool = True
     chrome_drop_toc: bool = True
     chrome_drop_pager: bool = True
     chrome_drop_comments: bool = True
@@ -81,6 +84,8 @@ class PipelineConfig:
     trafilatura_link_blocks: bool = True
     trafilatura_micro: bool = True
     enable_lbc: bool = True  # learned block classifier (needs assets/lbc_stage1.npz)
+    enable_lbc_stage2: bool = True  # context stage of the block classifier (needs lbc_stage2.npz)
+    enable_lbc_structure_rules: bool = True  # title / heading / lead rescue after classifier scores
     inject_heading_paths: bool = False
     include_links: bool = False  # write [text](url); off keeps link text only
 
