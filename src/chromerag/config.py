@@ -70,9 +70,9 @@ class PipelineConfig:
     enable_chrome_prune: bool = True
     enable_trafilatura_rules: bool = True
     chrome_drop_toc: bool = True
-    chrome_drop_pager: bool = True
+    chrome_drop_pager: bool = False
     chrome_drop_comments: bool = True
-    chrome_drop_related: bool = True
+    chrome_drop_related: bool = False
     chrome_drop_cta: bool = True
     chrome_drop_share: bool = True
     chrome_drop_newsletter: bool = True

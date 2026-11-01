@@ -136,11 +136,13 @@ def test_related_posts_dropped() -> None:
       <li><a href="/c">Other story gamma</a></li>
     </ul>
     </article></body></html>"""
-    md = _md(html)
+    # The detector is off by default: it showed no benefit on strict dev CV.
+    assert _diag(html)["related"] == 0
+    md = _md(html, chrome_drop_related=True)
     assert "related posts" not in md
     assert "other story alpha" not in md
     assert "main story body" in md
-    assert _diag(html)["related"] >= 1
+    assert _diag(html, chrome_drop_related=True)["related"] >= 1
 
 
 def test_placeholder_dropped() -> None:
