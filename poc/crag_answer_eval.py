@@ -35,6 +35,7 @@ import httpx
 
 from chromerag import ChromeRAG, ContentPriority, PipelineConfig
 from poc.baselines import BASELINES
+from poc.eval_rubric import ANSWER_RULE_IDS, RULES_BY_LABEL, answer_judge_prompt_v2
 from poc.run_retrieval_eval import BM25, CHUNK_WORDS, tokenize
 
 MODEL = "gpt-5.6-luna"
@@ -72,6 +73,8 @@ Labels (pick exactly one):
 - missing: the system abstains or fails to provide the answer
 - incorrect: the system gives a wrong answer
 Reply with JSON only: {"label": "accurate"|"missing"|"incorrect", "reason": "one short sentence"}"""
+
+JUDGE_RUBRIC_V2 = answer_judge_prompt_v2()
 
 ALLOWED_SPLIT = 0
 FAST_DYNAMIC = frozenset({"fast-changing", "real-time"})
@@ -1202,30 +1205,64 @@ def is_idk(text: str) -> bool:
     return bool(IDK_RE.match((text or "").strip()))
 
 
-def judge_prompt(query: str, gold: str, alt_ans: list, generated: str) -> tuple[str, str]:
+def judge_system_for_rubric(rubric: str) -> str:
+    r = (rubric or "v1").strip().lower()
+    if r in ("v1", "1"):
+        return JUDGE_SYSTEM
+    if r in ("v2", "2"):
+        return JUDGE_RUBRIC_V2
+    raise ValueError(f"unknown rubric {rubric!r}; use v1 or v2")
+
+
+def judge_prompt(
+    query: str,
+    gold: str,
+    alt_ans: list,
+    generated: str,
+    *,
+    judge_system: str = JUDGE_SYSTEM,
+    query_time: Any = None,
+) -> tuple[str, str]:
     alts = json.dumps(alt_ans or [], ensure_ascii=False)
+    qt = _normalized_query_time(query_time)
+    qt_line = f"Query time: {qt}\n" if qt else ""
     user = (
         f"Question: {query}\n"
+        f"{qt_line}"
         f"Gold answer: {gold}\n"
         f"Alt answers: {alts}\n"
         f"Generated answer: {generated}\n"
     )
-    return JUDGE_SYSTEM, user
+    return judge_system, user
 
 
 def parse_judge_label(text: str) -> tuple[str | None, str]:
     """Return (label, reason) or (None, reason) if unparseable/invalid."""
+    label, reason, _rule = parse_judge_label_v2(text, require_rule_id=False)
+    return label, reason
+
+
+def parse_judge_label_v2(
+    text: str, *, require_rule_id: bool = True
+) -> tuple[str | None, str, str | None]:
+    """Return (label, reason, rule_id) for v2 judge JSON."""
     try:
         verdict = json.loads(text)
     except (json.JSONDecodeError, TypeError):
-        return None, "unparseable_judge"
+        return None, "unparseable_judge", None
     if not isinstance(verdict, dict):
-        return None, "unparseable_judge"
+        return None, "unparseable_judge", None
     label = str(verdict.get("label", "")).strip().lower()
     reason = str(verdict.get("reason", ""))[:300]
+    rule_id = str(verdict.get("rule_id", "")).strip().upper() or None
     if label not in VALID_LABELS:
-        return None, reason or "invalid_label"
-    return label, reason
+        return None, reason or "invalid_label", rule_id
+    if require_rule_id:
+        if rule_id not in ANSWER_RULE_IDS:
+            return None, reason or "invalid_rule_id", rule_id
+        if rule_id not in RULES_BY_LABEL[label]:
+            return None, reason or "rule_id_does_not_fit_label", rule_id
+    return label, reason, rule_id
 
 
 def run_generate(
@@ -1377,8 +1414,11 @@ def run_judge(
     price_out: float = 0.75,
     max_completion_tokens: int = DEFAULT_MAX_COMPLETION_JUDGE,
     assume_no_tool_dedup: bool = False,
+    judge_system: str = JUDGE_SYSTEM,
+    rubric_version: str = "v1",
 ) -> tuple[dict[str, dict[str, dict]], dict]:
     """Blind judge: sees question, gold, alts, generated answer only — never tool/context."""
+    require_rule = rubric_version.strip().lower() == "v2"
     out: dict[str, dict[str, dict]] = defaultdict(dict)
     unique: dict[str, dict] = {}
     assign: list[tuple[str, str, str]] = []  # qid, tool, cache_key
@@ -1413,39 +1453,17 @@ def run_judge(
                 elif reason == "empty_answer":
                     empty_answer_count += 1
                 continue
-            if is_idk(answer):
-                row = {
-                    "label": "missing",
-                    "reason": "idk_rule",
-                    "cost_usd": 0.0,
-                    "cached": False,
-                    "input_hash": input_hash,
-                }
-                write_json_cache(rule_path, row)
-                out[qid][tool] = row
-                idk_count += 1
-                continue
-            if not str(answer).strip():
-                if finish_reason == "length":
-                    row = {
-                        "label": "missing",
-                        "reason": "empty_answer_length",
-                        "cost_usd": 0.0,
-                        "cached": False,
-                        "input_hash": input_hash,
-                    }
+            rule_row = rule_based_judge_row(answer, finish_reason)
+            if rule_row is not None:
+                write_json_cache(rule_path, rule_row)
+                out[qid][tool] = rule_row
+                reason = rule_row.get("reason")
+                if reason == "idk_rule":
+                    idk_count += 1
+                elif reason == "empty_answer_length":
                     empty_answer_length_count += 1
                 else:
-                    row = {
-                        "label": "missing",
-                        "reason": "empty_answer",
-                        "cost_usd": 0.0,
-                        "cached": False,
-                        "input_hash": input_hash,
-                    }
                     empty_answer_count += 1
-                write_json_cache(rule_path, row)
-                out[qid][tool] = row
                 continue
 
             key = judge_cache_key_full(
@@ -1455,6 +1473,7 @@ def run_judge(
                 alt_ans=rec.get("alt_ans") or [],
                 answer=answer,
                 model=model,
+                prompt_system=judge_system,
             )
             # Dry-run no-dedup: force a unique key per tool so estimates do not collapse.
             est_key = f"{key}::{tool}" if assume_no_tool_dedup else key
@@ -1467,7 +1486,12 @@ def run_judge(
             if assume_no_tool_dedup and est_key in unique:
                 continue
             system, user = judge_prompt(
-                rec["query"], rec.get("answer") or "", rec.get("alt_ans") or [], answer
+                rec["query"],
+                rec.get("answer") or "",
+                rec.get("alt_ans") or [],
+                answer,
+                judge_system=judge_system,
+                query_time=rec.get("query_time"),
             )
             unique[est_key] = {"system": system, "user": user, "key": key}
             est_in += estimate_tokens(system) + estimate_tokens(user)
@@ -1508,7 +1532,11 @@ def run_judge(
             )
             total_cost += cost
             last_usage = usage
-            label, reason = parse_judge_label(text)
+            if require_rule:
+                label, reason, rule_id = parse_judge_label_v2(text, require_rule_id=True)
+            else:
+                label, reason = parse_judge_label(text)
+                rule_id = None
             if label is not None:
                 row = {
                     "label": label,
@@ -1516,6 +1544,8 @@ def run_judge(
                     "cost_usd": round(total_cost, 6),
                     "usage": usage,
                 }
+                if rule_id:
+                    row["rule_id"] = rule_id
                 return cache_key, row, False
             last_reason = reason or "judge_error"
         # Do not cache judge_error as a label.
@@ -1848,6 +1878,496 @@ def summarize(
     }
 
 
+def load_cached_extracts(
+    questions: list[dict],
+    *,
+    from_cache: Path,
+    tools: tuple[str, ...] = TOOLS,
+) -> dict[str, dict[str, list[dict]]]:
+    out: dict[str, dict[str, list[dict]]] = defaultdict(dict)
+    for rec in questions:
+        qid = question_id(rec)
+        pages = rec.get("search_results") or []
+        for tool in tools:
+            rows = []
+            for pi, page in enumerate(pages):
+                html = page.get("page_result") or ""
+                url = page.get("page_url")
+                key = extract_cache_key(html=html, tool=tool, url=url)
+                cpath = cache_path(from_cache, "extract", key[:2], f"{key}.json")
+                hit = read_json_cache(cpath)
+                if hit is None:
+                    hit = {
+                        "ok": False,
+                        "text": "",
+                        "empty": True,
+                        "error": "missing_cache",
+                        "timeout": False,
+                        "words": 0,
+                    }
+                rows.append(hit)
+            out[qid][tool] = rows
+    return out
+
+
+def load_cached_retrievals(
+    questions: list[dict],
+    extracts: dict[str, dict[str, list[dict]]],
+    *,
+    from_cache: Path,
+    tools: tuple[str, ...] = TOOLS,
+) -> dict[str, dict[str, dict]]:
+    out: dict[str, dict[str, dict]] = defaultdict(dict)
+    for rec in questions:
+        qid = question_id(rec)
+        query = rec["query"]
+        for tool in tools:
+            page_rows = extracts[qid][tool]
+            page_texts = [row.get("text") or "" for row in page_rows]
+            page_hashes = [html_hash(t) for t in page_texts]
+            key = retrieve_cache_key(query=query, page_text_hashes=page_hashes, tool=tool)
+            cpath = cache_path(from_cache, "retrieve", key[:2], f"{key}.json")
+            hit = read_json_cache(cpath)
+            if hit is None:
+                hit = {"chunks": [], "indices": [], "n_chunks_indexed": 0}
+            out[qid][tool] = hit
+    return out
+
+
+def load_cached_generations(
+    questions: list[dict],
+    retrievals: dict[str, dict[str, dict]],
+    *,
+    from_cache: Path,
+    model: str,
+    tools: tuple[str, ...] = TOOLS,
+    max_completion_tokens: int = DEFAULT_MAX_COMPLETION_GENERATE,
+) -> dict[str, dict[str, dict]]:
+    out: dict[str, dict[str, dict]] = defaultdict(dict)
+    for rec in questions:
+        qid = question_id(rec)
+        qt = rec.get("query_time")
+        for tool in tools:
+            chunks = (retrievals.get(qid) or {}).get(tool, {}).get("chunks") or []
+            system, _user = generate_prompt(rec["query"], chunks, query_time=qt)
+            key = generate_cache_key(
+                query=rec["query"],
+                chunks=chunks,
+                model=model,
+                prompt_system=system,
+                max_completion_tokens=max_completion_tokens,
+                temperature=0.0,
+                query_time=qt,
+            )
+            hit = read_json_cache(
+                cache_path(from_cache, "generate", key[:2], f"{key}.json")
+            )
+            if hit is not None:
+                out[qid][tool] = hit
+    return out
+
+
+def rule_based_judge_row(answer: str, finish_reason: Any) -> dict | None:
+    """Same IDK/empty rules for v1 and v2; None when an LLM judge call is required."""
+    input_hash = rule_label_input_hash(answer, finish_reason)
+    if is_idk(answer):
+        return {
+            "label": "missing",
+            "reason": "idk_rule",
+            "rule_id": "R-MISS",
+            "cost_usd": 0.0,
+            "cached": False,
+            "input_hash": input_hash,
+        }
+    if not str(answer).strip():
+        if finish_reason == "length":
+            return {
+                "label": "missing",
+                "reason": "empty_answer_length",
+                "rule_id": "R-MISS",
+                "cost_usd": 0.0,
+                "cached": False,
+                "input_hash": input_hash,
+            }
+        return {
+            "label": "missing",
+            "reason": "empty_answer",
+            "rule_id": "R-MISS",
+            "cost_usd": 0.0,
+            "cached": False,
+            "input_hash": input_hash,
+        }
+    return None
+
+
+def load_cached_v1_judgement(
+    rec: dict,
+    tool: str,
+    answer: str,
+    finish_reason: Any,
+    *,
+    from_cache: Path,
+    model: str,
+) -> dict | None:
+    qid = question_id(rec)
+    input_hash = rule_label_input_hash(answer, finish_reason)
+    rule_path = cache_path(from_cache, "judge", "rule", qid, f"{tool}.json")
+    rule_hit = read_json_cache(rule_path)
+    if rule_hit is not None and rule_hit.get("input_hash") == input_hash:
+        return rule_hit
+    rule_row = rule_based_judge_row(answer, finish_reason)
+    if rule_row is not None:
+        return rule_row
+    key = judge_cache_key_full(
+        query=rec["query"],
+        query_time=rec.get("query_time"),
+        gold=rec.get("answer") or "",
+        alt_ans=rec.get("alt_ans") or [],
+        answer=answer,
+        model=model,
+        prompt_system=JUDGE_SYSTEM,
+    )
+    return read_json_cache(cache_path(from_cache, "judge", key[:2], f"{key}.json"))
+
+
+def rule_id_counts(judgements: dict[str, dict[str, dict]], tools: tuple[str, ...]) -> dict[str, int]:
+    counts: Counter = Counter()
+    for qid, by_tool in judgements.items():
+        _ = qid
+        for tool in tools:
+            row = by_tool.get(tool) or {}
+            rid = row.get("rule_id")
+            if rid:
+                counts[str(rid)] += 1
+    return dict(counts)
+
+
+def label_changes_v1_v2_by_tool(
+    v1: dict[str, dict[str, dict]],
+    v2: dict[str, dict[str, dict]],
+    tools: tuple[str, ...],
+) -> dict[str, dict[str, int]]:
+    out: dict[str, Counter] = {t: Counter() for t in tools}
+    qids = set(v1) | set(v2)
+    for qid in qids:
+        for tool in tools:
+            a = (v1.get(qid) or {}).get(tool, {}).get("label")
+            b = (v2.get(qid) or {}).get(tool, {}).get("label")
+            if a not in VALID_LABELS or b not in VALID_LABELS:
+                continue
+            if a == b:
+                continue
+            out[tool][f"{a}->{b}"] += 1
+    return {t: dict(c) for t, c in out.items()}
+
+
+def questions_from_prior_report(
+    records: list[dict], prior: dict, *, seed: int, n: int
+) -> list[dict]:
+    ids = prior.get("chosen_question_ids")
+    if not ids:
+        raise SystemExit("--rejudge-only needs --prior-out with chosen_question_ids")
+    by_id = {question_id(r): r for r in records}
+    missing = [i for i in ids if i not in by_id]
+    if missing:
+        raise ValueError(f"prior report ids missing from data: {missing[:5]}")
+    return [by_id[i] for i in ids]
+
+
+def run_rejudge_only(
+    args: argparse.Namespace,
+    *,
+    client_factory: Callable[..., Any] | None = None,
+) -> dict:
+    if args.from_cache is None or args.cache_dir is None or args.out is None or args.data is None:
+        raise SystemExit("--rejudge-only requires --data, --from-cache, --cache-dir, and --out")
+    if args.rubric.strip().lower() not in ("v2", "2"):
+        raise SystemExit("--rejudge-only requires --rubric v2")
+    from_cache = args.from_cache.resolve()
+    cache_dir = args.cache_dir.resolve()
+    if from_cache == cache_dir:
+        raise SystemExit("--from-cache must differ from --cache-dir (original cache is read-only)")
+    judge_system = judge_system_for_rubric("v2")
+    records = load_crag_records(
+        args.data,
+        split=args.split,
+        limit=args.limit,
+        locked_run=getattr(args, "locked_split_1", False),
+    )
+    prior: dict = {}
+    if args.prior_out and args.prior_out.exists():
+        prior = json.loads(args.prior_out.read_text(encoding="utf-8"))
+    sampled = questions_from_prior_report(records, prior, seed=args.seed, n=args.n)
+    if prior.get("model") != args.model:
+        raise SystemExit(f"--model {args.model} differs from prior run {prior.get('model')}")
+    args.cache_dir.mkdir(parents=True, exist_ok=True)
+    prior_spend = load_persisted_spend(args.cache_dir)
+
+    extracts = load_cached_extracts(sampled, from_cache=from_cache)
+    retrievals = load_cached_retrievals(sampled, extracts, from_cache=from_cache)
+    max_gen_tok = getattr(
+        args, "max_completion_tokens_generate", DEFAULT_MAX_COMPLETION_GENERATE
+    )
+    generations = load_cached_generations(
+        sampled,
+        retrievals,
+        from_cache=from_cache,
+        model=args.model,
+        max_completion_tokens=max_gen_tok,
+    )
+    lost = [
+        (question_id(rec), tool)
+        for rec in sampled
+        for tool in TOOLS
+        if not generations.get(question_id(rec), {}).get(tool)
+    ]
+    if lost:
+        raise SystemExit(f"{len(lost)} cached answers not found, e.g. {lost[:3]}; check model and caps")
+    v1: dict[str, dict[str, dict]] = defaultdict(dict)
+    for rec in sampled:
+        qid = question_id(rec)
+        for tool in TOOLS:
+            gen = generations.get(qid, {}).get(tool)
+            if not gen:
+                continue
+            ans = gen.get("answer") or ""
+            fr = gen.get("finish_reason") or (gen.get("usage") or {}).get("finish_reason")
+            hit = load_cached_v1_judgement(
+                rec, tool, ans, fr, from_cache=from_cache, model=args.model
+            )
+            if hit:
+                v1[qid][tool] = hit
+
+    max_judge_tok = getattr(args, "max_completion_tokens_judge", DEFAULT_MAX_COMPLETION_JUDGE)
+    if args.dry_run:
+        _, dry_judge = run_judge(
+            sampled,
+            generations,
+            cache_dir=args.cache_dir,
+            client=None,
+            model=args.model,
+            seed=args.seed,
+            dry_run=True,
+            price_in=args.price_in,
+            price_out=args.price_out,
+            max_completion_tokens=max_judge_tok,
+            judge_system=judge_system,
+            rubric_version="v2",
+        )
+        report = {
+            "dry_run": True,
+            "rejudge_only": True,
+            "rubric": "v2",
+            "from_cache": str(from_cache),
+            "cache_dir": str(args.cache_dir),
+            "n_questions": len(sampled),
+            "judge": dry_judge,
+        }
+        args.out.parent.mkdir(parents=True, exist_ok=True)
+        args.out.write_text(json.dumps(report, indent=2), encoding="utf-8")
+        print(
+            f"dry-run rejudge: judge_calls={dry_judge['judge_calls']} "
+            f"est_usd={dry_judge.get('est_usd')}"
+        )
+        return report
+
+    if prior_spend >= args.max_usd:
+        raise BudgetExceeded(
+            f"persisted spend ${prior_spend:.3f} already at/above cap ${args.max_usd:.2f}"
+        )
+    factory = client_factory or (
+        lambda: OpenAIClient(
+            max_usd=args.max_usd,
+            ca_bundle=args.ca_bundle,
+            price_in=args.price_in,
+            price_out=args.price_out,
+            starting_spend_usd=prior_spend,
+        )
+    )
+    client = factory()
+    partial = False
+    v2: dict[str, dict[str, dict]] = defaultdict(dict)
+    dry_judge: dict = {}
+    try:
+        try:
+            v2, dry_judge = run_judge(
+                sampled,
+                generations,
+                cache_dir=args.cache_dir,
+                client=client,
+                model=args.model,
+                seed=args.seed,
+                workers=args.workers,
+                price_in=args.price_in,
+                price_out=args.price_out,
+                max_completion_tokens=max_judge_tok,
+                judge_system=judge_system,
+                rubric_version="v2",
+            )
+        except BudgetExceeded as exc:
+            partial = True
+            print(f"Stopped on budget: {exc}")
+            if exc.dry_info:
+                dry_judge = exc.dry_info
+            for qid, tools_map in (exc.partial_out or {}).items():
+                for tool, row in tools_map.items():
+                    v2[qid][tool] = row
+            # Reload any judge rows earned before the cap (incl. rule labels).
+            for rec in sampled:
+                qid = question_id(rec)
+                for tool in TOOLS:
+                    if tool in v2.get(qid, {}):
+                        continue
+                    gen = generations.get(qid, {}).get(tool)
+                    if not gen:
+                        continue
+                    ans = gen.get("answer") or ""
+                    fr = gen.get("finish_reason") or (gen.get("usage") or {}).get(
+                        "finish_reason"
+                    )
+                    rule_path = cache_path(args.cache_dir, "judge", "rule", qid, f"{tool}.json")
+                    rule = read_json_cache(rule_path)
+                    if (
+                        rule is not None
+                        and rule.get("input_hash")
+                        == rule_label_input_hash(ans, fr)
+                    ):
+                        v2[qid][tool] = rule
+                        continue
+                    jkey = judge_cache_key_full(
+                        query=rec["query"],
+                        query_time=rec.get("query_time"),
+                        gold=rec.get("answer") or "",
+                        alt_ans=rec.get("alt_ans") or [],
+                        answer=ans,
+                        model=args.model,
+                        prompt_system=judge_system,
+                    )
+                    hit = read_json_cache(
+                        cache_path(args.cache_dir, "judge", jkey[:2], f"{jkey}.json")
+                    )
+                    if hit is not None:
+                        v2[qid][tool] = hit
+    finally:
+        save_persisted_spend(args.cache_dir, float(getattr(client, "spend_usd", prior_spend)))
+
+    report = {
+        "rejudge_only": True,
+        "partial": partial,
+        "rubric": "v2",
+        "from_cache": str(from_cache),
+        "cache_dir": str(args.cache_dir),
+        "prior_out": str(args.prior_out) if args.prior_out else None,
+        "model": args.model,
+        "seed": args.seed,
+        "n_questions": len(sampled),
+        "rule_id_counts": rule_id_counts(v2, TOOLS),
+        "label_changes_v1_v2_by_tool": label_changes_v1_v2_by_tool(v1, v2, TOOLS),
+        "judge_errors": int(dry_judge.get("judge_errors") or 0),
+        "spend_usd": round(float(getattr(client, "spend_usd", 0.0)), 6),
+        "tools": summarize(
+            sampled,
+            extracts,
+            retrievals,
+            v2,
+            seed=args.seed,
+            model=args.model,
+            spend_usd=float(getattr(client, "spend_usd", 0.0)),
+            exclusion_counts={},
+            chosen_ids=[question_id(r) for r in sampled],
+            partial=partial,
+        )["tools"],
+    }
+    args.out.parent.mkdir(parents=True, exist_ok=True)
+    args.out.write_text(json.dumps(report, indent=2), encoding="utf-8")
+    print(json.dumps(report["label_changes_v1_v2_by_tool"], indent=2))
+    print(f"wrote {args.out}")
+    return report
+
+
+def load_rubric_fixture_cases(path: Path) -> list[dict]:
+    rows: list[dict] = []
+    with path.open(encoding="utf-8") as fh:
+        for line in fh:
+            line = line.strip()
+            if line:
+                rows.append(json.loads(line))
+    return rows
+
+
+def run_calibrate(args: argparse.Namespace) -> dict:
+    cases = load_rubric_fixture_cases(args.calibrate)
+    for row in cases:
+        if row.get("expected_label") not in VALID_LABELS:
+            raise SystemExit(f"bad expected_label in {row.get('id')}")
+        if row.get("rule") not in RULES_BY_LABEL[row["expected_label"]]:
+            raise SystemExit(f"bad rule in {row.get('id')}")
+    judge_system = judge_system_for_rubric("v2")
+    client = OpenAIClient(
+        max_usd=args.max_usd,
+        ca_bundle=args.ca_bundle,
+        price_in=args.price_in,
+        price_out=args.price_out,
+    )
+    agree = 0
+    agree_rule = 0
+    rows_out: list[dict] = []
+    for case in cases:
+        # Same order as the real grader: empty and "I don't know" answers never reach the model.
+        rule_row = rule_based_judge_row(case["answer"], None)
+        system, user = judge_prompt(
+            case["question"],
+            case["gold"],
+            case.get("alt_ans") or [],
+            case["answer"],
+            judge_system=judge_system,
+            query_time=case.get("query_time"),
+        )
+        if rule_row is not None:
+            label, reason, rule_id, cost = (
+                rule_row["label"], rule_row["reason"], rule_row["rule_id"], 0.0
+            )
+        else:
+            text, cost, _usage = client.chat(
+                args.model,
+                system,
+                user,
+                temperature=0.0,
+                json_mode=True,
+                max_completion_tokens=DEFAULT_MAX_COMPLETION_JUDGE,
+                purpose="judge",
+            )
+            label, reason, rule_id = parse_judge_label_v2(text, require_rule_id=True)
+        ok = label == case["expected_label"]
+        agree += int(ok)
+        agree_rule += int(ok and rule_id == case["rule"])
+        rows_out.append(
+            {
+                "id": case.get("id"),
+                "expected_label": case["expected_label"],
+                "expected_rule": case["rule"],
+                "label": label,
+                "rule_id": rule_id,
+                "reason": reason,
+                "agree_label": ok,
+                "cost_usd": round(cost, 6),
+            }
+        )
+    report = {
+        "calibrate": True,
+        "n_cases": len(cases),
+        "agreement": round(agree / len(cases), 4) if cases else None,
+        "agreement_label_and_rule": round(agree_rule / len(cases), 4) if cases else None,
+        "spend_usd": round(client.spend_usd, 6),
+        "cases": rows_out,
+    }
+    if args.out:
+        args.out.parent.mkdir(parents=True, exist_ok=True)
+        args.out.write_text(json.dumps(report, indent=2), encoding="utf-8")
+    print(f"calibrate agreement={report['agreement']} n={len(cases)} spend=${report['spend_usd']}")
+    return report
+
+
 # ---------------------------------------------------------------------------
 # CLI
 # ---------------------------------------------------------------------------
@@ -1855,9 +2375,9 @@ def summarize(
 
 def build_arg_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--data", type=Path, required=True, help="crag_task_1_and_2_dev_v5.jsonl.bz2")
-    p.add_argument("--cache-dir", type=Path, required=True, help="disk cache outside the repo")
-    p.add_argument("--out", type=Path, required=True, help="output JSON path")
+    p.add_argument("--data", type=Path, default=None, help="crag_task_1_and_2_dev_v5.jsonl.bz2")
+    p.add_argument("--cache-dir", type=Path, default=None, help="disk cache outside the repo")
+    p.add_argument("--out", type=Path, default=None, help="output JSON path")
     p.add_argument("--n", type=int, default=50, help="sample size")
     p.add_argument("--seed", type=int, default=0)
     p.add_argument("--limit", type=int, default=None, help="max split-0 records to load")
@@ -1884,6 +2404,35 @@ def build_arg_parser() -> argparse.ArgumentParser:
         help="max_completion_tokens for judge",
     )
     p.add_argument("--dry-run", action="store_true", help="print token/cost estimate; no LLM calls")
+    p.add_argument(
+        "--rejudge-only",
+        action="store_true",
+        help="re-grade cached answers with --rubric v2; read --from-cache, write --cache-dir",
+    )
+    p.add_argument(
+        "--from-cache",
+        type=Path,
+        default=None,
+        help="original eval cache (generate + v1 judge); read-only",
+    )
+    p.add_argument(
+        "--prior-out",
+        type=Path,
+        default=None,
+        help="prior crag_answer_eval.json for chosen_question_ids and v1 labels",
+    )
+    p.add_argument(
+        "--rubric",
+        choices=("v1", "v2"),
+        default="v1",
+        help="answer judge rubric (v2 for --rejudge-only)",
+    )
+    p.add_argument(
+        "--calibrate",
+        type=Path,
+        default=None,
+        help="run fixture jsonl through live v2 grader; reports agreement",
+    )
     return p
 
 
@@ -1892,6 +2441,8 @@ def run(
     *,
     client_factory: Callable[..., Any] | None = None,
 ) -> dict:
+    if args.data is None or args.cache_dir is None or args.out is None:
+        raise SystemExit("--data, --cache-dir, and --out are required for a full eval run")
     enforce_split(args.split, locked_run=getattr(args, "locked_split_1", False))
     verify_tools_importable(TOOLS)
     records = load_crag_records(args.data, split=args.split, limit=args.limit, locked_run=getattr(args, "locked_split_1", False))
@@ -2219,6 +2770,14 @@ def run(
 
 def main(argv: list[str] | None = None) -> None:
     args = build_arg_parser().parse_args(argv)
+    if args.calibrate:
+        run_calibrate(args)
+        return
+    if args.rejudge_only:
+        if args.from_cache is None:
+            raise SystemExit("--rejudge-only requires --from-cache")
+        run_rejudge_only(args)
+        return
     run(args)
 
 

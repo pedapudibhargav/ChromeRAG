@@ -139,7 +139,7 @@ Secondary: extraction latency, empty-output rate, WCXB snippet rates, P10 retrie
 - Sample + fetch: `poc/final_sample.py`; fetch only: `poc/final_collect.py`
 - Bulk extraction + cache: `poc/final_run.py`
 - WCXB: `poc/run_wcxb_eval.py`, `poc/wcxb.py`, `data/wcxb/evaluate.py`
-- Judges: `poc/run_llm_judge_final.py`
+- Judges: `poc/final_page_judge.py` (new pages), rules in `RUBRIC.md`, page list in `page_filter.json`
 - CRAG: `poc/crag_answer_eval.py` (split 1 run uses `--split 1` when enabled for the locked wave)
 - Human study: `evaluators/` + `poc/human_eval_analyze.py`
 
@@ -161,3 +161,15 @@ After `freeze-0.1.5`, no pipeline, rule, threshold, or model change for locked c
 ## Amendment before any page was kept (2026-11-01)
 
 The first collection attempt was stopped after about 10 minutes. It had written no pages, and no tool had run. It would have fetched every sitemap URL of a site at one per second, one batch of 16 sites at a time. Changes, fixed before restarting: 128 sites at a time; for each site, at most 12 candidate URLs, chosen by a random shuffle seeded with the sampling seed and the domain; at most 150 seconds per site and a 20-second request timeout. The limit of one request per second per site is unchanged.
+
+## Amendment before any judging (2026-11-01)
+
+No judge had scored any new page when this was recorded. Tag: `rubric-2026-11`.
+
+**Grading rules.** Answer grading and page judging follow `RUBRIC.md`. The original CRAG split 1 run remains the planned result. The regrade under `RUBRIC.md` is post hoc, because the rubric was written after that run was seen, and is reported beside it with that label. The grader's agreement with `tests/fixtures/crag_rubric_cases.jsonl` is 96.0% on labels and 88.1% on labels and rule together (101 cases). The rubric was not revised after this check.
+
+**Page filter.** `poc/final_page_filter.py` removes pages with a mechanical rule and writes `page_filter.json`: 11 of 307 removed (8 non-English, 2 JSON bodies, 1 duplicate), 296 kept. The protocol's language check relied on the page's declared language, which proved unreliable. The rule was revised after viewing language signals on these pages, with no tool output in view. A first rule, a floor on English common words, was rejected because it removed English product and menu pages. The Danish forum page `final-0138` is kept by the final rule and is not removed by hand.
+
+**Sample size.** The quota table sums to 310, not the 300 stated earlier; 307 pages were collected.
+
+**Page judging.** Balanced ChromeRAG is compared with Trafilatura (primary) and Readability. MarkItDown is not judged, to stay within budget. rs-trafilatura is judged only if its outputs are obtained. The judge sees up to 24,000 characters of page text and of each extraction. This budget was set after viewing output lengths on these pages, not their text. Every result is also reported on pairs where neither extraction was clipped.

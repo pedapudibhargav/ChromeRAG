@@ -209,7 +209,15 @@ class FakeClient:
                 label = "incorrect"
             else:
                 label = "missing"
-            return json.dumps({"label": label, "reason": "fake"}), cost, {
+            payload: dict = {"label": label, "reason": "fake"}
+            # v2 rubric requires rule_id; map labels to a stable rule.
+            if "rule_id" in system or "R-PART" in system:
+                payload["rule_id"] = {
+                    "accurate": "R-REQ",
+                    "incorrect": "R-WRONG",
+                    "missing": "R-MISS",
+                }[label]
+            return json.dumps(payload), cost, {
                 "prompt_tokens": tin,
                 "completion_tokens": tout,
                 "finish_reason": "stop",
@@ -260,9 +268,226 @@ def _args(synthetic_data: Path, tmp_path: Path, **over) -> SimpleNamespace:
         dry_run=False,
         max_completion_tokens_generate=4096,
         max_completion_tokens_judge=1024,
+        rejudge_only=False,
+        from_cache=None,
+        prior_out=None,
+        rubric="v1",
+        calibrate=None,
+        locked_split_1=False,
     )
     base.update(over)
     return SimpleNamespace(**base)
+
+
+def test_rejudge_dry_run_reads_from_cache(synthetic_data: Path, tmp_path: Path):
+    args = _args(
+        synthetic_data,
+        tmp_path,
+        n=2,
+        dry_run=True,
+        rejudge_only=True,
+        rubric="v2",
+        from_cache=tmp_path / "old_cache",
+        cache_dir=tmp_path / "new_cache",
+        out=tmp_path / "rejudge.json",
+        prior_out=tmp_path / "base.json",
+    )
+    client = FakeClient()
+    m.run(
+        _args(synthetic_data, tmp_path, n=2, cache_dir=tmp_path / "old_cache", out=tmp_path / "base.json"),
+        client_factory=lambda: client,
+    )
+    report = m.run_rejudge_only(args)
+    assert report["dry_run"] is True
+    assert report["rubric"] == "v2"
+    assert report["judge"]["judge_calls"] >= 0
+
+
+def test_rejudge_only_answers_from_old_cache_no_tool_names(synthetic_data: Path, tmp_path: Path):
+    old_cache = tmp_path / "old_cache"
+    new_cache = tmp_path / "new_cache"
+    base_out = tmp_path / "base.json"
+    m.run(
+        _args(synthetic_data, tmp_path, n=2, cache_dir=old_cache, out=base_out),
+        client_factory=lambda: FakeClient(),
+    )
+    # Snapshot original cache tree; rejudge must not mutate it.
+    before = {
+        p.relative_to(old_cache).as_posix(): p.read_bytes()
+        for p in old_cache.rglob("*")
+        if p.is_file()
+    }
+    client = FakeClient()
+    report = m.run_rejudge_only(
+        _args(
+            synthetic_data,
+            tmp_path,
+            n=2,
+            rejudge_only=True,
+            rubric="v2",
+            from_cache=old_cache,
+            cache_dir=new_cache,
+            out=tmp_path / "rejudge.json",
+            prior_out=base_out,
+        ),
+        client_factory=lambda: client,
+    )
+    assert report["model"] == m.MODEL
+    assert report["rubric"] == "v2"
+    assert "label_changes_v1_v2_by_tool" in report
+    after = {
+        p.relative_to(old_cache).as_posix(): p.read_bytes()
+        for p in old_cache.rglob("*")
+        if p.is_file()
+    }
+    assert after == before
+    for system, user in client.seen_prompts:
+        if "Generated answer:" not in user:
+            continue
+        low = user.lower()
+        assert "trafilatura" not in low
+        assert "markitdown" not in low
+        assert "chromerag" not in low
+        assert "rule_id" in system or "R-PART" in system
+
+
+def test_rejudge_identical_qa_graded_once(synthetic_data: Path, tmp_path: Path):
+    old_cache = tmp_path / "old_cache"
+    m.run(
+        _args(synthetic_data, tmp_path, n=1, cache_dir=old_cache, out=tmp_path / "base.json"),
+        client_factory=lambda: FakeClient(),
+    )
+    client = FakeClient()
+    m.run_rejudge_only(
+        _args(
+            synthetic_data,
+            tmp_path,
+            n=1,
+            rejudge_only=True,
+            rubric="v2",
+            from_cache=old_cache,
+            cache_dir=tmp_path / "new_cache",
+            out=tmp_path / "rejudge.json",
+            prior_out=tmp_path / "base.json",
+        ),
+        client_factory=lambda: client,
+    )
+    judge_calls = sum(1 for _s, u in client.seen_prompts if "Generated answer:" in u)
+    # One unique question+answer across tools → one LLM judge call.
+    assert judge_calls == 1
+
+
+def test_rejudge_idk_same_v1_v2_change_table(tmp_path: Path, synthetic_data: Path):
+    old_cache = tmp_path / "old_cache"
+    base_out = tmp_path / "base.json"
+    m.run(
+        _args(synthetic_data, tmp_path, n=1, cache_dir=old_cache, out=base_out),
+        client_factory=lambda: FakeClient(),
+    )
+    questions = [
+        r for r in m.load_crag_records(synthetic_data) if r["interaction_id"] == "q_ok_1"
+    ][:1]
+    qid = m.question_id(questions[0])
+    extracts = m.load_cached_extracts(questions, from_cache=old_cache)
+    retrievals = m.load_cached_retrievals(questions, extracts, from_cache=old_cache)
+    for tool in m.TOOLS:
+        chunks = retrievals[qid][tool].get("chunks") or []
+        system, _ = m.generate_prompt(questions[0]["query"], chunks)
+        key = m.generate_cache_key(
+            query=questions[0]["query"],
+            chunks=chunks,
+            model=m.MODEL,
+            prompt_system=system,
+        )
+        m.write_json_cache(
+            m.cache_path(old_cache, "generate", key[:2], f"{key}.json"),
+            {"answer": "I don't know", "finish_reason": "stop", "cost_usd": 0.0, "usage": {}},
+        )
+    # Remove any prior rule labels so v1 load must synthesize the same IDK rule as v2.
+    rule_root = old_cache / "judge" / "rule"
+    if rule_root.exists():
+        for p in rule_root.rglob("*.json"):
+            p.unlink()
+    client = FakeClient()
+    report = m.run_rejudge_only(
+        _args(
+            synthetic_data,
+            tmp_path,
+            n=1,
+            rejudge_only=True,
+            rubric="v2",
+            from_cache=old_cache,
+            cache_dir=tmp_path / "new_cache_idk",
+            out=tmp_path / "rejudge_idk.json",
+            prior_out=base_out,
+        ),
+        client_factory=lambda: client,
+    )
+    assert client.calls == 0
+    assert all(not c for c in report["label_changes_v1_v2_by_tool"].values())
+
+
+def test_rejudge_budget_keeps_earned_labels(synthetic_data: Path, tmp_path: Path):
+    old_cache = tmp_path / "old_cache"
+    m.run(
+        _args(synthetic_data, tmp_path, n=2, cache_dir=old_cache, out=tmp_path / "base.json"),
+        client_factory=lambda: FakeClient(),
+    )
+    new_cache = tmp_path / "new_cache_budget"
+    client = FakeClient(max_usd=0.001, fail_after=1)
+    report = m.run_rejudge_only(
+        _args(
+            synthetic_data,
+            tmp_path,
+            n=2,
+            rejudge_only=True,
+            rubric="v2",
+            from_cache=old_cache,
+            cache_dir=new_cache,
+            out=tmp_path / "rejudge_budget.json",
+            prior_out=tmp_path / "base.json",
+            max_usd=0.001,
+        ),
+        client_factory=lambda: client,
+    )
+    assert report["partial"] is True
+    assert (tmp_path / "rejudge_budget.json").exists()
+    assert any(new_cache.joinpath("judge").rglob("*.json"))
+    assert isinstance(report["label_changes_v1_v2_by_tool"], dict)
+
+
+def test_rejudge_rejects_same_from_cache_and_cache_dir(synthetic_data: Path, tmp_path: Path):
+    shared = tmp_path / "shared"
+    shared.mkdir()
+    with pytest.raises(SystemExit, match="differ"):
+        m.run_rejudge_only(
+            _args(
+                synthetic_data,
+                tmp_path,
+                rejudge_only=True,
+                rubric="v2",
+                from_cache=shared,
+                cache_dir=shared,
+                out=tmp_path / "out.json",
+            )
+        )
+
+
+def test_locked_split_1_required_for_rejudge(synthetic_data: Path, tmp_path: Path):
+    with pytest.raises(ValueError, match="only split"):
+        m.run_rejudge_only(
+            _args(
+                synthetic_data,
+                tmp_path,
+                split=1,
+                locked_split_1=False,
+                rejudge_only=True,
+                rubric="v2",
+                from_cache=tmp_path / "old",
+                cache_dir=tmp_path / "new",
+                out=tmp_path / "out.json",
+            )
+        )
 
 
 def test_enforce_split_raises():
