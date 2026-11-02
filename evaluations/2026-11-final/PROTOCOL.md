@@ -181,3 +181,11 @@ MarkItDown was judged after all, once the author approved more budget. This repl
 ## Human rating set (2026-11-01)
 
 Built by `evaluators/author/build_bundle.py` with seed 20261101 from the 296 kept pages: 75 stratified pages, 5 repeats, and 5 practice pages excluded from analysis. Practice pages come from the same set and not from development data, because they need no labels and are never analysed. Outputs: ChromeRAG balanced, Trafilatura, Readability. The primary human comparison is ChromeRAG balanced against Trafilatura, by majority verdict with a page-level bootstrap interval. Raters and their results are recorded as received. Any result, including a tie or a Trafilatura lead, is reported as it comes.
+
+### Amendment: offline pages and safety filter (2026-11-02)
+
+The first page collection reached a site that the author's security team flagged, and the rating set still held pages that could load live images. No rater had received the set. It was rebuilt before any human rating, for the safety of the raters and with no tool output or score in view.
+
+- Saved pages now have links, images and remote styles removed. The app no longer shows page addresses or a live link, and it connects to no website.
+- `poc/final_rater_safety_filter.py` removes pages by mechanical rule: gambling, adult or piracy terms in the domain name or repeated in the page text, a domain ending on our own high-risk list, or two or more digits in the domain name. The digit rule also removes ordinary news sites, and we kept it unchanged after seeing this rather than adjust the rule to its results. It removed 8 of the 296 pages, leaving 288, listed in `rater_safety_filter.json`. It is not a reputation check, and no outside lookup service was used.
+- The bundle was drawn again from the 288 pages with the same seed and settings, so its pages differ from the earlier draw. All other evaluations still use the 296 pages. Raters judge text only and do not see images or page styling.
