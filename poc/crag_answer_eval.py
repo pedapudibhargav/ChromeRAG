@@ -1892,9 +1892,9 @@ def run(
     *,
     client_factory: Callable[..., Any] | None = None,
 ) -> dict:
-    enforce_split(args.split, locked_run=args.locked_split_1)
+    enforce_split(args.split, locked_run=getattr(args, "locked_split_1", False))
     verify_tools_importable(TOOLS)
-    records = load_crag_records(args.data, split=args.split, limit=args.limit, locked_run=args.locked_split_1)
+    records = load_crag_records(args.data, split=args.split, limit=args.limit, locked_run=getattr(args, "locked_split_1", False))
     kept, exclusion_counts = filter_web_static(records)
     sampled = sample_questions(kept, args.n, args.seed)
     chosen_ids = [question_id(r) for r in sampled]
