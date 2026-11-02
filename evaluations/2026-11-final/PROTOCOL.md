@@ -177,3 +177,7 @@ No judge had scored any new page when this was recorded. Tag: `rubric-2026-11`.
 ## Amendment after page judging (2026-11-01)
 
 MarkItDown was judged after all, once the author approved more budget. This replaces the statement above that it would not be judged. It was added before any page-judging result had been seen.
+
+## Human rating set (2026-11-01)
+
+Built by `evaluators/author/build_bundle.py` with seed 20261101 from the 296 kept pages: 75 stratified pages, 5 repeats, and 5 practice pages excluded from analysis. Practice pages come from the same set and not from development data, because they need no labels and are never analysed. Outputs: ChromeRAG balanced, Trafilatura, Readability. The primary human comparison is ChromeRAG balanced against Trafilatura, by majority verdict with a page-level bootstrap interval. Raters and their results are recorded as received. Any result, including a tie or a Trafilatura lead, is reported as it comes.
