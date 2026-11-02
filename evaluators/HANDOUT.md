@@ -4,32 +4,19 @@ Plain steps for someone who did not build this project. You only rate text outpu
 
 ## Install
 
-You need Python 3.9 or newer. No packages to install for the rating app.
+You need Python 3.9 or newer. Nothing else needs installing. Unzip the folder you were sent and open a terminal inside it.
 
-1. Get a copy of this repository.
-2. Put the private file `bundle.json` you were sent here:
-
-   ```text
-   evaluators/bundle/bundle.json
-   ```
-
-   Create the `evaluators/bundle/` folder if it is missing.
+Mac or Linux: run `python3 --version`. Windows: run `python --version`. If it is missing, install Python from python.org first.
 
 ## Run
 
-From the repository root:
+Use the rater id you were given, exactly as written:
 
 ```bash
-python evaluators/run.py --rater YOUR_ID
+python3 evaluators/run.py --rater YOUR_ID
 ```
 
-Use a short id such as your initials (no email or real name). The terminal prints a URL like `http://127.0.0.1:8770/`. Open that URL in your browser on the same computer.
-
-To try the practice set first (no private bundle needed):
-
-```bash
-python evaluators/run.py --rater test --demo
-```
+On Windows, use `python` instead of `python3`. The terminal prints a URL like `http://127.0.0.1:8770/`. Open it in Chrome, Edge or Firefox on the same computer. Leave the terminal open while you work. To stop, close the browser tab and press Ctrl+C in the terminal. To continue later, run the same command.
 
 ## What to judge
 
@@ -45,11 +32,11 @@ For each item:
 
 Progress is saved after every rating. You can stop and resume with the same `--rater` id.
 
-**Time estimate:** about _N_ minutes for this bundle (the author fills in _N_ when they send the file).
+**Time estimate:** 85 items, about 2 minutes each, so about 3 hours in total. Split it into sessions; you do not need to finish in one sitting. A few pages appear twice on purpose. Rate each as you see it.
 
 ## How to return the JSON
 
-When you finish, the Finish screen shows a results file under `evaluators/results/`. Email that JSON file to the person who sent you the bundle. Do not edit it.
+When you finish, press Finish. It shows a results file under `evaluators/results/`. Email that one JSON file to the person who sent you this folder. Do not edit it.
 
 ## Rules
 
