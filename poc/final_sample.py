@@ -560,7 +560,14 @@ def sample_from_tranco(
                     }
                     # Wait for the whole batch, then merge in fixed domain order.
                     for fut, dom in futs.items():
-                        results_by_domain[dom] = fut.result()
+                        try:
+                            results_by_domain[dom] = fut.result()
+                        except Exception as exc:  # one broken site must not end the run
+                            results_by_domain[dom] = (
+                                [],
+                                [{"url": f"https://{dom}/", "domain": dom, "page_type": None,
+                                  "reason": f"error:{type(exc).__name__[:40]}"}],
+                            )
                 got, sk = merge_domain_results_in_order(batch, results_by_domain)
                 passed.extend(got)
                 skipped.extend(sk)
