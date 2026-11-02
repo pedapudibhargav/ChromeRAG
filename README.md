@@ -192,7 +192,7 @@ newsletter blocks, author boxes and page tails.
 
 * The model is a 150 KB array file (`src/chromerag/assets/lbc_stage1.npz`) evaluated with NumPy only;
   scikit-learn is needed to retrain, not to run. It was trained on human-reviewed pages (WCXB development
-  split, 1,495 pages).
+  split, 1,238 pages, with no test page or test domain).
 * Output keeps headings, bold and italic, inline code, fenced code blocks with their lines, ordered and
   nested lists and GitHub Markdown tables; link targets are omitted unless requested, repeated blocks are
   written once, and the Markdown follows document order.
