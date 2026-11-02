@@ -33,11 +33,12 @@ def baseline_readability(html: str) -> str:
     return f"# {title}\n\n{text}\n"
 
 
-def baseline_trafilatura(html: str) -> str:
+def baseline_trafilatura(html: str, url: str | None = None) -> str:
     import trafilatura
 
     out = trafilatura.extract(
         html,
+        url=url,
         include_tables=True,
         include_comments=False,
         include_links=False,
@@ -56,13 +57,15 @@ def baseline_html2text(html: str) -> str:
 
 
 def baseline_markitdown(html: str, path_hint: str | None = None) -> str:
+    import tempfile
+    from pathlib import Path
+
     try:
         from markitdown import MarkItDown
     except ImportError:
+        # Clear error text so callers without try/except (e.g. run_stce_eval) still
+        # produce a row instead of aborting the whole page.
         return "[markitdown not installed]"
-
-    import tempfile
-    from pathlib import Path
 
     md = MarkItDown()
     with tempfile.NamedTemporaryFile("w", suffix=".html", delete=False, encoding="utf-8") as f:
