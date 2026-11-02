@@ -24,7 +24,7 @@ Imagine a search assistant that can only read the extracted text. People ask que
 
 For each item:
 
-1. Read the original page (Rendered or Plain text). If the preview looks blank, use **Open saved page in new tab**. Prefer the saved copy over the live site.
+1. Read the original page (Rendered or Plain text). Pages are saved copies with images and links removed, and the app does not connect to any website. Judge the text. If the preview looks blank, use **Plain text**. Do not look the pages up online. Skim long pages; you do not need to read every word.
 2. Read every output.
 3. Tick every output that is equally best, or choose **All about the same**, or **None are good**.
 4. Score each output from 1 to 5 for **content kept** and **noise left in** (unless you Skip). You may add a short note if something important is missing.

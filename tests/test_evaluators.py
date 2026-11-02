@@ -516,7 +516,27 @@ class TestNoSrcImportInApp(unittest.TestCase):
         text = (ROOT / "evaluators" / "HANDOUT.md").read_text(encoding="utf-8").lower()
         for bad in FORBIDDEN:
             self.assertNotIn(bad, text)
-        self.assertIn("_n_ minutes", text)
+        self.assertIn("minutes each", text)
+        self.assertNotIn("live site", text)
+
+
+class TestSavedPagesAreOffline(unittest.TestCase):
+    def test_sanitise_removes_everything_that_can_reach_a_site(self) -> None:
+        from evaluators.author.build_bundle import sanitise
+
+        html = (
+            '<html><head><link rel="stylesheet" href="https://x.test/a.css"><base href="https://x.test/">'
+            '<meta http-equiv="refresh" content="0;url=https://x.test/"><style>@import "https://x.test/b.css";'
+            'p{background:url(https://x.test/c.png)}</style></head><body onload="go()">'
+            '<a href="https://x.test/d">link text</a><img src="https://x.test/e.png" srcset="https://x.test/f.png 2x">'
+            '<svg><image xlink:href="https://x.test/g.png"/></svg><form action="https://x.test/h"></form>'
+            '<video poster="https://x.test/i.png"></video><p style="background:url(https://x.test/j.png)">kept</p>'
+            '<script src="https://x.test/k.js"></script></body></html>'
+        )
+        out = sanitise(html, "https://x.test/")
+        self.assertNotIn("x.test", out)
+        self.assertIn("link text", out)
+        self.assertIn("kept", out)
 
 
 if __name__ == "__main__":

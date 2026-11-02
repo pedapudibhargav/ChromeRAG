@@ -44,6 +44,13 @@ _IMG = re.compile(r"!\[[^\]]*\]\([^)]*\)")
 _LINK = re.compile(r"\[([^\]]*)\]\([^)]*\)")
 _EMPH = re.compile(r"(\*\*|__)(.+?)\1")
 _MIN_WORDS = 15
+_REMOTE_ATTRS = frozenset(
+    "href src srcset action formaction poster data background cite longdesc ping usemap manifest".split()
+)
+_CSS_REMOTE = re.compile(r"url\([^)]*\)", re.I)
+_CSS_IMPORT = re.compile(r"@import[^;]*;?", re.I)
+_CSS_COMMENT = re.compile(r"/\*.*?\*/", re.S)
+_ADDRESS_VALUE = re.compile(r"(?:[a-z][a-z0-9+.-]*:)?//", re.I)
 
 
 def normalise(text: str) -> str:
@@ -55,20 +62,26 @@ def normalise(text: str) -> str:
     return re.sub(r"\n{3,}", "\n\n", text).strip()
 
 
-def sanitise(html: str, url: str) -> str:
-    from bs4 import BeautifulSoup
+def sanitise(html: str, url: str = "") -> str:
+    """Saved page for raters: no scripts and nothing that can reach another site."""
+    from bs4 import BeautifulSoup, Comment
 
     soup = BeautifulSoup(html, "lxml")
-    for t in soup(["script", "noscript", "iframe", "object", "embed", "template"]):
+    for t in soup(["script", "noscript", "iframe", "object", "embed", "template", "link", "base", "meta"]):
         t.decompose()
-    for m in soup.find_all("meta", attrs={"http-equiv": re.compile("refresh", re.I)}):
-        m.decompose()
+    for c in soup.find_all(string=lambda x: isinstance(x, Comment)):
+        c.extract()
     for tag in soup.find_all(True):
-        for attr in [a for a in tag.attrs if a.lower().startswith("on")]:
-            del tag[attr]
-    if soup.head is not None and url:
-        base = soup.new_tag("base", href=url)
-        soup.head.insert(0, base)
+        for attr in list(tag.attrs):
+            name = attr.lower()
+            value = tag.get(attr)
+            value = " ".join(value) if isinstance(value, list) else str(value)
+            if name.startswith("on") or name.split(":")[-1] in _REMOTE_ATTRS or _ADDRESS_VALUE.search(value):
+                del tag[attr]
+        if isinstance(tag.get("style"), str):
+            tag["style"] = _CSS_REMOTE.sub("none", tag["style"])
+    for style in soup.find_all("style"):
+        style.string = _CSS_REMOTE.sub("none", _CSS_IMPORT.sub("", _CSS_COMMENT.sub("", style.get_text())))
     return str(soup)
 
 
@@ -196,7 +209,6 @@ def make_item(
     key = {labs[i]: order[i] for i in range(len(order))}
     item = {
         "item_id": item_id,
-        "source_url": url,
         "page_html": page_html,
         "outputs": {lab: outs[tool] for lab, tool in key.items()},
     }

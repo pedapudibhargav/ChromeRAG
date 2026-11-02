@@ -230,7 +230,6 @@ class Handler(BaseHTTPRequestHandler):
                 {
                     "item_id": iid,
                     "is_calibration": it["is_calibration"],
-                    "source_url": it.get("source_url") or it.get("url") or "",
                     "shown_order": labs,
                     "outputs": outs,
                     "rating": rating,
@@ -243,7 +242,7 @@ class Handler(BaseHTTPRequestHandler):
             self.send_header("Content-Type", "text/html; charset=utf-8")
             self.send_header("Content-Length", str(len(body)))
             self.send_header("Cache-Control", "no-store")
-            self.send_header("Content-Security-Policy", "default-src 'none'; style-src 'unsafe-inline'; img-src data: https: http:; sandbox")
+            self.send_header("Content-Security-Policy", "default-src 'none'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'; sandbox")
             self.end_headers()
             self.wfile.write(body)
             return
