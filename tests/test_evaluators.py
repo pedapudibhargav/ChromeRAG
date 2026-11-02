@@ -1,4 +1,4 @@
-"""Tests for the blind rating kit (stdlib; demo bundle only; no real data)."""
+"""Tests for the blind rating kit (stdlib; demo + synthetic corpora; no real data)."""
 
 from __future__ import annotations
 
@@ -21,6 +21,39 @@ from evaluators.author import build_bundle as build_mod  # noqa: E402
 
 DEMO = ROOT / "evaluators" / "demo" / "bundle.json"
 FORBIDDEN = ("chromerag", "trafilatura", "readability", "markitdown")
+TOOLS = ["chromerag", "trafilatura", "readability"]
+
+
+def _long_text(tag: str, n: int = 40) -> str:
+    words = [f"{tag}word{i}" for i in range(n)]
+    return " ".join(words)
+
+
+def _write_synthetic_corpus(base: Path, *, n_article: int, n_forum: int) -> None:
+    pages = []
+    (base / "html").mkdir(parents=True)
+    for tool in TOOLS:
+        (base / "outputs" / tool).mkdir(parents=True)
+    idx = 0
+    for ptype, n in (("article", n_article), ("forum", n_forum)):
+        for _ in range(n):
+            pid = f"{ptype}{idx:02d}"
+            idx += 1
+            url = f"https://example.com/{pid}"
+            html = (
+                "<!doctype html><html><head><title>"
+                f"{pid}</title></head><body><h1>{pid}</h1>"
+                f"<p>{_long_text(pid, 30)}</p>"
+                "<nav>menu chrome links</nav></body></html>"
+            )
+            rel = f"html/{pid}.html"
+            (base / rel).write_text(html, encoding="utf-8")
+            for i, tool in enumerate(TOOLS):
+                # Distinct but long-enough outputs; no tool name in text.
+                body = _long_text(f"{pid}out{i}", 40)
+                (base / "outputs" / tool / f"{pid}.md").write_text(body, encoding="utf-8")
+            pages.append({"id": pid, "url": url, "page_type": ptype, "html": rel})
+    (base / "pages.json").write_text(json.dumps(pages, indent=2) + "\n", encoding="utf-8")
 
 
 class TestDemoBundle(unittest.TestCase):
@@ -44,11 +77,9 @@ class TestBlinding(unittest.TestCase):
         o2, s2 = rating.plan_order(bundle, "bob")
         self.assertEqual(o1, o1b)
         self.assertEqual(s1, s1b)
-        # calibration first
         cal = [it["item_id"] for it in bundle["calibration"]]
         self.assertEqual(o1[: len(cal)], cal)
         self.assertEqual(o2[: len(cal)], cal)
-        # main order or at least some shown_order differs across raters
         self.assertTrue(o1 != o2 or any(s1[i] != s2[i] for i in s1))
 
 
@@ -187,13 +218,11 @@ class TestBuilderKeyPath(unittest.TestCase):
             build_mod.forbid_key_path(ROOT / "evaluators" / "bundle" / "key.json")
         with self.assertRaises(SystemExit):
             build_mod.forbid_key_path(ROOT / "evaluators" / "results" / "key.json")
-        # outside is fine (no raise)
         build_mod.forbid_key_path(Path(tempfile.gettempdir()) / "rating_key.json")
 
 
 class TestAnalyzerSynthetic(unittest.TestCase):
     def test_known_net_and_alpha(self) -> None:
-        # Two items, two raters, chromerag always sole best for both -> net=1, alpha=1
         bundle = {
             "bundle_id": "syn",
             "calibration": [{"item_id": "cal1"}],
@@ -257,9 +286,222 @@ class TestAnalyzerSynthetic(unittest.TestCase):
         self.assertEqual(focus["majority_net"]["wins_a"], 2)
         self.assertEqual(focus["majority_net"]["wins_b"], 0)
         self.assertEqual(focus["krippendorff_alpha"], 1.0)
-        # calibration must not affect means of chromerag content (only p1/p2)
-        self.assertEqual(report["mean_scores"]["chromerag"]["n"], 4)  # 2 raters × 2 items
+        self.assertEqual(report["mean_scores"]["chromerag"]["n"], 4)
         self.assertEqual(report["missing_notes"], [])
+
+    def test_missing_note_reported(self) -> None:
+        """Analyzer surfaces a real missing-content note from a rating file."""
+        bundle = {
+            "bundle_id": "note-syn",
+            "calibration": [],
+            "items": [{"item_id": "p1"}],
+        }
+        key = {
+            "bundle_id": "note-syn",
+            "tools": ["chromerag", "trafilatura", "readability"],
+            "key": {"p1": {"A": "chromerag", "B": "trafilatura", "C": "readability"}},
+        }
+        result = {
+            "schema_version": 1,
+            "bundle_id": "note-syn",
+            "rater": "r1",
+            "app_version": "1.0.0",
+            "started": "t",
+            "updated": "t",
+            "items": {
+                "p1": {
+                    "item_id": "p1",
+                    "best": ["A"],
+                    "all_same": False,
+                    "none_good": False,
+                    "scores": {
+                        "A": {"content": 4, "chrome": 5, "missing": ""},
+                        "B": {"content": 2, "chrome": 3, "missing": "pricing table for Team plan"},
+                        "C": {"content": 3, "chrome": 4, "missing": ""},
+                    },
+                    "skipped": False,
+                    "seconds_spent": 5,
+                    "shown_order": ["A", "B", "C"],
+                }
+            },
+        }
+        report = analyze_mod.analyse([result], bundle, key)
+        self.assertEqual(len(report["missing_notes"]), 1)
+        note = report["missing_notes"][0]
+        self.assertEqual(note["rater"], "r1")
+        self.assertEqual(note["item_id"], "p1")
+        self.assertEqual(note["tool"], "trafilatura")
+        self.assertEqual(note["note"], "pricing table for Team plan")
+
+
+class TestFolderBundleBuilder(unittest.TestCase):
+    def test_stratified_deterministic_and_blind(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            corpus = root / "corpus"
+            _write_synthetic_corpus(corpus, n_article=8, n_forum=6)
+            pages_out = root / "pages_out"
+            out1 = root / "b1" / "bundle.json"
+            key1 = root / "private" / "key.json"
+            ord1 = root / "private" / "orders.json"
+            kwargs = dict(
+                tools=TOOLS,
+                seed=42,
+                n_pages=6,
+                n_repeats=2,
+                n_calibration=2,
+                bundle_id="syn-folder",
+                pages_out=pages_out,
+                raters=["alice", "bob"],
+            )
+            b1, k1, o1 = build_mod.build_bundle_from_dir(corpus, **kwargs)
+            build_mod.write_outputs(b1, k1, o1, out1, key1, ord1)
+            b2, k2, o2 = build_mod.build_bundle_from_dir(corpus, **kwargs)
+            self.assertEqual(b1, b2)
+            self.assertEqual(k1["key"], k2["key"])
+            self.assertEqual(o1, o2)
+            self.assertEqual(len(b1["items"]), 6 + 2)  # main + repeats
+            self.assertEqual(len(b1["calibration"]), 2)
+            self.assertEqual(len(k1["repeat_of"]), 2)
+            blob = out1.read_text(encoding="utf-8").lower()
+            for bad in FORBIDDEN:
+                self.assertNotIn(bad, blob)
+            # page copies local only
+            self.assertTrue(any(pages_out.glob("*.html")))
+            # three outputs per item
+            for it in b1["calibration"] + b1["items"]:
+                self.assertEqual(sorted(it["outputs"]), ["A", "B", "C"])
+            # orders saved separately and match app plan_order
+            for rater, plan in o1.items():
+                order, shown = rating.plan_order(b1, rater)
+                self.assertEqual(plan["item_order"], order)
+                self.assertEqual(plan["shown_order"], shown)
+
+
+class TestSyntheticSessionEndToEnd(unittest.TestCase):
+    def test_full_session_analyse_no_tool_leak(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            corpus = root / "corpus"
+            _write_synthetic_corpus(corpus, n_article=5, n_forum=5)
+            bundle, key_doc, orders = build_mod.build_bundle_from_dir(
+                corpus,
+                tools=TOOLS,
+                seed=7,
+                n_pages=4,
+                n_repeats=1,
+                n_calibration=1,
+                bundle_id="e2e-syn",
+                pages_out=root / "html_copies",
+                raters=["e2e"],
+            )
+            out_bundle = root / "bundle.json"
+            out_key = root / "key.json"
+            out_orders = root / "orders.json"
+            build_mod.write_outputs(bundle, key_doc, orders, out_bundle, out_key, out_orders)
+
+            order, shown = rating.plan_order(bundle, "e2e")
+            results_path = root / "e2e_e2e-syn.json"
+            results = rating.load_or_create_results(results_path, "e2e", bundle["bundle_id"])
+            rating.atomic_write_json(results_path, results)
+            rating._STATE.clear()
+            rating._STATE.update(
+                {
+                    "rater": "e2e",
+                    "demo": False,
+                    "bundle": bundle,
+                    "by_id": rating._item_map(bundle),
+                    "order": order,
+                    "shown": shown,
+                    "results_path": results_path,
+                    "results": results,
+                    "lock": threading.Lock(),
+                }
+            )
+            httpd = rating.ThreadingHTTPServer(("127.0.0.1", 0), rating.Handler)
+            port = httpd.server_address[1]
+            thread = threading.Thread(target=httpd.serve_forever, daemon=True)
+            thread.start()
+
+            def get(path: str) -> tuple[int, str]:
+                conn = HTTPConnection("127.0.0.1", port, timeout=5)
+                conn.request("GET", path)
+                resp = conn.getresponse()
+                body = resp.read().decode("utf-8")
+                conn.close()
+                return resp.status, body
+
+            def post(path: str, payload: dict) -> tuple[int, dict]:
+                raw = json.dumps(payload).encode("utf-8")
+                conn = HTTPConnection("127.0.0.1", port, timeout=5)
+                conn.request("POST", path, body=raw, headers={"Content-Type": "application/json"})
+                resp = conn.getresponse()
+                body = json.loads(resp.read().decode("utf-8"))
+                conn.close()
+                return resp.status, body
+
+            try:
+                code, index_html = get("/")
+                self.assertEqual(code, 200)
+                code, session_raw = get("/api/session")
+                self.assertEqual(code, 200)
+                session = json.loads(session_raw)
+                for bad in FORBIDDEN:
+                    self.assertNotIn(bad, index_html.lower())
+                    self.assertNotIn(bad, session_raw.lower())
+
+                for meta in session["items"]:
+                    iid = meta["item_id"]
+                    code, item_raw = get(f"/api/item/{iid}")
+                    self.assertEqual(code, 200)
+                    for bad in FORBIDDEN:
+                        self.assertNotIn(bad, item_raw.lower())
+                    item = json.loads(item_raw)
+                    labs = item["shown_order"]
+                    scores = {
+                        L: {
+                            "content": 4,
+                            "chrome": 4,
+                            "missing": "team price row" if L == labs[0] else "",
+                        }
+                        for L in labs
+                    }
+                    code, out = post(
+                        "/api/rate",
+                        {
+                            "item_id": iid,
+                            "best": [labs[0]],
+                            "all_same": False,
+                            "none_good": False,
+                            "scores": scores,
+                            "skipped": False,
+                            "skip_reason": "",
+                            "seconds_spent": 1.0,
+                            "shown_order": labs,
+                        },
+                    )
+                    self.assertEqual(code, 200)
+                    self.assertTrue(out["ok"])
+                    for bad in FORBIDDEN:
+                        self.assertNotIn(bad, json.dumps(out).lower())
+
+                    code, html_body = get(f"/html/{iid}")
+                    self.assertEqual(code, 200)
+                    for bad in FORBIDDEN:
+                        self.assertNotIn(bad, html_body.lower())
+            finally:
+                httpd.shutdown()
+
+            saved = json.loads(results_path.read_text(encoding="utf-8"))
+            for bad in FORBIDDEN:
+                self.assertNotIn(bad, json.dumps(saved).lower())
+            self.assertEqual(len(saved["items"]), len(order))
+
+            report = analyze_mod.analyse([saved], bundle, key_doc)
+            self.assertGreaterEqual(len(report["missing_notes"]), 1)
+            cal_ids = {it["item_id"] for it in bundle["calibration"]}
+            for n in report["missing_notes"]:
+                self.assertNotIn(n["item_id"], cal_ids)
 
 
 class TestNoSrcImportInApp(unittest.TestCase):
@@ -269,6 +511,12 @@ class TestNoSrcImportInApp(unittest.TestCase):
         self.assertNotIn("from poc", src)
         self.assertNotIn("import poc", src)
         self.assertNotIn("sqlite", src)
+
+    def test_handout_has_no_tool_names(self) -> None:
+        text = (ROOT / "evaluators" / "HANDOUT.md").read_text(encoding="utf-8").lower()
+        for bad in FORBIDDEN:
+            self.assertNotIn(bad, text)
+        self.assertIn("_n_ minutes", text)
 
 
 if __name__ == "__main__":
