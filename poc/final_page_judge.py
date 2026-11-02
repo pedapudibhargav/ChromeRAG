@@ -13,6 +13,7 @@ from __future__ import annotations
 import argparse
 import json
 import random
+import threading
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -173,20 +174,36 @@ def main() -> None:
         return
     client = OpenAI()
     start = spent()
+    # Every verdict is saved as it arrives, so an interrupted run resumes without paying twice.
+    args.out.parent.mkdir(parents=True, exist_ok=True)
+    progress = args.out.with_suffix(".progress.jsonl")
+    done: dict[tuple, dict] = {}
+    if progress.exists():
+        for line in progress.read_text(encoding="utf-8").splitlines():
+            row = json.loads(line)
+            done[(row["id"], row["baseline"], row["swapped"])] = row
+    todo = [j for j in jobs if (j["id"], j["baseline"], j["swapped"]) not in done]
+    print(f"{len(done)} verdicts already saved; {len(todo)} to judge")
+    lock = threading.Lock()
 
     def judge(job: dict) -> dict | None:
         a, b = (job["ref"], job["base"]) if job["ours_is_a"] else (job["base"], job["ref"])
         try:
             verdict, _cost = client.chat_json(MODEL, PAGE_SYSTEM, build_prompt(job["source"], a, b))
-        except (RuntimeError, ValueError) as exc:
-            print(f"  skipped {job['id']} vs {job['baseline']}: {str(exc)[:120]}")
+        except BudgetExceeded:
+            raise
+        except Exception as exc:  # noqa: BLE001
+            print(f"  not judged {job['id']} vs {job['baseline']}: {type(exc).__name__}")
             return None
-        return score_row(job, verdict)
+        row = score_row(job, verdict)
+        with lock, progress.open("a", encoding="utf-8") as fh:
+            fh.write(json.dumps(row) + "\n")
+        return row
 
-    rows: list[dict] = []
+    rows = list(done.values())
     try:
         with ThreadPoolExecutor(max_workers=args.workers) as pool:
-            rows = [r for r in pool.map(judge, jobs) if r is not None]
+            rows += [r for r in pool.map(judge, todo) if r is not None]
     except BudgetExceeded as exc:
         print(f"Stopped: {exc}")
     report = {
@@ -201,7 +218,6 @@ def main() -> None:
         "summary": summarize(rows, baselines),
         "judgements": rows,
     }
-    args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report["summary"], indent=2))
     print(f"cost ${report['cost_usd']:.3f}")

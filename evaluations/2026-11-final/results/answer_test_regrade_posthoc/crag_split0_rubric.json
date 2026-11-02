@@ -1,0 +1,364 @@
+{
+  "rejudge_only": true,
+  "partial": false,
+  "rubric": "v2",
+  "from_cache": "crag-cache-final2",
+  "cache_dir": "rg0",
+  "prior_out": "crag-full2.json",
+  "model": "gpt-5.6-luna",
+  "seed": 0,
+  "n_questions": 500,
+  "rule_id_counts": {
+    "R-MISS": 923,
+    "R-WRONG": 158,
+    "R-REQ": 884,
+    "R-CONTRA": 51,
+    "R-NUM": 266,
+    "R-PART": 43,
+    "R-NAME": 147,
+    "R-TIME": 6,
+    "R-DATE": 22
+  },
+  "label_changes_v1_v2_by_tool": {
+    "markitdown": {
+      "missing->incorrect": 5,
+      "accurate->incorrect": 11,
+      "incorrect->accurate": 1,
+      "missing->accurate": 1
+    },
+    "trafilatura": {
+      "accurate->incorrect": 14,
+      "missing->incorrect": 3,
+      "missing->accurate": 1,
+      "incorrect->accurate": 1
+    },
+    "chromerag_precision": {
+      "accurate->incorrect": 10,
+      "missing->incorrect": 3
+    },
+    "chromerag_balanced": {
+      "accurate->incorrect": 10,
+      "missing->incorrect": 3
+    },
+    "chromerag_coverage": {
+      "accurate->incorrect": 9,
+      "incorrect->accurate": 2,
+      "missing->incorrect": 3
+    }
+  },
+  "judge_errors": 0,
+  "spend_usd": 0.27863,
+  "tools": {
+    "markitdown": {
+      "n": 500,
+      "accurate": 0.428,
+      "missing": 0.368,
+      "incorrect": 0.204,
+      "crag_score": 0.224,
+      "n_pages_empty": 157,
+      "n_pages_error": 0,
+      "n_pages_timeout": 0,
+      "n_questions_no_chunks": 0,
+      "mean_words_indexed_per_page": 6973.16,
+      "mean_words_per_page_including_failed": 4271.87,
+      "mean_words_per_page_excluding_failed": 4271.87,
+      "mean_seconds_per_page": 0.1019,
+      "gold_in_top5_short": 0.5767,
+      "gold_in_top5_short_n": 163,
+      "by_domain": {
+        "finance": {
+          "n": 70,
+          "accurate": 0.2857,
+          "missing": 0.5,
+          "incorrect": 0.2143,
+          "crag_score": 0.0714
+        },
+        "movie": {
+          "n": 91,
+          "accurate": 0.3297,
+          "missing": 0.5055,
+          "incorrect": 0.1648,
+          "crag_score": 0.1648
+        },
+        "music": {
+          "n": 99,
+          "accurate": 0.4444,
+          "missing": 0.3131,
+          "incorrect": 0.2424,
+          "crag_score": 0.202
+        },
+        "open": {
+          "n": 133,
+          "accurate": 0.4737,
+          "missing": 0.2932,
+          "incorrect": 0.2331,
+          "crag_score": 0.2406
+        },
+        "sports": {
+          "n": 107,
+          "accurate": 0.5327,
+          "missing": 0.3084,
+          "incorrect": 0.1589,
+          "crag_score": 0.3738
+        }
+      },
+      "extractor_config": {
+        "converter": "MarkItDown",
+        "url_passed": false
+      }
+    },
+    "trafilatura": {
+      "n": 500,
+      "accurate": 0.434,
+      "missing": 0.35,
+      "incorrect": 0.216,
+      "crag_score": 0.218,
+      "n_pages_empty": 157,
+      "n_pages_error": 0,
+      "n_pages_timeout": 0,
+      "n_questions_no_chunks": 0,
+      "mean_words_indexed_per_page": 2221.75,
+      "mean_words_per_page_including_failed": 2295.88,
+      "mean_words_per_page_excluding_failed": 2295.88,
+      "mean_seconds_per_page": 0.053,
+      "gold_in_top5_short": 0.5706,
+      "gold_in_top5_short_n": 163,
+      "by_domain": {
+        "finance": {
+          "n": 70,
+          "accurate": 0.2857,
+          "missing": 0.4714,
+          "incorrect": 0.2429,
+          "crag_score": 0.0429
+        },
+        "movie": {
+          "n": 91,
+          "accurate": 0.2967,
+          "missing": 0.4835,
+          "incorrect": 0.2198,
+          "crag_score": 0.0769
+        },
+        "music": {
+          "n": 99,
+          "accurate": 0.4444,
+          "missing": 0.3232,
+          "incorrect": 0.2323,
+          "crag_score": 0.2121
+        },
+        "open": {
+          "n": 133,
+          "accurate": 0.5113,
+          "missing": 0.3008,
+          "incorrect": 0.188,
+          "crag_score": 0.3233
+        },
+        "sports": {
+          "n": 107,
+          "accurate": 0.5421,
+          "missing": 0.243,
+          "incorrect": 0.215,
+          "crag_score": 0.3271
+        }
+      },
+      "extractor_config": {
+        "include_tables": true,
+        "include_comments": false,
+        "include_links": false,
+        "output_format": "markdown",
+        "url_passed": true
+      }
+    },
+    "chromerag_precision": {
+      "n": 500,
+      "accurate": 0.458,
+      "missing": 0.372,
+      "incorrect": 0.17,
+      "crag_score": 0.288,
+      "n_pages_empty": 154,
+      "n_pages_error": 0,
+      "n_pages_timeout": 0,
+      "n_questions_no_chunks": 0,
+      "mean_words_indexed_per_page": 1678.34,
+      "mean_words_per_page_including_failed": 1747.9,
+      "mean_words_per_page_excluding_failed": 1747.9,
+      "mean_seconds_per_page": 0.1206,
+      "gold_in_top5_short": 0.5767,
+      "gold_in_top5_short_n": 163,
+      "by_domain": {
+        "finance": {
+          "n": 70,
+          "accurate": 0.3286,
+          "missing": 0.4429,
+          "incorrect": 0.2286,
+          "crag_score": 0.1
+        },
+        "movie": {
+          "n": 91,
+          "accurate": 0.3077,
+          "missing": 0.5275,
+          "incorrect": 0.1648,
+          "crag_score": 0.1429
+        },
+        "music": {
+          "n": 99,
+          "accurate": 0.4747,
+          "missing": 0.3333,
+          "incorrect": 0.1919,
+          "crag_score": 0.2828
+        },
+        "open": {
+          "n": 133,
+          "accurate": 0.5113,
+          "missing": 0.3308,
+          "incorrect": 0.1579,
+          "crag_score": 0.3534
+        },
+        "sports": {
+          "n": 107,
+          "accurate": 0.5888,
+          "missing": 0.2804,
+          "incorrect": 0.1308,
+          "crag_score": 0.4579
+        }
+      },
+      "extractor_config": {
+        "content_priority": "precision",
+        "dvdf_threshold": 0.32,
+        "enable_dvdf": true,
+        "enable_schema": true,
+        "enable_stce": true,
+        "enable_tables": true,
+        "strictness": "aggressive",
+        "url_passed": true
+      }
+    },
+    "chromerag_balanced": {
+      "n": 500,
+      "accurate": 0.458,
+      "missing": 0.368,
+      "incorrect": 0.174,
+      "crag_score": 0.284,
+      "n_pages_empty": 154,
+      "n_pages_error": 0,
+      "n_pages_timeout": 0,
+      "n_questions_no_chunks": 0,
+      "mean_words_indexed_per_page": 1807.44,
+      "mean_words_per_page_including_failed": 1885.18,
+      "mean_words_per_page_excluding_failed": 1885.18,
+      "mean_seconds_per_page": 0.1121,
+      "gold_in_top5_short": 0.5828,
+      "gold_in_top5_short_n": 163,
+      "by_domain": {
+        "finance": {
+          "n": 70,
+          "accurate": 0.3286,
+          "missing": 0.4429,
+          "incorrect": 0.2286,
+          "crag_score": 0.1
+        },
+        "movie": {
+          "n": 91,
+          "accurate": 0.2967,
+          "missing": 0.5385,
+          "incorrect": 0.1648,
+          "crag_score": 0.1319
+        },
+        "music": {
+          "n": 99,
+          "accurate": 0.4848,
+          "missing": 0.3232,
+          "incorrect": 0.1919,
+          "crag_score": 0.2929
+        },
+        "open": {
+          "n": 133,
+          "accurate": 0.5414,
+          "missing": 0.3008,
+          "incorrect": 0.1579,
+          "crag_score": 0.3835
+        },
+        "sports": {
+          "n": 107,
+          "accurate": 0.5514,
+          "missing": 0.2991,
+          "incorrect": 0.1495,
+          "crag_score": 0.4019
+        }
+      },
+      "extractor_config": {
+        "content_priority": "balanced",
+        "dvdf_threshold": 0.42,
+        "enable_dvdf": true,
+        "enable_schema": true,
+        "enable_stce": true,
+        "enable_tables": true,
+        "strictness": "balanced",
+        "url_passed": true
+      }
+    },
+    "chromerag_coverage": {
+      "n": 500,
+      "accurate": 0.442,
+      "missing": 0.388,
+      "incorrect": 0.17,
+      "crag_score": 0.272,
+      "n_pages_empty": 154,
+      "n_pages_error": 0,
+      "n_pages_timeout": 0,
+      "n_questions_no_chunks": 0,
+      "mean_words_indexed_per_page": 1942.38,
+      "mean_words_per_page_including_failed": 2036.89,
+      "mean_words_per_page_excluding_failed": 2036.89,
+      "mean_seconds_per_page": 0.1116,
+      "gold_in_top5_short": 0.589,
+      "gold_in_top5_short_n": 163,
+      "by_domain": {
+        "finance": {
+          "n": 70,
+          "accurate": 0.3,
+          "missing": 0.4857,
+          "incorrect": 0.2143,
+          "crag_score": 0.0857
+        },
+        "movie": {
+          "n": 91,
+          "accurate": 0.3187,
+          "missing": 0.5275,
+          "incorrect": 0.1538,
+          "crag_score": 0.1648
+        },
+        "music": {
+          "n": 99,
+          "accurate": 0.4141,
+          "missing": 0.3636,
+          "incorrect": 0.2222,
+          "crag_score": 0.1919
+        },
+        "open": {
+          "n": 133,
+          "accurate": 0.5263,
+          "missing": 0.3233,
+          "incorrect": 0.1504,
+          "crag_score": 0.3759
+        },
+        "sports": {
+          "n": 107,
+          "accurate": 0.5607,
+          "missing": 0.3084,
+          "incorrect": 0.1308,
+          "crag_score": 0.4299
+        }
+      },
+      "extractor_config": {
+        "content_priority": "coverage",
+        "dvdf_threshold": 0.55,
+        "enable_dvdf": true,
+        "enable_schema": true,
+        "enable_stce": true,
+        "enable_tables": true,
+        "strictness": "lenient",
+        "url_passed": true
+      }
+    }
+  }
+}
