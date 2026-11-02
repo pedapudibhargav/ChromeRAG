@@ -82,6 +82,10 @@ def sanitise(html: str, url: str = "") -> str:
             tag["style"] = _CSS_REMOTE.sub("none", tag["style"])
     for style in soup.find_all("style"):
         style.string = _CSS_REMOTE.sub("none", _CSS_IMPORT.sub("", _CSS_COMMENT.sub("", style.get_text())))
+    # Page stylesheets are gone, so icons would otherwise fill the preview.
+    limit = soup.new_tag("style")
+    limit.string = "svg,img{max-width:48px;max-height:48px}"
+    (soup.head or soup).insert(0, limit)
     return str(soup)
 
 
