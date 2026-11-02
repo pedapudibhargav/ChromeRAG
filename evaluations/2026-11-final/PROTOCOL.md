@@ -173,3 +173,7 @@ No judge had scored any new page when this was recorded. Tag: `rubric-2026-11`.
 **Sample size.** The quota table sums to 310, not the 300 stated earlier; 307 pages were collected.
 
 **Page judging.** Balanced ChromeRAG is compared with Trafilatura (primary) and Readability. MarkItDown is not judged, to stay within budget. rs-trafilatura is judged only if its outputs are obtained. The judge sees up to 24,000 characters of page text and of each extraction. This budget was set after viewing output lengths on these pages, not their text. Every result is also reported on pairs where neither extraction was clipped.
+
+## Amendment after page judging (2026-11-01)
+
+MarkItDown was judged after all, once the author approved more budget. This replaces the statement above that it would not be judged. It was added before any page-judging result had been seen.
