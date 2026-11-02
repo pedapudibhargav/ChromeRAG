@@ -238,3 +238,12 @@ def test_write_seed_list(tmp_path: Path):
     data = json.loads(out.read_text(encoding="utf-8"))
     assert data["pages"][0]["url"] == "https://z.test/"
     assert data["tranco_list_id"] == "L1"
+
+
+def test_cap_candidates_is_fixed_and_bounded():
+    from poc.final_sample import MAX_CANDIDATES_PER_DOMAIN, cap_candidates
+
+    cands = [(f"https://a.com/{i}", "article") for i in range(5000)]
+    first = cap_candidates("a.com", cands)
+    assert len(first) == MAX_CANDIDATES_PER_DOMAIN
+    assert first == cap_candidates("a.com", cands)

@@ -11,6 +11,7 @@ import json
 import random
 import re
 import threading
+import time
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
@@ -61,7 +62,9 @@ DEFAULT_SAMPLE_REPORT = DEFAULT_OUT / "sample_report.json"
 
 MAX_RANK = 200_000
 MAX_DOMAINS_TRIED = 8000
-DOMAIN_BATCH_SIZE = 16
+DOMAIN_BATCH_SIZE = 128
+MAX_CANDIDATES_PER_DOMAIN = 12
+DOMAIN_DEADLINE_SECONDS = 150.0
 
 DOMAIN_KEYWORD_BLOCKLIST = (
     "porn",
@@ -399,6 +402,13 @@ def _process_domain_offline(
     return passed, skipped
 
 
+def cap_candidates(domain: str, candidates: list[tuple[str, str | None]]) -> list[tuple[str, str | None]]:
+    """A site can list thousands of sitemap URLs; try a fixed random few, chosen before any fetch."""
+    shuffled = list(candidates)
+    random.Random(f"{SAMPLE_SEED}:{domain}").shuffle(shuffled)
+    return shuffled[:MAX_CANDIDATES_PER_DOMAIN]
+
+
 def _process_domain_live(
     domain: str,
     client: httpx.Client,
@@ -434,7 +444,11 @@ def _process_domain_live(
         log_skip(home, f"error:{type(exc).__name__[:40]}", "landing")
         return passed, skipped
 
-    for url, url_type in discover_urls_for_domain(domain, html_pages, link_map, psl=psl):
+    started = time.monotonic()
+    for url, url_type in cap_candidates(domain, discover_urls_for_domain(domain, html_pages, link_map, psl=psl)):
+        if time.monotonic() - started > DOMAIN_DEADLINE_SECONDS:
+            log_skip(url, "domain_deadline", url_type)
+            break
         wait_domain(domain, domain_locks, domain_last, domain_meta)
         if not robots_ok(client, url, robots_cache):
             log_skip(url, "robots_disallow", url_type)
@@ -521,7 +535,8 @@ def sample_from_tranco(
         robots_cache: dict = {}
         with httpx.Client(
             follow_redirects=True,
-            timeout=45.0,
+            timeout=20.0,
+            limits=httpx.Limits(max_connections=256, max_keepalive_connections=64),
             headers=HEADERS,
             verify=verify,
         ) as client:
@@ -550,6 +565,8 @@ def sample_from_tranco(
                 passed.extend(got)
                 skipped.extend(sk)
                 domains_tried += len(batch)
+                counts = Counter(c.page_type for c in passed)
+                print(f"domains={domains_tried} passed={len(passed)} {dict(counts)}", flush=True)
                 if quotas_met_with_cap(passed):
                     break
 
@@ -614,7 +631,7 @@ def main() -> None:
     parser.add_argument("--out", type=Path, default=DEFAULT_OUT)
     parser.add_argument("--manifest", type=Path, default=None)
     parser.add_argument("--skipped", type=Path, default=DEFAULT_SKIPPED)
-    parser.add_argument("--workers", type=int, default=16)
+    parser.add_argument("--workers", type=int, default=128)
     parser.add_argument("--ca-bundle", type=Path, default=None)
     parser.add_argument(
         "--sample-only",

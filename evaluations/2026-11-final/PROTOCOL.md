@@ -91,7 +91,7 @@ Load via `--inventory-csv` (author path, not committed).
 - Tool: `python -m poc.final_sample --inventory-csv <path>` (samples from Tranco, writes `evaluations/2026-11-final/seed_page_list.json`, then fetches). Fetch-only rerun: `python -m poc.final_collect --seeds evaluations/2026-11-final/seed_page_list.json --inventory-csv <path>`.
 - HTML and manifest: `data/final/` (git-ignored). Skipped candidates: `data/final/skipped.jsonl` (reason per line).
 - Manifest fields per row: `url`, `domain`, `timestamp`, `status`, `sha256`, plus `id` and `page_type`.
-- Default **16** concurrent workers; **one in-flight request per registrable domain** (delay **1.0 s** between requests to the same domain).
+- Default **128** concurrent workers; **one in-flight request per registrable domain** (delay **1.0 s** between requests to the same domain).
 - Resumable: successful rows skipped on rerun.
 - TLS: optional `--ca-bundle` (no `.env` reads).
 
@@ -157,3 +157,7 @@ After `freeze-0.1.5`, no pipeline, rule, threshold, or model change for locked c
 4. `python -m poc.final_sample --inventory-csv <path>` (sample, freeze list, fetch).
 5. `poc.final_run` once per set above (no extractor runs before step 4 completes).
 6. P06 judges, P05 humans, manuscript numbers (P14).
+
+## Amendment before any page was kept (2026-11-01)
+
+The first collection attempt was stopped after about 10 minutes. It had written no pages, and no tool had run. It would have fetched every sitemap URL of a site at one per second, one batch of 16 sites at a time. Changes, fixed before restarting: 128 sites at a time; for each site, at most 12 candidate URLs, chosen by a random shuffle seeded with the sampling seed and the domain; at most 150 seconds per site and a 20-second request timeout. The limit of one request per second per site is unchanged.
