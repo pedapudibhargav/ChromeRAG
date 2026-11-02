@@ -1,0 +1,159 @@
+# Locked evaluation protocol (ChromeRAG 0.1.5)
+
+Status: fixed **before any page fetch** for this evaluation wave. Git tag `protocol-2026-11` marks this file (and only evaluation metadata committed with it) **after** code tag `freeze-0.1.5` (commit `04cbb05`). No page fetch and no extractor run on the new pages until both tags exist.
+
+## Purpose
+
+Define one held-out page set (~300 pages) for pairwise judging (P05, P06) and continuity checks. WCXB test (511 pages, full benchmark list) and CRAG split 1 are scored **once each** under this protocol, with no tuning on them afterward.
+
+Page-type labels are **rule-based** (URL path and JSON-LD `@type` only, not page content). They can be wrong; page-type breakdowns are descriptive only.
+
+## Target size and page-type quotas
+
+Target **300** successful pages after fetch (report actual *n* if shortfall; do not back-fill from excluded domains).
+
+| Page type     | Quota |
+|---------------|------:|
+| article       |   119 |
+| forum         |    51 |
+| listing       |    27 |
+| service       |    88 |
+| product       |    10 |
+| collection    |     5 |
+| landing       |    10 |
+| **Total**     | **300** |
+
+Landing pages are marketing home, pricing, or product-overview pages (same roles as the landing benchmark), distinct from generic **service** SaaS pages.
+
+## Domain source (mechanical, before fetch)
+
+Single source: the [Tranco](https://tranco-list.eu/) top-1M list.
+
+- Save the downloaded CSV at `data/final/tranco.csv` (git-ignored). Record the Tranco **list id** in `data/final/tranco_list_id.txt` beside it (one line, not committed).
+- Keep domains ranked **1–200 000** only. Shuffle that list with fixed seed **`20261101`** (`random.Random(20261101)`).
+- Drop registrable domains in the exclusion sets below.
+- Drop domains whose registrable name contains any **keyword blocklist** token (case-insensitive substring): `porn`, `xxx`, `adult`, `sexchat`, `escort`, `hentai`, `gambl`, `casino`, `betting`, `poker`, `slot`, `wager`, `onlyfans`.
+
+No hand-picked seed JSON files.
+
+## URL discovery and page-type rules (before fetch)
+
+For each shuffled domain in order, until quotas are fillable or **`MAX_DOMAINS_TRIED = 8000`** domains have been processed:
+
+1. Fetch `robots.txt` and allowed sitemap URLs; collect same-registrable-domain URLs from sitemaps (URL order preserved).
+2. Fetch `https://<domain>/` (and `https://www.<domain>/` if different) for **landing** candidates; if the homepage HTML links to `/pricing`, add that URL as a **landing** candidate.
+3. Classify other candidates by **path and JSON-LD only** (parse `application/ld+json` blocks; do not read body text for typing):
+   - **product** — path matches product URL patterns (`/product`, `/products/`, `/p/`, `/dp/`, `/item/`, …) or JSON-LD `@type` is `Product`.
+   - **collection** — path matches `/collections/` or `@type` is `CollectionPage` / `ItemList` with product-like paths.
+   - **article** — dated paths (`/YYYY/MM/`) or slug-like paths (same heuristics as `poc/extra_corpus.py` article paths); exclude tag/category/search/login paths.
+   - **forum** — path matches thread patterns (`/t/…/id`, `/questions/id/…`, `/topic`, …).
+   - **listing** — category/browse/list paths or listing patterns from the same heuristics.
+   - **service** — pricing/features/product/solutions/platform/about/services path segments on marketing sites.
+   - **landing** — homepage or `/pricing` as above.
+
+Candidate order within a domain: sitemap URLs (sorted), then homepage, then `/pricing` if linked, then other classified links in lexicographic URL order.
+
+## Page acceptance (before freeze)
+
+A candidate **passes** only if all hold:
+
+- HTTP **2xx** after redirects; final registrable domain not excluded.
+- `Content-Type` indicates HTML.
+- **English:** `<html lang>` starts with `en` (case-insensitive), or `lang` absent and `Content-Language` starts with `en`.
+- **Visible word count ≥ 80** after removing `script`, `style`, and `noscript` (whitespace token count).
+- `robots.txt` allows the URL for the collector user-agent.
+
+Failed candidates are logged with reason; the **next** candidate in fixed order may replace them **only while the set is unfrozen** (no extractor has run on any held-out page).
+
+## Sampling rule
+
+- Fixed RNG seed: **`20261101`**.
+- Pool passed candidates by `page_type`. Shuffle within type with the fixed seed; walk in order and accept a URL if the registrable domain has **< 3** pages already chosen.
+- Stop when every quota is met or **`MAX_DOMAINS_TRIED`** is reached. Report quota **shortfalls** in the sampling report.
+- Deduplicate by normalized URL (strip fragment, trailing slash, lowercase host) — see `poc.final_collect.normalize_url`.
+- After `seed_page_list.json` is written, the list is **frozen**: no URL substitution on fetch failure.
+
+## Domain exclusions
+
+Exclude every **registrable domain** in the author-held inventory CSV (columns: set, id, domain, url, use) for:
+
+- WCXB dev, WCXB test
+- extra_raw, extra_raw_final, extra_raw_final2
+- golden corpus, landing, landing fresh, site crawl
+- CRAG split 0, whose pages informed pre-freeze choices
+
+Also exclude every registrable domain under `data/wcxb/` (WCXB benchmark tree).
+
+Load via `--inventory-csv` (author path, not committed).
+
+## Collection (single entry point)
+
+- Tool: `python -m poc.final_sample --inventory-csv <path>` (samples from Tranco, writes `evaluations/2026-11-final/seed_page_list.json`, then fetches). Fetch-only rerun: `python -m poc.final_collect --seeds evaluations/2026-11-final/seed_page_list.json --inventory-csv <path>`.
+- HTML and manifest: `data/final/` (git-ignored). Skipped candidates: `data/final/skipped.jsonl` (reason per line).
+- Manifest fields per row: `url`, `domain`, `timestamp`, `status`, `sha256`, plus `id` and `page_type`.
+- Default **16** concurrent workers; **one in-flight request per registrable domain** (delay **1.0 s** between requests to the same domain).
+- Resumable: successful rows skipped on rerun.
+- TLS: optional `--ca-bundle` (no `.env` reads).
+
+## Failed-fetch rule (after freeze)
+
+After the list is frozen, a fetch **fails** under the same rules as acceptance above. Failed rows stay in the manifest with `status` ≠ `ok` and are **not** in the evaluation set. **No substitute URLs**; report shortfall in the ledger.
+
+## Tools and pinned versions
+
+All extractors run on identical HTML. ChromeRAG code must match tag **`freeze-0.1.5`**: the tag must exist; `git diff --quiet freeze-0.1.5 -- src pyproject.toml`; a clean index for `src/` and `pyproject.toml`; and `src/chromerag/assets/lbc_stage1.npz` SHA-256 must match `evaluations/2026-10-v0.1.3/strict_split_manifest.json` (`shipped_lbc_stage1_npz.sha256`). Enforced in `poc.final_run`.
+
+| Tool | Pin / record |
+|------|----------------|
+| ChromeRAG | tag `freeze-0.1.5` |
+| Trafilatura | record `importlib.metadata.version("trafilatura")` at run time |
+| readability-lxml | record `importlib.metadata.version("readability-lxml")` at run time |
+| MarkItDown | record `importlib.metadata.version("markitdown")` at run time |
+| rs-trafilatura | **0.1.1** in CI (separate workflow job; local install blocked on author network). Outputs copied into `evaluations/2026-11-final/cache/<set>/rs_trafilatura/` before `poc.final_run` merges them; live runs use `--tools` without rs-trafilatura when the wheel is absent. |
+
+ChromeRAG modes scored: `chromerag_coverage`, `chromerag` (balanced), `chromerag_precision`. Baselines: Trafilatura, Readability, MarkItDown, rs-trafilatura when available.
+
+## Sets scored exactly once under this protocol
+
+1. **New pages** — frozen sample after successful fetch (`data/final/`).
+2. **WCXB test** — all **511** pages (full released test list; seed **not applicable**). Word-level F1, precision, recall, with/without snippet rates; `data/wcxb/evaluate.py` and `poc/run_wcxb_eval.py` / `poc.final_run.py`.
+3. **CRAG split 1** — same record filters as split 0 in `poc/crag_answer_eval.py`, **seed 0**, **n = 500** questions; split **1** only (split 0 remains pre-freeze evidence).
+
+Legacy 328-page set may be rejudged once for continuity, labelled **previously consulted**; not part of the primary locked claim.
+
+## Primary metrics (summary)
+
+Pre-declared **primary comparison** for multi-tool tables: ChromeRAG **`chromerag` (balanced)** vs **Trafilatura**; other tool pairs are descriptive.
+
+| Set | Primary |
+|-----|---------|
+| New ~300 pages | Blinded LLM judge **net preference** (bootstrap CI) |
+| New pages (human) | **Separate primary:** net preference from human raters on **75** stratified pages (P05) |
+| WCXB test 511 | Word **F1** vs human main content (front matter stripped for ChromeRAG) |
+| CRAG split 1 | **Answer score** (accurate − incorrect) from `poc/crag_answer_eval.py`; secondary: retrieved chrome share, indexed context size; **hit@k** on short answers (≤5 words) only |
+
+Secondary: extraction latency, empty-output rate, WCXB snippet rates, P10 retrieval metrics.
+
+## Analysis code paths
+
+- Sample + fetch: `poc/final_sample.py`; fetch only: `poc/final_collect.py`
+- Bulk extraction + cache: `poc/final_run.py`
+- WCXB: `poc/run_wcxb_eval.py`, `poc/wcxb.py`, `data/wcxb/evaluate.py`
+- Judges: `poc/run_llm_judge_final.py`
+- CRAG: `poc/crag_answer_eval.py` (split 1 run uses `--split 1` when enabled for the locked wave)
+- Human study: `evaluators/` + `poc/human_eval_analyze.py`
+
+Results under `evaluations/2026-11-final/results/`; ledger row per held-out run (P01).
+
+## Post-lock change disclosure
+
+After `freeze-0.1.5`, no pipeline, rule, threshold, or model change for locked claims. If a defect forces a change, report the locked run as executed, disclose it, rerun on **fresh** held-out data, and report both outcomes side by side.
+
+## Order of operations
+
+1. Code tag **`freeze-0.1.5`** (already at commit `04cbb05`).
+2. Commit this protocol; tag **`protocol-2026-11`**.
+3. Download Tranco list → `data/final/tranco.csv` + list id file.
+4. `python -m poc.final_sample --inventory-csv <path>` (sample, freeze list, fetch).
+5. `poc.final_run` once per set above (no extractor runs before step 4 completes).
+6. P06 judges, P05 humans, manuscript numbers (P14).
