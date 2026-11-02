@@ -102,10 +102,11 @@ MARKITDOWN_EXTRACTOR_CONFIG = {"converter": "MarkItDown", "url_passed": False}
 # ---------------------------------------------------------------------------
 
 
-def enforce_split(split: int) -> None:
-    """Hard rule: only split 0 is ever loaded for extraction or scoring."""
-    if split != ALLOWED_SPLIT:
-        raise ValueError(f"only split=={ALLOWED_SPLIT} is supported, got --split={split}")
+def enforce_split(split: int, *, locked_run: bool = False) -> None:
+    """Split 0 by default. Split 1 is locked: one protocol run, requested with --locked-split-1."""
+    if split == ALLOWED_SPLIT or (split == 1 and locked_run):
+        return
+    raise ValueError(f"only split=={ALLOWED_SPLIT} is supported, got --split={split}")
 
 
 def load_crag_records(
@@ -113,9 +114,10 @@ def load_crag_records(
     *,
     split: int = ALLOWED_SPLIT,
     limit: int | None = None,
+    locked_run: bool = False,
 ) -> list[dict]:
-    """Load CRAG jsonl.bz2; keep only records with split==0. Raises if --split != 0."""
-    enforce_split(split)
+    """Load CRAG jsonl.bz2; keep only records of the requested split."""
+    enforce_split(split, locked_run=locked_run)
     rows: list[dict] = []
     opener = bz2.open if str(path).endswith(".bz2") else open
     with opener(path, "rt", encoding="utf-8") as fh:  # type: ignore[arg-type]
@@ -124,7 +126,7 @@ def load_crag_records(
             if not line:
                 continue
             rec = json.loads(line)
-            if int(rec.get("split", -1)) != ALLOWED_SPLIT:
+            if int(rec.get("split", -1)) != split:
                 continue
             rows.append(rec)
             if limit is not None and len(rows) >= limit:
@@ -1859,7 +1861,8 @@ def build_arg_parser() -> argparse.ArgumentParser:
     p.add_argument("--n", type=int, default=50, help="sample size")
     p.add_argument("--seed", type=int, default=0)
     p.add_argument("--limit", type=int, default=None, help="max split-0 records to load")
-    p.add_argument("--split", type=int, default=0, help="must be 0")
+    p.add_argument("--split", type=int, default=0, help="0, or 1 with --locked-split-1")
+    p.add_argument("--locked-split-1", action="store_true", help="The one protocol run on split 1")
     p.add_argument("--model", default=MODEL)
     p.add_argument("--max-usd", type=float, default=5.0)
     p.add_argument("--price-in", type=float, default=0.20, help="USD per 1M input tokens")
@@ -1889,9 +1892,9 @@ def run(
     *,
     client_factory: Callable[..., Any] | None = None,
 ) -> dict:
-    enforce_split(args.split)
+    enforce_split(args.split, locked_run=args.locked_split_1)
     verify_tools_importable(TOOLS)
-    records = load_crag_records(args.data, split=args.split, limit=args.limit)
+    records = load_crag_records(args.data, split=args.split, limit=args.limit, locked_run=args.locked_split_1)
     kept, exclusion_counts = filter_web_static(records)
     sampled = sample_questions(kept, args.n, args.seed)
     chosen_ids = [question_id(r) for r in sampled]
