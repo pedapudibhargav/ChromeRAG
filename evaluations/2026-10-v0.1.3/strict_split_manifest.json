@@ -33,7 +33,18 @@
   "test_registrable_domains": 443,
   "shared_domain_dev_pages_before_exclusion": 233,
   "near_duplicate_train_ids": [],
-  "scikit_learn_version": "1.9.1",
+  "fitted_artifacts": [
+    {
+      "path": "src/chromerag/assets/lbc_stage1.npz",
+      "rebuilt": "python -m poc.lbc_data --split dev --ids poc/wcxb_strict_train_ids.json --out data/outputs/lbc/lbc_strict.npz; python -m poc.train_lbc --data data/outputs/lbc/lbc_strict.npz --fit-all --out-dir src/chromerag/assets",
+      "notes": "Single-stage block classifier (no lbc_stage2.npz in release; enable_lbc_stage2 defaults true but second stage absent)."
+    },
+    {
+      "path": "data/outputs/tokens_strict.json",
+      "rebuilt": "python -m poc.learn_tokens --split dev --ids poc/wcxb_strict_train_ids.json --out data/outputs/tokens_strict.json",
+      "notes": "Review-only token candidates; not shipped in the package (NOISE_TOKENS in density.py is static)."
+    }
+  ],
   "lbc_feature_matrix_pages": 1233,
   "lbc_extraction_failed_ids": [
     "0638",
@@ -48,18 +59,5 @@
     "sha256": "2e2fecb9386da21a75442373dbdc323b5284ffd5e95b1593f1290807c0265c8e",
     "verified_against": "data/outputs/lbc/verify_a/lbc_stage1.npz",
     "verified_match": true
-  },
-  "fitted_artifacts": [
-    {
-      "path": "src/chromerag/assets/lbc_stage1.npz",
-      "rebuilt": "python -m poc.lbc_data --split dev --ids poc/wcxb_strict_train_ids.json --out data/outputs/lbc/lbc_strict.npz; python -m poc.train_lbc --data data/outputs/lbc/lbc_strict.npz --fit-all --out-dir src/chromerag/assets",
-      "notes": "Single-stage block classifier (no lbc_stage2.npz in release; enable_lbc_stage2 defaults true but second stage absent)."
-    },
-    {
-      "path": "data/outputs/tokens_strict.json",
-      "rebuilt": "python -m poc.learn_tokens --split dev --ids poc/wcxb_strict_train_ids.json --out data/outputs/tokens_strict.json",
-      "notes": "Review-only token candidates; not shipped in the package (NOISE_TOKENS in density.py is static)."
-    }
-  ],
-  "diagnostics_lbc": "expected_precision/recall/f1 in diagnostics[\"lbc\"] are computed at inference from block probabilities; not a stored artifact."
+  }
 }
