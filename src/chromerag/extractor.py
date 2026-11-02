@@ -24,6 +24,7 @@ import numpy as np
 from bs4 import BeautifulSoup, Tag
 
 from chromerag.blockfeatures import block_features, find_blocks, wrap_loose_text
+from chromerag.collapse import dual_region_candidate, extraction_looks_collapsed
 from chromerag.config import (
     PipelineConfig,
     Strictness,
@@ -241,6 +242,7 @@ class ChromeRAG:
             keep, tables_rescued = self._rescue_data_tables(blocks, keep, stats, root, proba, cfg)
         if structure and cfg.lbc_rescue_headings:
             keep, semantic_rescued = self._rescue_semantic_blocks(blocks, keep, root, cfg)
+        dual_candidate = dual_region_candidate(blocks, proba, box)
         for block, k in zip(blocks, keep, strict=True):
             if not k:
                 block.tag.decompose()
@@ -263,6 +265,7 @@ class ChromeRAG:
                 "expected_f1": exp_f,
                 "tables_rescued": tables_rescued,
                 "semantic_rescued": semantic_rescued,
+                "dual_region_candidate": dual_candidate,
             },
         )
 
@@ -699,7 +702,17 @@ class ChromeRAG:
         body_words = int(meta["body_words"])
         out_words = _markdown_body_words(md)
         # Front matter alone can inflate tokens_estimate; collapse uses body words.
-        collapsed = out_words < 40 or (body_words > 0 and out_words < 0.15 * body_words)
+        lbc_diag = result.diagnostics.get("lbc") or {}
+        # dual_region_candidate stays diagnostic-only (no keep / retry effect).
+        collapsed = extraction_looks_collapsed(
+            out_words,
+            body_words,
+            n_blocks_in=result.n_blocks_in,
+            n_blocks_kept=result.n_blocks_kept,
+            expected_f1=lbc_diag.get("expected_f1"),
+            dual_region_candidate=False,
+            cfg=cfg,
+        )
         retry_notes: list[str] = []
         # Keep the is_thin retry gate (noscript-heavy pages can look thin pre-unwrap but extract
         # well); still clear misleading JS-shell warnings after a rich body is observed.

@@ -107,6 +107,7 @@ class PipelineConfig:
     lbc_rescue_tables: bool = True  # keep data tables under a kept section heading (or pair-rescue heading+table)
     lbc_drop_repeats: bool = True  # drop a block whose text already appeared earlier on the page
     lbc_whole_page: bool = True  # classify blocks outside the detected content root too
+    lbc_rich_collapsed_retry: bool = True  # extra collapsed signals before coverage retry
 
     # DVDF
     dvdf_threshold: float = 0.42

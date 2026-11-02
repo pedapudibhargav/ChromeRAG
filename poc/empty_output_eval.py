@@ -40,15 +40,17 @@ TYPES = ("article", "forum", "product", "collection", "listing", "documentation"
 
 _models: dict[int, TwoStageModel] = {}
 _model_pattern = ""
+_cfg_overrides: dict[str, Any] = {}
 
 
 def fold_for(url: str) -> int:
     return cv_fold(url)
 
 
-def _worker_init(pattern: str) -> None:
-    global _model_pattern
+def _worker_init(pattern: str, cfg_overrides: dict[str, Any] | None = None) -> None:
+    global _model_pattern, _cfg_overrides
     _model_pattern = pattern
+    _cfg_overrides = dict(cfg_overrides or {})
 
 
 def _fold_model(fold: int) -> TwoStageModel:
@@ -126,7 +128,7 @@ def _score_one(row: dict[str, Any]) -> dict[str, Any]:
     html_in_gold = html_toks & gold
     errors = 0
     for name, priority in PRIORITIES:
-        cfg = PipelineConfig.from_priority(priority)
+        cfg = PipelineConfig.from_priority(priority, **_cfg_overrides if name == "chromerag" else {})
         rag = ChromeRAG(config=cfg, lbc_model=model)
         t0 = time.perf_counter()
         try:
@@ -229,12 +231,19 @@ def _delta_vs_cv(
     m, lo, hi = site_bootstrap(dict(d_f1))
     wm, wlo, whi = site_bootstrap(dict(d_wo))
     drops.sort(key=lambda r: r["delta_f1"])
+    changed = 0
+    for s in scored:
+        cv = cv_by_id[s["id"]][mode]
+        after = s["modes"][mode]
+        if abs(after["f1"] - cv["f1"]) > 1e-9 or abs(after["without"] - cv.get("without", 0.0)) > 1e-9:
+            changed += 1
     return {
         "delta_f1_mean": m,
         "delta_f1_ci": [lo, hi],
         "delta_without_mean": wm,
         "delta_without_ci": [wlo, whi],
         "f1_drops_gt_0_05": drops,
+        "pages_changed": changed,
     }
 
 
@@ -250,7 +259,13 @@ def main() -> None:
         default=None,
         help="Optional JSON with before ms_median/ms_p99 per mode from a prior baseline run",
     )
+    ap.add_argument(
+        "--cfg-json",
+        default="{}",
+        help="JSON object merged into balanced (chromerag) PipelineConfig only",
+    )
     args = ap.parse_args()
+    cfg_overrides = json.loads(args.cfg_json)
 
     pages = load_train_pages(args.wcxb)
     cv_rows = json.loads(STRICT_CV.read_text(encoding="utf-8"))
@@ -272,12 +287,13 @@ def main() -> None:
         for p in pages
     ]
     print(f"scoring {len(payload)} strict-dev train pages with {args.jobs} jobs", flush=True)
-    _worker_init(args.models)
+    init_args = (args.models, cfg_overrides)
+    _worker_init(*init_args)
     if args.jobs == 1:
         scored = [_score_one(r) for r in payload]
     else:
         with ProcessPoolExecutor(
-            max_workers=args.jobs, initializer=_worker_init, initargs=(args.models,)
+            max_workers=args.jobs, initializer=_worker_init, initargs=init_args
         ) as pool:
             scored = list(pool.map(_score_one, payload, chunksize=4))
     n_errors = sum(int(s.get("extract_errors") or 0) for s in scored)
@@ -290,6 +306,7 @@ def main() -> None:
     report: dict[str, Any] = {
         "n_pages": len(scored),
         "models": args.models,
+        "cfg_overrides": cfg_overrides,
         "modes": {},
         "gate": {},
     }
@@ -322,6 +339,7 @@ def main() -> None:
                 "delta_f1_ci": delta["delta_f1_ci"],
                 "delta_without_mean": delta["delta_without_mean"],
                 "delta_without_ci": delta["delta_without_ci"],
+                "pages_changed": delta["pages_changed"],
             },
             "f1_drops_gt_0_05": delta["f1_drops_gt_0_05"],
         }

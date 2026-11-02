@@ -45,3 +45,5 @@ Performance work (single-pass statistics, cached densities) is output-identical:
 27. **Strict LBC retrain (v0.1.5)** — `assets/lbc_stage1.npz` refit on WCXB dev pages after removing leaked ids, test registrable domains, and near-duplicate reference overlap; golden hashes updated accordingly.
 
 28. **Final pipeline rebuild (rev1/p09b)** — Hidden-node handling, coverage retry, and rule drops change which blocks exist and their features; strict LBC and fold CV models refit; golden manifest and fixtures refreshed. Includes **LBC data-table rescue** (`lbc_rescue_tables`, default on): after classifier scores, keep real data tables (header/th or numeric cells, low link density, not chrome) when the nearest kept heading above them in the content root stays, or pair-rescue a near-threshold heading with its table.
+
+29. **Rich collapsed retry (p09d)** — `lbc_rich_collapsed_retry` (default on) widens coverage-retry triggers when the classifier keeps almost nothing; may change golden hashes on pages that previously stayed collapsed.
