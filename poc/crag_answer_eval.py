@@ -808,11 +808,23 @@ def chunk_markdown_harness(text: str, *, max_tokens: int = CHUNK_WORDS) -> list[
                 line = line.rstrip()
                 if not line.strip():
                     continue
-                lt = bm25_token_count(line)
-                if current_n + lt > max_tokens and current_parts:
-                    flush()
-                current_parts.append(line)
-                current_n += lt
+                # A single line longer than the budget is split by words.
+                line_words = line.split()
+                start = 0
+                while start < len(line_words):
+                    end, used = start, 0
+                    while end < len(line_words):
+                        wt = bm25_token_count(line_words[end])
+                        if used + wt > max_tokens and end > start:
+                            break
+                        used += wt
+                        end += 1
+                    part = " ".join(line_words[start:end])
+                    if current_n + used > max_tokens and current_parts:
+                        flush()
+                    current_parts.append(part)
+                    current_n += used
+                    start = end
             return
         current_parts.append(piece)
         current_n += pt
@@ -914,7 +926,20 @@ def save_persisted_spend(cache_dir: Path, total: float) -> None:
 
 
 class BudgetExceeded(RuntimeError):
-    pass
+    """Spend cap hit. Optional ``partial_out`` / ``dry_info`` carry mid-stage progress."""
+
+    def __init__(
+        self,
+        message: str = "",
+        *,
+        partial_out: dict | None = None,
+        dry_info: dict | None = None,
+        stage: str | None = None,
+    ) -> None:
+        super().__init__(message)
+        self.partial_out = partial_out if partial_out is not None else {}
+        self.dry_info = dry_info if dry_info is not None else {}
+        self.stage = stage
 
 
 class OpenAIClient:
@@ -1109,16 +1134,35 @@ def estimate_cost(tokens_in: int, tokens_out: int, price_in: float, price_out: f
 
 
 def _truncate_to_tokens(text: str, max_tokens: int) -> str:
+    if max_tokens <= 0:
+        return ""
     if bm25_token_count(text) <= max_tokens:
         return text
     lines: list[str] = []
     n = 0
     for line in text.split("\n"):
         lt = bm25_token_count(line)
-        if n + lt > max_tokens:
-            break
-        lines.append(line)
-        n += lt
+        if n + lt <= max_tokens:
+            lines.append(line)
+            n += lt
+            continue
+        room = max_tokens - n
+        if room > 0:
+            words = line.split()
+            kept: list[str] = []
+            used = 0
+            for w in words:
+                wt = bm25_token_count(w)
+                if used + wt > room and kept:
+                    break
+                kept.append(w)
+                used += wt
+                if used >= room:
+                    break
+            if kept:
+                lines.append(" ".join(kept))
+                n += used
+        break
     return "\n".join(lines)
 
 
@@ -1307,7 +1351,12 @@ def run_generate(
     dry_info["generate_error_messages"] = generate_error_messages
 
     if budget_hit:
-        raise BudgetExceeded("generate stage stopped on budget")
+        raise BudgetExceeded(
+            "generate stage stopped on budget",
+            partial_out=out,
+            dry_info=dry_info,
+            stage="generate",
+        )
     return out, dry_info
 
 
@@ -1499,7 +1548,12 @@ def run_judge(
     dry_info["empty_answer_length"] = empty_answer_length_count
 
     if budget_hit:
-        raise BudgetExceeded("judge stage stopped on budget")
+        raise BudgetExceeded(
+            "judge stage stopped on budget",
+            partial_out=out,
+            dry_info=dry_info,
+            stage="judge",
+        )
     return out, dry_info
 
 
@@ -2010,6 +2064,23 @@ def run(
         except BudgetExceeded as exc:
             print(f"Stopped on budget: {exc}")
             partial = True
+            # Preserve mid-stage maps/counters that the failed assignment never bound.
+            if getattr(exc, "stage", None) == "generate" or (
+                getattr(exc, "dry_info", None) and "generate_calls" in (exc.dry_info or {})
+            ):
+                if exc.dry_info:
+                    dry_gen = exc.dry_info
+                for qid, tools_map in (exc.partial_out or {}).items():
+                    for tool, row in tools_map.items():
+                        generations[qid][tool] = row
+            if getattr(exc, "stage", None) == "judge" or (
+                getattr(exc, "dry_info", None) and "judge_calls" in (exc.dry_info or {})
+            ):
+                if exc.dry_info:
+                    dry_judge = exc.dry_info
+                for qid, tools_map in (exc.partial_out or {}).items():
+                    for tool, row in tools_map.items():
+                        judgements[qid][tool] = row
             generate_errors = int((dry_gen or {}).get("generate_errors") or 0)
             generate_error_messages = list((dry_gen or {}).get("generate_error_messages") or [])
             for rec in sampled:
@@ -2085,8 +2156,16 @@ def run(
                         price_out=args.price_out,
                         max_completion_tokens=max_judge_tok,
                     )
-                except BudgetExceeded:
-                    pass
+                except BudgetExceeded as be:
+                    if be.dry_info:
+                        dry_judge = be.dry_info
+                    for qid, tools_map in (be.partial_out or {}).items():
+                        for tool, row in tools_map.items():
+                            judgements[qid][tool] = row
+                judge_errors = int((dry_judge or {}).get("judge_errors") or 0)
+                empty_answer = int((dry_judge or {}).get("empty_answer") or 0)
+                empty_answer_length = int((dry_judge or {}).get("empty_answer_length") or 0)
+            else:
                 judge_errors = int((dry_judge or {}).get("judge_errors") or 0)
                 empty_answer = int((dry_judge or {}).get("empty_answer") or 0)
                 empty_answer_length = int((dry_judge or {}).get("empty_answer_length") or 0)

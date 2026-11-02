@@ -267,13 +267,23 @@ def _dt_dd_to_markdown(el: Tag, links: bool = True) -> str:
         term = el.get_text(" ", strip=True)
         return f"- **{term}**\n\n" if term else ""
     if name == "dd":
-        # Block children are emitted by the walker; only render leaf definitions here.
-        if el.find(_DL_BLOCK_CHILDREN) is not None:
-            return ""
-        defin = _join_inline_parts([_inline(c, links) for c in el.children]).strip()
+        # Block children are emitted by the walker; keep direct text and inline tags here.
+        parts: list[str] = []
+        has_block = False
+        for c in el.children:
+            if isinstance(c, Tag) and (c.name or "") in _DL_BLOCK_CHILDREN:
+                has_block = True
+                continue
+            parts.append(_inline(c, links))
+        defin = _join_inline_parts(parts).strip()
         if el.find("code") is None:
             defin = _break_adjacent_markers(defin).strip()
-        return f"- {defin}\n\n" if defin else ""
+        if not defin:
+            return ""
+        # Mixed inline+block: emit the inline prefix without a list bullet (blocks follow).
+        if has_block or el.find(_DL_BLOCK_CHILDREN) is not None:
+            return f"{defin}\n\n"
+        return f"- {defin}\n\n"
     return ""
 
 

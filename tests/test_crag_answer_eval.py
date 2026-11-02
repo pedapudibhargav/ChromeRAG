@@ -1493,3 +1493,14 @@ def test_long_single_line_is_split_into_bounded_chunks():
     assert len(chunks) >= 5
     assert all(len(tokenize(c)) <= 200 for c in chunks)
     assert sum(len(tokenize(c)) for c in chunks) == 1000
+
+
+def test_harness_splits_long_line_and_cap_keeps_text():
+    import poc.crag_answer_eval as m
+
+    chunks = m.chunk_markdown_harness(" ".join(f"word{i}" for i in range(1300)), max_tokens=200)
+    assert len(chunks) >= 7
+    assert sum(m.bm25_token_count(c) for c in chunks) == 1300
+    assert all(m.bm25_token_count(c) <= 200 for c in chunks)
+    assert m.bm25_token_count(m._cap_context(chunks, token_cap=1200)) == 1200
+    assert m.bm25_token_count(m._cap_context([" ".join(f"w{i}" for i in range(500))], token_cap=100)) == 100

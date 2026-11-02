@@ -588,3 +588,8 @@ def test_large_table_keeps_every_row():
     html = _wrapped_page(f"<h2>Data</h2><table><tr><th>a</th><th>b</th></tr>{rows}</table>")
     md = ChromeRAG().extract(html).markdown
     assert all(f"CELL{i}x" in md for i in (0, 2500, 4999))
+
+
+def test_dd_with_blocks_keeps_direct_text():
+    md = soup_to_markdown(BeautifulSoup("<dl><dt>token</dt><dd>Secret bearer key:<ul><li>Header</li></ul></dd></dl>", "lxml"))
+    assert "token" in md and "Secret bearer key:" in md and "Header" in md

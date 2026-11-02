@@ -798,9 +798,11 @@ class ChromeRAG:
                 f"Low extraction confidence (expected F1 {expected_f1:.2f}): the model is unsure which "
                 "blocks are content on this page. Check the output or try another priority."
             )
-        if "[Table truncated after" in result.markdown or any(
+        has_table_trim_note = any(
             "truncated to" in n and "rows" in n for n in chosen_trim_notes
-        ):
+        )
+        # Trim notes already name the row budget; only add a generic warn when notes are absent.
+        if "[Table truncated after" in result.markdown and not has_table_trim_note:
             warnings.append(
                 "One or more tables were truncated to a time-safe row budget."
             )
