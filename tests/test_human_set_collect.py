@@ -43,3 +43,12 @@ def test_gate_outcomes():
     assert c.gate_outcome(429, "www.nasa.gov", nasa) == "rate_limited"
     assert c.gate_outcome(200, "q.com", nasa) == "off_list"
     assert c.gate_outcome(503, "www.nasa.gov", nasa) == "failed"
+
+
+def test_forum_filter():
+    forum = _site("discuss.python.org/t")
+    assert forum["scripts"] is False
+    assert c.url_allowed("https://discuss.python.org/t/sorting-lists/123", forum)
+    assert not c.url_allowed("https://discuss.python.org/t/my-account-was-hacked/123", forum)
+    html = "<html><body>" + "word " * 100 + "a@b.com c@d.org</body></html>"
+    assert c.page_problem(html, "https://discuss.python.org/t/x/1", 200, forum) == "personal_details_in_forum_post"

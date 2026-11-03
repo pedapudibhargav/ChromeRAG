@@ -202,3 +202,11 @@ This replaces the rating set in the two sections above, which no rater ever rece
 - **Draw and blinding.** The bundle no longer drops pages with short tool output, since that selects on results. The seed stays private until rating ends and its hash is recorded here before rating starts. Web addresses in page text and outputs are replaced with one mark, repeats are unmarked, and raters judge saved copies only.
 
 Rating set as built on 2026-11-02: 145 pages loaded from 51 sites, 99 after the limit of 2 per site. A review of the first draw removed 6 more for work safety or usability, on page text and with no scores in view: `human_set/removed_after_review.json` lists them. The seed was then replaced, and a stratified draw from the remaining 93 gave 75 pages, 5 repeats and 5 practice pages. Forum coverage in the human test is minimal. SHA-256 of the file holding the private bundle seed: 1020bf7db0b0013028b6514132a27c2e445e58c33066e6622b1b79234a5f8950.
+
+### Amendment: more forum pages, fixed share (2026-11-02)
+
+No rater has received any set, and no human or AI judge result exists for these pages. Two forum pages could not support any statement about forums, and the three forums first chosen refused automated requests, so the author approved ten more by name, listed under `forum` in `human_set/sites.json`. We know from WCXB that forums are among ChromeRAG's stronger page types, so this choice could favour it. To limit that:
+
+- The share is fixed in advance at 10 of the 75 main pages, whatever the results, with at most 2 pages per site. If fewer than 10 pass the checks, all that passed are used and the count is reported.
+- Forum addresses and pages get an extra filter for account, payment and personal topics, and posts showing more than one email address or phone number are removed. No tool output is used.
+- Human results are reported overall, for forums alone, and without forums.

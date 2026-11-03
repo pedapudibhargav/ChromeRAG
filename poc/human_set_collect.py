@@ -63,6 +63,14 @@ UNSAFE_TERMS = frozenset(
     crypto cryptocurrency torrent warez""".split()
 )
 TEXT_TERM_HITS_MAX = 2
+# Forum posts are written by anyone, so these get extra checks on top of the ones for all pages.
+FORUM_PERSONAL_ADDRESS = re.compile(
+    r"account|password|billing|refund|payment|subscription|login|signin|sign-in|hacked|scam|stolen|lawsuit|complaint|"
+    r"medical|health|divorce|personal",
+    re.I,
+)
+FORUM_PERSONAL_TEXT = re.compile(r"[\w.+-]+@[\w-]+\.[a-z]{2,}|\(?\b\d{3}\)?[ .-]\d{3}[ .-]\d{4}\b", re.I)
+FORUM_PERSONAL_HITS_MAX = 1
 WALL = re.compile(r"sign in|log in|accept (all )?cookies|verify you are human|access denied|enable javascript", re.I)
 
 
@@ -95,6 +103,8 @@ def url_terms(url: str) -> set[str]:
 
 def url_allowed(url: str, site: dict) -> bool:
     parsed = urlparse(url)
+    if site["group"] == "forum" and FORUM_PERSONAL_ADDRESS.search(parsed.path):
+        return False
     return (
         parsed.scheme == "https"
         and on_site(url, site["host"])
@@ -143,21 +153,26 @@ def _get(client: httpx.Client, url: str, site: dict) -> httpx.Response | None:
 
 def _base_url(client: httpx.Client, site: dict) -> tuple[str, str, str]:
     """Return (base address, robots text, gate outcome), after at most one wait if asked to slow down."""
-    bare = site["host"].count(".") >= 2
-    base = f"https://{site['host']}" if bare else f"https://www.{site['host']}"
-    outcome = "failed"
-    for attempt in range(2):
-        time.sleep(SITE_DELAY_S if attempt == 0 else RATE_LIMIT_WAIT_S)
-        try:
-            response = client.get(f"{base}/robots.txt")
-        except httpx.HTTPError:
-            return base, "", "failed"
-        outcome = gate_outcome(response.status_code, (response.url.host or "").lower(), site)
-        if outcome == "pass":
-            return base, response.text if response.status_code == 200 else "", "pass"
-        if outcome != "rate_limited":
-            return base, "", outcome
-    return base, "", "refused"
+    bases = [f"https://{site['host']}"] if site["host"].count(".") >= 2 else [f"https://www.{site['host']}", f"https://{site['host']}"]
+    base, outcome = bases[0], "failed"
+    for base in bases:
+        for attempt in range(2):
+            time.sleep(SITE_DELAY_S if attempt == 0 else RATE_LIMIT_WAIT_S)
+            try:
+                response = client.get(f"{base}/robots.txt")
+            except httpx.HTTPError:
+                outcome = "failed"
+                break
+            outcome = gate_outcome(response.status_code, (response.url.host or "").lower(), site)
+            if outcome == "pass":
+                return base, response.text if response.status_code == 200 else "", "pass"
+            if outcome != "rate_limited":
+                break
+        else:
+            outcome = "refused"
+        if outcome != "failed":
+            break
+    return base, "", outcome
 
 
 def _sitemap_urls(client: httpx.Client, sitemaps: list[str], site: dict, rng: random.Random) -> list[str]:
@@ -242,6 +257,8 @@ def page_problem(html: str, final_url: str, status: int, site: dict) -> str | No
         return "login_or_cookie_wall"
     if sum(w in UNSAFE_TERMS for w in words) > TEXT_TERM_HITS_MAX:
         return "unsafe_terms_in_text"
+    if site["group"] == "forum" and len(FORUM_PERSONAL_TEXT.findall(text)) > FORUM_PERSONAL_HITS_MAX:
+        return "personal_details_in_forum_post"
     return None
 
 
