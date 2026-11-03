@@ -114,12 +114,6 @@
   "site": "cohere.com"
  },
  {
-  "id": "human-0051",
-  "url": "https://www.cyrusone.com/vendor-terms-netherlands",
-  "page_type": "data_center",
-  "site": "cyrusone.com"
- },
- {
   "id": "human-0050",
   "url": "https://www.cyrusone.com/resources/media-coverage/data-centers-break-ground-on-1-7m-square-feet-of-space-on-far-west-side",
   "page_type": "data_center",
@@ -496,12 +490,6 @@
   "url": "https://www.toyota.com/about-us/fleet",
   "page_type": "automotive",
   "site": "toyota.com"
- },
- {
-  "id": "human-0058",
-  "url": "https://uptimeinstitute.com/terms-of-use",
-  "page_type": "data_center",
-  "site": "uptimeinstitute.com"
  },
  {
   "id": "human-0057",

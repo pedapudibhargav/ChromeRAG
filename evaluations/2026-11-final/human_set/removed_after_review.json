@@ -30,5 +30,13 @@
  {
   "id": "human-0156",
   "reason": "automated post, not written by a person"
+ },
+ {
+  "id": "human-0051",
+  "reason": "policy or terms page; the address rule meant to skip these missed the word inside a longer name"
+ },
+ {
+  "id": "human-0058",
+  "reason": "policy or terms page; the address rule meant to skip these missed the word inside a longer name"
  }
 ]
