@@ -49,6 +49,8 @@ iframe,.srcview{width:100%;height:36vh;border:0;background:#fff}.srcview{backgro
   <button class="pri" id="finish">Finish</button>
 </header>
 <div class="guidepanel" id="guidepanel" hidden>
+  <p><b>Why this matters.</b> AI assistants answer questions from web pages by reading a text copy of each page, not the page itself. They cut that text into short pieces, pick the few pieces that best match a question, and answer only from those. So if a fact is missing from the text, the assistant cannot answer; and if menus, ads or text about other things are left in, they crowd out the real content or get repeated as if they were facts.</p>
+  <p><b>Content</b> is what the page exists to give: its main text, facts, prices, steps, tables, and on a forum the question and answers. <b>Noise</b> is everything else: menus, footers, cookie and sign-up notices, share buttons, ads, and links or teasers for other pages.</p>
   <p id="rubric"></p>
   <p class="hint">Noise is acceptable if it would not change an answer: levels 3 to 5. Press Esc or Guide to close.</p>
     <table class="guide"><thead><tr><th>Score</th><th>Content kept</th><th>Noise left in</th></tr></thead><tbody>
@@ -79,6 +81,7 @@ iframe,.srcview{width:100%;height:36vh;border:0;background:#fff}.srcview{backgro
     <label><input type="checkbox" id="diff_on"> Show differences</label>
   </section>
   <pre class="diffbox" id="diffbox" hidden></pre>
+  <section class="rubric" id="pnote" hidden><b>Practice note.</b> <span id="pnotetext"></span> <span class="hint">Your own scores are kept as you gave them; practice items are not analysed.</span></section>
   <section class="foot">
     <span class="hint">Tick every output that is equally best. Keys: number keys toggle best, <b>←/→</b> navigate. Scores (1–5) required unless skipped.</span>
     <input id="skip_reason" placeholder="Skip reason (optional)" style="flex:1;min-width:160px;height:34px;font:inherit;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:4px 8px">
@@ -97,7 +100,7 @@ iframe,.srcview{width:100%;height:36vh;border:0;background:#fff}.srcview{backgro
 </section>
 <script>
 const $=s=>document.querySelector(s);
-let session=null, items=[], cur=0, state=null, view="render", labels=[], startedAt=0, saveTimer=null;
+let session=null, items=[], cur=0, state=null, view="render", labels=[], startedAt=0, saveTimer=null, practiceNote="";
 
 const api=(p,o)=>fetch(p,o).then(async r=>{
   const t=await r.text();
@@ -137,6 +140,8 @@ async function load(){
 
   showProgress();
   $("#cal").hidden=!d.is_calibration;
+  practiceNote=d.is_calibration?(d.practice_note||""):"";
+  $("#pnotetext").textContent=practiceNote;
   window.scrollTo(0,0);
   $("#srcview").scrollTop=0;
   $("#frame").src="/html/"+encodeURIComponent(id);
@@ -190,6 +195,8 @@ function paint(){
     if(open.length) need.push("scores for "+open.join(", "));
   }
   $("#missing").textContent=need.length?"Still to do: "+need.join("; "):"Done";
+  // Shown only once the practice item is rated, so the rater judges first and then compares.
+  $("#pnote").hidden=!(practiceNote && !need.length && !state.skipped);
   for(const L of labels){
     const col=$("#col"+L); if(!col) continue;
     const on=state.best.includes(L);

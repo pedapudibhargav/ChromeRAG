@@ -627,3 +627,28 @@ def test_careless_rater_left_out_only_in_sensitivity_result():
     assert sens["raters_kept"] == ["careful"]
     assert report["raters"] == ["careful", "rushed"]  # the main result keeps every rater
     assert sens["pairs"]["chromerag_vs_trafilatura"]["majority_net"]["wins_a"] == 9
+
+
+def test_package_adds_practice_notes_only_to_practice_items(tmp_path):
+    import zipfile
+
+    from evaluators.author.package import build
+
+    bundle = {"bundle_id": "b", "calibration": [{"item_id": "c0", "outputs": {}}],
+              "items": [{"item_id": "i0", "outputs": {}}]}
+    (tmp_path / "b.json").write_text(json.dumps(bundle))
+    (tmp_path / "n.json").write_text(json.dumps({"c0": "Note for c0."}))
+    build(tmp_path / "b.json", tmp_path / "p.zip", tmp_path / "n.json")
+    with zipfile.ZipFile(tmp_path / "p.zip") as z:
+        packed = json.loads(z.read("page-rating/evaluators/bundle/bundle.json"))
+        handout = z.read("page-rating/HANDOUT.md").decode()
+    assert packed["calibration"][0]["practice_note"] == "Note for c0."
+    assert "practice_note" not in packed["items"][0]
+    assert "What this is about" in handout and "{N_ITEMS}" not in handout
+    (tmp_path / "bad.json").write_text(json.dumps({"i0": "not a practice item"}))
+    try:
+        build(tmp_path / "b.json", tmp_path / "q.zip", tmp_path / "bad.json")
+    except SystemExit:
+        pass
+    else:
+        raise AssertionError("a note for a rated item must be refused")

@@ -257,6 +257,7 @@ class Handler(BaseHTTPRequestHandler):
                     "is_calibration": it["is_calibration"],
                     "shown_order": labs,
                     "outputs": outs,
+                    "practice_note": it.get("practice_note", "") if it["is_calibration"] else "",
                     "rating": rating,
                 }
             )
