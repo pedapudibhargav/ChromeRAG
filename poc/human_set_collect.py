@@ -270,7 +270,11 @@ def load_page(url: str, site: dict) -> tuple[str, str, int, list[str]]:
     row = json.loads(done.stdout)
     if "error" in row:
         raise RuntimeError(row["error"])
-    return row["html"], row["final_url"], row["status"], row["blocked_hosts"]
+    page_html = row["html"]
+    if site["group"] == "forum":
+        # With scripts off a browser shows what is inside noscript, and parsers would otherwise drop it.
+        page_html = re.sub(r"</?noscript[^>]*>", "", page_html, flags=re.I)
+    return page_html, row["final_url"], row["status"], row["blocked_hosts"]
 
 
 def run_collect(args: argparse.Namespace) -> None:

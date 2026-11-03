@@ -210,3 +210,4 @@ No rater has received any set, and no human or AI judge result exists for these 
 - The share is fixed in advance at 10 of the 75 main pages, whatever the results, with at most 2 pages per site. If fewer than 10 pass the checks, all that passed are used and the count is reported.
 - Forum addresses and pages get an extra filter for account, payment and personal topics, and posts showing more than one email address or phone number are removed. No tool output is used.
 - Human results are reported overall, for forums alone, and without forums.
+- Forum software often places post text inside `noscript`, which only a browser with scripts off shows. Forum pages keep scripts off and are saved with those tags unwrapped, so every tool receives what such a browser displays. This was changed after the first forum load returned too little text, before any tool ran on those pages.
