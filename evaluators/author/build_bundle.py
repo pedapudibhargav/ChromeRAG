@@ -290,6 +290,46 @@ def _unmarked_id(pid: str, taken: set[str], rng: random.Random) -> str:
     return f"{prefix}{rng.choice(free):0{width}d}"
 
 
+def replace_after_draw(
+    drawn: list[dict],
+    eligible: list[dict],
+    used: set[str],
+    excluded: set[str],
+    seed: int,
+    fixed_types: set[str] = frozenset(),
+) -> tuple[list[dict], dict[str, str]]:
+    """Swap each drawn page in `excluded` for an unused page of the same type, keeping its position.
+
+    When a type has no unused page left, the next unused page of any type outside `fixed_types` is
+    taken instead. Candidates are taken in a seeded order, so the swap is repeatable and does not
+    look at tool output.
+    """
+    rng = random.Random(f"{seed}:replace")
+    by_type: dict[str, list[dict]] = defaultdict(list)
+    for p in sorted(eligible, key=lambda p: str(p.get("id"))):
+        if str(p["id"]) not in used and str(p["id"]) not in excluded:
+            by_type[p.get("page_type") or "unknown"].append(p)
+    for t in sorted(by_type):
+        rng.shuffle(by_type[t])
+    spare = [p for t in sorted(by_type) if t not in fixed_types for p in by_type[t]]
+    rng.shuffle(spare)
+    out: list[dict] = []
+    swaps: dict[str, str] = {}
+    for p in drawn:
+        if str(p["id"]) in excluded:
+            pool = by_type[p.get("page_type") or "unknown"] or spare
+            if not pool:
+                raise SystemExit(f"no replacement left for {p['id']} ({p.get('page_type')})")
+            new = pool.pop(0)
+            for other in (by_type[new.get("page_type") or "unknown"], spare):
+                if new in other:
+                    other.remove(new)
+            swaps[str(p["id"])] = str(new["id"])
+            p = new
+        out.append(p)
+    return out, swaps
+
+
 def build_from_records(
     *,
     main_pages: list[dict],
@@ -387,6 +427,7 @@ def build_bundle_from_dir(
     pages_out: Path | None = None,
     raters: list[str] | None = None,
     fixed_quota: dict[str, int] | None = None,
+    exclude_after_draw: set[str] | None = None,
 ) -> tuple[dict, dict, dict]:
     tools = list(tools or DEFAULT_TOOLS)
     if len(tools) != 3:
@@ -424,6 +465,16 @@ def build_bundle_from_dir(
     if len(leftover) < n_calibration:
         raise SystemExit(f"need {n_calibration} leftover pages for calibration, have {len(leftover)}")
     cal = stratified_sample(leftover, n_calibration, rng)
+    swaps: dict[str, str] = {}
+    if exclude_after_draw:
+        # Pages removed by a rule set after the first draw are swapped one for one, so the rest of
+        # the drawn set, its order and its repeat picks stay as first drawn.
+        used = main_ids | {str(p["id"]) for p in cal}
+        fixed_types = set(fixed_quota or {})
+        main, s1 = replace_after_draw(main, eligible, used, exclude_after_draw, seed, fixed_types)
+        used |= set(s1.values())
+        cal, s2 = replace_after_draw(cal, eligible, used, exclude_after_draw, seed, fixed_types)
+        swaps = {**s1, **s2}
 
     bid = bundle_id or "bundle-" + hashlib.sha256(str(seed).encode()).hexdigest()[:12]
     rater_ids = list(raters or ["rater-a", "rater-b", "rater-c"])
@@ -438,6 +489,7 @@ def build_bundle_from_dir(
         raters=rater_ids,
     )
     key_doc["skipped_short"] = skipped
+    key_doc["replaced_after_draw"] = swaps
     key_doc["source"] = "from-dir"
     return bundle, key_doc, orders
 
@@ -471,6 +523,12 @@ def main(argv: list[str] | None = None) -> None:
     p.add_argument("--n-pages", type=int, default=DEFAULT_N_PAGES, help="Stratified main pages (folder mode)")
     p.add_argument("--n-repeats", type=int, default=DEFAULT_N_REPEATS, help="Extra repeat items (folder mode)")
     p.add_argument("--fixed-quota", nargs="*", default=[], help="Page type counts set in advance, e.g. forum=10")
+    p.add_argument(
+        "--exclude-after-draw",
+        type=Path,
+        default=None,
+        help="JSON list of page ids removed by a later rule; each is swapped for a same-type page",
+    )
     p.add_argument("--n-calibration", type=int, default=DEFAULT_N_CALIBRATION, help="Calibration pages")
     p.add_argument(
         "--repeats",
@@ -509,6 +567,9 @@ def main(argv: list[str] | None = None) -> None:
             n_repeats=args.n_repeats,
             n_calibration=args.n_calibration,
             fixed_quota={k: int(v) for k, v in (x.split("=") for x in args.fixed_quota)},
+            exclude_after_draw=set(json.loads(args.exclude_after_draw.read_text(encoding="utf-8")))
+            if args.exclude_after_draw
+            else None,
             bundle_id=args.bundle_id,
             pages_out=args.pages_out,
             raters=list(args.raters),

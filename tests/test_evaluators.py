@@ -555,3 +555,18 @@ class TestSavedPagesAreOffline(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def test_replace_after_draw_keeps_positions_and_type():
+    from evaluators.author.build_bundle import replace_after_draw
+
+    pool = [{"id": f"p{i}", "page_type": t} for i, t in enumerate(["a", "a", "a", "b", "b", "f", "f"])]
+    drawn = [pool[0], pool[3], pool[5]]
+    out, swaps = replace_after_draw(drawn, pool, {"p0", "p3", "p5"}, {"p0", "p4"}, 7, {"f"})
+    assert [p["id"] for p in out][1:] == ["p3", "p5"]
+    assert out[0]["page_type"] == "a" and swaps == {"p0": out[0]["id"]}
+    again, _ = replace_after_draw(drawn, pool, {"p0", "p3", "p5"}, {"p0", "p4"}, 7, {"f"})
+    assert again == out
+    # Type "b" has no unused page left once p4 is excluded, so a non-forum spare is taken.
+    out2, swaps2 = replace_after_draw([pool[3]], pool, {"p3", "p5", "p6"}, {"p3", "p4"}, 7, {"f"})
+    assert out2[0]["page_type"] == "a" and "p3" in swaps2
