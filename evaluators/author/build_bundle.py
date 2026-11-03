@@ -190,14 +190,18 @@ def allocate_quotas(counts: dict[str, int], n: int) -> dict[str, int]:
     return floors
 
 
-def stratified_sample(pages: list[dict], n: int, rng: random.Random) -> list[dict]:
+def stratified_sample(
+    pages: list[dict], n: int, rng: random.Random, fixed: dict[str, int] | None = None
+) -> list[dict]:
     by_type: dict[str, list[dict]] = defaultdict(list)
     for p in pages:
         by_type[p.get("page_type") or "unknown"].append(p)
     for t in by_type:
         by_type[t] = sorted(by_type[t], key=lambda p: str(p.get("id")))
         rng.shuffle(by_type[t])
-    quotas = allocate_quotas({t: len(v) for t, v in by_type.items()}, n)
+    set_quota = {t: min(k, len(by_type[t])) for t, k in (fixed or {}).items() if t in by_type}
+    rest = {t: len(v) for t, v in by_type.items() if t not in set_quota}
+    quotas = {**allocate_quotas(rest, n - sum(set_quota.values())), **set_quota}
     chosen: list[dict] = []
     for t in sorted(quotas):
         chosen.extend(by_type[t][: quotas[t]])
@@ -370,6 +374,7 @@ def build_bundle_from_dir(
     bundle_id: str | None = None,
     pages_out: Path | None = None,
     raters: list[str] | None = None,
+    fixed_quota: dict[str, int] | None = None,
 ) -> tuple[dict, dict, dict]:
     tools = list(tools or DEFAULT_TOOLS)
     if len(tools) != 3:
@@ -401,7 +406,7 @@ def build_bundle_from_dir(
     if len(eligible) < n_pages + n_calibration:
         raise SystemExit(f"need at least {n_pages + n_calibration} eligible pages, have {len(eligible)}")
 
-    main = stratified_sample(eligible, n_pages, rng)
+    main = stratified_sample(eligible, n_pages, rng, fixed_quota)
     main_ids = {str(p["id"]) for p in main}
     leftover = [p for p in eligible if str(p["id"]) not in main_ids]
     if len(leftover) < n_calibration:
@@ -453,6 +458,7 @@ def main(argv: list[str] | None = None) -> None:
     p.add_argument("--seed", type=int, default=20261002)
     p.add_argument("--n-pages", type=int, default=DEFAULT_N_PAGES, help="Stratified main pages (folder mode)")
     p.add_argument("--n-repeats", type=int, default=DEFAULT_N_REPEATS, help="Extra repeat items (folder mode)")
+    p.add_argument("--fixed-quota", nargs="*", default=[], help="Page type counts set in advance, e.g. forum=10")
     p.add_argument("--n-calibration", type=int, default=DEFAULT_N_CALIBRATION, help="Calibration pages")
     p.add_argument(
         "--repeats",
@@ -490,6 +496,7 @@ def main(argv: list[str] | None = None) -> None:
             n_pages=args.n_pages,
             n_repeats=args.n_repeats,
             n_calibration=args.n_calibration,
+            fixed_quota={k: int(v) for k, v in (x.split("=") for x in args.fixed_quota)},
             bundle_id=args.bundle_id,
             pages_out=args.pages_out,
             raters=list(args.raters),
