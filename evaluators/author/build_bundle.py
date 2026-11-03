@@ -46,7 +46,7 @@ _EMPH = re.compile(r"(\*\*|__)(.+?)\1")
 _REMOTE_ATTRS = frozenset(
     "href src srcset lowsrc dynsrc action formaction poster data background cite longdesc ping usemap manifest".split()
 )
-_ADDRESS_VALUE = re.compile(r"(?:[a-z][a-z0-9+.-]*:)?//", re.I)
+_ADDRESS_VALUE = re.compile(r"(?:[a-z][a-z0-9+.-]*:)?//|%3A%2F%2F", re.I)
 # Full addresses shown as text become one mark, the same way for pages and for every tool.
 _ADDRESS_TEXT = re.compile(r"\b(?:https?://|www\.)[^\s<>()\[\]\"']+", re.I)
 _HIDDEN_STYLE = re.compile(r"display\s*:\s*none|visibility\s*:\s*hidden", re.I)
@@ -434,10 +434,13 @@ def write_outputs(bundle: dict, key_doc: dict, orders: dict, out: Path, out_key:
     out.write_text(json.dumps(bundle, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     out_key.write_text(json.dumps(key_doc, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     out_orders.write_text(json.dumps(orders, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    # Sanity: rater-visible bundle must not name tools
-    blob = out.read_text(encoding="utf-8").lower()
-    for tool in key_doc.get("tools") or []:
-        if tool.lower() in blob:
+    # Sanity: labels the app shows must not name tools. Page text may use these as ordinary words.
+    names = {t.lower() for t in key_doc.get("tools") or []}
+    visible = {str(bundle["bundle_id"]).lower()}
+    for item in [*bundle["items"], *bundle["calibration"]]:
+        visible |= {str(item["item_id"]).lower(), *(str(k).lower() for k in item), *(str(k).lower() for k in item["outputs"])}
+    for tool in names:
+        if any(tool in v for v in visible):
             raise SystemExit(f"tool name {tool!r} leaked into bundle")
 
 
