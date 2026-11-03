@@ -328,7 +328,7 @@ def build_from_records(
     if n_repeats > 0 and main_pages:
         pool = list(main_pages)
         rng.shuffle(pool)
-        taken = {str(p["id"]) for p in [*main_pages, *cal_pages]}
+        taken = {str(p["id"]) for p in [*main_pages, *cal_pages]} | set(prepared)
         for page in pool[: min(n_repeats, len(pool))]:
             pid = str(page["id"])
             rid = _unmarked_id(pid, taken, rng)
