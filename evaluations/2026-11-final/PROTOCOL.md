@@ -228,3 +228,14 @@ Approved by the author before any human rating was returned. The three AI judges
 - Judges: the GPT judge with the frozen rubric (tag `rubric-2026-11`), and Grok and Gemini through a coding-agent tool, with settings we cannot control. ChromeRAG is compared with Trafilatura and with Readability, with blind random A/B order and 10% of pairs swapped, as on the 296 pages.
 - All AI verdicts are saved before any human result is read and are not changed afterwards.
 - Comparison: for each judge and each pair, the share of pages where the AI judge and the human majority pick the same winner (ties counted as their own outcome), Cohen's kappa, and both figures with a bootstrap that resamples sites. The AI judge length analysis is repeated on these pages. Disagreements are reported, not explained away.
+
+### Amendment: pages with nothing to rate (2026-11-02)
+
+Approved by the author before any rater received the set. A check of the built set, made to spare raters' time, read page and output lengths. Two rules came out of it. Both apply to every page in the pool of 101, and neither depends on which tool did better:
+
+- A page is removed when all three tools return fewer than 80 words. Such a page has little main text to rate.
+- The page length limit drops from 15,000 to 8,000 words of page text, because longer pages cannot be read in reasonable time.
+
+Nine pages meet a rule; `human_set/removed_by_rule.json` lists them with their word counts. Five of them were in the drawn set (one is a short page that was already readable, kept out only so the rule stays mechanical). Each was swapped for an unused page of the same group, taken in an order set by the recorded seed; when a group had no unused page left, the next unused non-forum page was taken. Every other item, its id, its label order and the repeats are unchanged, and the seed file is the same as in the last build (hash above).
+
+Pages where only one or two tools failed were kept, because those failures are part of what raters should judge. The check also listed such pages, and none was removed. When the rules were set, the GPT judge had already run on the earlier set and its totals had been seen; the rules use only word counts, not verdicts. The five new pages passed the same address checks before collection and the same two content reviews (one Grok, one separate Claude review) before release.

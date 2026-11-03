@@ -238,7 +238,8 @@ def main() -> None:
             fh.write(json.dumps(row) + "\n")
         return row
 
-    rows = list(done.values())
+    # Saved verdicts for jobs no longer in the set (a replaced page) stay on disk but are not counted.
+    rows = [done[k] for k in ((j["id"], j["baseline"], j["swapped"]) for j in jobs) if k in done]
     try:
         with ThreadPoolExecutor(max_workers=args.workers) as pool:
             rows += [r for r in pool.map(judge, todo) if r is not None]
