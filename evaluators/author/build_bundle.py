@@ -281,13 +281,13 @@ def prepare_page_record(
 
 
 def _unmarked_id(pid: str, taken: set[str], rng: random.Random) -> str:
-    """A repeat's id looks like any other page id, so raters cannot spot repeats."""
+    """A repeat's id looks like any page id but is above every id ever collected, so it names no real page."""
     prefix = re.sub(r"\d+$", "", pid)
     numbers = [int(m.group()) for t in taken if (m := re.search(r"\d+$", t))]
-    top = max(numbers, default=0)
     width = len(pid) - len(prefix) or 4
-    free = [i for i in range(top + 1) if f"{prefix}{i:0{width}d}" not in taken]
-    return f"{prefix}{rng.choice(free):0{width}d}" if free else f"{prefix}{top + 1:0{width}d}"
+    top = max(numbers, default=0)
+    free = [i for i in range(top + 1, top + 400) if f"{prefix}{i:0{width}d}" not in taken]
+    return f"{prefix}{rng.choice(free):0{width}d}"
 
 
 def build_from_records(
