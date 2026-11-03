@@ -211,3 +211,4 @@ No rater has received any set, and no human or AI judge result exists for these 
 - Forum addresses and pages get an extra filter for account, payment and personal topics, and posts showing more than one email address or phone number are removed. No tool output is used.
 - Human results are reported overall, for forums alone, and without forums.
 - Forum software often places post text inside `noscript`, which only a browser with scripts off shows. Forum pages keep scripts off and are saved with those tags unwrapped, so every tool receives what such a browser displays. This was changed after the first forum load returned too little text, before any tool ran on those pages.
+- Final build, 2026-11-02: the bundle seed was replaced. 10 of 75 main pages are forum pages. SHA-256 of the file holding the private seed: 6e9dd2fc69553cd3810c1b1c69f2ba36fbe521546026dae023e43ff828a24def.
