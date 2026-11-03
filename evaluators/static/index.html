@@ -24,7 +24,7 @@ iframe,.srcview{width:100%;height:36vh;border:0;background:#fff}.srcview{backgro
 .foot{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .choices{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
 .choices label{display:flex;gap:6px;align-items:center;font-size:13px}
-.hint{color:var(--mut);font-size:12px}.saved{color:var(--ok);font-size:12px}
+.hint{color:var(--mut);font-size:12px}#missing{color:var(--warn)}.saved{color:var(--ok);font-size:12px}
 .finish{max-width:640px;margin:40px auto;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:24px}
 .finish code{display:block;background:var(--bg);padding:10px;border-radius:6px;word-break:break-all;margin:12px 0}
 .diffbox{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 10px;white-space:pre-wrap;font:11px/1.35 ui-monospace,Menlo,monospace;max-height:28vh;overflow:auto}
@@ -40,7 +40,7 @@ iframe,.srcview{width:100%;height:36vh;border:0;background:#fff}.srcview{backgro
 </header>
 <main id="main">
   <div class="rubric" id="rubric"></div>
-  <details class="rubric" open><summary>Score guide (noise is acceptable if it would not change an answer: levels 3 to 5)</summary>
+  <details class="rubric" id="guide" open><summary>Score guide (noise is acceptable if it would not change an answer: levels 3 to 5)</summary>
     <table class="guide"><thead><tr><th>Score</th><th>Content kept</th><th>Noise left in</th></tr></thead><tbody>
     <tr><td>5</td><td>Everything useful is there</td><td>None</td></tr>
     <tr><td>4</td><td>Small loss nobody would ask about: caption, byline, decorative line</td><td>Harmless, under about 5% of the text: breadcrumb, share label</td></tr>
@@ -70,6 +70,9 @@ iframe,.srcview{width:100%;height:36vh;border:0;background:#fff}.srcview{backgro
     <input id="skip_reason" placeholder="Skip reason (optional)" style="flex:1;min-width:160px;height:34px;font:inherit;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:4px 8px">
     <button id="skip">Skip</button>
     <span class="saved" id="saved"></span>
+    <span class="sp"></span>
+    <span class="hint" id="missing"></span>
+    <button class="pri" id="next2">Next →</button>
   </section>
 </main>
 <section class="finish" id="done" hidden>
@@ -119,6 +122,9 @@ async function load(){
 
   $("#prog").textContent=`Item ${cur+1} of ${items.length} · saved ${items.filter(i=>i.done).length}`;
   $("#cal").hidden=!d.is_calibration;
+  $("#guide").open=!!d.is_calibration;
+  window.scrollTo(0,0);
+  $("#srcview").scrollTop=0;
   $("#frame").src="/html/"+encodeURIComponent(id);
   $("#opentab").href="/html/"+encodeURIComponent(id);
   $("#srcview").textContent="";
@@ -163,6 +169,13 @@ function renderCols(d){
 }
 
 function paint(){
+  const need=[];
+  if(!state.skipped){
+    if(!selectionOk()) need.push("pick the best output");
+    const open=labels.filter(L=>!(state.scores[L].content>=1 && state.scores[L].chrome>=1));
+    if(open.length) need.push("scores for "+open.join(", "));
+  }
+  $("#missing").textContent=need.length?"Still to do: "+need.join("; "):"Done";
   for(const L of labels){
     const col=$("#col"+L); if(!col) continue;
     const on=state.best.includes(L);
@@ -241,6 +254,7 @@ const go=async d=>{
 };
 $("#prev").onclick=()=>go(-1);
 $("#next").onclick=()=>go(1);
+$("#next2").onclick=()=>go(1);
 $("#finish").onclick=async()=>{
   const missing=items.filter(i=>!i.done).length;
   if(missing && !confirm(missing+" item(s) incomplete. Finish anyway?")) return;
