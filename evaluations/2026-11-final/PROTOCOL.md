@@ -220,3 +220,11 @@ No rater has received any set, and no human or AI judge result exists for these 
 - Reported overall, for forums only, and without forums, and by page group where a group has at least 8 pages. Agreement between raters and on the 5 repeats is reported.
 - What it supports: preference among the three tools on reputable, mainstream, author-approved sites, judged on offline text. It does not stand for the open web or the WCXB benchmark.
 - Disclosed: the judged site list, sites lost to refusals, forum sites chosen knowing forums suit ChromeRAG, the fixed forum share, scripts off and noscript handling for forums, every removal with its reason, and every seed replacement, all made before any rating and with no tool score in view.
+
+### Amendment: AI judges on the human rating set (2026-11-02)
+
+Approved by the author before any human rating was returned. The three AI judges run on the same 75 rated pages, using the exact page copy and outputs raters see, so humans and AI judges can be compared item by item. Practice items and repeats are left out.
+
+- Judges: the GPT judge with the frozen rubric (tag `rubric-2026-11`), and Grok and Gemini through a coding-agent tool, with settings we cannot control. ChromeRAG is compared with Trafilatura and with Readability, with blind random A/B order and 10% of pairs swapped, as on the 296 pages.
+- All AI verdicts are saved before any human result is read and are not changed afterwards.
+- Comparison: for each judge and each pair, the share of pages where the AI judge and the human majority pick the same winner (ties counted as their own outcome), Cohen's kappa, and both figures with a bootstrap that resamples sites. The AI judge length analysis is repeated on these pages. Disagreements are reported, not explained away.

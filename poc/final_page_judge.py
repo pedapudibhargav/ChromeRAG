@@ -89,6 +89,38 @@ def build_jobs(
     return jobs
 
 
+def build_bundle_jobs(bundle_path: Path, key_path: Path, baselines: list[str]) -> list[dict]:
+    """Same pairs as build_jobs, but from the human rating set: the exact page copy and outputs raters see.
+
+    Practice items and repeats are left out, so each rated page is judged once.
+    """
+    bundle = json.loads(bundle_path.read_text(encoding="utf-8"))
+    key_doc = json.loads(key_path.read_text(encoding="utf-8"))
+    rng = random.Random(SEED)
+    jobs: list[dict] = []
+    for item in bundle["items"]:
+        iid = item["item_id"]
+        if iid in key_doc["repeat_of"]:
+            continue
+        pid = key_doc["page_of"][iid]
+        by_tool = {tool: item["outputs"][label] for label, tool in key_doc["key"][iid].items()}
+        source = visible_text(item["page_html"])
+        ours_is_a = random.Random(page_seed(pid)).random() < 0.5
+        for base in baselines:
+            pair = {
+                "id": pid,
+                "baseline": base,
+                "source": source,
+                "ref": by_tool[REFERENCE],
+                "base": by_tool[base],
+                "clipped": max(len(by_tool[REFERENCE].strip()), len(by_tool[base].strip())) > BUDGET_CHARS,
+            }
+            jobs.append({**pair, "ours_is_a": ours_is_a, "swapped": False})
+            if rng.random() < SWAP_SHARE:
+                jobs.append({**pair, "ours_is_a": not ours_is_a, "swapped": True})
+    return jobs
+
+
 def estimate_usd(jobs: list[dict]) -> float:
     chars = sum(
         min(len(j["source"]), BUDGET_CHARS) + len(clip(j["ref"])) + len(clip(j["base"])) for j in jobs
@@ -163,11 +195,17 @@ def main() -> None:
     p.add_argument("--workers", type=int, default=16)
     p.add_argument("--out", type=Path, default=EVAL / "results" / "new_pages_judge.json")
     p.add_argument("--dry-run", action="store_true")
+    p.add_argument("--bundle", type=Path, default=None, help="Judge the human rating set instead")
+    p.add_argument("--key", type=Path, default=None, help="Author-only key for --bundle")
     args = p.parse_args()
     baselines = args.baselines.split(",")
-    kept = json.loads(args.page_filter.read_text(encoding="utf-8"))["kept_ids"]
-    extract = json.loads(args.extract_report.read_text(encoding="utf-8"))
-    jobs = build_jobs(args.pages_dir, args.cache_dir, extract, kept, baselines)
+    if args.bundle:
+        jobs = build_bundle_jobs(args.bundle, args.key, baselines)
+        kept = sorted({j["id"] for j in jobs})
+    else:
+        kept = json.loads(args.page_filter.read_text(encoding="utf-8"))["kept_ids"]
+        extract = json.loads(args.extract_report.read_text(encoding="utf-8"))
+        jobs = build_jobs(args.pages_dir, args.cache_dir, extract, kept, baselines)
     n_clipped = sum(j["clipped"] for j in jobs)
     print(f"{len(jobs)} judgements on {len(kept)} pages; {n_clipped} clipped; est ${estimate_usd(jobs):.2f}")
     if args.dry_run:
