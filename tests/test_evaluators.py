@@ -596,3 +596,34 @@ def test_split_bundle_covers_every_page_and_shares_anchors():
         assert ("r0" in ids) == ("i3" in ids or "i3" in anchors)
     again, _ = split_bundle(bundle, key_doc, seed=1, n_parts=3, n_anchors=3)
     assert again == parts
+
+
+def test_careless_rater_left_out_only_in_sensitivity_result():
+    ids = [f"p{i}" for i in range(12)]
+    bundle = {"bundle_id": "care", "calibration": [], "items": [{"item_id": i} for i in ids]}
+    key = {
+        "bundle_id": "care",
+        "tools": ["chromerag", "trafilatura"],
+        "key": {i: {"A": "chromerag", "B": "trafilatura"} for i in ids},
+    }
+
+    def result(rater: str, seconds: float, best: str, order: list[str]) -> dict:
+        scores = {"A": {"content": 3, "chrome": 3}, "B": {"content": 3, "chrome": 3}}
+        items = {
+            i: {"item_id": i, "best": [best], "all_same": False,
+                "none_good": False, "scores": scores, "skipped": False, "seconds_spent": seconds,
+                "shown_order": order}
+            for n, i in enumerate(ids)
+        }
+        return {"schema_version": 1, "bundle_id": "care", "rater": rater, "items": items}
+
+    careful = result("careful", 120, "A", ["A", "B"])
+    for i in ("p1", "p3", "p5"):
+        careful["items"][i]["best"] = ["B"]
+    rushed = result("rushed", 8, "B", ["A", "B"])  # fast, and always the second output on screen
+    report = analyze_mod.analyse([careful, rushed], bundle, key)
+    sens = report["sensitivity_without_flagged_raters"]
+    assert sens["flags"] == {"rushed": ["fast", "same_answer"]}
+    assert sens["raters_kept"] == ["careful"]
+    assert report["raters"] == ["careful", "rushed"]  # the main result keeps every rater
+    assert sens["pairs"]["chromerag_vs_trafilatura"]["majority_net"]["wins_a"] == 9

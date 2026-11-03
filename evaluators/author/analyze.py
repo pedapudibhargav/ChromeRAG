@@ -24,6 +24,14 @@ import numpy as np
 
 FOCUS_PAIR = ("chromerag", "trafilatura")
 
+# Careless-rater rule, fixed before any rating was returned. Raters it flags stay in the main
+# result and are left out only in a second, sensitivity result reported beside it.
+CARE_MIN_MEDIAN_SECONDS = 30.0
+CARE_MIN_REPEATS = 4  # the full set has 5 repeats; parts have 1 or 2, too few to judge
+CARE_MIN_REPEAT_AGREE = 0.6  # fewer than 3 of 5 repeats agree
+CARE_MIN_ITEMS_SAME = 10
+CARE_MAX_SAME_SHARE = 0.9
+
 
 def load_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
@@ -44,6 +52,7 @@ def pairwise_verdict(best_tools: set[str], tool_a: str, tool_b: str, *, all_same
 
 def unblind_item(entry: dict, key_for_item: dict[str, str]) -> dict:
     best_labels = list(entry.get("best") or [])
+    order = list(entry.get("shown_order") or sorted(key_for_item))
     best_tools = {key_for_item[label] for label in best_labels if label in key_for_item}
     scores_by_tool = {}
     for lab, sc in (entry.get("scores") or {}).items():
@@ -57,6 +66,12 @@ def unblind_item(entry: dict, key_for_item: dict[str, str]) -> dict:
         "skipped": bool(entry.get("skipped")),
         "scores_by_tool": scores_by_tool,
         "seconds_spent": float(entry.get("seconds_spent") or 0),
+        # Screen positions of the chosen outputs, for the same-answer check; labels are shuffled per rater.
+        "answer_pattern": (
+            tuple(sorted(order.index(lab) for lab in best_labels if lab in order)),
+            bool(entry.get("all_same")),
+            bool(entry.get("none_good")),
+        ),
     }
 
 
@@ -167,41 +182,7 @@ def base_item_id(item_id: str) -> str:
     return re.sub(r"__r\d+$", "", item_id)
 
 
-def analyse(
-    results: list[dict],
-    bundle: dict,
-    key_doc: dict,
-    judges: dict | None = None,
-) -> dict:
-    key = key_doc["key"]
-    repeat_of = key_doc.get("repeat_of") or {}
-    cal_ids = {it["item_id"] for it in bundle.get("calibration", [])}
-    tools = list(key_doc.get("tools") or sorted({t for m in key.values() for t in m.values()}))
-
-    # Per rater, per item (exclude calibration)
-    per_rater: dict[str, dict[str, dict]] = {}
-    exclusions: list[dict] = []
-    for res in results:
-        rater = res["rater"]
-        per_rater.setdefault(rater, {})
-        for iid, entry in (res.get("items") or {}).items():
-            if iid in cal_ids:
-                continue
-            if iid not in key:
-                exclusions.append({"rater": rater, "item_id": iid, "reason": "missing_key"})
-                continue
-            if entry.get("skipped"):
-                exclusions.append({"rater": rater, "item_id": iid, "reason": "skipped"})
-                continue
-            scores = entry.get("scores") or {}
-            chosen = entry.get("all_same") or entry.get("none_good") or entry.get("best")
-            if not chosen or not all(
-                (scores.get(lab) or {}).get("content") and (scores.get(lab) or {}).get("chrome") for lab in key[iid]
-            ):
-                exclusions.append({"rater": rater, "item_id": iid, "reason": "incomplete"})
-                continue
-            per_rater[rater][iid] = unblind_item(entry, key[iid])
-
+def _pair_reports(per_rater: dict[str, dict[str, dict]], tools: list[str], repeat_of: dict) -> dict[str, Any]:
     pairs = []
     for i, a in enumerate(tools):
         for b in tools[i + 1 :]:
@@ -240,6 +221,62 @@ def analyse(
             "majority_net": net_preference(maj_verdicts),
             "krippendorff_alpha": krippendorff_alpha_nominal(coder_item),
         }
+    return pair_reports
+
+
+def care_flags(items: dict[str, dict], repeat: dict) -> list[str]:
+    """Pre-registered checks for careless rating (protocol, 2026-11-02). Used only for the sensitivity result."""
+    flags = []
+    times = [u["seconds_spent"] for u in items.values()]
+    if times and float(np.median(times)) < CARE_MIN_MEDIAN_SECONDS:
+        flags.append("fast")
+    if (repeat.get("n_groups") or 0) >= CARE_MIN_REPEATS and repeat["agree_rate"] < CARE_MIN_REPEAT_AGREE:
+        flags.append("inconsistent_repeats")
+    # The same answer by screen position on nearly every item means the text was not read.
+    answers = [u["answer_pattern"] for u in items.values()]
+    if len(answers) >= CARE_MIN_ITEMS_SAME:
+        top = max(answers.count(a) for a in set(answers))
+        if top / len(answers) >= CARE_MAX_SAME_SHARE:
+            flags.append("same_answer")
+    return flags
+
+
+def analyse(
+    results: list[dict],
+    bundle: dict,
+    key_doc: dict,
+    judges: dict | None = None,
+) -> dict:
+    key = key_doc["key"]
+    repeat_of = key_doc.get("repeat_of") or {}
+    cal_ids = {it["item_id"] for it in bundle.get("calibration", [])}
+    tools = list(key_doc.get("tools") or sorted({t for m in key.values() for t in m.values()}))
+
+    # Per rater, per item (exclude calibration)
+    per_rater: dict[str, dict[str, dict]] = {}
+    exclusions: list[dict] = []
+    for res in results:
+        rater = res["rater"]
+        per_rater.setdefault(rater, {})
+        for iid, entry in (res.get("items") or {}).items():
+            if iid in cal_ids:
+                continue
+            if iid not in key:
+                exclusions.append({"rater": rater, "item_id": iid, "reason": "missing_key"})
+                continue
+            if entry.get("skipped"):
+                exclusions.append({"rater": rater, "item_id": iid, "reason": "skipped"})
+                continue
+            scores = entry.get("scores") or {}
+            chosen = entry.get("all_same") or entry.get("none_good") or entry.get("best")
+            if not chosen or not all(
+                (scores.get(lab) or {}).get("content") and (scores.get(lab) or {}).get("chrome") for lab in key[iid]
+            ):
+                exclusions.append({"rater": rater, "item_id": iid, "reason": "incomplete"})
+                continue
+            per_rater[rater][iid] = unblind_item(entry, key[iid])
+
+    pair_reports = _pair_reports(per_rater, tools, repeat_of)
 
     # Repeat consistency: same base id, same rater, same pairwise focus verdict
     repeat_consistency: dict[str, Any] = {}
@@ -260,6 +297,16 @@ def analyse(
             "n_groups": len(multi),
             "agree_rate": agree / len(multi),
         }
+
+    care = {r: care_flags(items, repeat_consistency[r]) for r, items in per_rater.items()}
+    kept = {r: items for r, items in per_rater.items() if not care[r]}
+    sensitivity = {
+        "rule": "leave out raters with a median under 30 s per item, fewer than 60% agreeing repeats "
+        "(only with 4 or more repeats), or one answer by screen position on 90% or more of 10 or more items",
+        "flags": {r: f for r, f in care.items() if f},
+        "raters_kept": sorted(kept),
+        "pairs": _pair_reports(kept, tools, repeat_of) if kept else None,
+    }
 
     # Mean scores per tool
     score_acc: dict[str, list[tuple[float, float]]] = defaultdict(list)
@@ -292,6 +339,7 @@ def analyse(
         "pairs": pair_reports,
         "focus_pair": f"{ta}_vs_{tb}",
         "repeat_consistency": repeat_consistency,
+        "sensitivity_without_flagged_raters": sensitivity,
         "mean_scores": mean_scores,
         "missing_notes": missing_notes,
         "time_per_item_seconds": {
