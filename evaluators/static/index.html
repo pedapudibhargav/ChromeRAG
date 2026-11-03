@@ -158,7 +158,7 @@ function renderCols(d){
     const o=d.outputs[L];
     const col=document.createElement("div");
     col.className="col"; col.id="col"+L;
-    col.innerHTML=`<h2><label><input type="checkbox" class="bestcb" data-l="${L}"> <span>Output ${L}</span></label><span class="hint">${o.words} words</span></h2><div class="txt"></div><div class="rate"><label>Content kept (5 = all) <span class="stars" data-k="content" data-l="${L}"></span></label><label>Noise left in (5 = none) <span class="stars" data-k="chrome" data-l="${L}"></span></label><input class="miss" data-l="${L}" placeholder="Optional: is something important missing?"></div>`;
+    col.innerHTML=`<h2><label><input type="checkbox" class="bestcb" data-l="${L}"> <span>Output ${L}</span></label></h2><div class="txt"></div><div class="rate"><label>Content kept (5 = all) <span class="stars" data-k="content" data-l="${L}"></span></label><label>Noise left in (5 = none) <span class="stars" data-k="chrome" data-l="${L}"></span></label><input class="miss" data-l="${L}" placeholder="Optional: is something important missing?"></div>`;
     col.querySelector(".txt").textContent=o.text;
     c.appendChild(col);
     col.querySelector(".bestcb").onchange=()=>{
