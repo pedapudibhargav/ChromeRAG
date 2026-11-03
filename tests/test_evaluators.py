@@ -538,6 +538,20 @@ class TestSavedPagesAreOffline(unittest.TestCase):
         self.assertIn("link text", out)
         self.assertIn("kept", out)
 
+    def test_sanitise_removes_all_styling_and_masks_addresses(self) -> None:
+        from evaluators.author.build_bundle import normalise, sanitise
+
+        html = (
+            '<style>@\\69mport "https://x.test/a.css";x{background:image-set("https://x.test/b.png" 1x)}</style>'
+            '<p style="display:none">hidden one</p><img lowsrc="https://x.test/c.png" alt="see www.x.test/d">'
+            "<svg><style><img src=https://x.test/e.png></style></svg><p>Visit https://x.test/f today</p>"
+        )
+        out = sanitise(html)
+        self.assertNotIn("x.test", out)
+        self.assertIn("[link]", out)
+        self.assertRegex(out, r"<p hidden[^>]*>hidden one")
+        self.assertEqual(normalise("go to https://x.test/f now"), "go to [link] now")
+
 
 if __name__ == "__main__":
     unittest.main()

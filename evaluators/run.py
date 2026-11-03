@@ -105,6 +105,12 @@ def load_or_create_results(path: Path, rater: str, bundle_id: str) -> dict:
     }
 
 
+_BREAK_TAGS = frozenset(
+    "a address article aside blockquote br button dd div dl dt figcaption footer form h1 h2 h3 h4 h5 h6 "
+    "header hr li main nav ol option p pre section select table tbody td th thead tr ul".split()
+)
+
+
 class _TextExtractor(html.parser.HTMLParser):
     def __init__(self) -> None:
         super().__init__(convert_charrefs=True)
@@ -114,17 +120,22 @@ class _TextExtractor(html.parser.HTMLParser):
     def handle_starttag(self, tag: str, attrs) -> None:  # noqa: ANN001
         if tag.lower() in {"script", "style", "noscript"}:
             self._skip += 1
+        elif tag.lower() in _BREAK_TAGS:
+            self._chunks.append("\n")
 
     def handle_endtag(self, tag: str) -> None:
         if tag.lower() in {"script", "style", "noscript"} and self._skip:
             self._skip -= 1
+        elif tag.lower() in _BREAK_TAGS:
+            self._chunks.append("\n")
 
     def handle_data(self, data: str) -> None:
         if not self._skip and data:
             self._chunks.append(data)
 
     def text(self) -> str:
-        raw = re.sub(r"[ \t]+\n", "\n", "".join(self._chunks))
+        raw = re.sub(r"\s*\n\s*\n\s*", "\n\n", "".join(self._chunks))
+        raw = re.sub(r"[ \t]+\n", "\n", raw)
         return re.sub(r"\n{3,}", "\n\n", raw).strip()
 
 

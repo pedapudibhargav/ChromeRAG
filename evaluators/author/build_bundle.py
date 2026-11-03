@@ -43,14 +43,13 @@ _FRONT = re.compile(r"\A---\n.*?\n---\n+", re.S)
 _IMG = re.compile(r"!\[[^\]]*\]\([^)]*\)")
 _LINK = re.compile(r"\[([^\]]*)\]\([^)]*\)")
 _EMPH = re.compile(r"(\*\*|__)(.+?)\1")
-_MIN_WORDS = 15
 _REMOTE_ATTRS = frozenset(
-    "href src srcset action formaction poster data background cite longdesc ping usemap manifest".split()
+    "href src srcset lowsrc dynsrc action formaction poster data background cite longdesc ping usemap manifest".split()
 )
-_CSS_REMOTE = re.compile(r"url\([^)]*\)", re.I)
-_CSS_IMPORT = re.compile(r"@import[^;]*;?", re.I)
-_CSS_COMMENT = re.compile(r"/\*.*?\*/", re.S)
 _ADDRESS_VALUE = re.compile(r"(?:[a-z][a-z0-9+.-]*:)?//", re.I)
+# Full addresses shown as text become one mark, the same way for pages and for every tool.
+_ADDRESS_TEXT = re.compile(r"\b(?:https?://|www\.)[^\s<>()\[\]\"']+", re.I)
+_HIDDEN_STYLE = re.compile(r"display\s*:\s*none|visibility\s*:\s*hidden", re.I)
 
 
 def normalise(text: str) -> str:
@@ -59,6 +58,7 @@ def normalise(text: str) -> str:
     text = _LINK.sub(r"\1", text)
     text = _EMPH.sub(r"\2", text)
     text = re.sub(r"[ \t]+\n", "\n", text)
+    text = _ADDRESS_TEXT.sub("[link]", text)
     return re.sub(r"\n{3,}", "\n\n", text).strip()
 
 
@@ -67,22 +67,29 @@ def sanitise(html: str, url: str = "") -> str:
     from bs4 import BeautifulSoup, Comment
 
     soup = BeautifulSoup(html, "lxml")
-    for t in soup(["script", "noscript", "iframe", "object", "embed", "template", "link", "base", "meta"]):
+    for t in soup(["script", "style", "noscript", "iframe", "object", "embed", "template", "link", "base", "meta"]):
         t.decompose()
     for c in soup.find_all(string=lambda x: isinstance(x, Comment)):
         c.extract()
+    for node in soup.find_all(string=True):
+        if _ADDRESS_TEXT.search(node):
+            node.replace_with(_ADDRESS_TEXT.sub("[link]", str(node)))
     for tag in soup.find_all(True):
+        if _HIDDEN_STYLE.search(str(tag.get("style") or "")):
+            tag["hidden"] = ""
         for attr in list(tag.attrs):
             name = attr.lower()
             value = tag.get(attr)
             value = " ".join(value) if isinstance(value, list) else str(value)
-            if name.startswith("on") or name.split(":")[-1] in _REMOTE_ATTRS or _ADDRESS_VALUE.search(value):
+            if (
+                name == "style"
+                or name.startswith("on")
+                or name.split(":")[-1] in _REMOTE_ATTRS
+                or _ADDRESS_VALUE.search(value)
+                or _ADDRESS_TEXT.search(value)
+            ):
                 del tag[attr]
-        if isinstance(tag.get("style"), str):
-            tag["style"] = _CSS_REMOTE.sub("none", tag["style"])
-    for style in soup.find_all("style"):
-        style.string = _CSS_REMOTE.sub("none", _CSS_IMPORT.sub("", _CSS_COMMENT.sub("", style.get_text())))
-    # Page stylesheets are gone, so icons would otherwise fill the preview.
+    # Page styles are gone, so icons would otherwise fill the preview.
     limit = soup.new_tag("style")
     limit.string = "svg,img{max-width:48px;max-height:48px}"
     (soup.head or soup).insert(0, limit)
@@ -262,13 +269,21 @@ def prepare_page_record(
     else:
         assert corpus is not None
         outs = load_outputs_from_dir(corpus, str(page["id"]), tools)
-    if any(len(v.split()) < _MIN_WORDS for v in outs.values()):
-        return None
     clean = sanitise(html, url)
     if pages_out is not None:
         pages_out.mkdir(parents=True, exist_ok=True)
         (pages_out / f"{page['id']}.html").write_text(clean, encoding="utf-8")
     return outs, clean
+
+
+def _unmarked_id(pid: str, taken: set[str], rng: random.Random) -> str:
+    """A repeat's id looks like any other page id, so raters cannot spot repeats."""
+    prefix = re.sub(r"\d+$", "", pid)
+    numbers = [int(m.group()) for t in taken if (m := re.search(r"\d+$", t))]
+    top = max(numbers, default=0)
+    width = len(pid) - len(prefix) or 4
+    free = [i for i in range(top + 1) if f"{prefix}{i:0{width}d}" not in taken]
+    return f"{prefix}{rng.choice(free):0{width}d}" if free else f"{prefix}{top + 1:0{width}d}"
 
 
 def build_from_records(
@@ -309,9 +324,11 @@ def build_from_records(
     if n_repeats > 0 and main_pages:
         pool = list(main_pages)
         rng.shuffle(pool)
+        taken = {str(p["id"]) for p in [*main_pages, *cal_pages]}
         for page in pool[: min(n_repeats, len(pool))]:
             pid = str(page["id"])
-            rid = f"{pid}__r2"
+            rid = _unmarked_id(pid, taken, rng)
+            taken.add(rid)
             outs, clean = prepared[pid]
             item, key = make_item(
                 item_id=rid, url=page.get("url") or "", page_html=clean, outs=outs, tools=tools, rng=rng
@@ -391,7 +408,7 @@ def build_bundle_from_dir(
         raise SystemExit(f"need {n_calibration} leftover pages for calibration, have {len(leftover)}")
     cal = stratified_sample(leftover, n_calibration, rng)
 
-    bid = bundle_id or f"bundle-{seed}"
+    bid = bundle_id or "bundle-" + hashlib.sha256(str(seed).encode()).hexdigest()[:12]
     rater_ids = list(raters or ["rater-a", "rater-b", "rater-c"])
     bundle, key_doc, orders = build_from_records(
         main_pages=main,
@@ -521,7 +538,7 @@ def main(argv: list[str] | None = None) -> None:
         process(page, calibration=False)
 
     rng.shuffle(items)
-    bundle_id = args.bundle_id or f"bundle-{args.seed}"
+    bundle_id = args.bundle_id or "bundle-" + hashlib.sha256(str(args.seed).encode()).hexdigest()[:12]
     bundle = {"bundle_id": bundle_id, "calibration": cal_items, "items": items}
     key_doc = {
         "bundle_id": bundle_id,

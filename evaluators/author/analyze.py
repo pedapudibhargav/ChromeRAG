@@ -174,6 +174,7 @@ def analyse(
     judges: dict | None = None,
 ) -> dict:
     key = key_doc["key"]
+    repeat_of = key_doc.get("repeat_of") or {}
     cal_ids = {it["item_id"] for it in bundle.get("calibration", [])}
     tools = list(key_doc.get("tools") or sorted({t for m in key.values() for t in m.values()}))
 
@@ -239,7 +240,7 @@ def analyse(
             v = pairwise_verdict(set(u["best_tools"]), ta, tb, all_same=u["all_same"])
             if u["none_good"] and not u["best_tools"]:
                 v = "tie"
-            groups[base_item_id(iid)].append(v)
+            groups[repeat_of.get(iid, base_item_id(iid))].append(v)
         multi = {k: vs for k, vs in groups.items() if len(vs) > 1}
         if not multi:
             repeat_consistency[rater] = {"n_groups": 0, "agree_rate": None}
@@ -309,7 +310,7 @@ def analyse(
                 v = pairwise_verdict(set(u["best_tools"]), ta, tb, all_same=u["all_same"])
                 if u["none_good"] and not u["best_tools"]:
                     v = "tie"
-                focus_votes[base_item_id(iid)].append(v)
+                focus_votes[repeat_of.get(iid, base_item_id(iid))].append(v)
         human_a: list[str] = []
         lm_a: list[str] = []
         for base, votes in sorted(focus_votes.items()):
