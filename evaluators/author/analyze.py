@@ -193,6 +193,13 @@ def analyse(
             if entry.get("skipped"):
                 exclusions.append({"rater": rater, "item_id": iid, "reason": "skipped"})
                 continue
+            scores = entry.get("scores") or {}
+            chosen = entry.get("all_same") or entry.get("none_good") or entry.get("best")
+            if not chosen or not all(
+                (scores.get(lab) or {}).get("content") and (scores.get(lab) or {}).get("chrome") for lab in key[iid]
+            ):
+                exclusions.append({"rater": rater, "item_id": iid, "reason": "incomplete"})
+                continue
             per_rater[rater][iid] = unblind_item(entry, key[iid])
 
     pairs = []

@@ -9,6 +9,7 @@ header{position:sticky;top:0;z-index:5;background:var(--panel);border-bottom:1px
 header h1{font-size:15px;margin:0}.sp{flex:1}.pill{background:var(--bg);border:1px solid var(--line);border-radius:99px;padding:2px 10px;font-size:12px;color:var(--mut)}
 .pill.warn{color:var(--warn);border-color:var(--warn)}
 button{font:inherit;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:6px;padding:5px 10px;cursor:pointer}button.pri{background:var(--acc);border-color:var(--acc);color:#fff}button:disabled{opacity:.4}
+[hidden]{display:none!important}
 main{padding:12px 14px;display:grid;gap:12px}
 .rubric{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:13px}.guide{border-collapse:collapse;margin-top:6px;width:100%}.guide th,.guide td{border-top:1px solid var(--line);padding:3px 8px;text-align:left;vertical-align:top}.miss{font:inherit;width:100%;box-sizing:border-box;background:transparent;color:inherit;border:1px solid var(--line);border-radius:4px;padding:2px 6px}
 .src{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden}.src .bar{display:flex;gap:8px;align-items:center;padding:6px 10px;border-bottom:1px solid var(--line);flex-wrap:wrap}
@@ -250,6 +251,7 @@ $("#finish").onclick=async()=>{
 function showFinish(){
   $("#main").hidden=true;
   $("#done").hidden=false;
+  window.scrollTo(0,0);
   $("#respath").textContent=session.results_path;
 }
 

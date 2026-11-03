@@ -32,7 +32,7 @@ For each item:
 
 Progress is saved after every rating. You can stop and resume with the same `--rater` id.
 
-**Time estimate:** 85 items, about 2 minutes each, so about 3 hours in total. Split it into sessions; you do not need to finish in one sitting. A few pages appear twice on purpose. Rate each as you see it.
+**Time estimate:** 85 items, about 2 to 4 minutes each, so about 3 to 6 hours in total. Skim long pages. Split it into sessions; you do not need to finish in one sitting. A few pages appear twice on purpose. Rate each as you see it.
 
 ## How to return the JSON
 

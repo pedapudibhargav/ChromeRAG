@@ -157,6 +157,19 @@ def simple_diff(a: str, b: str) -> str:
     )
 
 
+def is_complete(entry: dict | None, labels: list[str]) -> bool:
+    """A rating counts only when skipped, or with a choice and both scores for every output."""
+    if not entry:
+        return False
+    if entry.get("skipped"):
+        return True
+    chosen = entry.get("all_same") or entry.get("none_good") or entry.get("best")
+    scores = entry.get("scores") or {}
+    return bool(chosen) and all(
+        (scores.get(lab) or {}).get("content") and (scores.get(lab) or {}).get("chrome") for lab in labels
+    )
+
+
 def _item_map(bundle: dict) -> dict[str, dict]:
     out: dict[str, dict] = {}
     for it in bundle.get("calibration", []):
@@ -207,7 +220,7 @@ class Handler(BaseHTTPRequestHandler):
                     {
                         "item_id": iid,
                         "is_calibration": it["is_calibration"],
-                        "done": iid in done and not results["items"][iid].get("incomplete", False),
+                        "done": is_complete(results["items"].get(iid), list(_STATE["by_id"][iid]["outputs"])),
                         "n_outputs": len(it["outputs"]),
                     }
                 )
