@@ -51,7 +51,7 @@ Imagine a search assistant that can only read the extracted text. People ask que
 For each item:
 
 1. Read the original page (Rendered or Plain text). Pages are saved copies with images and links removed, and the app does not connect to any website. Judge the text. If the preview looks blank, use **Plain text**. Do not look the pages up online. Skim long pages; you do not need to read every word. Some pages are menus, lists or hubs: judge them by the same question as any other page. Banners, notices and contact details are part of the real page and say nothing about the study; whether they count as content or noise follows the definitions above.
-2. Read every output.
+2. Read every output. Differences are highlighted: blue text is only in that output, yellow text is in that output and one other, and plain text is in every output. The line above each output lists text the other outputs have and this one does not. Colours only show where outputs differ. Extra text can be content the others lost or noise, so you decide which. Text missing from every output is not highlighted, so check the page too. You can switch the colours off with **Highlight differences**.
 3. Tick every output that is equally best, or choose **All about the same**, or **None are good**.
 4. Score each output from 1 to 5 for **content kept** and **noise left in** (unless you Skip). The **Guide** button at the top shows what each score means. You may add a short note if something important is missing.
 5. Practice items are marked and come first; they are not used in the final analysis.

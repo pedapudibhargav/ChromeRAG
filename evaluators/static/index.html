@@ -2,8 +2,8 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Blind extraction rating</title>
 <style>
-:root{--bg:#fbfbfa;--panel:#fff;--line:#dedcd6;--ink:#1f1f1d;--mut:#6b6a65;--acc:#2a78d6;--ok:#1a7f37;--warn:#9a6700}
-@media (prefers-color-scheme:dark){:root{--bg:#161615;--panel:#1f1f1d;--line:#37362f;--ink:#ececea;--mut:#9a9992;--acc:#6aa7f0;--ok:#4cc072;--warn:#d4a72c}}
+:root{--bg:#fbfbfa;--panel:#fff;--line:#dedcd6;--ink:#1f1f1d;--mut:#6b6a65;--acc:#2a78d6;--ok:#1a7f37;--warn:#9a6700;--hl-only:#b9d6fa;--hl-some:#f6e08e}
+@media (prefers-color-scheme:dark){:root{--bg:#161615;--panel:#1f1f1d;--line:#37362f;--ink:#ececea;--mut:#9a9992;--acc:#6aa7f0;--ok:#4cc072;--warn:#d4a72c;--hl-only:#1d3d63;--hl-some:#4d4116}}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,Segoe UI,Roboto,sans-serif}
 header{position:sticky;top:0;z-index:5;background:var(--panel);border-bottom:1px solid var(--line);padding:8px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
 header h1{font-size:15px;margin:0}.sp{flex:1}.pill{background:var(--bg);border:1px solid var(--line);border-radius:99px;padding:2px 10px;font-size:12px;color:var(--mut)}
@@ -33,7 +33,10 @@ iframe,.srcview{width:100%;height:36vh;border:0;background:#fff}.srcview{backgro
 .hint{color:var(--mut);font-size:12px}#missing{color:var(--warn)}.saved{color:var(--ok);font-size:12px}
 .finish{max-width:640px;margin:40px auto;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:24px}
 .finish code{display:block;background:var(--bg);padding:10px;border-radius:6px;word-break:break-all;margin:12px 0}
-.diffbox{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 10px;white-space:pre-wrap;font:11px/1.35 ui-monospace,Menlo,monospace;max-height:28vh;overflow:auto}
+.hl-only{background:var(--hl-only);border-radius:2px}.hl-some{background:var(--hl-some);border-radius:2px}
+.key{display:inline-block;width:12px;height:12px;border-radius:2px;vertical-align:-1px;margin:0 3px 0 8px}
+.lost{border-bottom:1px solid var(--line);padding:4px 10px;font-size:12px;color:var(--mut)}.lost summary{cursor:pointer}
+.lost ol{margin:4px 0 0;padding-left:18px;max-height:22vh;overflow:auto;font:12px/1.4 ui-monospace,Menlo,monospace;color:var(--ink)}.lost li{margin-bottom:4px;white-space:pre-wrap;word-break:break-word}
 </style></head><body>
 <header>
   <h1>Page rating</h1>
@@ -74,13 +77,15 @@ iframe,.srcview{width:100%;height:36vh;border:0;background:#fff}.srcview{backgro
     <iframe id="frame" sandbox="" referrerpolicy="no-referrer" title="original page"></iframe>
     <div class="srcview" id="srcview" hidden></div>
   </section>
+  <section class="choices">
+    <label><input type="checkbox" id="diff_on" checked> Highlight differences</label>
+    <span class="hint" id="legend"><span class="key hl-only"></span>only in this output<span class="key hl-some"></span>in this and one other output; plain text is in every output. Colours only show where outputs differ, not which text is content.</span>
+  </section>
   <section class="cols" id="cols"></section>
   <section class="choices">
     <label><input type="checkbox" id="all_same"> All about the same</label>
     <label><input type="checkbox" id="none_good"> None are good</label>
-    <label><input type="checkbox" id="diff_on"> Show differences</label>
   </section>
-  <pre class="diffbox" id="diffbox" hidden></pre>
   <section class="rubric" id="pnote" hidden><b>Practice note.</b> <span id="pnotetext"></span> <span class="hint">Your own scores are kept as you gave them; practice items are not analysed.</span></section>
   <section class="foot">
     <span class="hint">Tick every output that is equally best. Keys: number keys toggle best, <b>←/→</b> navigate. Scores (1–5) required unless skipped.</span>
@@ -100,7 +105,7 @@ iframe,.srcview{width:100%;height:36vh;border:0;background:#fff}.srcview{backgro
 </section>
 <script>
 const $=s=>document.querySelector(s);
-let session=null, items=[], cur=0, state=null, view="render", labels=[], startedAt=0, saveTimer=null, practiceNote="";
+let session=null, items=[], cur=0, state=null, view="render", labels=[], startedAt=0, saveTimer=null, practiceNote="", texts={};
 
 const api=(p,o)=>fetch(p,o).then(async r=>{
   const t=await r.text();
@@ -152,9 +157,10 @@ async function load(){
   $("#none_good").checked=state.none_good;
   $("#skip_reason").value=state.skip_reason;
   setView(view);
+  texts={};
   renderCols(d);
   paint();
-  maybeDiff();
+  highlight();
 }
 
 function renderCols(d){
@@ -163,8 +169,9 @@ function renderCols(d){
     const o=d.outputs[L];
     const col=document.createElement("div");
     col.className="col"; col.id="col"+L;
-    col.innerHTML=`<h2><label><input type="checkbox" class="bestcb" data-l="${L}"> <span>Output ${L}</span></label></h2><div class="txt"></div><div class="rate"><label>Content kept (5 = all) <span class="stars" data-k="content" data-l="${L}"></span></label><label>Noise left in (5 = none) <span class="stars" data-k="chrome" data-l="${L}"></span></label><input class="miss" data-l="${L}" placeholder="Optional: is something important missing?"></div>`;
+    col.innerHTML=`<h2><label><input type="checkbox" class="bestcb" data-l="${L}"> <span>Output ${L}</span></label></h2><details class="lost" hidden><summary></summary><ol></ol></details><div class="txt"></div><div class="rate"><label>Content kept (5 = all) <span class="stars" data-k="content" data-l="${L}"></span></label><label>Noise left in (5 = none) <span class="stars" data-k="chrome" data-l="${L}"></span></label><input class="miss" data-l="${L}" placeholder="Optional: is something important missing?"></div>`;
     col.querySelector(".txt").textContent=o.text;
+    texts[L]=o.text;
     c.appendChild(col);
     col.querySelector(".bestcb").onchange=()=>{
       const on=col.querySelector(".bestcb").checked;
@@ -275,15 +282,89 @@ $("#none_good").onchange=()=>{
 $("#skip_reason").addEventListener("input",()=>{ state.skip_reason=$("#skip_reason").value; save(); });
 $("#skip").onclick=()=>{ state.skipped=true; state.best=[]; state.all_same=false; state.none_good=false; paint(); save(); };
 
-async function maybeDiff(){
-  const on=$("#diff_on").checked;
-  const box=$("#diffbox");
-  if(!on || labels.length<2){ box.hidden=true; box.textContent=""; return; }
-  const d=await api(`/api/diff?item=${encodeURIComponent(items[cur].item_id)}&a=${encodeURIComponent(labels[0])}&b=${encodeURIComponent(labels[1])}`);
-  box.textContent=d.diff||"(no differences)";
-  box.hidden=false;
+// Difference highlighting. Outputs are compared with each other by runs of HL_N words, ignoring
+// case, punctuation and line breaks, so the same sentence split across lines still matches.
+const HL_N=4, HL_MIN_LOST=3;
+function hlTokens(text){
+  // Words are runs of letters or digits; everything between them (spaces, line breaks, punctuation) is a separator with norm "".
+  return (text.match(/[\p{L}\p{N}]+|[^\p{L}\p{N}]+/gu)||[]).map(t=>({t, norm:/^[\p{L}\p{N}]/u.test(t)?t.toLowerCase():""}));
 }
-$("#diff_on").onchange=maybeDiff;
+function hlShared(words, other){
+  // shared[i] is true when some run of n words covering word i also appears in the other output.
+  const n=Math.min(HL_N, words.length, other.length), shared=new Array(words.length).fill(false);
+  if(!n) return shared;
+  const grams=new Set();
+  for(let i=0;i+n<=other.length;i++) grams.add(other.slice(i,i+n).join(" "));
+  for(let i=0;i+n<=words.length;i++){
+    if(grams.has(words.slice(i,i+n).join(" "))) for(let j=i;j<i+n;j++) shared[j]=true;
+  }
+  return shared;
+}
+function highlight(){
+  const on=$("#diff_on").checked && labels.length>1;
+  $("#legend").hidden=!on;
+  const info={};
+  for(const L of labels){
+    const toks=hlTokens(texts[L]||"");
+    const idx=toks.map((x,i)=>x.norm?i:-1).filter(i=>i>=0);
+    info[L]={toks, idx, words:idx.map(i=>toks[i].norm)};
+  }
+  for(const L of labels){
+    const col=$("#col"+L), box=col.querySelector(".txt"), lost=col.querySelector(".lost");
+    box.textContent="";
+    lost.hidden=true;
+    const me=info[L], others=labels.filter(x=>x!==L);
+    if(!on){ box.textContent=texts[L]||""; continue; }
+    const cover=others.map(o=>hlShared(me.words, info[o].words));
+    const cls=me.words.map((_,k)=>{
+      const c=cover.filter(v=>v[k]).length;
+      return c===others.length?"":(c===0?"hl-only":"hl-some");
+    });
+    // Separators take the class of the words on both sides, or none.
+    const tokCls=new Array(me.toks.length).fill(null);
+    me.idx.forEach((ti,k)=>tokCls[ti]=cls[k]);
+    let prev="";
+    for(let i=0;i<me.toks.length;i++){
+      if(tokCls[i]!==null){ prev=tokCls[i]; continue; }
+      let next=""; for(let j=i+1;j<me.toks.length;j++){ if(tokCls[j]!==null){ next=tokCls[j]; break; } }
+      tokCls[i]=(prev && prev===next)?prev:"";
+    }
+    let run="", runCls=null;
+    const flush=()=>{
+      if(!run) return;
+      if(runCls){ const sp=document.createElement("span"); sp.className=runCls; sp.textContent=run; box.appendChild(sp); }
+      else box.appendChild(document.createTextNode(run));
+      run="";
+    };
+    me.toks.forEach((x,i)=>{ if(tokCls[i]!==runCls){ flush(); runCls=tokCls[i]; } run+=x.t; });
+    flush();
+    // Passages that other outputs have and this one does not. Text already listed from one output is not listed again.
+    const lostList=[], listed=[];
+    for(const o of others){
+      const them=info[o], inMe=hlShared(them.words, me.words), inListed=hlShared(them.words, listed);
+      let k=0;
+      while(k<them.words.length){
+        if(inMe[k] || inListed[k]){ k++; continue; }
+        let e=k; while(e<them.words.length && !inMe[e] && !inListed[e]) e++;
+        if(e-k>=HL_MIN_LOST){
+          const text=them.toks.slice(them.idx[k], them.idx[e-1]+1).map(x=>x.t).join("").replace(/\s+/g," ");
+          lostList.push({n:e-k, text});
+        }
+        k=e;
+      }
+      for(let j=0;j<them.words.length;j++) if(!inMe[j]) listed.push(them.words[j]);
+      listed.push("\u0000");
+    }
+    if(lostList.length){
+      const words=lostList.reduce((a,x)=>a+x.n,0);
+      lost.querySelector("summary").textContent=`Not in this output: ${lostList.length} passage${lostList.length>1?"s":""} (${words} words) that other outputs have. Show`;
+      const ol=lost.querySelector("ol"); ol.textContent="";
+      for(const x of lostList){ const li=document.createElement("li"); li.textContent=x.text.length>400?x.text.slice(0,400)+" …":x.text; ol.appendChild(li); }
+      lost.hidden=false;
+    }
+  }
+}
+$("#diff_on").onchange=highlight;
 
 const go=async d=>{
   if(d>0 && !(selectionOk() && scoresComplete()) && !confirm("This item is incomplete (best choice and 1–5 scores, or skip). Move on anyway?")) return;
