@@ -343,6 +343,17 @@ def build_from_records(
             repeat_of[rid] = pid
 
     rng.shuffle(items)
+    # Raters see only random ids, so nothing marks a repeat or names a page. page_of maps back.
+    rename: dict[str, str] = {}
+    for it in [*cal_items, *items]:
+        while (new_id := f"item-{rng.getrandbits(40):010x}") in rename.values():
+            pass
+        rename[it["item_id"]] = new_id
+        it["item_id"] = new_id
+    page_of = {rename[i]: repeat_of.get(i, i) for i in rename}
+    key_map = {rename[i]: v for i, v in key_map.items()}
+    page_types = {rename[i]: v for i, v in page_types.items()}
+    repeat_of = {rename[r]: rename[p] for r, p in repeat_of.items()}
     bundle = {
         "bundle_id": bundle_id,
         "calibration": cal_items,
@@ -355,6 +366,7 @@ def build_from_records(
         "page_types": page_types,
         "key": key_map,
         "repeat_of": repeat_of,
+        "page_of": page_of,
         "n_main": len(main_pages),
         "n_repeats": len(repeat_of),
         "n_calibration": len(cal_items),
