@@ -11,6 +11,12 @@ header h1{font-size:15px;margin:0}.sp{flex:1}.pill{background:var(--bg);border:1
 button{font:inherit;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:6px;padding:5px 10px;cursor:pointer}button.pri{background:var(--acc);border-color:var(--acc);color:#fff}button:disabled{opacity:.4}
 [hidden]{display:none!important}
 main{padding:12px 14px;display:grid;gap:12px}
+.progress{display:flex;align-items:center;gap:8px;min-width:220px;flex:1;max-width:520px}
+.pbar{flex:1;height:8px;background:var(--bg);border:1px solid var(--line);border-radius:99px;overflow:hidden}
+.pfill{height:100%;width:0;background:var(--ok);transition:width .2s}
+.ptext{font-size:12px;color:var(--mut);white-space:nowrap}
+.guidepanel{position:fixed;top:48px;right:14px;z-index:6;max-width:760px;max-height:75vh;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 14px;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.guidepanel p{margin:0 0 6px}
 .rubric{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:13px}.guide{border-collapse:collapse;margin-top:6px;width:100%}.guide th,.guide td{border-top:1px solid var(--line);padding:3px 8px;text-align:left;vertical-align:top}.miss{font:inherit;width:100%;box-sizing:border-box;background:transparent;color:inherit;border:1px solid var(--line);border-radius:4px;padding:2px 6px}
 .src{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden}.src .bar{display:flex;gap:8px;align-items:center;padding:6px 10px;border-bottom:1px solid var(--line);flex-wrap:wrap}
 .src .bar a{color:var(--acc);font-size:12px}
@@ -30,30 +36,38 @@ iframe,.srcview{width:100%;height:36vh;border:0;background:#fff}.srcview{backgro
 .diffbox{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 10px;white-space:pre-wrap;font:11px/1.35 ui-monospace,Menlo,monospace;max-height:28vh;overflow:auto}
 </style></head><body>
 <header>
-  <h1>Blind extraction rating</h1>
-  <span class="pill" id="prog">–</span>
+  <h1>Page rating</h1>
   <span class="pill warn" id="cal" hidden>Practice</span>
+  <div class="progress" title="Items complete">
+    <div class="pbar"><div class="pfill" id="pfill"></div></div>
+    <span class="ptext" id="prog">–</span>
+  </div>
   <span class="sp"></span>
+  <button id="guidebtn" aria-expanded="false">Guide</button>
   <button id="prev">← Prev</button>
   <button id="next">Next →</button>
   <button class="pri" id="finish">Finish</button>
 </header>
-<main id="main">
-  <div class="rubric" id="rubric"></div>
-  <details class="rubric" id="guide" open><summary>Score guide (noise is acceptable if it would not change an answer: levels 3 to 5)</summary>
+<div class="guidepanel" id="guidepanel" hidden>
+  <p id="rubric"></p>
+  <p class="hint">Noise is acceptable if it would not change an answer: levels 3 to 5. Press Esc or Guide to close.</p>
     <table class="guide"><thead><tr><th>Score</th><th>Content kept</th><th>Noise left in</th></tr></thead><tbody>
     <tr><td>5</td><td>Everything useful is there</td><td>None</td></tr>
     <tr><td>4</td><td>Small loss nobody would ask about: caption, byline, decorative line</td><td>Harmless, under about 5% of the text: breadcrumb, share label</td></tr>
     <tr><td>3</td><td>One useful fact gone: price, table row, step, short paragraph</td><td>Tolerable, about 5 to 15%: footer, short menu, cannot be mistaken for content</td></tr>
     <tr><td>2</td><td>Main section or most of a table gone</td><td>Disruptive, about 15 to 40%, or long link lists bury the content</td></tr>
     <tr><td>1</td><td>Most content gone, or text from the wrong page</td><td>Over about 40%, or text about other things that could give a wrong answer: other products' prices, related articles, comments read as facts</td></tr>
-    </tbody></table></details>
+    </tbody></table>
+</div>
+<main id="main">
   <section class="src">
     <div class="bar">
       <b>Original page</b>
       <button data-v="render" class="pri">Rendered</button>
       <button data-v="text">Plain text</button>
       <a id="opentab" target="_blank" rel="noopener noreferrer">Open saved page in new tab</a>
+      <span class="sp"></span>
+      <span class="hint" id="question"></span>
     </div>
     <iframe id="frame" sandbox="" referrerpolicy="no-referrer" title="original page"></iframe>
     <div class="srcview" id="srcview" hidden></div>
@@ -98,6 +112,7 @@ function emptyState(labs){
 async function init(){
   session=await api("/api/session");
   $("#rubric").textContent=session.rubric;
+  $("#question").textContent="Which output lets a search assistant answer questions about this page best?";
   items=session.items;
   const first=items.findIndex(i=>!i.done);
   cur=first<0?0:first;
@@ -120,9 +135,8 @@ async function load(){
     shown_order:labels.slice()
   }):emptyState(labels);
 
-  $("#prog").textContent=`Item ${cur+1} of ${items.length} · saved ${items.filter(i=>i.done).length}`;
+  showProgress();
   $("#cal").hidden=!d.is_calibration;
-  $("#guide").open=!!d.is_calibration;
   window.scrollTo(0,0);
   $("#srcview").scrollTop=0;
   $("#frame").src="/html/"+encodeURIComponent(id);
@@ -208,9 +222,27 @@ async function save(){
     items[cur].done=selectionOk() && scoresComplete();
     $("#saved").textContent="saved";
     setTimeout(()=>$("#saved").textContent="",900);
-    $("#prog").textContent=`Item ${cur+1} of ${items.length} · saved ${items.filter(i=>i.done).length}`;
+    items[cur].seconds=state.seconds_spent;
+    showProgress();
   },120);
 }
+
+function showProgress(){
+  const done=items.filter(i=>i.done), n=items.length;
+  // Estimate from this rater's own pace once a few items are done; 3 minutes each before that.
+  const avg=done.length>=3 ? done.reduce((a,i)=>a+(i.seconds||0),0)/done.length : 180;
+  const left=Math.round((n-done.length)*Math.min(Math.max(avg,30),900)/60);
+  const t=left>=60 ? `${Math.floor(left/60)} h ${left%60} min` : `${left} min`;
+  $("#pfill").style.width=(100*done.length/n)+"%";
+  $("#prog").textContent=`Item ${cur+1} of ${n} · ${done.length} done · about ${t} left`;
+}
+
+function toggleGuide(open){
+  const p=$("#guidepanel"); p.hidden=!(open ?? p.hidden);
+  $("#guidebtn").classList.toggle("pri", !p.hidden);
+  $("#guidebtn").setAttribute("aria-expanded", String(!p.hidden));
+}
+$("#guidebtn").onclick=()=>toggleGuide();
 
 function setView(v){
   view=v;
@@ -270,6 +302,7 @@ function showFinish(){
 }
 
 document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"){ toggleGuide(false); return; }
   if(e.target.tagName==="INPUT" || e.target.tagName==="TEXTAREA") return;
   if(e.key>="1" && e.key<="9"){
     const idx=+e.key-1; if(idx<labels.length){

@@ -222,6 +222,7 @@ class Handler(BaseHTTPRequestHandler):
                         "is_calibration": it["is_calibration"],
                         "done": is_complete(results["items"].get(iid), list(_STATE["by_id"][iid]["outputs"])),
                         "n_outputs": len(it["outputs"]),
+                        "seconds": float((results["items"].get(iid) or {}).get("seconds_spent") or 0),
                     }
                 )
             return self._json(
