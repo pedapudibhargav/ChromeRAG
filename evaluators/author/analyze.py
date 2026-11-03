@@ -221,6 +221,9 @@ def analyse(
             verdicts = []
             coder_item[rater] = {}
             for iid, u in items.items():
+                if iid in repeat_of:
+                    # A repeat is the same page seen again; it counts only toward repeat consistency.
+                    continue
                 v = pairwise_verdict(set(u["best_tools"]), tool_a, tool_b, all_same=u["all_same"])
                 if u["none_good"] and not u["best_tools"]:
                     v = "tie"
@@ -350,6 +353,14 @@ def main(argv: list[str] | None = None) -> None:
     else:
         paths = [args.results]
     results = [load_json(x) for x in paths]
+    # Raters choose their own names, so two files can carry the same one. Keep them apart.
+    seen: dict[str, int] = {}
+    for path, res in zip(paths, results):
+        name = res["rater"]
+        seen[name] = seen.get(name, 0) + 1
+        if seen[name] > 1:
+            res["rater"] = f"{name}#{seen[name]}"
+            print(f"Rater name {name!r} used again in {path.name}; counted as {res['rater']!r}")
     judges = load_json(args.judges) if args.judges else None
     report = analyse(results, bundle, key_doc, judges=judges)
     args.out.parent.mkdir(parents=True, exist_ok=True)

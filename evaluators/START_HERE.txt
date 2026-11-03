@@ -3,6 +3,8 @@ START HERE
 
 This folder holds a rating task. It runs only on your computer and does not connect to any website.
 
+0. Read ABOUT_THIS_STUDY.txt first, and reply by email as it asks before you start rating.
+
 What you need: Python 3.9 or newer. Nothing else needs installing.
   Mac or Linux: open Terminal and run   python3 --version
   Windows: open Command Prompt and run  python --version
@@ -16,15 +18,17 @@ Steps:
    Mac: right-click the page-rating folder, then choose New Terminal at Folder.
    Windows: open the folder, type cmd in the address bar, and press Enter.
 
-3. Start the app with the rater id you were given, for example rater-a:
-     Mac or Linux:  python3 evaluators/run.py --rater rater-a
-     Windows:       python evaluators/run.py --rater rater-a
+3. Pick a rater name: any short name you like, using letters, numbers or dashes, no spaces
+   (for example sunflower or rater-7). It is replaced with a neutral code before anything is
+   published. Use the same name every time. Then start the app:
+     Mac or Linux:  python3 evaluators/run.py --rater YOUR-NAME
+     Windows:       python evaluators/run.py --rater YOUR-NAME
 
 4. The terminal prints an address such as http://127.0.0.1:8770/
    Open it in Chrome, Edge or Firefox. Keep the terminal open while you work.
 
 5. Rate the items. Practice items come first. Your progress is saved after every rating,
-   so you can stop and come back later: run the same command with the same id.
+   so you can stop and come back later: run the same command with the same name.
 
 6. When you are done, press Finish. It shows the name of one results file.
    Email that file to the person who sent you this folder. Do not edit it.

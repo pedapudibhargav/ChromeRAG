@@ -570,3 +570,29 @@ def test_replace_after_draw_keeps_positions_and_type():
     # Type "b" has no unused page left once p4 is excluded, so a non-forum spare is taken.
     out2, swaps2 = replace_after_draw([pool[3]], pool, {"p3", "p5", "p6"}, {"p3", "p4"}, 7, {"f"})
     assert out2[0]["page_type"] == "a" and "p3" in swaps2
+
+
+def test_split_bundle_covers_every_page_and_shares_anchors():
+    from evaluators.author.split_bundle import split_bundle
+
+    types = ["a", "b", "c"]
+    items = [{"item_id": f"i{n}", "outputs": {}} for n in range(20)]
+    rep = {"item_id": "r0", "outputs": {}}
+    bundle = {"bundle_id": "b", "calibration": [{"item_id": "c0"}], "items": items + [rep]}
+    key_doc = {
+        "page_of": {**{f"i{n}": f"p{n}" for n in range(20)}, "r0": "p3"},
+        "repeat_of": {"r0": "i3"},
+        "page_types": {f"i{n}": types[n % 3] for n in range(20)},
+    }
+    parts, plan = split_bundle(bundle, key_doc, seed=1, n_parts=3, n_anchors=3)
+    anchors = set(plan["anchors"])
+    assert len(anchors) == 3 and {key_doc["page_types"][i] for i in anchors} == set(types)
+    own = [set(p["own"]) for p in plan["parts"].values()]
+    assert set().union(*own) | anchors == {f"i{n}" for n in range(20)}
+    assert sum(len(o) for o in own) == 17 and max(map(len, own)) - min(map(len, own)) <= 1
+    for part in parts:
+        ids = {it["item_id"] for it in part["items"]}
+        assert anchors <= ids and part["calibration"] == bundle["calibration"]
+        assert ("r0" in ids) == ("i3" in ids or "i3" in anchors)
+    again, _ = split_bundle(bundle, key_doc, seed=1, n_parts=3, n_anchors=3)
+    assert again == parts

@@ -334,11 +334,14 @@ def load_bundle(path: Path) -> dict:
 
 def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(description="Blind rating kit (local only)")
-    parser.add_argument("--rater", required=True, help="Your rater id (letters/numbers; no personal data)")
+    parser.add_argument("--rater", required=True, help="Any short rater name: letters, numbers or dashes")
     parser.add_argument("--demo", action="store_true", help="Use the committed demo bundle")
     parser.add_argument("--port", type=int, default=DEFAULT_PORT)
     parser.add_argument("--bundle", type=Path, default=None, help="Override bundle path")
     args = parser.parse_args(argv)
+    args.rater = args.rater.strip()
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,39}", args.rater):
+        sys.exit("Rater name: up to 40 letters, numbers, dots or dashes, no spaces. Example: --rater sunflower")
 
     bundle_path = args.bundle or (DEMO_BUNDLE_PATH if args.demo else BUNDLE_PATH)
     bundle = load_bundle(bundle_path)

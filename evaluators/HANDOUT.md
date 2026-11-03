@@ -10,10 +10,10 @@ Mac or Linux: run `python3 --version`. Windows: run `python --version`. If it is
 
 ## Run
 
-Use the rater id you were given, exactly as written:
+Pick any short rater name (letters, numbers or dashes, no spaces) and use the same one every time. It is replaced with a neutral code before anything is published:
 
 ```bash
-python3 evaluators/run.py --rater YOUR_ID
+python3 evaluators/run.py --rater YOUR-NAME
 ```
 
 On Windows, use `python` instead of `python3`. The terminal prints a URL like `http://127.0.0.1:8770/`. Open it in Chrome, Edge or Firefox on the same computer. Leave the terminal open while you work. To stop, close the browser tab and press Ctrl+C in the terminal. To continue later, run the same command.
@@ -30,9 +30,9 @@ For each item:
 4. Score each output from 1 to 5 for **content kept** and **noise left in** (unless you Skip). The **Guide** button at the top shows what each score means. You may add a short note if something important is missing.
 5. Practice items are marked and come first; they are not used in the final analysis.
 
-Progress is saved after every rating. You can stop and resume with the same `--rater` id.
+Progress is saved after every rating. You can stop and resume with the same `--rater` name.
 
-**Time estimate:** 85 items, about 2 to 4 minutes each, so about 3 to 6 hours in total. Skim long pages. Split it into sessions; you do not need to finish in one sitting. A few pages appear twice on purpose. Rate each as you see it.
+**Time estimate:** {N_ITEMS} items, about 2 to 4 minutes each, so about {HOURS} hours in total. Skim long pages. Split it into sessions; you do not need to finish in one sitting. A few pages appear twice on purpose. Rate each as you see it.
 
 ## How to return the JSON
 
