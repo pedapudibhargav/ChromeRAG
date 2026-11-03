@@ -22,5 +22,13 @@
  {
   "id": "human-0044",
   "reason": "page text over 15000 words (15748)"
+ },
+ {
+  "id": "human-0155",
+  "reason": "automated post, not written by a person"
+ },
+ {
+  "id": "human-0156",
+  "reason": "automated post, not written by a person"
  }
 ]
