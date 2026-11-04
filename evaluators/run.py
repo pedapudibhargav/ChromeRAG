@@ -24,7 +24,7 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import parse_qs, urlparse
 
-APP_VERSION = "1.0.0"
+APP_VERSION = "1.1.0"  # saved in every results file, so a rating can be traced to the app version that made it
 DEFAULT_PORT = 8770
 EVAL_DIR = Path(__file__).resolve().parent
 STATIC = EVAL_DIR / "static"
