@@ -2,6 +2,20 @@
 
 All notable changes to ChromeRAG. Versions follow [Semantic Versioning](https://semver.org/).
 
+## 0.1.6 — 2026-11-20
+
+Bug-fix release. Extracted Markdown, front matter and every result reported for 0.1.5 are unchanged; only
+`ExtractResult.chunks()` / `chunk_markdown()` and `chromerag extract --chunks` change.
+
+### Fixed
+- **Chunks no longer lose short sections.** In 0.1.5 a section shorter than `min_words` (default 50) that had no
+  neighbour in the same section to merge with was dropped, so its text was missing from the chunks (about 1.6% of
+  words on 140 of 400 WCXB development pages). Such a section is now kept as its own short chunk. New tests check
+  that every word of the Markdown body outside headings appears in the chunks.
+- **Chunks keep reading order.** A short chunk merged forward joins only the next chunk; before, with repeated
+  headings it could join a later chunk of the same parent section and move its text several sections down. A new
+  test checks that chunk text keeps the order of the Markdown.
+
 ## 0.1.5 — 2026-11-20
 
 Strict-retrain and validation release. Code frozen at tag `freeze-0.1.5` before any held-out run of 0.1.5 code; the results cited by

@@ -165,7 +165,8 @@ def _apply_min_words(chunks: list[_RawChunk], min_words: int) -> list[_RawChunk]
                 continue
             parent = stk[:-1]
             merged_fwd = False
-            for j in range(i + 1, len(out)):
+            # Only the next chunk: merging into a later one would move text out of reading order.
+            for j in range(i + 1, min(i + 2, len(out))):
                 if len(out[j].stack) >= len(parent) and out[j].stack[: len(parent)] == parent:
                     merged = out[i].text + "\n\n" + out[j].text
                     out[j] = _RawChunk(text=merged, stack=out[j].stack)
@@ -175,8 +176,8 @@ def _apply_min_words(chunks: list[_RawChunk], min_words: int) -> list[_RawChunk]
                     break
             if merged_fwd:
                 continue
-            del out[i]
-            changed = True
+            # No neighbour in the same section to merge with: keep the short chunk rather than drop its text.
+            i += 1
     return out
 
 

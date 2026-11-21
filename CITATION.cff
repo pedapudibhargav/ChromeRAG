@@ -6,7 +6,7 @@ authors:
   - family-names: Peddapudi
     given-names: Bhargava Chary
     orcid: "https://orcid.org/0009-0002-8523-8415"
-version: 0.1.5
+version: 0.1.6
 date-released: "2026-11-20"
 license: MIT
 doi: "10.5281/zenodo.22970289"
@@ -14,6 +14,9 @@ identifiers:
   - type: doi
     value: "10.5281/zenodo.22970289"
     description: "All versions (concept DOI)"
+  - type: doi
+    value: "10.5281/zenodo.24411402"
+    description: "Version 0.1.5 (evaluated in the paper)"
   - type: doi
     value: "10.5281/zenodo.23126161"
     description: "Version 0.1.4"

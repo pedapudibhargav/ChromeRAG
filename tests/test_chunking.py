@@ -147,3 +147,49 @@ def test_cli_chunks_stdout(capsys) -> None:
     assert out
     for line in out.splitlines():
         json.loads(line)
+
+
+def test_short_section_without_merge_partner_is_kept() -> None:
+    # 0.1.5 dropped a short h3 section whose only neighbours were full chunks in other sections.
+    md = (
+        f"# T\n\n## A\n\n{_words(120)}\n\n### B\n\nshort tail text here only\n\n## C\n\n{_words(120)}"
+    )
+    chunks = chunk_markdown(md, max_words=180, min_words=50)
+    assert any("short tail text here only" in c.text for c in chunks)
+
+
+def test_chunks_keep_every_word() -> None:
+    import random
+
+    rng = random.Random(0)
+    for _ in range(200):
+        parts = ["# Title"]
+        expected = 0
+        for s in range(rng.randint(1, 8)):
+            parts.append("#" * rng.randint(2, 4) + f" S{s}")
+            n = rng.choice([3, 10, 40, 90, 250])
+            parts.append(_words(n))
+            expected += n
+        chunks = chunk_markdown("\n\n".join(parts), max_words=180, min_words=50)
+        body = " ".join(c.text for c in chunks).split()
+        assert sum(1 for w in body if w.startswith("w")) == expected
+
+
+def test_chunks_keep_reading_order() -> None:
+    import random
+
+    rng = random.Random(1)
+    heads = ["Intro", "Details", "Notes"]
+    for _ in range(300):
+        parts = ["# Title"]
+        order = []
+        for s in range(rng.randint(2, 10)):
+            parts.append("#" * rng.randint(2, 4) + " " + rng.choice(heads))
+            n = rng.choice([3, 10, 40, 90, 250])
+            toks = [f"t{s}x{k}" for k in range(n)]
+            order += toks
+            parts.append(" ".join(toks))
+        chunks = chunk_markdown("\n\n".join(parts), max_words=180, min_words=50)
+        seen = [w for c in chunks for w in c.text.split() if w.startswith("t") and "x" in w]
+        assert seen == order
+

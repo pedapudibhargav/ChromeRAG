@@ -25,7 +25,7 @@ Chunks carry their heading path, ready for a vector database.
 | Optional site-template model (`learn` → `batch`), experimental | |
 
 **Paper:** *ChromeRAG: A Learned Boilerplate Filter for Web RAG Ingestion* (under revision at SoftwareX)  
-**Release:** [`v0.1.5`](https://github.com/pedapudibhargav/ChromeRAG/tree/v0.1.5) · DOI (all versions) [10.5281/zenodo.22970289](https://doi.org/10.5281/zenodo.22970289)  
+**Release:** [`v0.1.6`](https://github.com/pedapudibhargav/ChromeRAG/tree/v0.1.6) (evaluated code: [`v0.1.5`](https://github.com/pedapudibhargav/ChromeRAG/tree/v0.1.5); 0.1.6 only fixes `chunks()`) · DOI (all versions) [10.5281/zenodo.22970289](https://doi.org/10.5281/zenodo.22970289)  
 **Author:** [Bhargava Chary Peddapudi](https://orcid.org/0009-0002-8523-8415)
 
 ---
@@ -35,8 +35,8 @@ Chunks carry their heading path, ready for a vector database.
 Requires **Python 3.11+**. CPU only; no model downloads. Four direct dependencies (BeautifulSoup, lxml, PyYAML, NumPy).
 
 ```bash
-pip install chromerag==0.1.5
-chromerag --version          # chromerag 0.1.5
+pip install chromerag==0.1.6
+chromerag --version          # chromerag 0.1.6
 ```
 
 From source (adds tests and the benchmark baselines):
@@ -321,7 +321,7 @@ Median time per page on the 511 WCXB test pages, one process, one timed pass aft
 
 ChromeRAG is about three times slower than Trafilatura here, about 20–25 pages per second per process. Timings depend
 on the page set, Python version and machine load: the v0.1.4 measurement on 200 other stored pages gave 52 ms against
-32 ms (1.6 times). Repeat the measurement with `python -m poc.revision_rows speed --wcxb-root data/wcxb --out out/speed.json`; on your
+32 ms (1.6 times). Repeat the measurement from a `v0.1.5` checkout (see below; the script runs on macOS) with `python -m poc.revision_rows speed --wcxb-root data/wcxb --out out/speed.json`; on your
 own pages, time `ChromeRAG().extract`.
 
 ### Earlier evaluations (v0.1.4, superseded)
@@ -338,7 +338,11 @@ STCE measurement (version 0.1.4) changed a structural score by 0.001 or less on 
 
 ## Reproduce the evaluation
 
+The evaluation scripts check that `src/` matches tag `freeze-0.1.5` and stop otherwise, so run them from the
+evaluated release (0.1.6 changes only `chunks()`):
+
 ```bash
+git checkout v0.1.5
 pip install -e ".[dev,baselines]"
 # baseline versions used in the paper (the extras pin only minimums)
 pip install "trafilatura==2.2.0" "readability-lxml==0.9" "markitdown==0.1.7" "justext==3.0.2" "boilerpy3==1.0.7"

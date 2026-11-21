@@ -139,8 +139,14 @@ def test_summarize_includes_f1():
 def test_freeze_check_passes_at_repo_tag():
     if fr._git("rev-parse", f"refs/tags/{fr.REQUIRED_TAG}").returncode != 0:
         pytest.skip(f"git tag {fr.REQUIRED_TAG} not in this checkout (shallow clone or tag not fetched)")
+    import chromerag
+
     errors = fr.freeze_check_errors()
-    assert errors == []
+    if chromerag.__version__ == "0.1.5":
+        assert errors == []
+    else:
+        # Later releases differ from the evaluated code; the harness must refuse to run on them.
+        assert any("differ from tag" in e for e in errors)
 
 
 def test_freeze_check_reports_missing_tag(monkeypatch):
