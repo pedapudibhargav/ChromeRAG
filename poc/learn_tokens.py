@@ -19,6 +19,7 @@ import hashlib
 import json
 import re
 from collections import Counter, defaultdict
+from pathlib import Path
 from urllib.parse import urlparse
 
 from bs4 import Tag
@@ -33,8 +34,23 @@ CONTENT_MIN = 0.80
 
 
 def site_of(url: str) -> str:
+    """Hostname (netloc without ``www.``) for token-learning site sets."""
     host = urlparse(url).netloc.lower().removeprefix("www.")
     return host
+
+
+def cv_site_of(url: str) -> str:
+    """Registrable domain for WCXB CV folds and site-level bootstrap."""
+    from poc.psl import registrable_domain
+
+    dom = registrable_domain(url)
+    return dom if dom else site_of(url)
+
+
+def cv_fold(url: str) -> int:
+    import zlib
+
+    return zlib.crc32(cv_site_of(url).encode()) % 5
 
 
 def half(site: str) -> str:
@@ -57,16 +73,21 @@ def names_of(tag: Tag) -> list[str]:
     return list(dict.fromkeys(out))
 
 
-def scan(split: str) -> dict[str, dict]:
+def scan(split: str, ids_path: str | None = None) -> dict[str, dict]:
     stats: dict[str, dict] = defaultdict(
         lambda: {"noise": Counter(), "content": Counter(), "sites_noise": defaultdict(set),
                  "sites_content": defaultdict(set), "chars_noise": 0, "chars_content": 0, "types": Counter()}
     )
+    allow: frozenset[str] | None = None
+    if ids_path:
+        allow = frozenset(json.loads(Path(ids_path).read_text(encoding="utf-8")))
     for page in load_split(split):
+        if allow is not None and page.id not in allow:
+            continue
         ref = set(tokenize(page.main_content))
         if len(ref) < 30:
             continue
-        site, h = site_of(page.url), None
+        site, h = cv_site_of(page.url), None
         h = half(site)
         soup = parse_html(page.html)
         strip_non_content_tags(soup)
@@ -130,13 +151,14 @@ def summarize(stats: dict[str, dict], min_sites: int) -> list[dict]:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--split", default="dev", choices=["dev"])
+    ap.add_argument("--ids", default=None, help="JSON list of page ids to include")
     ap.add_argument("--min-sites", type=int, default=4)
     ap.add_argument("--subtokens", action="store_true")
     ap.add_argument("--out", default="/tmp/cr/tokens.json")
     a = ap.parse_args()
     global SPLIT
     SPLIT = a.subtokens
-    rows = summarize(scan(a.split), a.min_sites)
+    rows = summarize(scan(a.split, a.ids), a.min_sites)
     with open(a.out, "w", encoding="utf-8") as fh:
         json.dump(rows, fh, indent=1)
     print(len(rows), "names ->", a.out)

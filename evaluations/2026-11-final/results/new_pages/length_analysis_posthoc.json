@@ -1,0 +1,163 @@
+{
+  "post_hoc": true,
+  "basis": "saved verdicts and output lengths",
+  "trafilatura": {
+    "all": {
+      "pairs": 296,
+      "chromerag": 158,
+      "baseline": 114,
+      "tie": 24,
+      "net": 0.149,
+      "ci95": [
+        0.044,
+        0.253
+      ]
+    },
+    "similar_length": {
+      "pairs": 109,
+      "chromerag": 49,
+      "baseline": 40,
+      "tie": 20,
+      "net": 0.083,
+      "ci95": [
+        -0.083,
+        0.257
+      ]
+    },
+    "chromerag_longer": {
+      "pairs": 121,
+      "chromerag": 85,
+      "baseline": 34,
+      "tie": 2,
+      "net": 0.421,
+      "ci95": [
+        0.256,
+        0.579
+      ]
+    },
+    "baseline_longer": {
+      "pairs": 66,
+      "chromerag": 24,
+      "baseline": 40,
+      "tie": 2,
+      "net": -0.242,
+      "ci95": [
+        -0.47,
+        -0.015
+      ]
+    },
+    "chromerag_longer_share": 0.588,
+    "win_probability_at_equal_length": {
+      "estimate": 0.577,
+      "ci95": [
+        0.513,
+        0.641
+      ]
+    }
+  },
+  "readability": {
+    "all": {
+      "pairs": 296,
+      "chromerag": 182,
+      "baseline": 97,
+      "tie": 17,
+      "net": 0.287,
+      "ci95": [
+        0.179,
+        0.395
+      ]
+    },
+    "similar_length": {
+      "pairs": 102,
+      "chromerag": 47,
+      "baseline": 42,
+      "tie": 13,
+      "net": 0.049,
+      "ci95": [
+        -0.137,
+        0.235
+      ]
+    },
+    "chromerag_longer": {
+      "pairs": 160,
+      "chromerag": 126,
+      "baseline": 34,
+      "tie": 0,
+      "net": 0.575,
+      "ci95": [
+        0.438,
+        0.7
+      ]
+    },
+    "baseline_longer": {
+      "pairs": 34,
+      "chromerag": 9,
+      "baseline": 21,
+      "tie": 4,
+      "net": -0.353,
+      "ci95": [
+        -0.647,
+        -0.059
+      ]
+    },
+    "chromerag_longer_share": 0.726,
+    "win_probability_at_equal_length": {
+      "estimate": 0.523,
+      "ci95": [
+        0.449,
+        0.601
+      ]
+    }
+  },
+  "markitdown": {
+    "all": {
+      "pairs": 296,
+      "chromerag": 143,
+      "baseline": 151,
+      "tie": 2,
+      "net": -0.027,
+      "ci95": [
+        -0.139,
+        0.081
+      ]
+    },
+    "similar_length": {
+      "pairs": 1,
+      "chromerag": 0,
+      "baseline": 0,
+      "tie": 1,
+      "net": 0.0,
+      "ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    "chromerag_longer": {
+      "pairs": 0,
+      "chromerag": 0,
+      "baseline": 0,
+      "tie": 0,
+      "net": null,
+      "ci95": null
+    },
+    "baseline_longer": {
+      "pairs": 295,
+      "chromerag": 143,
+      "baseline": 151,
+      "tie": 1,
+      "net": -0.027,
+      "ci95": [
+        -0.142,
+        0.092
+      ]
+    },
+    "chromerag_longer_share": 0.0,
+    "win_probability_at_equal_length": {
+      "estimate": 0.683,
+      "ci95": [
+        0.587,
+        0.78
+      ]
+    }
+  }
+}

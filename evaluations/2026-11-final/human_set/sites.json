@@ -1,0 +1,121 @@
+{
+  "note": "Sites approved by the author on 2026-11-02 before any contact. Scripts are off for forums.",
+  "groups": {
+    "technology": [
+      "docs.aws.amazon.com",
+      "aws.amazon.com",
+      "learn.microsoft.com",
+      "azure.microsoft.com",
+      "cloud.google.com",
+      "developer.mozilla.org",
+      "docs.github.com",
+      "ibm.com",
+      "oracle.com",
+      "redhat.com"
+    ],
+    "ai": [
+      "openai.com",
+      "anthropic.com",
+      "deepmind.google",
+      "ai.google.dev",
+      "ai.meta.com",
+      "nvidia.com",
+      "mistral.ai",
+      "cohere.com",
+      "databricks.com",
+      "huggingface.co/docs"
+    ],
+    "data_center": [
+      "digitalrealty.com",
+      "ironmountain.com",
+      "qtsdatacenters.com",
+      "cyrusone.com",
+      "vertiv.com",
+      "se.com",
+      "uptimeinstitute.com"
+    ],
+    "medical": [
+      "nih.gov",
+      "medlineplus.gov",
+      "cancer.gov",
+      "cdc.gov",
+      "fda.gov",
+      "who.int",
+      "mayoclinic.org",
+      "clevelandclinic.org",
+      "hopkinsmedicine.org",
+      "nhs.uk"
+    ],
+    "finance": [
+      "jpmorganchase.com",
+      "goldmansachs.com",
+      "visa.com",
+      "mastercard.com",
+      "federalreserve.gov",
+      "sec.gov"
+    ],
+    "pharma": [
+      "pfizer.com",
+      "jnj.com"
+    ],
+    "retail": [
+      "apple.com",
+      "dell.com",
+      "bestbuy.com",
+      "homedepot.com",
+      "lowes.com",
+      "target.com"
+    ],
+    "automotive": [
+      "toyota.com",
+      "ford.com"
+    ],
+    "energy": [
+      "energy.gov",
+      "exxonmobil.com",
+      "shell.com"
+    ],
+    "manufacturing": [
+      "boeing.com",
+      "siemens.com",
+      "caterpillar.com"
+    ],
+    "telecom": [
+      "verizon.com",
+      "att.com"
+    ],
+    "logistics": [
+      "ups.com",
+      "fedex.com"
+    ],
+    "forum": [
+      "stackoverflow.com/questions",
+      "superuser.com/questions",
+      "serverfault.com/questions",
+      "learn.microsoft.com/en-us/answers",
+      "repost.aws/questions",
+      "techcommunity.microsoft.com/t5",
+      "discuss.python.org/t",
+      "discuss.pytorch.org/t",
+      "community.cisco.com/t5",
+      "support.mozilla.org/en-US/questions",
+      "discussion.fedoraproject.org/t",
+      "discourse.ubuntu.com/t",
+      "forums.docker.com/t",
+      "forums.developer.nvidia.com/t"
+    ],
+    "reference": [
+      "en.wikipedia.org/wiki",
+      "britannica.com",
+      "mit.edu",
+      "stanford.edu",
+      "nasa.gov",
+      "usa.gov",
+      "weather.gov",
+      "census.gov"
+    ]
+  },
+  "scripts_off_groups": [
+    "forum"
+  ]
+}

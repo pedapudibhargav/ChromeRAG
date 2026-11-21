@@ -1,0 +1,101 @@
+[
+ {
+  "id": "human-0026",
+  "page_words": 13951,
+  "output_words": {
+   "chromerag": 4454,
+   "trafilatura": 12018,
+   "readability": 12037
+  },
+  "rule": "page text over 8000 words (13951)",
+  "replaced_by": null
+ },
+ {
+  "id": "human-0134",
+  "page_words": 822,
+  "output_words": {
+   "chromerag": 61,
+   "trafilatura": 56,
+   "readability": 7
+  },
+  "rule": "all three tools under 80 words",
+  "replaced_by": null
+ },
+ {
+  "id": "human-0050",
+  "page_words": 464,
+  "output_words": {
+   "chromerag": 16,
+   "trafilatura": 29,
+   "readability": 27
+  },
+  "rule": "all three tools under 80 words",
+  "replaced_by": null
+ },
+ {
+  "id": "human-0118",
+  "page_words": 8391,
+  "output_words": {
+   "chromerag": 6337,
+   "trafilatura": 7024,
+   "readability": 7471
+  },
+  "rule": "page text over 8000 words (8391)",
+  "replaced_by": null
+ },
+ {
+  "id": "human-0094",
+  "page_words": 900,
+  "output_words": {
+   "chromerag": 11,
+   "trafilatura": 56,
+   "readability": 19
+  },
+  "rule": "all three tools under 80 words",
+  "replaced_by": "human-0101"
+ },
+ {
+  "id": "human-0137",
+  "page_words": 10470,
+  "output_words": {
+   "chromerag": 19533,
+   "trafilatura": 16622,
+   "readability": 8250
+  },
+  "rule": "page text over 8000 words (10470)",
+  "replaced_by": "human-0071"
+ },
+ {
+  "id": "human-0069",
+  "page_words": 159,
+  "output_words": {
+   "chromerag": 19,
+   "trafilatura": 19,
+   "readability": 15
+  },
+  "rule": "all three tools under 80 words",
+  "replaced_by": "human-0060"
+ },
+ {
+  "id": "human-0131",
+  "page_words": 358,
+  "output_words": {
+   "chromerag": 58,
+   "trafilatura": 58,
+   "readability": 41
+  },
+  "rule": "all three tools under 80 words",
+  "replaced_by": "human-0007"
+ },
+ {
+  "id": "human-0130",
+  "page_words": 355,
+  "output_words": {
+   "chromerag": 78,
+   "trafilatura": 70,
+   "readability": 19
+  },
+  "rule": "all three tools under 80 words",
+  "replaced_by": "human-0119"
+ }
+]

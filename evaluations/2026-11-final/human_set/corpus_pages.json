@@ -1,0 +1,608 @@
+[
+ {
+  "id": "human-0027",
+  "url": "https://www.anthropic.com/research/introspection",
+  "page_type": "ai",
+  "site": "anthropic.com"
+ },
+ {
+  "id": "human-0026",
+  "url": "https://www.anthropic.com/research/anthropic-economic-index-january-2026-report",
+  "page_type": "ai",
+  "site": "anthropic.com"
+ },
+ {
+  "id": "human-0079",
+  "url": "https://www.apple.com/retail/danburyfairmall/",
+  "page_type": "retail",
+  "site": "apple.com"
+ },
+ {
+  "id": "human-0081",
+  "url": "https://www.apple.com/retail/higuerastreet/",
+  "page_type": "retail",
+  "site": "apple.com"
+ },
+ {
+  "id": "human-0114",
+  "url": "https://www.att.com/device-compare/samsung-galaxy-a16-5g-vs-samsung-galaxy-a17-5g/",
+  "page_type": "telecom",
+  "site": "att.com"
+ },
+ {
+  "id": "human-0112",
+  "url": "https://www.att.com/support/smallbusiness/article/internet/KM1254799/",
+  "page_type": "telecom",
+  "site": "att.com"
+ },
+ {
+  "id": "human-0003",
+  "url": "https://aws.amazon.com/solutions/guidance/credit-unions-to-evaluate-ffiec-compliance-on-aws/",
+  "page_type": "technology",
+  "site": "aws.amazon.com"
+ },
+ {
+  "id": "human-0002",
+  "url": "https://aws.amazon.com/solutions/case-studies/innovators/snap/",
+  "page_type": "technology",
+  "site": "aws.amazon.com"
+ },
+ {
+  "id": "human-0104",
+  "url": "https://www.boeing.com/features/2026/09/leveling-up-service-with-launch-of-last-satellites",
+  "page_type": "manufacturing",
+  "site": "boeing.com"
+ },
+ {
+  "id": "human-0105",
+  "url": "https://www.boeing.com/space/starliner",
+  "page_type": "manufacturing",
+  "site": "boeing.com"
+ },
+ {
+  "id": "human-0121",
+  "url": "https://www.britannica.com/topic/Treaty-of-Cordoba",
+  "page_type": "reference",
+  "site": "britannica.com"
+ },
+ {
+  "id": "human-0123",
+  "url": "https://www.britannica.com/topic/The-Man-Within",
+  "page_type": "reference",
+  "site": "britannica.com"
+ },
+ {
+  "id": "human-0135",
+  "url": "https://www.census.gov/library/publications/2007/acs/acs-06.html",
+  "page_type": "reference",
+  "site": "census.gov"
+ },
+ {
+  "id": "human-0134",
+  "url": "https://www.census.gov/library/visualizations/interactive/grocery-store-sales.html",
+  "page_type": "reference",
+  "site": "census.gov"
+ },
+ {
+  "id": "human-0066",
+  "url": "https://my.clevelandclinic.org/podcasts/health-essentials/can-your-joints-predict-the-weather",
+  "page_type": "medical",
+  "site": "clevelandclinic.org"
+ },
+ {
+  "id": "human-0065",
+  "url": "https://my.clevelandclinic.org/podcasts/beyond-leadership",
+  "page_type": "medical",
+  "site": "clevelandclinic.org"
+ },
+ {
+  "id": "human-0007",
+  "url": "https://cloud.google.com/blog/topics/training-certifications",
+  "page_type": "technology",
+  "site": "cloud.google.com"
+ },
+ {
+  "id": "human-0038",
+  "url": "https://cohere.com/blog/classification-eval-metrics",
+  "page_type": "ai",
+  "site": "cohere.com"
+ },
+ {
+  "id": "human-0039",
+  "url": "https://cohere.com/research/papers/rlhf-can-speak-many-languages-unlocking-multilingual-preference-optimization-for-llms-2024-07-05",
+  "page_type": "ai",
+  "site": "cohere.com"
+ },
+ {
+  "id": "human-0050",
+  "url": "https://www.cyrusone.com/resources/media-coverage/data-centers-break-ground-on-1-7m-square-feet-of-space-on-far-west-side",
+  "page_type": "data_center",
+  "site": "cyrusone.com"
+ },
+ {
+  "id": "human-0043",
+  "url": "https://www.databricks.com/blog/what-is-data-storytelling",
+  "page_type": "ai",
+  "site": "databricks.com"
+ },
+ {
+  "id": "human-0042",
+  "url": "https://www.databricks.com/blog/ai-applications",
+  "page_type": "ai",
+  "site": "databricks.com"
+ },
+ {
+  "id": "human-0029",
+  "url": "https://deepmind.google/research/publications/42798/",
+  "page_type": "ai",
+  "site": "deepmind.google"
+ },
+ {
+  "id": "human-0030",
+  "url": "https://deepmind.google/blog/deepminds-latest-research-at-iclr-2023/",
+  "page_type": "ai",
+  "site": "deepmind.google"
+ },
+ {
+  "id": "human-0082",
+  "url": "https://www.dell.com/en-sg/shop/dell-poweredge-servers/scr/laptop",
+  "page_type": "retail",
+  "site": "dell.com"
+ },
+ {
+  "id": "human-0009",
+  "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development",
+  "page_type": "technology",
+  "site": "developer.mozilla.org"
+ },
+ {
+  "id": "human-0010",
+  "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout",
+  "page_type": "technology",
+  "site": "developer.mozilla.org"
+ },
+ {
+  "id": "human-0047",
+  "url": "https://www.digitalrealty.com/expertise/solutions/utilities",
+  "page_type": "data_center",
+  "site": "digitalrealty.com"
+ },
+ {
+  "id": "human-0048",
+  "url": "https://www.digitalrealty.com/expertise/solutions/manufacturing",
+  "page_type": "data_center",
+  "site": "digitalrealty.com"
+ },
+ {
+  "id": "human-0000",
+  "url": "https://docs.aws.amazon.com/solutions/creating-super-slow-motion-videos-using-generative-ai-on-aws/",
+  "page_type": "technology",
+  "site": "docs.aws.amazon.com"
+ },
+ {
+  "id": "human-0011",
+  "url": "https://docs.github.com/en/copilot/tutorials",
+  "page_type": "technology",
+  "site": "docs.github.com"
+ },
+ {
+  "id": "human-0012",
+  "url": "https://docs.github.com/en/code-security",
+  "page_type": "technology",
+  "site": "docs.github.com"
+ },
+ {
+  "id": "human-0118",
+  "url": "https://en.wikipedia.org/wiki/Rila",
+  "page_type": "reference",
+  "site": "en.wikipedia.org/wiki"
+ },
+ {
+  "id": "human-0119",
+  "url": "https://en.wikipedia.org/wiki/Europejara",
+  "page_type": "reference",
+  "site": "en.wikipedia.org/wiki"
+ },
+ {
+  "id": "human-0094",
+  "url": "https://www.energy.gov/topics",
+  "page_type": "energy",
+  "site": "energy.gov"
+ },
+ {
+  "id": "human-0096",
+  "url": "https://www.energy.gov/topics/nuclear-energy",
+  "page_type": "energy",
+  "site": "energy.gov"
+ },
+ {
+  "id": "human-0062",
+  "url": "https://www.fda.gov/food/sampling-protect-food-supply/microbiological-surveillance-sampling-fy14-16-raw-milk-cheese-aged-60-days",
+  "page_type": "medical",
+  "site": "fda.gov"
+ },
+ {
+  "id": "human-0063",
+  "url": "https://www.fda.gov/food/laboratory-methods-food/elemental-analysis-manual-eam-history-and-access-archived-material",
+  "page_type": "medical",
+  "site": "fda.gov"
+ },
+ {
+  "id": "human-0137",
+  "url": "https://www.federalreserve.gov/releases/h8/current/default.htm",
+  "page_type": "finance",
+  "site": "federalreserve.gov"
+ },
+ {
+  "id": "human-0136",
+  "url": "https://www.federalreserve.gov/aboutthefed/the-fed-explained.htm",
+  "page_type": "finance",
+  "site": "federalreserve.gov"
+ },
+ {
+  "id": "human-0116",
+  "url": "https://www.fedex.com/en-us/customer-support/faqs/receiving/delivery/when-where-pickup-my-package.html",
+  "page_type": "logistics",
+  "site": "fedex.com"
+ },
+ {
+  "id": "human-0117",
+  "url": "https://www.fedex.com/en-in/ancillary-clearance-service.html",
+  "page_type": "logistics",
+  "site": "fedex.com"
+ },
+ {
+  "id": "human-0092",
+  "url": "https://www.ford.com/awards/",
+  "page_type": "automotive",
+  "site": "ford.com"
+ },
+ {
+  "id": "human-0074",
+  "url": "https://www.goldmansachs.com/insights/goldman-sachs-exchanges/stagflation-and-the-feds-next-move",
+  "page_type": "finance",
+  "site": "goldmansachs.com"
+ },
+ {
+  "id": "human-0075",
+  "url": "https://www.goldmansachs.com/community-transformation/10000-women",
+  "page_type": "finance",
+  "site": "goldmansachs.com"
+ },
+ {
+  "id": "human-0083",
+  "url": "https://www.homedepot.com/c/alp/pro-guides/2d9f/5",
+  "page_type": "retail",
+  "site": "homedepot.com"
+ },
+ {
+  "id": "human-0084",
+  "url": "https://www.homedepot.com/c/alp/outdoor-living-ideas/157n-157n/22",
+  "page_type": "retail",
+  "site": "homedepot.com"
+ },
+ {
+  "id": "human-0045",
+  "url": "https://huggingface.co/docs/trackio/index",
+  "page_type": "ai",
+  "site": "huggingface.co/docs"
+ },
+ {
+  "id": "human-0014",
+  "url": "https://newsroom.ibm.com/2026-10-07-ibm-advances-to-stage-c-of-darpa-quantum-benchmarking-initiative",
+  "page_type": "technology",
+  "site": "ibm.com"
+ },
+ {
+  "id": "human-0015",
+  "url": "https://newsroom.ibm.com/2026-10-22-ibm-and-scuderia-ferrari-hp-expand-ai-powered-fan-experience-ahead-of-the-united-states-grand-prix",
+  "page_type": "technology",
+  "site": "ibm.com"
+ },
+ {
+  "id": "human-0071",
+  "url": "https://www.jpmorganchase.com/institute/all-topics/business-growth-and-entrepreneurship/denver-small-business-snapshot",
+  "page_type": "finance",
+  "site": "jpmorganchase.com"
+ },
+ {
+  "id": "human-0073",
+  "url": "https://www.jpmorganchase.com/newsroom/stories/equitabledevelopment",
+  "page_type": "finance",
+  "site": "jpmorganchase.com"
+ },
+ {
+  "id": "human-0006",
+  "url": "https://learn.microsoft.com/en-us/previous-versions/",
+  "page_type": "technology",
+  "site": "learn.microsoft.com"
+ },
+ {
+  "id": "human-0004",
+  "url": "https://learn.microsoft.com/en-us/docs/",
+  "page_type": "technology",
+  "site": "learn.microsoft.com"
+ },
+ {
+  "id": "human-0140",
+  "url": "https://learn.microsoft.com/en-us/answers/questions/5679548/client-secrets-are-blocked-by-a-tenant-wide-policy",
+  "page_type": "forum",
+  "site": "learn.microsoft.com/en-us/answers"
+ },
+ {
+  "id": "human-0141",
+  "url": "https://learn.microsoft.com/en-us/answers/questions/5730991/how-do-i-update-the-group-me-app-on-my-iphone",
+  "page_type": "forum",
+  "site": "learn.microsoft.com/en-us/answers"
+ },
+ {
+  "id": "human-0086",
+  "url": "https://www.lowes.com/l/savings/tools-savings",
+  "page_type": "retail",
+  "site": "lowes.com"
+ },
+ {
+  "id": "human-0087",
+  "url": "https://www.lowes.com/l/Pro",
+  "page_type": "retail",
+  "site": "lowes.com"
+ },
+ {
+  "id": "human-0036",
+  "url": "https://mistral.ai/news/mixtral-8x22b/",
+  "page_type": "ai",
+  "site": "mistral.ai"
+ },
+ {
+  "id": "human-0035",
+  "url": "https://mistral.ai/customers/austrian-academy-of-sciences/",
+  "page_type": "ai",
+  "site": "mistral.ai"
+ },
+ {
+  "id": "human-0124",
+  "url": "https://www.mit.edu/education/",
+  "page_type": "reference",
+  "site": "mit.edu"
+ },
+ {
+  "id": "human-0125",
+  "url": "https://www.mit.edu/accessibility/",
+  "page_type": "reference",
+  "site": "mit.edu"
+ },
+ {
+  "id": "human-0142",
+  "url": "https://www.nasa.gov/blogs/stationreport/2022/11/03/iss-daily-summary-report-11-03-2022/",
+  "page_type": "reference",
+  "site": "nasa.gov"
+ },
+ {
+  "id": "human-0143",
+  "url": "https://www.nasa.gov/news-release/nasa-astronaut-kjell-lindgren-available-for-interviews-before-space-station-mission/",
+  "page_type": "reference",
+  "site": "nasa.gov"
+ },
+ {
+  "id": "human-0069",
+  "url": "https://www.nhs.uk/services/gp-surgery/limbrick-wood-surgery/M86605",
+  "page_type": "medical",
+  "site": "nhs.uk"
+ },
+ {
+  "id": "human-0060",
+  "url": "https://www.nih.gov/challenges/integration-nutrition-training-into-health-care-education-challenge",
+  "page_type": "medical",
+  "site": "nih.gov"
+ },
+ {
+  "id": "human-0061",
+  "url": "https://www.nih.gov/brain/research",
+  "page_type": "medical",
+  "site": "nih.gov"
+ },
+ {
+  "id": "human-0032",
+  "url": "https://www.nvidia.com/en-au/networking/linux-lab-guide/",
+  "page_type": "ai",
+  "site": "nvidia.com"
+ },
+ {
+  "id": "human-0034",
+  "url": "https://www.nvidia.com/en-au/industries/healthcare-life-sciences/medical-imaging/product-updates/",
+  "page_type": "ai",
+  "site": "nvidia.com"
+ },
+ {
+  "id": "human-0024",
+  "url": "https://openai.com/index/third-person-imitation-learning/",
+  "page_type": "ai",
+  "site": "openai.com"
+ },
+ {
+  "id": "human-0025",
+  "url": "https://openai.com/index/improved-techniques-for-training-consistency-models/",
+  "page_type": "ai",
+  "site": "openai.com"
+ },
+ {
+  "id": "human-0017",
+  "url": "https://www.oracle.com/customers/oracle-it/",
+  "page_type": "technology",
+  "site": "oracle.com"
+ },
+ {
+  "id": "human-0021",
+  "url": "https://www.redhat.com/en/topics/linux/what-is-the-linux-kernel",
+  "page_type": "technology",
+  "site": "redhat.com"
+ },
+ {
+  "id": "human-0022",
+  "url": "https://www.redhat.com/en/topics/financial-services/cloud-services-for-financial-services",
+  "page_type": "technology",
+  "site": "redhat.com"
+ },
+ {
+  "id": "human-0102",
+  "url": "https://www.shell.com/business-customers/industrial-lubricants-and-specialty-fluids-for-business/applications/power-engine-oils.html",
+  "page_type": "energy",
+  "site": "shell.com"
+ },
+ {
+  "id": "human-0101",
+  "url": "https://www.shell.com/news-and-insights/our-stories.html",
+  "page_type": "energy",
+  "site": "shell.com"
+ },
+ {
+  "id": "human-0106",
+  "url": "https://www.siemens.com/en-us/ecosystem/trips/",
+  "page_type": "manufacturing",
+  "site": "siemens.com"
+ },
+ {
+  "id": "human-0108",
+  "url": "https://www.siemens.com/en-us/products/gridscale-x/",
+  "page_type": "manufacturing",
+  "site": "siemens.com"
+ },
+ {
+  "id": "human-0129",
+  "url": "https://www.stanford.edu/academics/schools",
+  "page_type": "reference",
+  "site": "stanford.edu"
+ },
+ {
+  "id": "human-0128",
+  "url": "https://www.stanford.edu/varsity-blues-film",
+  "page_type": "reference",
+  "site": "stanford.edu"
+ },
+ {
+  "id": "human-0089",
+  "url": "https://www.toyota.com/vehicles/prius/2027",
+  "page_type": "automotive",
+  "site": "toyota.com"
+ },
+ {
+  "id": "human-0090",
+  "url": "https://www.toyota.com/about-us/fleet",
+  "page_type": "automotive",
+  "site": "toyota.com"
+ },
+ {
+  "id": "human-0057",
+  "url": "https://uptimeinstitute.com/events/leadership-events/2026-march-milan-leadership-forum",
+  "page_type": "data_center",
+  "site": "uptimeinstitute.com"
+ },
+ {
+  "id": "human-0131",
+  "url": "https://www.usa.gov/agencies/u-s-senate",
+  "page_type": "reference",
+  "site": "usa.gov"
+ },
+ {
+  "id": "human-0130",
+  "url": "https://www.usa.gov/states/montana",
+  "page_type": "reference",
+  "site": "usa.gov"
+ },
+ {
+  "id": "human-0109",
+  "url": "https://www.verizon.com/about/account-security/robocalls",
+  "page_type": "telecom",
+  "site": "verizon.com"
+ },
+ {
+  "id": "human-0110",
+  "url": "https://www.verizon.com/about/investors/oppenheimer-26th-annual-technology-internet-communications-conference",
+  "page_type": "telecom",
+  "site": "verizon.com"
+ },
+ {
+  "id": "human-0054",
+  "url": "https://www.vertiv.com/en-emea/",
+  "page_type": "data_center",
+  "site": "vertiv.com"
+ },
+ {
+  "id": "human-0055",
+  "url": "https://www.vertiv.com/en-us/solutions/ai-hub/",
+  "page_type": "data_center",
+  "site": "vertiv.com"
+ },
+ {
+  "id": "human-0077",
+  "url": "https://corporate.visa.com/en/sites/visa-foundation.html",
+  "page_type": "finance",
+  "site": "visa.com"
+ },
+ {
+  "id": "human-0078",
+  "url": "https://corporate.visa.com/en/about-visa.html",
+  "page_type": "finance",
+  "site": "visa.com"
+ },
+ {
+  "id": "human-0146",
+  "url": "https://www.repost.aws/questions/QUBMLx6bw4RNGffGKO-XNBrQ/filled-map-and-layer-map-visuals-fail-to-render-in-quicksight-dashboard-unable-to-render-chart",
+  "page_type": "forum",
+  "site": "repost.aws/questions"
+ },
+ {
+  "id": "human-0145",
+  "url": "https://www.repost.aws/questions/QUqlUV7dzORvueXod3k9m4ew/sns-mobile-push-support-for-firebase-installation-ids-fid-on-gcm-platform-applications",
+  "page_type": "forum",
+  "site": "repost.aws/questions"
+ },
+ {
+  "id": "human-0157",
+  "url": "https://discourse.ubuntu.com/t/error-trying-to-use-nvidia-390-driver/67449",
+  "page_type": "forum",
+  "site": "discourse.ubuntu.com/t"
+ },
+ {
+  "id": "human-0158",
+  "url": "https://discourse.ubuntu.com/t/loop-in-the-console-conf-initial-setup/62351",
+  "page_type": "forum",
+  "site": "discourse.ubuntu.com/t"
+ },
+ {
+  "id": "human-0150",
+  "url": "https://discuss.python.org/t/command-line-interface-for-the-random-module/51304",
+  "page_type": "forum",
+  "site": "discuss.python.org/t"
+ },
+ {
+  "id": "human-0148",
+  "url": "https://discuss.python.org/t/semantics-of-pep-508-url-requirements/40836",
+  "page_type": "forum",
+  "site": "discuss.python.org/t"
+ },
+ {
+  "id": "human-0153",
+  "url": "https://discuss.pytorch.org/t/backend-worker-monitoring-thread-interrupted-or-backend-worker-process-died/95413",
+  "page_type": "forum",
+  "site": "discuss.pytorch.org/t"
+ },
+ {
+  "id": "human-0152",
+  "url": "https://discuss.pytorch.org/t/aggregate-profiler-output-by-module-class/95116",
+  "page_type": "forum",
+  "site": "discuss.pytorch.org/t"
+ },
+ {
+  "id": "human-0161",
+  "url": "https://forums.docker.com/t/question-about-mysql-and-docker/2153",
+  "page_type": "forum",
+  "site": "forums.docker.com/t"
+ },
+ {
+  "id": "human-0160",
+  "url": "https://forums.docker.com/t/where-do-you-report-bugs-with-dhi-hardened-images/151064",
+  "page_type": "forum",
+  "site": "forums.docker.com/t"
+ }
+]

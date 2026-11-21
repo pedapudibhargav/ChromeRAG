@@ -1,0 +1,63 @@
+{
+  "public_suffix_list_version": "2026-10-31_14-17-28_UTC",
+  "near_duplicate_jaccard_threshold": 0.8,
+  "counts": {
+    "dev_eligible_start": 1473,
+    "after_leaked_ids": 1334,
+    "after_test_domain_exclusion": 1238,
+    "after_near_duplicate_guard": 1238,
+    "removed_leaked_ids": 139,
+    "removed_test_domain": 96,
+    "removed_near_duplicate": 0
+  },
+  "per_page_type": {
+    "start": {
+      "article": 791,
+      "service": 162,
+      "listing": 94,
+      "forum": 112,
+      "product": 113,
+      "documentation": 91,
+      "collection": 110
+    },
+    "final": {
+      "article": 668,
+      "service": 153,
+      "listing": 85,
+      "product": 81,
+      "documentation": 74,
+      "forum": 100,
+      "collection": 77
+    }
+  },
+  "test_registrable_domains": 443,
+  "shared_domain_dev_pages_before_exclusion": 233,
+  "near_duplicate_train_ids": [],
+  "fitted_artifacts": [
+    {
+      "path": "src/chromerag/assets/lbc_stage1.npz",
+      "rebuilt": "python -m poc.lbc_data --split dev --ids poc/wcxb_strict_train_ids.json --out data/outputs/lbc/lbc_strict.npz; python -m poc.train_lbc --data data/outputs/lbc/lbc_strict.npz --fit-all --out-dir src/chromerag/assets",
+      "notes": "Single-stage block classifier (no lbc_stage2.npz in release; enable_lbc_stage2 defaults true but second stage absent)."
+    },
+    {
+      "path": "data/outputs/tokens_strict.json",
+      "rebuilt": "python -m poc.learn_tokens --split dev --ids poc/wcxb_strict_train_ids.json --out data/outputs/tokens_strict.json",
+      "notes": "Review-only token candidates; not shipped in the package (NOISE_TOKENS in density.py is static)."
+    }
+  ],
+  "lbc_feature_matrix_pages": 1233,
+  "lbc_extraction_failed_ids": [
+    "0638",
+    "4147",
+    "4278",
+    "4314",
+    "4838"
+  ],
+  "shipped_lbc_stage1_npz": {
+    "path": "src/chromerag/assets/lbc_stage1.npz",
+    "bytes": 152432,
+    "sha256": "2e2fecb9386da21a75442373dbdc323b5284ffd5e95b1593f1290807c0265c8e",
+    "verified_against": "data/outputs/lbc/verify_a/lbc_stage1.npz",
+    "verified_match": true
+  }
+}

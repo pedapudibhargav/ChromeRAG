@@ -19,6 +19,8 @@ data/landing_raw/
 data/extra_raw/
 data/extra_raw_final/
 data/extra_raw_final2/
+# README and analysis commands write to out/
+out/
 
 # Local TLS bundles (never publish)
 infra/certs/
@@ -50,9 +52,18 @@ scripts/_ooxml_write.py
 _site/
 data/wcxb/
 data/landing_fresh_raw/
+data/final/
+evaluations/2026-11-final/cache/
 
 # blind human-rating app: third-party pages and ratings stay local
 data/human_eval/
+
+# evaluators: private bundles, results, and any key.json stay local
+evaluators/bundle/**
+!evaluators/bundle/.gitkeep
+evaluators/results/**
+!evaluators/results/.gitkeep
+**/key.json
 
 # Elsevier template (download; not redistributed)
 papers/softwarex/template/*.docx

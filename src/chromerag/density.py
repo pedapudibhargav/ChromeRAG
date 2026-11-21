@@ -183,9 +183,28 @@ def looks_like_noise(
     if not isinstance(tag, Tag) or not tag.name:
         return False
 
-    # An <article>'s own <header> holds the page title (Docusaurus, MkDocs, Hugo themes): that is content.
-    if tag.name == "header" and tag.find("h1") is not None and tag.find_parent(["article", "main"]) is not None:
-        return False
+    # An <article>/<main> heading header is content only when it is not site chrome.
+    if tag.name == "header" and (
+        tag.find_parent("article") is not None
+        or (tag.find("h1") is not None and tag.find_parent("main") is not None)
+    ):
+        has_heading = tag.find(["h1", "h2", "h3", "h4"]) is not None
+        has_nav = tag.find("nav") is not None
+        tokens = cache.attr_tokens(tag) if cache else _attr_tokens(tag)
+        role = ""
+        if getattr(tag, "attrs", None):
+            role = (tag.get("role") or "").lower()
+        blob = cache.attrs_blob(tag) if cache else _attrs_blob(tag)
+        chrome = bool(tokens & NOISE_TOKENS) or role in {
+            "navigation",
+            "banner",
+            "complementary",
+            "contentinfo",
+            "search",
+            "menu",
+        } or bool(blob and NOISE_ID_CLASS_RE.search(blob))
+        if has_heading and not has_nav and not chrome:
+            return False
 
     # Never treat the primary content landmark (or a wrapper around it) as chrome.
     if tag.name == "main" or (tag.get("role") or "").lower() == "main":
@@ -377,11 +396,18 @@ _SHALLOW_CHILD_TAGS = frozenset({"div", "section", "p", "ul", "ol", "table", "ar
 def _is_shallow_text_block(tag: Tag, stats: TreeStats | None = None) -> bool:
     """True if div/section has direct text and few nested block children."""
     child_blocks = 0
+    direct_text = False
     for child in tag.children:
         if isinstance(child, Tag) and child.name in _SHALLOW_CHILD_TAGS:
             child_blocks += 1
             if child_blocks > 1:
                 return False
+        elif isinstance(child, NavigableString) and child.strip():
+            direct_text = True
+    # A lone block child with no text of its own is a pass-through wrapper; only the inner
+    # node is a candidate, which keeps deep unclosed-tag chains linear.
+    if child_blocks == 1 and not direct_text:
+        return False
     text_len = stats.text_len(tag) if stats is not None else len(tag.get_text(" ", strip=True))
     return text_len >= 40
 

@@ -1,0 +1,45 @@
+ABOUT THIS STUDY
+================
+
+Please read this before you start, and reply by email as described at the end.
+
+Thanks for helping. This rating task is part of a study for a journal paper about tools that
+pull the main text out of web pages.
+
+What you will do
+  Compare text outputs against web pages in an app on your own computer: {N_ITEMS} items,
+  about {HOURS} hours, in as many sittings as you like. Pages are public company and government
+  pages. Some show public names, such as forum usernames or press contacts.
+
+Your choice
+  Taking part is voluntary. You can stop at any time without giving a reason, and your ratings
+  will then not be used. You can ask to withdraw your ratings until the paper is submitted.
+
+Risks
+  There is no known risk beyond ordinary computer work. The pages are saved copies of public
+  web pages, and the app does not connect to any website.
+
+Your data
+  The app records your ratings, any notes you write and the time spent, under the rater name
+  you choose when you start it. Before anything is published, every rater name is replaced with
+  a neutral code such as rater-07, so your chosen name never appears in the published data.
+  Your ratings, under that code, may be published with the paper. The paper describes raters
+  only as a group. Your real name is used only if you ask to be acknowledged. Your email stays
+  private with the person who sent you this folder.
+
+Payment
+  As agreed with the person who sent you this folder.
+
+Before you start, please reply by email to the person who sent you this folder with:
+  1. "I have read this note and agree to take part, and to my ratings being used and published
+     as described."
+  2. Your general background, in a few words.
+  3. Your experience with search or AI systems: none, some or a lot.
+  4. Whether you have worked with them on any web-text extraction tool.
+  5. Whether you want to be named in the acknowledgements or stay anonymous.
+  6. The rater name you will use.
+
+When you finish, email the results file the app names, and confirm that you rated alone and
+did not use AI tools to decide.
+
+How to run the app is in START_HERE.txt. What to judge is in HANDOUT.md.

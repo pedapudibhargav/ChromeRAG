@@ -1,0 +1,2567 @@
+{
+ "schema_version": 1,
+ "bundle_id": "rating-set-2026-11",
+ "rater": "rater-03",
+ "app_version": "1.1.0",
+ "items": {
+  "item-fb83f61eeb": {
+   "item_id": "item-fb83f61eeb",
+   "best": [],
+   "all_same": true,
+   "none_good": false,
+   "scores": {
+    "B": {
+     "content": 5,
+     "chrome": 5
+    },
+    "A": {
+     "content": 5,
+     "chrome": 5
+    },
+    "C": {
+     "content": 5,
+     "chrome": 5
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 192.35339999997615,
+   "shown_order": [
+    "B",
+    "A",
+    "C"
+   ]
+  },
+  "item-d0ca182443": {
+   "item_id": "item-d0ca182443",
+   "best": [
+    "C",
+    "B",
+    "A"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "A": {
+     "content": 4,
+     "chrome": 5
+    },
+    "C": {
+     "content": 4,
+     "chrome": 5
+    },
+    "B": {
+     "content": 4,
+     "chrome": 5
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 100.59010000002384,
+   "shown_order": [
+    "A",
+    "C",
+    "B"
+   ]
+  },
+  "item-5e9e736a83": {
+   "item_id": "item-5e9e736a83",
+   "best": [
+    "A",
+    "C",
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "A": {
+     "content": 4,
+     "chrome": 5
+    },
+    "C": {
+     "content": 4,
+     "chrome": 5
+    },
+    "B": {
+     "chrome": 4,
+     "content": 5
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 69.82749999999999,
+   "shown_order": [
+    "A",
+    "C",
+    "B"
+   ]
+  },
+  "item-03fded232a": {
+   "item_id": "item-03fded232a",
+   "best": [
+    "B",
+    "A"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "B": {
+     "content": 3,
+     "chrome": 5
+    },
+    "A": {
+     "chrome": 3,
+     "content": 4
+    },
+    "C": {
+     "content": 1,
+     "chrome": 3
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 281.468599999994,
+   "shown_order": [
+    "B",
+    "A",
+    "C"
+   ]
+  },
+  "item-ec389c7ce8": {
+   "item_id": "item-ec389c7ce8",
+   "best": [
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "A": {
+     "content": 2,
+     "chrome": 2
+    },
+    "B": {
+     "content": 5,
+     "chrome": 4
+    },
+    "C": {
+     "content": 1,
+     "chrome": 3
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 139.391,
+   "shown_order": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  "item-a670f63ae7": {
+   "item_id": "item-a670f63ae7",
+   "best": [
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "A": {
+     "content": 1,
+     "chrome": 2
+    },
+    "B": {
+     "content": 5,
+     "chrome": 3
+    },
+    "C": {
+     "content": 4,
+     "chrome": 3
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 119.02429999998213,
+   "shown_order": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  "item-f40f921618": {
+   "item_id": "item-f40f921618",
+   "best": [
+    "C"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "B": {
+     "content": 4,
+     "chrome": 4
+    },
+    "C": {
+     "content": 5,
+     "chrome": 4
+    },
+    "A": {
+     "content": 5,
+     "chrome": 5
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 118.33169999998809,
+   "shown_order": [
+    "B",
+    "C",
+    "A"
+   ]
+  },
+  "item-908007eeee": {
+   "item_id": "item-908007eeee",
+   "best": [
+    "C"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "C": {
+     "content": 5,
+     "chrome": 5
+    },
+    "A": {
+     "content": 4,
+     "chrome": 4
+    },
+    "B": {
+     "content": 1,
+     "chrome": 5
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 104.62309999999404,
+   "shown_order": [
+    "C",
+    "A",
+    "B"
+   ]
+  },
+  "item-c5bbe1ef63": {
+   "item_id": "item-c5bbe1ef63",
+   "best": [
+    "B",
+    "A"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "A": {
+     "content": 5,
+     "chrome": 4
+    },
+    "C": {
+     "content": 3,
+     "chrome": 5
+    },
+    "B": {
+     "chrome": 4,
+     "content": 5
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 61.34909999999405,
+   "shown_order": [
+    "A",
+    "C",
+    "B"
+   ]
+  },
+  "item-5bc396a31d": {
+   "item_id": "item-5bc396a31d",
+   "best": [],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "C": {
+     "content": 5,
+     "chrome": 4
+    },
+    "A": {
+     "content": 5,
+     "chrome": 4
+    },
+    "B": {}
+   },
+   "skipped": true,
+   "skip_reason": "HTML page looks like doesn't have proper content. Mostly noise",
+   "seconds_spent": 107.13859999999409,
+   "shown_order": [
+    "C",
+    "A",
+    "B"
+   ]
+  },
+  "item-5cc2bc853a": {
+   "item_id": "item-5cc2bc853a",
+   "best": [
+    "C"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "A": {
+     "content": 3,
+     "chrome": 5
+    },
+    "B": {
+     "content": 3,
+     "chrome": 5
+    },
+    "C": {
+     "content": 5,
+     "chrome": 4
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 4247.679000000001,
+   "shown_order": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  "item-08784edc1c": {
+   "item_id": "item-08784edc1c",
+   "best": [
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "C": {
+     "content": 4,
+     "chrome": 5
+    },
+    "A": {
+     "content": 4,
+     "chrome": 5
+    },
+    "B": {
+     "content": 5,
+     "chrome": 4
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 29.04480000001192,
+   "shown_order": [
+    "C",
+    "A",
+    "B"
+   ]
+  },
+  "item-d2ade8b1ba": {
+   "item_id": "item-d2ade8b1ba",
+   "best": [
+    "A"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "B": {
+     "content": 5,
+     "chrome": 5
+    },
+    "C": {
+     "content": 5,
+     "chrome": 5
+    },
+    "A": {
+     "content": 5,
+     "chrome": 5
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 35.91469999998808,
+   "shown_order": [
+    "B",
+    "C",
+    "A"
+   ]
+  },
+  "item-9c19b12b6e": {
+   "item_id": "item-9c19b12b6e",
+   "best": [
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "A": {
+     "content": 2,
+     "chrome": 2
+    },
+    "B": {
+     "content": 5,
+     "chrome": 5
+    },
+    "C": {
+     "content": 5,
+     "chrome": 4
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 95.89950000000002,
+   "shown_order": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  "item-fac7c19972": {
+   "item_id": "item-fac7c19972",
+   "best": [
+    "C"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "C": {
+     "content": 5,
+     "chrome": 4
+    },
+    "A": {
+     "content": 3,
+     "chrome": 5
+    },
+    "B": {
+     "content": 4,
+     "chrome": 4
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 99.67380000001191,
+   "shown_order": [
+    "C",
+    "A",
+    "B"
+   ]
+  },
+  "item-9753042398": {
+   "item_id": "item-9753042398",
+   "best": [
+    "A",
+    "C"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "C": {
+     "chrome": 4,
+     "content": 5
+    },
+    "B": {
+     "chrome": 4,
+     "content": 3
+    },
+    "A": {
+     "chrome": 4,
+     "content": 5
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 103.75450000000001,
+   "shown_order": [
+    "C",
+    "B",
+    "A"
+   ]
+  },
+  "item-52bef1616f": {
+   "item_id": "item-52bef1616f",
+   "best": [
+    "C",
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "C": {
+     "content": 5,
+     "chrome": 4
+    },
+    "B": {
+     "content": 5,
+     "chrome": 5
+    },
+    "A": {
+     "content": 3,
+     "chrome": 5
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 41.03880000001192,
+   "shown_order": [
+    "C",
+    "B",
+    "A"
+   ]
+  },
+  "item-5b385e7d76": {
+   "item_id": "item-5b385e7d76",
+   "best": [],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "C": {},
+    "A": {},
+    "B": {}
+   },
+   "skipped": true,
+   "skip_reason": "All the responses looks not useful. Looks like HTML page is not a good sample.",
+   "seconds_spent": 104.59790000003574,
+   "shown_order": [
+    "C",
+    "A",
+    "B"
+   ]
+  },
+  "item-a9781b7bed": {
+   "item_id": "item-a9781b7bed",
+   "best": [
+    "A"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "B": {
+     "content": 4,
+     "chrome": 5
+    },
+    "A": {
+     "content": 4,
+     "chrome": 5
+    },
+    "C": {
+     "content": 4,
+     "chrome": 5
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 70.56059999996424,
+   "shown_order": [
+    "B",
+    "A",
+    "C"
+   ]
+  },
+  "item-ccf5ce6769": {
+   "item_id": "item-ccf5ce6769",
+   "best": [
+    "B",
+    "C",
+    "A"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "C": {
+     "content": 4,
+     "chrome": 4
+    },
+    "B": {
+     "content": 4,
+     "chrome": 5
+    },
+    "A": {
+     "content": 4,
+     "chrome": 5
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 57.65710000008345,
+   "shown_order": [
+    "C",
+    "B",
+    "A"
+   ]
+  },
+  "item-d22cf41475": {
+   "item_id": "item-d22cf41475",
+   "best": [
+    "C"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "C": {
+     "content": 4,
+     "chrome": 3
+    },
+    "A": {
+     "chrome": 3,
+     "content": 5
+    },
+    "B": {
+     "chrome": 3,
+     "content": 3
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 91.7236999999881,
+   "shown_order": [
+    "C",
+    "A",
+    "B"
+   ]
+  },
+  "item-90114566ac": {
+   "item_id": "item-90114566ac",
+   "best": [
+    "A"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "A": {
+     "content": 5,
+     "chrome": 5
+    },
+    "B": {
+     "content": 4,
+     "chrome": 5
+    },
+    "C": {
+     "content": 4,
+     "chrome": 4
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 60.15689999997615,
+   "shown_order": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  "item-f408e654c7": {
+   "item_id": "item-f408e654c7",
+   "best": [
+    "C",
+    "A"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "B": {
+     "chrome": 4,
+     "content": 4
+    },
+    "C": {
+     "content": 4,
+     "chrome": 5
+    },
+    "A": {
+     "content": 5,
+     "chrome": 5
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 82.11839999997615,
+   "shown_order": [
+    "B",
+    "C",
+    "A"
+   ]
+  },
+  "item-1ab955b652": {
+   "item_id": "item-1ab955b652",
+   "best": [],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "A": {},
+    "C": {},
+    "B": {}
+   },
+   "skipped": true,
+   "skip_reason": "HTML has no valid content",
+   "seconds_spent": 4.079300000011921,
+   "shown_order": [
+    "A",
+    "C",
+    "B"
+   ]
+  },
+  "item-310680907e": {
+   "item_id": "item-310680907e",
+   "best": [
+    "A"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "C": {
+     "content": 3,
+     "chrome": 5
+    },
+    "B": {
+     "chrome": 3,
+     "content": 5
+    },
+    "A": {
+     "content": 4,
+     "chrome": 3
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 102.04649999999998,
+   "shown_order": [
+    "C",
+    "B",
+    "A"
+   ]
+  },
+  "item-c02b414b02": {
+   "item_id": "item-c02b414b02",
+   "best": [
+    "C",
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "B": {
+     "content": 4,
+     "chrome": 5
+    },
+    "C": {
+     "content": 5,
+     "chrome": 5
+    },
+    "A": {
+     "content": 3,
+     "chrome": 5
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 79.09200000000001,
+   "shown_order": [
+    "B",
+    "C",
+    "A"
+   ]
+  },
+  "item-763a8fbaa0": {
+   "item_id": "item-763a8fbaa0",
+   "best": [
+    "A",
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "A": {
+     "content": 3,
+     "chrome": 4
+    },
+    "C": {
+     "content": 3,
+     "chrome": 4
+    },
+    "B": {
+     "content": 4,
+     "missing": "questions itself are missing so FQA section extracted might not add value. On positive side RAG will have this information so there is a chance that LLM can answer user's questions if relevant. Better than skipping FAQ block all together. ",
+     "chrome": 5
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 3382.343700000051,
+   "shown_order": [
+    "A",
+    "C",
+    "B"
+   ]
+  },
+  "item-f22b693ac3": {
+   "item_id": "item-f22b693ac3",
+   "best": [
+    "A",
+    "C"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "C": {
+     "content": 5,
+     "chrome": 5
+    },
+    "A": {
+     "content": 5,
+     "chrome": 5
+    },
+    "B": {
+     "chrome": 3,
+     "content": 3
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 76.73239999997615,
+   "shown_order": [
+    "C",
+    "A",
+    "B"
+   ]
+  },
+  "item-4648dd529a": {
+   "item_id": "item-4648dd529a",
+   "best": [
+    "A",
+    "C"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "A": {
+     "content": 5,
+     "chrome": 4
+    },
+    "C": {
+     "content": 4,
+     "chrome": 5
+    },
+    "B": {
+     "chrome": 3,
+     "content": 3
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 57.41070000004768,
+   "shown_order": [
+    "A",
+    "C",
+    "B"
+   ]
+  },
+  "item-0d049b4710": {
+   "item_id": "item-0d049b4710",
+   "best": [
+    "C",
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "B": {
+     "chrome": 3,
+     "content": 4
+    },
+    "C": {
+     "content": 4,
+     "chrome": 4
+    },
+    "A": {
+     "chrome": 3,
+     "content": 3
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 128.87640000003574,
+   "shown_order": [
+    "B",
+    "C",
+    "A"
+   ]
+  },
+  "item-ec025c8978": {
+   "item_id": "item-ec025c8978",
+   "best": [],
+   "all_same": false,
+   "none_good": true,
+   "scores": {
+    "C": {
+     "chrome": 3,
+     "content": 4
+    },
+    "B": {
+     "content": 4,
+     "chrome": 3,
+     "missing": "Considering converted is doing it's job"
+    },
+    "A": {
+     "content": 4,
+     "chrome": 4,
+     "missing": "Considering converted is doing it's job. Less noise compared to other. "
+    }
+   },
+   "skipped": false,
+   "skip_reason": "Not sure if this is  any valid content to safe in here in vector db",
+   "seconds_spent": 50.49380000001194,
+   "shown_order": [
+    "C",
+    "B",
+    "A"
+   ]
+  },
+  "item-aed6b31c78": {
+   "item_id": "item-aed6b31c78",
+   "best": [
+    "B",
+    "C"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "A": {
+     "content": 1,
+     "chrome": 1
+    },
+    "C": {
+     "chrome": 3,
+     "content": 5
+    },
+    "B": {
+     "content": 3,
+     "chrome": 5
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 7796.924900000037,
+   "shown_order": [
+    "A",
+    "C",
+    "B"
+   ]
+  },
+  "item-0745cedf4d": {
+   "item_id": "item-0745cedf4d",
+   "best": [
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "C": {
+     "content": 3,
+     "chrome": 4
+    },
+    "B": {
+     "content": 5,
+     "chrome": 5
+    },
+    "A": {
+     "content": 4,
+     "chrome": 5
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 155.02630000001193,
+   "shown_order": [
+    "C",
+    "B",
+    "A"
+   ]
+  },
+  "item-b9b1f96307": {
+   "item_id": "item-b9b1f96307",
+   "best": [
+    "C",
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "A": {
+     "content": 1,
+     "chrome": 2
+    },
+    "C": {
+     "content": 5,
+     "chrome": 5
+    },
+    "B": {
+     "content": 5,
+     "chrome": 5
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 67.65310000002384,
+   "shown_order": [
+    "A",
+    "C",
+    "B"
+   ]
+  },
+  "item-3a7354605d": {
+   "item_id": "item-3a7354605d",
+   "best": [
+    "A",
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "C": {
+     "content": 2,
+     "chrome": 2
+    },
+    "A": {
+     "content": 4,
+     "chrome": 4
+    },
+    "B": {
+     "content": 4,
+     "chrome": 4
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 80.21639999997616,
+   "shown_order": [
+    "C",
+    "A",
+    "B"
+   ]
+  },
+  "item-cb0a9a0f3f": {
+   "item_id": "item-cb0a9a0f3f",
+   "best": [
+    "A",
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "C": {
+     "content": 5,
+     "chrome": 4
+    },
+    "A": {
+     "content": 5,
+     "chrome": 4
+    },
+    "B": {
+     "content": 4,
+     "chrome": 5
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 56.96089999997616,
+   "shown_order": [
+    "C",
+    "A",
+    "B"
+   ]
+  },
+  "item-6d4ee7d2fb": {
+   "item_id": "item-6d4ee7d2fb",
+   "best": [
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "A": {
+     "content": 3,
+     "chrome": 5
+    },
+    "B": {
+     "content": 5,
+     "chrome": 5
+    },
+    "C": {
+     "content": 2,
+     "chrome": 5
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 866.5250999999641,
+   "shown_order": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  "item-cc999a6339": {
+   "item_id": "item-cc999a6339",
+   "best": [
+    "B",
+    "A"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "C": {
+     "content": 2,
+     "chrome": 5
+    },
+    "B": {
+     "content": 3,
+     "chrome": 5
+    },
+    "A": {
+     "content": 4,
+     "chrome": 4
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 188.8133000000119,
+   "shown_order": [
+    "C",
+    "B",
+    "A"
+   ]
+  },
+  "item-e60158a2aa": {
+   "item_id": "item-e60158a2aa",
+   "best": [
+    "A",
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "C": {
+     "chrome": 3,
+     "content": 3
+    },
+    "A": {
+     "chrome": 3,
+     "content": 5
+    },
+    "B": {
+     "content": 5,
+     "chrome": 4
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 87.68630000001193,
+   "shown_order": [
+    "C",
+    "A",
+    "B"
+   ]
+  },
+  "item-1d1c864db7": {
+   "item_id": "item-1d1c864db7",
+   "best": [
+    "A",
+    "C"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "C": {
+     "content": 4,
+     "chrome": 4
+    },
+    "B": {
+     "content": 4,
+     "chrome": 3
+    },
+    "A": {
+     "chrome": 3,
+     "content": 4
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 182.29860000002387,
+   "shown_order": [
+    "C",
+    "B",
+    "A"
+   ]
+  },
+  "item-84bf60b896": {
+   "item_id": "item-84bf60b896",
+   "best": [],
+   "all_same": false,
+   "none_good": true,
+   "scores": {
+    "B": {
+     "content": 3,
+     "chrome": 3
+    },
+    "A": {
+     "chrome": 2,
+     "content": 3
+    },
+    "C": {
+     "chrome": 3,
+     "content": 3
+    }
+   },
+   "skipped": false,
+   "skip_reason": "Content doesn't feel much help for RAG Can be issue with the page selected",
+   "seconds_spent": 74.61499999994038,
+   "shown_order": [
+    "B",
+    "A",
+    "C"
+   ]
+  },
+  "item-3f83ff13e5": {
+   "item_id": "item-3f83ff13e5",
+   "best": [
+    "A"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "C": {
+     "chrome": 2,
+     "content": 3
+    },
+    "B": {
+     "content": 1,
+     "chrome": 5
+    },
+    "A": {
+     "content": 5,
+     "chrome": 5
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 75.06390000003576,
+   "shown_order": [
+    "C",
+    "B",
+    "A"
+   ]
+  },
+  "item-93b767dfca": {
+   "item_id": "item-93b767dfca",
+   "best": [
+    "C"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "C": {
+     "content": 5,
+     "chrome": 4
+    },
+    "A": {
+     "content": 4,
+     "chrome": 5
+    },
+    "B": {
+     "content": 3,
+     "chrome": 5
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 99.34800000000001,
+   "shown_order": [
+    "C",
+    "A",
+    "B"
+   ]
+  },
+  "item-b07a93c967": {
+   "item_id": "item-b07a93c967",
+   "best": [
+    "A",
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "B": {
+     "content": 4,
+     "chrome": 5
+    },
+    "A": {
+     "content": 5,
+     "chrome": 4
+    },
+    "C": {
+     "content": 4,
+     "chrome": 5
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 39.34119999998808,
+   "shown_order": [
+    "B",
+    "A",
+    "C"
+   ]
+  },
+  "item-d5c2241055": {
+   "item_id": "item-d5c2241055",
+   "best": [
+    "A",
+    "B",
+    "C"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "C": {
+     "content": 4,
+     "chrome": 4
+    },
+    "A": {
+     "content": 4,
+     "chrome": 4,
+     "missing": ""
+    },
+    "B": {
+     "chrome": 4,
+     "content": 4
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 118.95560000002381,
+   "shown_order": [
+    "C",
+    "A",
+    "B"
+   ]
+  },
+  "item-a08ff4af3c": {
+   "item_id": "item-a08ff4af3c",
+   "best": [
+    "A",
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "A": {
+     "chrome": 4,
+     "content": 5
+    },
+    "C": {
+     "chrome": 4,
+     "content": 4
+    },
+    "B": {
+     "chrome": 4,
+     "content": 5
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 111.41399999999999,
+   "shown_order": [
+    "A",
+    "C",
+    "B"
+   ]
+  },
+  "item-a5ca399ddc": {
+   "item_id": "item-a5ca399ddc",
+   "best": [
+    "A"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "C": {
+     "content": 5,
+     "chrome": 5
+    },
+    "A": {
+     "chrome": 4,
+     "content": 5
+    },
+    "B": {
+     "content": 4,
+     "chrome": 5
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 66.49700000000001,
+   "shown_order": [
+    "C",
+    "A",
+    "B"
+   ]
+  },
+  "item-8b05b9d874": {
+   "item_id": "item-8b05b9d874",
+   "best": [
+    "C",
+    "A"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "A": {
+     "content": 4,
+     "chrome": 4
+    },
+    "C": {
+     "chrome": 4,
+     "content": 5
+    },
+    "B": {
+     "chrome": 3,
+     "content": 3
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 65.76209999996424,
+   "shown_order": [
+    "A",
+    "C",
+    "B"
+   ]
+  },
+  "item-7b10c54513": {
+   "item_id": "item-7b10c54513",
+   "best": [
+    "A"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "B": {
+     "content": 1,
+     "chrome": 4
+    },
+    "C": {
+     "content": 1,
+     "chrome": 4
+    },
+    "A": {
+     "content": 5,
+     "chrome": 4
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 48.850499999940396,
+   "shown_order": [
+    "B",
+    "C",
+    "A"
+   ]
+  },
+  "item-03833fd6ef": {
+   "item_id": "item-03833fd6ef",
+   "best": [
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "B": {
+     "content": 4,
+     "chrome": 5
+    },
+    "C": {
+     "chrome": 4,
+     "content": 5
+    },
+    "A": {
+     "content": 4,
+     "chrome": 4
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 167.39800000000002,
+   "shown_order": [
+    "B",
+    "C",
+    "A"
+   ]
+  },
+  "item-1c170ae5cd": {
+   "item_id": "item-1c170ae5cd",
+   "best": [
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "B": {
+     "content": 5,
+     "chrome": 3
+    },
+    "C": {
+     "content": 2,
+     "chrome": 3
+    },
+    "A": {
+     "content": 3,
+     "chrome": 4
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 171.9784000000358,
+   "shown_order": [
+    "B",
+    "C",
+    "A"
+   ]
+  },
+  "item-0c5e0ee174": {
+   "item_id": "item-0c5e0ee174",
+   "best": [
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "B": {
+     "content": 5,
+     "chrome": 3
+    },
+    "A": {
+     "content": 2,
+     "chrome": 5
+    },
+    "C": {
+     "content": 3,
+     "chrome": 3
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 129.32130000001192,
+   "shown_order": [
+    "B",
+    "A",
+    "C"
+   ]
+  },
+  "item-242ebd92df": {
+   "item_id": "item-242ebd92df",
+   "best": [
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "A": {
+     "content": 4,
+     "chrome": 4
+    },
+    "B": {
+     "content": 4,
+     "chrome": 4
+    },
+    "C": {
+     "chrome": 5,
+     "content": 4
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 123.84860000002385,
+   "shown_order": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  "item-1a5d955a7d": {
+   "item_id": "item-1a5d955a7d",
+   "best": [
+    "A",
+    "C"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "B": {
+     "content": 2,
+     "chrome": 2
+    },
+    "A": {
+     "chrome": 3,
+     "content": 3
+    },
+    "C": {
+     "chrome": 4,
+     "content": 3
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 59.92519999998808,
+   "shown_order": [
+    "B",
+    "A",
+    "C"
+   ]
+  },
+  "item-a52b68a18f": {
+   "item_id": "item-a52b68a18f",
+   "best": [
+    "B",
+    "A",
+    "C"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "B": {
+     "chrome": 3,
+     "content": 3
+    },
+    "A": {
+     "chrome": 5,
+     "content": 3
+    },
+    "C": {
+     "chrome": 3,
+     "content": 4
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 149.46319999998806,
+   "shown_order": [
+    "B",
+    "A",
+    "C"
+   ]
+  },
+  "item-44e54bc136": {
+   "item_id": "item-44e54bc136",
+   "best": [
+    "C"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "B": {
+     "content": 4,
+     "chrome": 3
+    },
+    "C": {
+     "content": 4,
+     "chrome": 5
+    },
+    "A": {
+     "content": 1,
+     "chrome": 3
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 243.24800000000002,
+   "shown_order": [
+    "B",
+    "C",
+    "A"
+   ]
+  },
+  "item-153acc7bee": {
+   "item_id": "item-153acc7bee",
+   "best": [
+    "A"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "C": {
+     "content": 5,
+     "chrome": 4
+    },
+    "A": {
+     "content": 5,
+     "chrome": 4
+    },
+    "B": {
+     "content": 1,
+     "chrome": 3
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 75.81949999999999,
+   "shown_order": [
+    "C",
+    "A",
+    "B"
+   ]
+  },
+  "item-e1b5037781": {
+   "item_id": "item-e1b5037781",
+   "best": [
+    "C"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "A": {
+     "content": 1,
+     "chrome": 1
+    },
+    "B": {
+     "content": 3,
+     "chrome": 4
+    },
+    "C": {
+     "content": 4,
+     "chrome": 5
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 69.60080000001192,
+   "shown_order": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  "item-d066784bf8": {
+   "item_id": "item-d066784bf8",
+   "best": [
+    "C"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "C": {
+     "chrome": 4,
+     "content": 4
+    },
+    "A": {
+     "chrome": 3,
+     "content": 4
+    },
+    "B": {
+     "content": 3,
+     "chrome": 5
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 202.5356000000238,
+   "shown_order": [
+    "C",
+    "A",
+    "B"
+   ]
+  },
+  "item-4b7ec9de0d": {
+   "item_id": "item-4b7ec9de0d",
+   "best": [
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "C": {
+     "chrome": 4,
+     "content": 4
+    },
+    "A": {
+     "chrome": 5,
+     "content": 4
+    },
+    "B": {
+     "chrome": 5,
+     "content": 5
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 25.60269999998808,
+   "shown_order": [
+    "C",
+    "A",
+    "B"
+   ]
+  },
+  "item-b40d279a46": {
+   "item_id": "item-b40d279a46",
+   "best": [
+    "C"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "C": {
+     "content": 4,
+     "chrome": 4
+    },
+    "A": {
+     "content": 2,
+     "chrome": 5
+    },
+    "B": {
+     "content": 2,
+     "chrome": 4
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 102.41810000002383,
+   "shown_order": [
+    "C",
+    "A",
+    "B"
+   ]
+  },
+  "item-8c65ae2e6d": {
+   "item_id": "item-8c65ae2e6d",
+   "best": [
+    "C"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "C": {
+     "content": 5,
+     "chrome": 5
+    },
+    "B": {
+     "content": 4,
+     "chrome": 4
+    },
+    "A": {
+     "content": 4,
+     "chrome": 3
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 94.758,
+   "shown_order": [
+    "C",
+    "B",
+    "A"
+   ]
+  },
+  "item-b15a4b518c": {
+   "item_id": "item-b15a4b518c",
+   "best": [
+    "C",
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "B": {
+     "content": 4,
+     "chrome": 3
+    },
+    "A": {
+     "content": 1,
+     "chrome": 3
+    },
+    "C": {
+     "chrome": 3,
+     "content": 3
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 95.189,
+   "shown_order": [
+    "B",
+    "A",
+    "C"
+   ]
+  },
+  "item-da3e0c174d": {
+   "item_id": "item-da3e0c174d",
+   "best": [
+    "A",
+    "B",
+    "C"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "A": {
+     "content": 4,
+     "chrome": 5
+    },
+    "B": {
+     "content": 5,
+     "chrome": 5
+    },
+    "C": {
+     "content": 4,
+     "chrome": 5
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 72.55230000001191,
+   "shown_order": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  "item-3c9d58a84f": {
+   "item_id": "item-3c9d58a84f",
+   "best": [
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "C": {
+     "chrome": 3,
+     "content": 3
+    },
+    "B": {
+     "chrome": 4,
+     "content": 3
+    },
+    "A": {
+     "chrome": 3,
+     "content": 3
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 316.76990000003576,
+   "shown_order": [
+    "C",
+    "B",
+    "A"
+   ]
+  },
+  "item-7ba305b959": {
+   "item_id": "item-7ba305b959",
+   "best": [
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "A": {
+     "content": 5,
+     "chrome": 4
+    },
+    "B": {
+     "content": 5,
+     "chrome": 4
+    },
+    "C": {
+     "content": 5,
+     "chrome": 4
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 110.86589999997615,
+   "shown_order": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  "item-4d4f468d7a": {
+   "item_id": "item-4d4f468d7a",
+   "best": [
+    "A",
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "A": {
+     "content": 5,
+     "chrome": 4
+    },
+    "C": {
+     "content": 4,
+     "chrome": 4
+    },
+    "B": {
+     "content": 4,
+     "chrome": 5
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 91.19940000003578,
+   "shown_order": [
+    "A",
+    "C",
+    "B"
+   ]
+  },
+  "item-49f365a5e8": {
+   "item_id": "item-49f365a5e8",
+   "best": [
+    "A",
+    "C",
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "A": {
+     "content": 4,
+     "chrome": 4
+    },
+    "C": {
+     "content": 4,
+     "chrome": 4
+    },
+    "B": {
+     "content": 4,
+     "chrome": 4
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 133.40119999998808,
+   "shown_order": [
+    "A",
+    "C",
+    "B"
+   ]
+  },
+  "item-b1d106ee3f": {
+   "item_id": "item-b1d106ee3f",
+   "best": [
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "B": {
+     "content": 5,
+     "chrome": 4
+    },
+    "C": {
+     "content": 3,
+     "chrome": 4
+    },
+    "A": {
+     "content": 3,
+     "chrome": 3
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 52.40770000004768,
+   "shown_order": [
+    "B",
+    "C",
+    "A"
+   ]
+  },
+  "item-002c3ad3b0": {
+   "item_id": "item-002c3ad3b0",
+   "best": [
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "B": {
+     "content": 4,
+     "chrome": 5
+    },
+    "C": {
+     "content": 3,
+     "chrome": 5
+    },
+    "A": {
+     "content": 3,
+     "chrome": 4
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 44.83870000004768,
+   "shown_order": [
+    "B",
+    "C",
+    "A"
+   ]
+  },
+  "item-733da76d2b": {
+   "item_id": "item-733da76d2b",
+   "best": [],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "C": {},
+    "A": {
+     "chrome": 2,
+     "content": 4
+    },
+    "B": {
+     "chrome": 1,
+     "content": 3
+    }
+   },
+   "skipped": true,
+   "skip_reason": "HTML page is the problem, thin content",
+   "seconds_spent": 111.12060000002386,
+   "shown_order": [
+    "C",
+    "A",
+    "B"
+   ]
+  },
+  "item-5de41ff1d7": {
+   "item_id": "item-5de41ff1d7",
+   "best": [
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "C": {
+     "content": 4,
+     "chrome": 4
+    },
+    "A": {
+     "content": 4,
+     "chrome": 4
+    },
+    "B": {
+     "content": 5,
+     "chrome": 4
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 59.703699999988075,
+   "shown_order": [
+    "C",
+    "A",
+    "B"
+   ]
+  },
+  "item-81244d4c40": {
+   "item_id": "item-81244d4c40",
+   "best": [
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "A": {
+     "chrome": 3,
+     "content": 4
+    },
+    "C": {
+     "chrome": 3,
+     "content": 4
+    },
+    "B": {
+     "chrome": 4,
+     "content": 5
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 102.92429999995231,
+   "shown_order": [
+    "A",
+    "C",
+    "B"
+   ]
+  },
+  "item-5179521a88": {
+   "item_id": "item-5179521a88",
+   "best": [
+    "B",
+    "A"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "B": {
+     "chrome": 4,
+     "content": 4
+    },
+    "C": {
+     "content": 2,
+     "chrome": 4
+    },
+    "A": {
+     "chrome": 3,
+     "content": 4
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 61.78190000003576,
+   "shown_order": [
+    "B",
+    "C",
+    "A"
+   ]
+  },
+  "item-76892670d2": {
+   "item_id": "item-76892670d2",
+   "best": [
+    "A"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "B": {
+     "chrome": 4,
+     "content": 2
+    },
+    "A": {
+     "chrome": 4,
+     "content": 4
+    },
+    "C": {
+     "chrome": 4,
+     "content": 3
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 75.719,
+   "shown_order": [
+    "B",
+    "A",
+    "C"
+   ]
+  },
+  "item-53544e62df": {
+   "item_id": "item-53544e62df",
+   "best": [
+    "C",
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "C": {
+     "chrome": 3,
+     "content": 5
+    },
+    "B": {
+     "content": 4,
+     "chrome": 4
+    },
+    "A": {
+     "chrome": 3,
+     "content": 3
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 74.69889999997616,
+   "shown_order": [
+    "C",
+    "B",
+    "A"
+   ]
+  },
+  "item-1a1bd374f3": {
+   "item_id": "item-1a1bd374f3",
+   "best": [
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "A": {
+     "content": 4,
+     "chrome": 5
+    },
+    "C": {
+     "content": 4,
+     "chrome": 5
+    },
+    "B": {
+     "content": 5,
+     "chrome": 3
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 43.04969999998808,
+   "shown_order": [
+    "A",
+    "C",
+    "B"
+   ]
+  },
+  "item-eac1d8ac3d": {
+   "item_id": "item-eac1d8ac3d",
+   "best": [],
+   "all_same": false,
+   "none_good": true,
+   "scores": {
+    "A": {
+     "content": 3,
+     "chrome": 5
+    },
+    "C": {
+     "content": 3,
+     "chrome": 3
+    },
+    "B": {
+     "chrome": 2,
+     "content": 3
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 78.56439999997616,
+   "shown_order": [
+    "A",
+    "C",
+    "B"
+   ]
+  },
+  "item-89d1a95fbb": {
+   "item_id": "item-89d1a95fbb",
+   "best": [
+    "A"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "B": {
+     "content": 3,
+     "chrome": 4
+    },
+    "A": {
+     "content": 5,
+     "chrome": 3
+    },
+    "C": {
+     "content": 2,
+     "chrome": 5
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 54.152199999988085,
+   "shown_order": [
+    "B",
+    "A",
+    "C"
+   ]
+  },
+  "item-accd3088a8": {
+   "item_id": "item-accd3088a8",
+   "best": [
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "B": {
+     "chrome": 4,
+     "content": 5
+    },
+    "C": {
+     "chrome": 5,
+     "content": 4
+    },
+    "A": {
+     "chrome": 5,
+     "content": 4
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 36.407699999928475,
+   "shown_order": [
+    "B",
+    "C",
+    "A"
+   ]
+  },
+  "item-c412d00cd7": {
+   "item_id": "item-c412d00cd7",
+   "best": [
+    "B",
+    "C",
+    "A"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "B": {
+     "chrome": 3,
+     "content": 5
+    },
+    "C": {
+     "content": 4,
+     "chrome": 4
+    },
+    "A": {
+     "content": 4,
+     "chrome": 4
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 68.2535000000596,
+   "shown_order": [
+    "B",
+    "C",
+    "A"
+   ]
+  },
+  "item-af72d565f1": {
+   "item_id": "item-af72d565f1",
+   "best": [
+    "C",
+    "A"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "C": {
+     "chrome": 2,
+     "content": 4
+    },
+    "B": {
+     "content": 2,
+     "chrome": 5
+    },
+    "A": {
+     "content": 3,
+     "chrome": 3
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 60.405899999976164,
+   "shown_order": [
+    "C",
+    "B",
+    "A"
+   ]
+  },
+  "item-3536ae5bf9": {
+   "item_id": "item-3536ae5bf9",
+   "best": [
+    "B",
+    "C"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "B": {
+     "content": 3,
+     "chrome": 3
+    },
+    "C": {
+     "content": 3,
+     "chrome": 4
+    },
+    "A": {
+     "content": 3,
+     "chrome": 3
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 100.64490000003576,
+   "shown_order": [
+    "B",
+    "C",
+    "A"
+   ]
+  },
+  "item-c1e7cdee24": {
+   "item_id": "item-c1e7cdee24",
+   "best": [
+    "A",
+    "B"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "A": {
+     "content": 4,
+     "chrome": 4
+    },
+    "C": {
+     "content": 3,
+     "chrome": 5
+    },
+    "B": {
+     "content": 4,
+     "chrome": 4
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 48.850500000000004,
+   "shown_order": [
+    "A",
+    "C",
+    "B"
+   ]
+  },
+  "item-7c987e7cdc": {
+   "item_id": "item-7c987e7cdc",
+   "best": [
+    "C",
+    "A"
+   ],
+   "all_same": false,
+   "none_good": false,
+   "scores": {
+    "A": {
+     "content": 4,
+     "chrome": 4
+    },
+    "C": {
+     "content": 4,
+     "chrome": 5
+    },
+    "B": {
+     "content": 3,
+     "chrome": 4
+    }
+   },
+   "skipped": false,
+   "skip_reason": "",
+   "seconds_spent": 76.90659999996423,
+   "shown_order": [
+    "A",
+    "C",
+    "B"
+   ]
+  }
+ }
+}

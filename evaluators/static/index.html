@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Blind extraction rating</title>
+<style>
+:root{--bg:#fbfbfa;--panel:#fff;--line:#dedcd6;--ink:#1f1f1d;--mut:#6b6a65;--acc:#2a78d6;--ok:#1a7f37;--warn:#9a6700;--hl-only:#b9d6fa;--hl-some:#f6e08e}
+@media (prefers-color-scheme:dark){:root{--bg:#161615;--panel:#1f1f1d;--line:#37362f;--ink:#ececea;--mut:#9a9992;--acc:#6aa7f0;--ok:#4cc072;--warn:#d4a72c;--hl-only:#1d3d63;--hl-some:#4d4116}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,Segoe UI,Roboto,sans-serif}
+header{position:sticky;top:0;z-index:5;background:var(--panel);border-bottom:1px solid var(--line);padding:8px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+header h1{font-size:15px;margin:0}.sp{flex:1}.pill{background:var(--bg);border:1px solid var(--line);border-radius:99px;padding:2px 10px;font-size:12px;color:var(--mut)}
+.pill.warn{color:var(--warn);border-color:var(--warn)}
+button{font:inherit;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:6px;padding:5px 10px;cursor:pointer}button.pri{background:var(--acc);border-color:var(--acc);color:#fff}button:disabled{opacity:.4}
+[hidden]{display:none!important}
+main{padding:12px 14px;display:grid;gap:12px}
+.progress{display:flex;align-items:center;gap:8px;min-width:220px;flex:1;max-width:520px}
+.pbar{flex:1;height:8px;background:var(--bg);border:1px solid var(--line);border-radius:99px;overflow:hidden}
+.pfill{height:100%;width:0;background:var(--ok);transition:width .2s}
+.ptext{font-size:12px;color:var(--mut);white-space:nowrap}
+.guidepanel{position:fixed;top:48px;right:14px;z-index:6;max-width:760px;max-height:75vh;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 14px;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.guidepanel p{margin:0 0 6px}
+.rubric{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:13px}.guide{border-collapse:collapse;margin-top:6px;width:100%}.guide th,.guide td{border-top:1px solid var(--line);padding:3px 8px;text-align:left;vertical-align:top}.miss{font:inherit;width:100%;box-sizing:border-box;background:transparent;color:inherit;border:1px solid var(--line);border-radius:4px;padding:2px 6px}
+.src{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden}.src .bar{display:flex;gap:8px;align-items:center;padding:6px 10px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.src .bar a{color:var(--acc);font-size:12px}
+iframe,.srcview{width:100%;height:36vh;border:0;background:#fff}.srcview{background:var(--panel);color:var(--ink);overflow:auto;white-space:pre-wrap;font:12px/1.4 ui-monospace,Menlo,monospace;padding:8px}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.col{background:var(--panel);border:1px solid var(--line);border-radius:8px;display:flex;flex-direction:column;min-height:0}
+.col.best{outline:2px solid var(--ok)}.col h2{margin:0;padding:6px 10px;font-size:14px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.txt{height:40vh;overflow:auto;padding:8px 10px;white-space:pre-wrap;word-break:break-word;font:12.5px/1.45 ui-monospace,Menlo,monospace}
+.rate{padding:8px 10px;border-top:1px solid var(--line);display:grid;gap:6px}.rate label{display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:12px;color:var(--mut)}
+.stars{display:flex;gap:3px}.stars button{padding:1px 7px;font-size:12px}.stars button.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.foot{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.choices{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.choices label{display:flex;gap:6px;align-items:center;font-size:13px}
+.hint{color:var(--mut);font-size:12px}#missing{color:var(--warn)}.saved{color:var(--ok);font-size:12px}
+.finish{max-width:640px;margin:40px auto;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:24px}
+.finish code{display:block;background:var(--bg);padding:10px;border-radius:6px;word-break:break-all;margin:12px 0}
+.hl-only{background:var(--hl-only);border-radius:2px}.hl-some{background:var(--hl-some);border-radius:2px}
+.key{display:inline-block;width:12px;height:12px;border-radius:2px;vertical-align:-1px;margin:0 3px 0 8px}
+.lost{border-bottom:1px solid var(--line);padding:4px 10px;font-size:12px;color:var(--mut)}.lost summary{cursor:pointer}
+.lost ol{margin:4px 0 0;padding-left:18px;max-height:22vh;overflow:auto;font:12px/1.4 ui-monospace,Menlo,monospace;color:var(--ink)}.lost li{margin-bottom:4px;white-space:pre-wrap;word-break:break-word}
+</style></head><body>
+<header>
+  <h1>Page rating</h1>
+  <span class="pill warn" id="cal" hidden>Practice</span>
+  <div class="progress" title="Items complete">
+    <div class="pbar"><div class="pfill" id="pfill"></div></div>
+    <span class="ptext" id="prog">–</span>
+  </div>
+  <span class="sp"></span>
+  <button id="guidebtn" aria-expanded="false">Guide</button>
+  <button id="prev">← Prev</button>
+  <button id="next">Next →</button>
+  <button class="pri" id="finish">Finish</button>
+</header>
+<div class="guidepanel" id="guidepanel" hidden>
+  <p><b>Why this matters.</b> AI assistants answer questions from web pages by reading a text copy of each page, not the page itself. They cut that text into short pieces, pick the few pieces that best match a question, and answer only from those. So if a fact is missing from the text, the assistant cannot answer; and if menus, ads or text about other things are left in, they crowd out the real content or get repeated as if they were facts.</p>
+  <p><b>Content</b> is what the page exists to give: its main text, facts, prices, steps, tables, and on a forum the question and answers. <b>Noise</b> is everything else: menus, footers, cookie and sign-up notices, share buttons, ads, and links or teasers for other pages.</p>
+  <p id="rubric"></p>
+  <p class="hint">Noise is acceptable if it would not change an answer: levels 3 to 5. Press Esc or Guide to close.</p>
+    <table class="guide"><thead><tr><th>Score</th><th>Content kept</th><th>Noise left in</th></tr></thead><tbody>
+    <tr><td>5</td><td>Everything useful is there</td><td>None</td></tr>
+    <tr><td>4</td><td>Small loss nobody would ask about: caption, byline, decorative line</td><td>Harmless, under about 5% of the text: breadcrumb, share label</td></tr>
+    <tr><td>3</td><td>One useful fact gone: price, table row, step, short paragraph</td><td>Tolerable, about 5 to 15%: footer, short menu, cannot be mistaken for content</td></tr>
+    <tr><td>2</td><td>Main section or most of a table gone</td><td>Disruptive, about 15 to 40%, or long link lists bury the content</td></tr>
+    <tr><td>1</td><td>Most content gone, or text from the wrong page</td><td>Over about 40%, or text about other things that could give a wrong answer: other products' prices, related articles, comments read as facts</td></tr>
+    </tbody></table>
+</div>
+<main id="main">
+  <section class="src">
+    <div class="bar">
+      <b>Original page</b>
+      <button data-v="render" class="pri">Rendered</button>
+      <button data-v="text">Plain text</button>
+      <a id="opentab" target="_blank" rel="noopener noreferrer">Open saved page in new tab</a>
+      <span class="sp"></span>
+      <span class="hint" id="question"></span>
+    </div>
+    <iframe id="frame" sandbox="" referrerpolicy="no-referrer" title="original page"></iframe>
+    <div class="srcview" id="srcview" hidden></div>
+  </section>
+  <section class="choices">
+    <label><input type="checkbox" id="diff_on" checked> Highlight differences</label>
+    <span class="hint" id="legend"><span class="key hl-only"></span>only in this output<span class="key hl-some"></span>in this and one other output; plain text is in every output. Colours only show where outputs differ, not which text is content.</span>
+  </section>
+  <section class="cols" id="cols"></section>
+  <section class="choices">
+    <label><input type="checkbox" id="all_same"> All about the same</label>
+    <label><input type="checkbox" id="none_good"> None are good</label>
+  </section>
+  <section class="rubric" id="pnote" hidden><b>Practice note.</b> <span id="pnotetext"></span> <span class="hint">Your own scores are kept as you gave them; practice items are not analysed.</span></section>
+  <section class="foot">
+    <span class="hint">Tick every output that is equally best. Keys: number keys toggle best, <b>←/→</b> navigate. Scores (1–5) required unless skipped.</span>
+    <input id="skip_reason" placeholder="Skip reason (optional)" style="flex:1;min-width:160px;height:34px;font:inherit;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:4px 8px">
+    <button id="skip">Skip</button>
+    <span class="saved" id="saved"></span>
+    <span class="sp"></span>
+    <span class="hint" id="missing"></span>
+    <button class="pri" id="next2">Next →</button>
+  </section>
+</main>
+<section class="finish" id="done" hidden>
+  <h2>Thank you</h2>
+  <p>Your ratings were saved to this file. Email it to the person who sent you the bundle:</p>
+  <code id="respath"></code>
+  <p class="hint">You can close this page and stop the app (Ctrl+C in the terminal).</p>
+</section>
+<script>
+const $=s=>document.querySelector(s);
+let session=null, items=[], cur=0, state=null, view="render", labels=[], startedAt=0, saveTimer=null, practiceNote="", texts={};
+
+const api=(p,o)=>fetch(p,o).then(async r=>{
+  const t=await r.text();
+  try{return JSON.parse(t)}catch(e){throw new Error(t||r.status)}
+});
+
+function emptyState(labs){
+  const scores={}; for(const L of labs) scores[L]={};
+  return {best:[], all_same:false, none_good:false, scores, skipped:false, skip_reason:"", shown_order:labs.slice()};
+}
+
+async function init(){
+  session=await api("/api/session");
+  $("#rubric").textContent=session.rubric;
+  $("#question").textContent="Which output lets a search assistant answer questions about this page best?";
+  items=session.items;
+  const first=items.findIndex(i=>!i.done);
+  cur=first<0?0:first;
+  await load();
+}
+
+async function load(){
+  if(cur>=items.length){ showFinish(); return; }
+  const id=items[cur].item_id;
+  const d=await api("/api/item/"+encodeURIComponent(id));
+  labels=d.shown_order.slice();
+  startedAt=performance.now();
+  state=d.rating?Object.assign(emptyState(labels),{
+    best:(d.rating.best||[]).slice(),
+    all_same:!!d.rating.all_same,
+    none_good:!!d.rating.none_good,
+    scores:Object.assign(emptyState(labels).scores, d.rating.scores||{}),
+    skipped:!!d.rating.skipped,
+    skip_reason:d.rating.skip_reason||"",
+    shown_order:labels.slice()
+  }):emptyState(labels);
+
+  showProgress();
+  $("#cal").hidden=!d.is_calibration;
+  practiceNote=d.is_calibration?(d.practice_note||""):"";
+  $("#pnotetext").textContent=practiceNote;
+  window.scrollTo(0,0);
+  $("#srcview").scrollTop=0;
+  $("#frame").src="/html/"+encodeURIComponent(id);
+  $("#opentab").href="/html/"+encodeURIComponent(id);
+  $("#srcview").textContent="";
+  $("#srcview").dataset.id=id;
+  $("#all_same").checked=state.all_same;
+  $("#none_good").checked=state.none_good;
+  $("#skip_reason").value=state.skip_reason;
+  setView(view);
+  texts={};
+  renderCols(d);
+  paint();
+  highlight();
+}
+
+function renderCols(d){
+  const c=$("#cols"); c.innerHTML="";
+  labels.forEach((L,idx)=>{
+    const o=d.outputs[L];
+    const col=document.createElement("div");
+    col.className="col"; col.id="col"+L;
+    col.innerHTML=`<h2><label><input type="checkbox" class="bestcb" data-l="${L}"> <span>Output ${L}</span></label></h2><details class="lost" hidden><summary></summary><ol></ol></details><div class="txt"></div><div class="rate"><label>Content kept (5 = all) <span class="stars" data-k="content" data-l="${L}"></span></label><label>Noise left in (5 = none) <span class="stars" data-k="chrome" data-l="${L}"></span></label><input class="miss" data-l="${L}" placeholder="Optional: is something important missing?"></div>`;
+    col.querySelector(".txt").textContent=o.text;
+    texts[L]=o.text;
+    c.appendChild(col);
+    col.querySelector(".bestcb").onchange=()=>{
+      const on=col.querySelector(".bestcb").checked;
+      if(on){ if(!state.best.includes(L)) state.best.push(L); state.all_same=false; state.none_good=false; state.skipped=false; }
+      else state.best=state.best.filter(x=>x!==L);
+      $("#all_same").checked=state.all_same; $("#none_good").checked=state.none_good;
+      paint(); save();
+    };
+  });
+  document.querySelectorAll(".miss").forEach(m=>{
+    m.value=state.scores[m.dataset.l].missing||"";
+    m.oninput=()=>{ state.scores[m.dataset.l].missing=m.value; save(); };
+  });
+  document.querySelectorAll(".stars").forEach(s=>{
+    for(let n=1;n<=5;n++){
+      const b=document.createElement("button"); b.textContent=n;
+      b.onclick=()=>{ state.scores[s.dataset.l][s.dataset.k]=n; state.skipped=false; paint(); save(); };
+      s.appendChild(b);
+    }
+  });
+}
+
+function paint(){
+  const need=[];
+  if(!state.skipped){
+    if(!selectionOk()) need.push("pick the best output");
+    const open=labels.filter(L=>!(state.scores[L].content>=1 && state.scores[L].chrome>=1));
+    if(open.length) need.push("scores for "+open.join(", "));
+  }
+  $("#missing").textContent=need.length?"Still to do: "+need.join("; "):"Done";
+  // Shown only once the practice item is rated, so the rater judges first and then compares.
+  $("#pnote").hidden=!(practiceNote && !need.length && !state.skipped);
+  for(const L of labels){
+    const col=$("#col"+L); if(!col) continue;
+    const on=state.best.includes(L);
+    col.classList.toggle("best", on);
+    const cb=col.querySelector(".bestcb"); if(cb) cb.checked=on;
+    col.querySelectorAll(".stars").forEach(s=>{
+      [...s.children].forEach((b,i)=>b.classList.toggle("on", state.scores[L][s.dataset.k]===i+1));
+    });
+  }
+}
+
+function scoresComplete(){
+  if(state.skipped) return true;
+  return labels.every(L=>state.scores[L].content>=1 && state.scores[L].chrome>=1);
+}
+
+function selectionOk(){
+  if(state.skipped) return true;
+  return state.all_same || state.none_good || state.best.length>0;
+}
+
+async function save(){
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(async()=>{
+    state.skip_reason=$("#skip_reason").value;
+    state.seconds_spent=(state.seconds_spent||0)+((performance.now()-startedAt)/1000);
+    startedAt=performance.now();
+    const payload={item_id:items[cur].item_id, ...state, shown_order:labels.slice()};
+    await api("/api/rate",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+    items[cur].done=selectionOk() && scoresComplete();
+    $("#saved").textContent="saved";
+    setTimeout(()=>$("#saved").textContent="",900);
+    items[cur].seconds=state.seconds_spent;
+    showProgress();
+  },120);
+}
+
+function showProgress(){
+  const done=items.filter(i=>i.done), n=items.length;
+  // Estimate from this rater's own pace once a few items are done; 3 minutes each before that.
+  const avg=done.length>=3 ? done.reduce((a,i)=>a+(i.seconds||0),0)/done.length : 180;
+  const left=Math.round((n-done.length)*Math.min(Math.max(avg,30),900)/60);
+  const t=left>=60 ? `${Math.floor(left/60)} h ${left%60} min` : `${left} min`;
+  $("#pfill").style.width=(100*done.length/n)+"%";
+  $("#prog").textContent=`Item ${cur+1} of ${n} · ${done.length} done · about ${t} left`;
+}
+
+function toggleGuide(open){
+  const p=$("#guidepanel"); p.hidden=!(open ?? p.hidden);
+  $("#guidebtn").classList.toggle("pri", !p.hidden);
+  $("#guidebtn").setAttribute("aria-expanded", String(!p.hidden));
+}
+$("#guidebtn").onclick=()=>toggleGuide();
+
+function setView(v){
+  view=v;
+  document.querySelectorAll("[data-v]").forEach(b=>b.classList.toggle("pri", b.dataset.v===v));
+  $("#frame").hidden=v!=="render";
+  $("#srcview").hidden=v!=="text";
+  if(v==="text" && !$("#srcview").textContent){
+    fetch("/text/"+encodeURIComponent(items[cur].item_id)).then(r=>r.text()).then(t=>$("#srcview").textContent=t);
+  }
+}
+document.querySelectorAll("[data-v]").forEach(b=>b.onclick=()=>setView(b.dataset.v));
+
+$("#all_same").onchange=()=>{
+  state.all_same=$("#all_same").checked;
+  if(state.all_same){ state.best=[]; state.none_good=false; state.skipped=false; $("#none_good").checked=false; }
+  paint(); save();
+};
+$("#none_good").onchange=()=>{
+  state.none_good=$("#none_good").checked;
+  if(state.none_good){ state.best=[]; state.all_same=false; state.skipped=false; $("#all_same").checked=false; }
+  paint(); save();
+};
+$("#skip_reason").addEventListener("input",()=>{ state.skip_reason=$("#skip_reason").value; save(); });
+$("#skip").onclick=()=>{ state.skipped=true; state.best=[]; state.all_same=false; state.none_good=false; paint(); save(); };
+
+// Difference highlighting. Outputs are compared with each other by runs of HL_N words, ignoring
+// case, punctuation and line breaks, so the same sentence split across lines still matches.
+const HL_N=4, HL_MIN_LOST=3;
+function hlTokens(text){
+  // Words are runs of letters or digits; everything between them (spaces, line breaks, punctuation) is a separator with norm "".
+  return (text.match(/[\p{L}\p{N}]+|[^\p{L}\p{N}]+/gu)||[]).map(t=>({t, norm:/^[\p{L}\p{N}]/u.test(t)?t.toLowerCase():""}));
+}
+function hlShared(words, other){
+  // shared[i] is true when some run of n words covering word i also appears in the other output.
+  const n=Math.min(HL_N, words.length, other.length), shared=new Array(words.length).fill(false);
+  if(!n) return shared;
+  const grams=new Set();
+  for(let i=0;i+n<=other.length;i++) grams.add(other.slice(i,i+n).join(" "));
+  for(let i=0;i+n<=words.length;i++){
+    if(grams.has(words.slice(i,i+n).join(" "))) for(let j=i;j<i+n;j++) shared[j]=true;
+  }
+  return shared;
+}
+function highlight(){
+  const on=$("#diff_on").checked && labels.length>1;
+  $("#legend").hidden=!on;
+  const info={};
+  for(const L of labels){
+    const toks=hlTokens(texts[L]||"");
+    const idx=toks.map((x,i)=>x.norm?i:-1).filter(i=>i>=0);
+    info[L]={toks, idx, words:idx.map(i=>toks[i].norm)};
+  }
+  for(const L of labels){
+    const col=$("#col"+L), box=col.querySelector(".txt"), lost=col.querySelector(".lost");
+    box.textContent="";
+    lost.hidden=true;
+    const me=info[L], others=labels.filter(x=>x!==L);
+    if(!on){ box.textContent=texts[L]||""; continue; }
+    const cover=others.map(o=>hlShared(me.words, info[o].words));
+    const cls=me.words.map((_,k)=>{
+      const c=cover.filter(v=>v[k]).length;
+      return c===others.length?"":(c===0?"hl-only":"hl-some");
+    });
+    // Separators take the class of the words on both sides, or none.
+    const tokCls=new Array(me.toks.length).fill(null);
+    me.idx.forEach((ti,k)=>tokCls[ti]=cls[k]);
+    let prev="";
+    for(let i=0;i<me.toks.length;i++){
+      if(tokCls[i]!==null){ prev=tokCls[i]; continue; }
+      let next=""; for(let j=i+1;j<me.toks.length;j++){ if(tokCls[j]!==null){ next=tokCls[j]; break; } }
+      tokCls[i]=(prev && prev===next)?prev:"";
+    }
+    let run="", runCls=null;
+    const flush=()=>{
+      if(!run) return;
+      if(runCls){ const sp=document.createElement("span"); sp.className=runCls; sp.textContent=run; box.appendChild(sp); }
+      else box.appendChild(document.createTextNode(run));
+      run="";
+    };
+    me.toks.forEach((x,i)=>{ if(tokCls[i]!==runCls){ flush(); runCls=tokCls[i]; } run+=x.t; });
+    flush();
+    // Passages that other outputs have and this one does not. Text already listed from one output is not listed again.
+    const lostList=[], listed=[];
+    for(const o of others){
+      const them=info[o], inMe=hlShared(them.words, me.words), inListed=hlShared(them.words, listed);
+      let k=0;
+      while(k<them.words.length){
+        if(inMe[k] || inListed[k]){ k++; continue; }
+        let e=k; while(e<them.words.length && !inMe[e] && !inListed[e]) e++;
+        if(e-k>=HL_MIN_LOST){
+          const text=them.toks.slice(them.idx[k], them.idx[e-1]+1).map(x=>x.t).join("").replace(/\s+/g," ");
+          lostList.push({n:e-k, text});
+        }
+        k=e;
+      }
+      for(let j=0;j<them.words.length;j++) if(!inMe[j]) listed.push(them.words[j]);
+      listed.push("\u0000");
+    }
+    if(lostList.length){
+      const words=lostList.reduce((a,x)=>a+x.n,0);
+      lost.querySelector("summary").textContent=`Not in this output: ${lostList.length} passage${lostList.length>1?"s":""} (${words} words) that other outputs have. Show`;
+      const ol=lost.querySelector("ol"); ol.textContent="";
+      for(const x of lostList){ const li=document.createElement("li"); li.textContent=x.text.length>400?x.text.slice(0,400)+" …":x.text; ol.appendChild(li); }
+      lost.hidden=false;
+    }
+  }
+}
+$("#diff_on").onchange=highlight;
+
+const go=async d=>{
+  if(d>0 && !(selectionOk() && scoresComplete()) && !confirm("This item is incomplete (best choice and 1–5 scores, or skip). Move on anyway?")) return;
+  await new Promise(r=>{ clearTimeout(saveTimer); save(); setTimeout(r,160); });
+  const n=cur+d; if(n>=0 && n<items.length){ cur=n; await load(); }
+  else if(n>=items.length) showFinish();
+};
+$("#prev").onclick=()=>go(-1);
+$("#next").onclick=()=>go(1);
+$("#next2").onclick=()=>go(1);
+$("#finish").onclick=async()=>{
+  const missing=items.filter(i=>!i.done).length;
+  if(missing && !confirm(missing+" item(s) incomplete. Finish anyway?")) return;
+  await new Promise(r=>{ clearTimeout(saveTimer); save(); setTimeout(r,160); });
+  showFinish();
+};
+
+function showFinish(){
+  $("#main").hidden=true;
+  $("#done").hidden=false;
+  window.scrollTo(0,0);
+  $("#respath").textContent=session.results_path;
+}
+
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"){ toggleGuide(false); return; }
+  if(e.target.tagName==="INPUT" || e.target.tagName==="TEXTAREA") return;
+  if(e.key>="1" && e.key<="9"){
+    const idx=+e.key-1; if(idx<labels.length){
+      const L=labels[idx];
+      if(state.best.includes(L)) state.best=state.best.filter(x=>x!==L);
+      else { state.best.push(L); state.all_same=false; state.none_good=false; state.skipped=false; $("#all_same").checked=false; $("#none_good").checked=false; }
+      paint(); save();
+    }
+  } else if(e.key==="ArrowRight") go(1);
+  else if(e.key==="ArrowLeft") go(-1);
+});
+
+init();
+</script></body></html>

@@ -4,6 +4,11 @@ The public site is a single page, [`index.html`](index.html). It has no build st
 it loads the published results from [`data/`](data/) at runtime, so the numbers on the page are
 always the ones in the repository.
 
+**Status (0.1.5).** The page opens with a static summary of the version 0.1.5 results and links to
+`evaluations/2026-11-final/`. Everything it loads from `data/` (WCXB 372-page split, anchor benchmark, retrieval,
+blinded LLM judging, STCE, page explorer) is from version 0.1.4 and is labelled superseded on the page; those
+results are kept for the record and are not used for claims.
+
 | File in `data/` | Written by |
 |---|---|
 | `corpus_comparison_report.json`, `corpus_comparison_summary.md` | `python -m poc.run_corpus_comparison` |

@@ -12,7 +12,6 @@ from __future__ import annotations
 import argparse
 import json
 import re
-import zlib
 from collections import Counter, defaultdict
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
@@ -25,7 +24,7 @@ from chromerag.extractor import StopExtraction
 from chromerag.lbc import TwoStageModel
 from chromerag.treestats import TreeStats
 from poc.lbc_data import label_blocks
-from poc.learn_tokens import site_of
+from poc.learn_tokens import cv_fold
 from poc.wcxb import load_split
 
 THRESHOLD = 0.5
@@ -72,7 +71,7 @@ def category(tag, text: str, fp: bool) -> str:
 
 def _one(args):
     page, pattern = args
-    fold = zlib.crc32(site_of(page.url).encode()) % 5
+    fold = cv_fold(page.url)
     if fold not in _MODELS:
         _MODELS[fold] = TwoStageModel.load(Path(pattern.format(fold=fold)))
     model = _MODELS[fold]

@@ -2,10 +2,10 @@
   "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
   "name": "ChromeRAG",
-  "description": "HTML to RAG-ready Markdown. A learned block filter removes site chrome (navigation, footers, cookie banners, related links, comments) and keeps article, documentation and pricing content; it also learns repeated site templates from a few pages.",
+  "description": "HTML to RAG-ready Markdown. A learned block filter and a few rules remove site chrome (navigation, footers, cookie banners, calls to action, share strips) and keep article, documentation, forum and table content; output carries Schema.org front matter and heading-aware chunks. An optional site-template model can be learned from a few pages.",
   "codeRepository": "https://github.com/pedapudibhargav/ChromeRAG",
   "issueTracker": "https://github.com/pedapudibhargav/ChromeRAG/issues",
-  "url": "https://pedapudibhargav.github.io/ChromeRAG/",
+  "url": "https://github.com/pedapudibhargav/ChromeRAG",
   "identifier": "https://doi.org/10.5281/zenodo.22970289",
   "license": "https://spdx.org/licenses/MIT",
   "programmingLanguage": "Python",
@@ -40,7 +40,10 @@
     }
   ],
   "isAccessibleForFree": true,
-  "version": "0.1.4",
-  "softwareVersion": "0.1.4",
-  "dateModified": "2026-10-02"
+  "version": "0.1.5",
+  "softwareVersion": "0.1.5",
+  "dateModified": "2026-11-20",
+  "datePublished": "2026-11-20",
+  "sameAs": "https://doi.org/10.5281/zenodo.22970289",
+  "readme": "https://github.com/pedapudibhargav/ChromeRAG/blob/v0.1.5/README.md"
 }

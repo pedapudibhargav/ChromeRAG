@@ -1,0 +1,1032 @@
+{
+ "bundle_id": "rating-set-2026-11",
+ "tools": [
+  "chromerag",
+  "trafilatura",
+  "readability"
+ ],
+ "key": {
+  "item-fb83f61eeb": {
+   "A": "trafilatura",
+   "B": "chromerag",
+   "C": "readability"
+  },
+  "item-d0ca182443": {
+   "A": "trafilatura",
+   "B": "chromerag",
+   "C": "readability"
+  },
+  "item-5e9e736a83": {
+   "A": "chromerag",
+   "B": "trafilatura",
+   "C": "readability"
+  },
+  "item-03fded232a": {
+   "A": "trafilatura",
+   "B": "chromerag",
+   "C": "readability"
+  },
+  "item-ec389c7ce8": {
+   "A": "chromerag",
+   "B": "trafilatura",
+   "C": "readability"
+  },
+  "item-4648dd529a": {
+   "A": "trafilatura",
+   "B": "readability",
+   "C": "chromerag"
+  },
+  "item-90114566ac": {
+   "A": "trafilatura",
+   "B": "chromerag",
+   "C": "readability"
+  },
+  "item-d5c2241055": {
+   "A": "trafilatura",
+   "B": "chromerag",
+   "C": "readability"
+  },
+  "item-52bef1616f": {
+   "A": "readability",
+   "B": "trafilatura",
+   "C": "chromerag"
+  },
+  "item-f22b693ac3": {
+   "A": "chromerag",
+   "B": "readability",
+   "C": "trafilatura"
+  },
+  "item-4d4f468d7a": {
+   "A": "chromerag",
+   "B": "readability",
+   "C": "trafilatura"
+  },
+  "item-49f365a5e8": {
+   "A": "chromerag",
+   "B": "readability",
+   "C": "trafilatura"
+  },
+  "item-b40d279a46": {
+   "A": "readability",
+   "B": "trafilatura",
+   "C": "chromerag"
+  },
+  "item-5de41ff1d7": {
+   "A": "chromerag",
+   "B": "readability",
+   "C": "trafilatura"
+  },
+  "item-e1b5037781": {
+   "A": "readability",
+   "B": "trafilatura",
+   "C": "chromerag"
+  },
+  "item-310680907e": {
+   "A": "readability",
+   "B": "chromerag",
+   "C": "trafilatura"
+  },
+  "item-fac7c19972": {
+   "A": "trafilatura",
+   "B": "chromerag",
+   "C": "readability"
+  },
+  "item-908007eeee": {
+   "A": "trafilatura",
+   "B": "readability",
+   "C": "chromerag"
+  },
+  "item-763a8fbaa0": {
+   "A": "trafilatura",
+   "B": "chromerag",
+   "C": "readability"
+  },
+  "item-733da76d2b": {
+   "A": "trafilatura",
+   "B": "readability",
+   "C": "chromerag"
+  },
+  "item-a5ca399ddc": {
+   "A": "readability",
+   "B": "chromerag",
+   "C": "trafilatura"
+  },
+  "item-cb0a9a0f3f": {
+   "A": "readability",
+   "B": "chromerag",
+   "C": "trafilatura"
+  },
+  "item-da3e0c174d": {
+   "A": "readability",
+   "B": "chromerag",
+   "C": "trafilatura"
+  },
+  "item-4b7ec9de0d": {
+   "A": "trafilatura",
+   "B": "readability",
+   "C": "chromerag"
+  },
+  "item-aed6b31c78": {
+   "A": "readability",
+   "B": "chromerag",
+   "C": "trafilatura"
+  },
+  "item-5cc2bc853a": {
+   "A": "readability",
+   "B": "trafilatura",
+   "C": "chromerag"
+  },
+  "item-84bf60b896": {
+   "A": "readability",
+   "B": "trafilatura",
+   "C": "chromerag"
+  },
+  "item-93b767dfca": {
+   "A": "trafilatura",
+   "B": "readability",
+   "C": "chromerag"
+  },
+  "item-d066784bf8": {
+   "A": "chromerag",
+   "B": "trafilatura",
+   "C": "readability"
+  },
+  "item-d2ade8b1ba": {
+   "A": "readability",
+   "B": "chromerag",
+   "C": "trafilatura"
+  },
+  "item-9753042398": {
+   "A": "trafilatura",
+   "B": "readability",
+   "C": "chromerag"
+  },
+  "item-a670f63ae7": {
+   "A": "trafilatura",
+   "B": "readability",
+   "C": "chromerag"
+  },
+  "item-f40f921618": {
+   "A": "chromerag",
+   "B": "trafilatura",
+   "C": "readability"
+  },
+  "item-1d1c864db7": {
+   "A": "chromerag",
+   "B": "readability",
+   "C": "trafilatura"
+  },
+  "item-c1e7cdee24": {
+   "A": "chromerag",
+   "B": "trafilatura",
+   "C": "readability"
+  },
+  "item-3536ae5bf9": {
+   "A": "readability",
+   "B": "trafilatura",
+   "C": "chromerag"
+  },
+  "item-5179521a88": {
+   "A": "chromerag",
+   "B": "trafilatura",
+   "C": "readability"
+  },
+  "item-a08ff4af3c": {
+   "A": "trafilatura",
+   "B": "chromerag",
+   "C": "readability"
+  },
+  "item-8b05b9d874": {
+   "A": "chromerag",
+   "B": "trafilatura",
+   "C": "readability"
+  },
+  "item-242ebd92df": {
+   "A": "trafilatura",
+   "B": "chromerag",
+   "C": "readability"
+  },
+  "item-b07a93c967": {
+   "A": "chromerag",
+   "B": "trafilatura",
+   "C": "readability"
+  },
+  "item-3c9d58a84f": {
+   "A": "chromerag",
+   "B": "readability",
+   "C": "trafilatura"
+  },
+  "item-b9b1f96307": {
+   "A": "readability",
+   "B": "chromerag",
+   "C": "trafilatura"
+  },
+  "item-1ab955b652": {
+   "A": "trafilatura",
+   "B": "readability",
+   "C": "chromerag"
+  },
+  "item-accd3088a8": {
+   "A": "trafilatura",
+   "B": "chromerag",
+   "C": "readability"
+  },
+  "item-f408e654c7": {
+   "A": "readability",
+   "B": "trafilatura",
+   "C": "chromerag"
+  },
+  "item-1a5d955a7d": {
+   "A": "chromerag",
+   "B": "readability",
+   "C": "trafilatura"
+  },
+  "item-b15a4b518c": {
+   "A": "readability",
+   "B": "trafilatura",
+   "C": "chromerag"
+  },
+  "item-cc999a6339": {
+   "A": "trafilatura",
+   "B": "readability",
+   "C": "chromerag"
+  },
+  "item-1a1bd374f3": {
+   "A": "readability",
+   "B": "chromerag",
+   "C": "trafilatura"
+  },
+  "item-7ba305b959": {
+   "A": "readability",
+   "B": "trafilatura",
+   "C": "chromerag"
+  },
+  "item-153acc7bee": {
+   "A": "trafilatura",
+   "B": "readability",
+   "C": "chromerag"
+  },
+  "item-a52b68a18f": {
+   "A": "chromerag",
+   "B": "readability",
+   "C": "trafilatura"
+  },
+  "item-c412d00cd7": {
+   "A": "chromerag",
+   "B": "readability",
+   "C": "trafilatura"
+  },
+  "item-002c3ad3b0": {
+   "A": "readability",
+   "B": "chromerag",
+   "C": "trafilatura"
+  },
+  "item-c02b414b02": {
+   "A": "trafilatura",
+   "B": "readability",
+   "C": "chromerag"
+  },
+  "item-6d4ee7d2fb": {
+   "A": "trafilatura",
+   "B": "chromerag",
+   "C": "readability"
+  },
+  "item-eac1d8ac3d": {
+   "A": "readability",
+   "B": "trafilatura",
+   "C": "chromerag"
+  },
+  "item-7b10c54513": {
+   "A": "trafilatura",
+   "B": "readability",
+   "C": "chromerag"
+  },
+  "item-1c170ae5cd": {
+   "A": "trafilatura",
+   "B": "chromerag",
+   "C": "readability"
+  },
+  "item-9c19b12b6e": {
+   "A": "readability",
+   "B": "chromerag",
+   "C": "trafilatura"
+  },
+  "item-0745cedf4d": {
+   "A": "readability",
+   "B": "chromerag",
+   "C": "trafilatura"
+  },
+  "item-3f83ff13e5": {
+   "A": "chromerag",
+   "B": "readability",
+   "C": "trafilatura"
+  },
+  "item-3a7354605d": {
+   "A": "trafilatura",
+   "B": "chromerag",
+   "C": "readability"
+  },
+  "item-89d1a95fbb": {
+   "A": "chromerag",
+   "B": "trafilatura",
+   "C": "readability"
+  },
+  "item-5bc396a31d": {
+   "A": "trafilatura",
+   "B": "readability",
+   "C": "chromerag"
+  },
+  "item-03833fd6ef": {
+   "A": "trafilatura",
+   "B": "chromerag",
+   "C": "readability"
+  },
+  "item-44e54bc136": {
+   "A": "trafilatura",
+   "B": "readability",
+   "C": "chromerag"
+  },
+  "item-53544e62df": {
+   "A": "trafilatura",
+   "B": "chromerag",
+   "C": "readability"
+  },
+  "item-76892670d2": {
+   "A": "chromerag",
+   "B": "trafilatura",
+   "C": "readability"
+  },
+  "item-e60158a2aa": {
+   "A": "readability",
+   "B": "chromerag",
+   "C": "trafilatura"
+  },
+  "item-ec025c8978": {
+   "A": "readability",
+   "B": "trafilatura",
+   "C": "chromerag"
+  },
+  "item-0c5e0ee174": {
+   "A": "readability",
+   "B": "chromerag",
+   "C": "trafilatura"
+  },
+  "item-ccf5ce6769": {
+   "A": "readability",
+   "B": "chromerag",
+   "C": "trafilatura"
+  },
+  "item-7c987e7cdc": {
+   "A": "trafilatura",
+   "B": "chromerag",
+   "C": "readability"
+  },
+  "item-0d049b4710": {
+   "A": "readability",
+   "B": "chromerag",
+   "C": "trafilatura"
+  },
+  "item-b1d106ee3f": {
+   "A": "chromerag",
+   "B": "readability",
+   "C": "trafilatura"
+  },
+  "item-d22cf41475": {
+   "A": "chromerag",
+   "B": "trafilatura",
+   "C": "readability"
+  },
+  "item-8c65ae2e6d": {
+   "A": "trafilatura",
+   "B": "chromerag",
+   "C": "readability"
+  },
+  "item-c5bbe1ef63": {
+   "A": "trafilatura",
+   "B": "chromerag",
+   "C": "readability"
+  },
+  "item-81244d4c40": {
+   "A": "readability",
+   "B": "chromerag",
+   "C": "trafilatura"
+  },
+  "item-a9781b7bed": {
+   "A": "readability",
+   "B": "trafilatura",
+   "C": "chromerag"
+  },
+  "item-08784edc1c": {
+   "A": "readability",
+   "B": "chromerag",
+   "C": "trafilatura"
+  },
+  "item-5b385e7d76": {
+   "A": "readability",
+   "B": "trafilatura",
+   "C": "chromerag"
+  },
+  "item-af72d565f1": {
+   "A": "chromerag",
+   "B": "readability",
+   "C": "trafilatura"
+  }
+ },
+ "page_of": {
+  "item-fb83f61eeb": "human-0143",
+  "item-d0ca182443": "human-0021",
+  "item-5e9e736a83": "human-0025",
+  "item-03fded232a": "human-0084",
+  "item-ec389c7ce8": "human-0061",
+  "item-03833fd6ef": "human-0002",
+  "item-d5c2241055": "human-0136",
+  "item-a08ff4af3c": "human-0142",
+  "item-6d4ee7d2fb": "human-0004",
+  "item-3f83ff13e5": "human-0007",
+  "item-7ba305b959": "human-0045",
+  "item-da3e0c174d": "human-0027",
+  "item-0d049b4710": "human-0071",
+  "item-49f365a5e8": "human-0057",
+  "item-9c19b12b6e": "human-0116",
+  "item-f408e654c7": "human-0060",
+  "item-c412d00cd7": "human-0077",
+  "item-242ebd92df": "human-0153",
+  "item-153acc7bee": "human-0006",
+  "item-a9781b7bed": "human-0014",
+  "item-b1d106ee3f": "human-0078",
+  "item-8c65ae2e6d": "human-0074",
+  "item-44e54bc136": "human-0079",
+  "item-3a7354605d": "human-0034",
+  "item-d22cf41475": "human-0114",
+  "item-af72d565f1": "human-0108",
+  "item-7c987e7cdc": "human-0062",
+  "item-908007eeee": "human-0011",
+  "item-e60158a2aa": "human-0135",
+  "item-5179521a88": "human-0012",
+  "item-5de41ff1d7": "human-0128",
+  "item-5b385e7d76": "human-0032",
+  "item-5cc2bc853a": "human-0146",
+  "item-53544e62df": "human-0048",
+  "item-cc999a6339": "human-0129",
+  "item-accd3088a8": "human-0110",
+  "item-90114566ac": "human-0124",
+  "item-cb0a9a0f3f": "human-0104",
+  "item-c02b414b02": "human-0160",
+  "item-c5bbe1ef63": "human-0102",
+  "item-b40d279a46": "human-0075",
+  "item-fac7c19972": "human-0158",
+  "item-a5ca399ddc": "human-0014",
+  "item-4d4f468d7a": "human-0030",
+  "item-b9b1f96307": "human-0117",
+  "item-1a1bd374f3": "human-0039",
+  "item-733da76d2b": "human-0090",
+  "item-f22b693ac3": "human-0063",
+  "item-ccf5ce6769": "human-0017",
+  "item-d2ade8b1ba": "human-0125",
+  "item-84bf60b896": "human-0086",
+  "item-76892670d2": "human-0043",
+  "item-1ab955b652": "human-0038",
+  "item-08784edc1c": "human-0039",
+  "item-310680907e": "human-0141",
+  "item-d066784bf8": "human-0150",
+  "item-e1b5037781": "human-0000",
+  "item-9753042398": "human-0066",
+  "item-b15a4b518c": "human-0108",
+  "item-c1e7cdee24": "human-0140",
+  "item-b07a93c967": "human-0029",
+  "item-002c3ad3b0": "human-0148",
+  "item-1d1c864db7": "human-0003",
+  "item-eac1d8ac3d": "human-0032",
+  "item-f40f921618": "human-0065",
+  "item-52bef1616f": "human-0096",
+  "item-0c5e0ee174": "human-0082",
+  "item-7b10c54513": "human-0092",
+  "item-0745cedf4d": "human-0042",
+  "item-1c170ae5cd": "human-0145",
+  "item-81244d4c40": "human-0045",
+  "item-a52b68a18f": "human-0010",
+  "item-89d1a95fbb": "human-0121",
+  "item-4648dd529a": "human-0009",
+  "item-8b05b9d874": "human-0157",
+  "item-5bc396a31d": "human-0106",
+  "item-1a5d955a7d": "human-0055",
+  "item-a670f63ae7": "human-0081",
+  "item-ec025c8978": "human-0101",
+  "item-763a8fbaa0": "human-0109",
+  "item-aed6b31c78": "human-0083",
+  "item-3c9d58a84f": "human-0054",
+  "item-4b7ec9de0d": "human-0024",
+  "item-93b767dfca": "human-0123",
+  "item-3536ae5bf9": "human-0119"
+ },
+ "repeat_of": {
+  "item-81244d4c40": "item-7ba305b959",
+  "item-a9781b7bed": "item-a5ca399ddc",
+  "item-08784edc1c": "item-1a1bd374f3",
+  "item-5b385e7d76": "item-eac1d8ac3d",
+  "item-af72d565f1": "item-b15a4b518c"
+ },
+ "page_types": {
+  "item-fb83f61eeb": "reference",
+  "item-d0ca182443": "technology",
+  "item-5e9e736a83": "ai",
+  "item-03fded232a": "retail",
+  "item-ec389c7ce8": "medical",
+  "item-4648dd529a": "technology",
+  "item-90114566ac": "reference",
+  "item-d5c2241055": "finance",
+  "item-52bef1616f": "energy",
+  "item-f22b693ac3": "medical",
+  "item-4d4f468d7a": "ai",
+  "item-49f365a5e8": "data_center",
+  "item-b40d279a46": "finance",
+  "item-5de41ff1d7": "reference",
+  "item-e1b5037781": "technology",
+  "item-310680907e": "forum",
+  "item-fac7c19972": "forum",
+  "item-908007eeee": "technology",
+  "item-763a8fbaa0": "telecom",
+  "item-733da76d2b": "automotive",
+  "item-a5ca399ddc": "technology",
+  "item-cb0a9a0f3f": "manufacturing",
+  "item-da3e0c174d": "ai",
+  "item-4b7ec9de0d": "ai",
+  "item-aed6b31c78": "retail",
+  "item-5cc2bc853a": "forum",
+  "item-84bf60b896": "retail",
+  "item-93b767dfca": "reference",
+  "item-d066784bf8": "forum",
+  "item-d2ade8b1ba": "reference",
+  "item-9753042398": "medical",
+  "item-a670f63ae7": "retail",
+  "item-f40f921618": "medical",
+  "item-1d1c864db7": "technology",
+  "item-c1e7cdee24": "forum",
+  "item-3536ae5bf9": "reference",
+  "item-5179521a88": "technology",
+  "item-a08ff4af3c": "reference",
+  "item-8b05b9d874": "forum",
+  "item-242ebd92df": "forum",
+  "item-b07a93c967": "ai",
+  "item-3c9d58a84f": "data_center",
+  "item-b9b1f96307": "logistics",
+  "item-1ab955b652": "ai",
+  "item-accd3088a8": "telecom",
+  "item-f408e654c7": "medical",
+  "item-1a5d955a7d": "data_center",
+  "item-b15a4b518c": "manufacturing",
+  "item-cc999a6339": "reference",
+  "item-1a1bd374f3": "ai",
+  "item-7ba305b959": "ai",
+  "item-153acc7bee": "technology",
+  "item-a52b68a18f": "technology",
+  "item-c412d00cd7": "finance",
+  "item-002c3ad3b0": "forum",
+  "item-c02b414b02": "forum",
+  "item-6d4ee7d2fb": "technology",
+  "item-eac1d8ac3d": "ai",
+  "item-7b10c54513": "automotive",
+  "item-1c170ae5cd": "forum",
+  "item-9c19b12b6e": "logistics",
+  "item-0745cedf4d": "ai",
+  "item-3f83ff13e5": "technology",
+  "item-3a7354605d": "ai",
+  "item-89d1a95fbb": "reference",
+  "item-5bc396a31d": "manufacturing",
+  "item-03833fd6ef": "technology",
+  "item-44e54bc136": "retail",
+  "item-53544e62df": "data_center",
+  "item-76892670d2": "ai",
+  "item-e60158a2aa": "reference",
+  "item-ec025c8978": "energy",
+  "item-0c5e0ee174": "retail",
+  "item-ccf5ce6769": "technology",
+  "item-7c987e7cdc": "medical",
+  "item-0d049b4710": "finance",
+  "item-b1d106ee3f": "finance",
+  "item-d22cf41475": "telecom",
+  "item-8c65ae2e6d": "finance",
+  "item-c5bbe1ef63": "energy",
+  "item-81244d4c40": "ai",
+  "item-a9781b7bed": "technology",
+  "item-08784edc1c": "ai",
+  "item-5b385e7d76": "ai",
+  "item-af72d565f1": "manufacturing"
+ },
+ "calibration": [
+  "item-03fded232a",
+  "item-5e9e736a83",
+  "item-d0ca182443",
+  "item-ec389c7ce8",
+  "item-fb83f61eeb"
+ ],
+ "anchors": [
+  "item-1ab955b652",
+  "item-8c65ae2e6d",
+  "item-90114566ac",
+  "item-c02b414b02",
+  "item-e1b5037781"
+ ],
+ "output_chars": {
+  "item-002c3ad3b0": {
+   "A": 5179,
+   "B": 5293,
+   "C": 2507
+  },
+  "item-03833fd6ef": {
+   "A": 3246,
+   "B": 3107,
+   "C": 3365
+  },
+  "item-0745cedf4d": {
+   "A": 35319,
+   "B": 36552,
+   "C": 32835
+  },
+  "item-08784edc1c": {
+   "A": 1266,
+   "B": 1673,
+   "C": 1176
+  },
+  "item-0c5e0ee174": {
+   "A": 1481,
+   "B": 7447,
+   "C": 4421
+  },
+  "item-0d049b4710": {
+   "A": 5888,
+   "B": 7932,
+   "C": 10902
+  },
+  "item-153acc7bee": {
+   "A": 1254,
+   "B": 207,
+   "C": 1660
+  },
+  "item-1a1bd374f3": {
+   "A": 1266,
+   "B": 1673,
+   "C": 1176
+  },
+  "item-1a5d955a7d": {
+   "A": 6430,
+   "B": 638,
+   "C": 3536
+  },
+  "item-1ab955b652": {
+   "A": 598,
+   "B": 102,
+   "C": 179
+  },
+  "item-1c170ae5cd": {
+   "A": 2200,
+   "B": 3732,
+   "C": 370
+  },
+  "item-1d1c864db7": {
+   "A": 2193,
+   "B": 5677,
+   "C": 3829
+  },
+  "item-242ebd92df": {
+   "A": 8878,
+   "B": 8995,
+   "C": 8910
+  },
+  "item-310680907e": {
+   "A": 1045,
+   "B": 1165,
+   "C": 725
+  },
+  "item-3536ae5bf9": {
+   "A": 31101,
+   "B": 31130,
+   "C": 24215
+  },
+  "item-3a7354605d": {
+   "A": 7059,
+   "B": 452,
+   "C": 89
+  },
+  "item-3c9d58a84f": {
+   "A": 2369,
+   "B": 1619,
+   "C": 4105
+  },
+  "item-3f83ff13e5": {
+   "A": 1548,
+   "B": 47,
+   "C": 445
+  },
+  "item-44e54bc136": {
+   "A": 565,
+   "B": 1993,
+   "C": 2015
+  },
+  "item-4648dd529a": {
+   "A": 5098,
+   "B": 4171,
+   "C": 4555
+  },
+  "item-49f365a5e8": {
+   "A": 2340,
+   "B": 2238,
+   "C": 2452
+  },
+  "item-4b7ec9de0d": {
+   "A": 1687,
+   "B": 1726,
+   "C": 1700
+  },
+  "item-4d4f468d7a": {
+   "A": 4537,
+   "B": 4510,
+   "C": 4509
+  },
+  "item-5179521a88": {
+   "A": 1841,
+   "B": 1853,
+   "C": 491
+  },
+  "item-52bef1616f": {
+   "A": 1521,
+   "B": 2517,
+   "C": 2702
+  },
+  "item-53544e62df": {
+   "A": 1531,
+   "B": 1892,
+   "C": 2196
+  },
+  "item-5b385e7d76": {
+   "A": 491,
+   "B": 1207,
+   "C": 747
+  },
+  "item-5bc396a31d": {
+   "A": 999,
+   "B": 727,
+   "C": 903
+  },
+  "item-5cc2bc853a": {
+   "A": 2353,
+   "B": 2321,
+   "C": 4265
+  },
+  "item-5de41ff1d7": {
+   "A": 4565,
+   "B": 4677,
+   "C": 4524
+  },
+  "item-6d4ee7d2fb": {
+   "A": 1177,
+   "B": 2430,
+   "C": 208
+  },
+  "item-733da76d2b": {
+   "A": 3511,
+   "B": 370,
+   "C": 248
+  },
+  "item-763a8fbaa0": {
+   "A": 13280,
+   "B": 16112,
+   "C": 12643
+  },
+  "item-76892670d2": {
+   "A": 20065,
+   "B": 17228,
+   "C": 19547
+  },
+  "item-7b10c54513": {
+   "A": 4712,
+   "B": 86,
+   "C": 66
+  },
+  "item-7ba305b959": {
+   "A": 1325,
+   "B": 1385,
+   "C": 1535
+  },
+  "item-7c987e7cdc": {
+   "A": 4252,
+   "B": 4087,
+   "C": 4222
+  },
+  "item-81244d4c40": {
+   "A": 1325,
+   "B": 1535,
+   "C": 1385
+  },
+  "item-84bf60b896": {
+   "A": 794,
+   "B": 1182,
+   "C": 1252
+  },
+  "item-89d1a95fbb": {
+   "A": 2787,
+   "B": 2064,
+   "C": 697
+  },
+  "item-8b05b9d874": {
+   "A": 929,
+   "B": 1061,
+   "C": 1225
+  },
+  "item-8c65ae2e6d": {
+   "A": 626,
+   "B": 347,
+   "C": 387
+  },
+  "item-90114566ac": {
+   "A": 3802,
+   "B": 2716,
+   "C": 2804
+  },
+  "item-908007eeee": {
+   "A": 1815,
+   "B": 135,
+   "C": 1714
+  },
+  "item-93b767dfca": {
+   "A": 867,
+   "B": 535,
+   "C": 1488
+  },
+  "item-9753042398": {
+   "A": 22367,
+   "B": 19749,
+   "C": 21163
+  },
+  "item-9c19b12b6e": {
+   "A": 713,
+   "B": 1127,
+   "C": 1157
+  },
+  "item-a08ff4af3c": {
+   "A": 6583,
+   "B": 6557,
+   "C": 6438
+  },
+  "item-a52b68a18f": {
+   "A": 4980,
+   "B": 5238,
+   "C": 5614
+  },
+  "item-a5ca399ddc": {
+   "A": 4659,
+   "B": 4485,
+   "C": 4503
+  },
+  "item-a670f63ae7": {
+   "A": 565,
+   "B": 1979,
+   "C": 2004
+  },
+  "item-a9781b7bed": {
+   "A": 4659,
+   "B": 4503,
+   "C": 4485
+  },
+  "item-accd3088a8": {
+   "A": 4102,
+   "B": 4186,
+   "C": 4118
+  },
+  "item-aed6b31c78": {
+   "A": 432,
+   "B": 1549,
+   "C": 2308
+  },
+  "item-af72d565f1": {
+   "A": 3450,
+   "B": 204,
+   "C": 3864
+  },
+  "item-b07a93c967": {
+   "A": 1309,
+   "B": 1193,
+   "C": 1207
+  },
+  "item-b15a4b518c": {
+   "A": 204,
+   "B": 3864,
+   "C": 3450
+  },
+  "item-b1d106ee3f": {
+   "A": 3224,
+   "B": 4013,
+   "C": 1712
+  },
+  "item-b40d279a46": {
+   "A": 663,
+   "B": 961,
+   "C": 1723
+  },
+  "item-b9b1f96307": {
+   "A": 672,
+   "B": 1438,
+   "C": 1438
+  },
+  "item-c02b414b02": {
+   "A": 361,
+   "B": 685,
+   "C": 617
+  },
+  "item-c1e7cdee24": {
+   "A": 3299,
+   "B": 3274,
+   "C": 1209
+  },
+  "item-c412d00cd7": {
+   "A": 1892,
+   "B": 2655,
+   "C": 1377
+  },
+  "item-c5bbe1ef63": {
+   "A": 2042,
+   "B": 3308,
+   "C": 1219
+  },
+  "item-cb0a9a0f3f": {
+   "A": 3017,
+   "B": 3297,
+   "C": 2986
+  },
+  "item-cc999a6339": {
+   "A": 6892,
+   "B": 4579,
+   "C": 5390
+  },
+  "item-ccf5ce6769": {
+   "A": 734,
+   "B": 871,
+   "C": 835
+  },
+  "item-d066784bf8": {
+   "A": 9233,
+   "B": 1910,
+   "C": 8466
+  },
+  "item-d22cf41475": {
+   "A": 5079,
+   "B": 2092,
+   "C": 3669
+  },
+  "item-d2ade8b1ba": {
+   "A": 813,
+   "B": 761,
+   "C": 763
+  },
+  "item-d5c2241055": {
+   "A": 714,
+   "B": 933,
+   "C": 597
+  },
+  "item-da3e0c174d": {
+   "A": 22457,
+   "B": 22788,
+   "C": 22552
+  },
+  "item-e1b5037781": {
+   "A": 12,
+   "B": 5434,
+   "C": 7376
+  },
+  "item-e60158a2aa": {
+   "A": 4811,
+   "B": 4982,
+   "C": 4900
+  },
+  "item-eac1d8ac3d": {
+   "A": 491,
+   "B": 1207,
+   "C": 747
+  },
+  "item-ec025c8978": {
+   "A": 119,
+   "B": 400,
+   "C": 2385
+  },
+  "item-f22b693ac3": {
+   "A": 16912,
+   "B": 12398,
+   "C": 16975
+  },
+  "item-f408e654c7": {
+   "A": 24454,
+   "B": 24977,
+   "C": 24425
+  },
+  "item-f40f921618": {
+   "A": 4437,
+   "B": 3288,
+   "C": 3956
+  },
+  "item-fac7c19972": {
+   "A": 1568,
+   "B": 2648,
+   "C": 2774
+  }
+ }
+}

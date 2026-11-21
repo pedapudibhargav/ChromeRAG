@@ -49,8 +49,8 @@ KEYWORDS = (
 BOLD_LEAD, ITALIC_LEAD, LEAD_END = "\x01", "\x02", "\x03"
 
 METADATA = {
-    "C1": "v0.1.4",
-    "C2": "https://github.com/pedapudibhargav/ChromeRAG/tree/v0.1.4",
+    "C1": "v0.1.5",
+    "C2": "https://github.com/pedapudibhargav/ChromeRAG/tree/v0.1.5",
     "C3": "MIT",
     "C4": "git",
     "C5": "Python ≥3.11; BeautifulSoup4, lxml, PyYAML, NumPy",
@@ -77,6 +77,7 @@ DECL_SECTIONS = [
     "Declaration of competing interest",
     "Funding",
     "Data availability",
+    "Ethics statement",
     "Declaration of generative AI and AI-assisted technologies in the manuscript preparation process",
 ]
 
@@ -318,39 +319,105 @@ def _keep_next(p: etree._Element) -> None:
     pPr.insert(1 if pPr.find(f"{W}pStyle") is not None else 0, etree.Element(f"{W}keepNext"))
 
 
+# Elements that follow w:spacing inside w:pPr (schema order); spacing goes before the first of them.
+_PPR_AFTER_SPACING = (
+    "ind", "contextualSpacing", "mirrorIndents", "suppressOverlap", "jc", "textDirection",
+    "textAlignment", "textboxTightWrap", "outlineLvl", "divId", "cnfStyle", "rPr", "sectPr", "pPrChange",
+)
+# Interval "[a, b]": a no-break space after the comma keeps it on one line in narrow table cells.
+_INTERVAL = re.compile(r"\[([−+\-]?[\d.]+), ([−+\-]?[\d.]+)\]")
+KEEP_TABLE_TOGETHER_MAX_ROWS = 8  # longer tables may break across pages; their header row repeats
+
+
+def _set_spacing(p: etree._Element, **attrs: str) -> None:
+    """Set w:spacing on a paragraph (schema position), replacing any earlier value."""
+    pPr = p.find(f"{W}pPr")
+    old = pPr.find(f"{W}spacing")
+    if old is not None:
+        pPr.remove(old)
+    sp = etree.Element(f"{W}spacing")
+    for key, value in attrs.items():
+        sp.set(f"{W}{key}", value)
+    for i, child in enumerate(pPr):
+        if etree.QName(child).localname in _PPR_AFTER_SPACING:
+            pPr.insert(i, sp)
+            return
+    pPr.append(sp)
+
+
+def _compact_cell_para(p: etree._Element, *, size_half_points: int = 18) -> None:
+    """Table cell paragraph: 0 pt before and after, single line spacing, 9 pt text."""
+    _set_spacing(p, before="0", after="0", line="240", lineRule="auto")
+    for run in p.findall(f"{W}r"):
+        rpr = run.find(f"{W}rPr")
+        if rpr is None:
+            rpr = etree.Element(f"{W}rPr")
+            run.insert(0, rpr)
+        for tag in ("sz", "szCs"):
+            for el in rpr.findall(f"{W}{tag}"):
+                rpr.remove(el)
+        # schema order inside rPr: ... b, i, ..., sz, szCs, ... (b and i are the only earlier children used here)
+        etree.SubElement(rpr, f"{W}sz").set(f"{W}val", str(size_half_points))
+        etree.SubElement(rpr, f"{W}szCs").set(f"{W}val", str(size_half_points))
+
+
+def _column_widths(rows: list[list[str]], ncols: int, total: int = 9000) -> list[int]:
+    """Widths in proportion to the longest cell text (with a floor), so interval columns get room."""
+    longest = []
+    for c in range(ncols):
+        lens = [len(r[c]) if c < len(r) else 0 for r in rows]
+        longest.append(max(10, min(max(lens), 32)))
+    scale = total / sum(longest)
+    widths = [int(x * scale) for x in longest]
+    widths[-1] += total - sum(widths)
+    return widths
+
+
 def _table(rows: list[list[str]]) -> etree._Element:
-    """Plain bordered Word table (explicit borders; no new table styles)."""
+    """Plain Word table (horizontal rules only; no new table styles); compact 9 pt cells."""
     tbl = etree.Element(f"{W}tbl")
     tblPr = etree.SubElement(tbl, f"{W}tblPr")
     etree.SubElement(tblPr, f"{W}tblW").attrib.update({f"{W}w": "5000", f"{W}type": "pct"})
     borders = etree.SubElement(tblPr, f"{W}tblBorders")
-    for side in ("top", "bottom", "insideH"):  # horizontal rules only (the journal asks for no vertical rules)
-        etree.SubElement(borders, f"{W}{side}").attrib.update(
-            {f"{W}val": "single", f"{W}sz": "4", f"{W}space": "0", f"{W}color": "808080"}
-        )
-    grid = etree.SubElement(tbl, f"{W}tblGrid")
+    # Horizontal rules only (the journal asks for no vertical rules): top, bottom and one under the header row.
+    for side in ("top", "left", "bottom", "right", "insideH", "insideV"):  # schema order
+        el = etree.SubElement(borders, f"{W}{side}")
+        if side in ("top", "bottom"):
+            el.attrib.update({f"{W}val": "single", f"{W}sz": "8", f"{W}space": "0", f"{W}color": "808080"})
+        else:
+            el.set(f"{W}val", "nil")
+    etree.SubElement(tblPr, f"{W}tblLayout").set(f"{W}type", "fixed")
     ncols = max(len(r) for r in rows)
-    for _ in range(ncols):
-        etree.SubElement(grid, f"{W}gridCol").set(f"{W}w", str(9000 // ncols))
+    widths = _column_widths(rows, ncols)
+    grid = etree.SubElement(tbl, f"{W}tblGrid")
+    for wdt in widths:
+        etree.SubElement(grid, f"{W}gridCol").set(f"{W}w", str(wdt))
+    keep_together = len(rows) <= KEEP_TABLE_TOGETHER_MAX_ROWS
     for r_idx, cells in enumerate(rows):
         tr = etree.SubElement(tbl, f"{W}tr")
         trPr = etree.SubElement(tr, f"{W}trPr")
         etree.SubElement(trPr, f"{W}cantSplit")
         if r_idx == 0:
-            etree.SubElement(trPr, f"{W}tblHeader")
+            etree.SubElement(trPr, f"{W}tblHeader")  # repeated on every page the table spans
         for c in range(ncols):
             tc = etree.SubElement(tr, f"{W}tc")
             tcPr = etree.SubElement(tc, f"{W}tcPr")
-            etree.SubElement(tcPr, f"{W}tcW").attrib.update(
-                {f"{W}w": str(9000 // ncols), f"{W}type": "dxa"}
-            )
-            p = _new_para(cells[c] if c < len(cells) else "", style="Body")
+            etree.SubElement(tcPr, f"{W}tcW").attrib.update({f"{W}w": str(widths[c]), f"{W}type": "dxa"})
+            if r_idx == 0:  # header rule
+                etree.SubElement(etree.SubElement(tcPr, f"{W}tcBorders"), f"{W}bottom").attrib.update(
+                    {f"{W}val": "single", f"{W}sz": "4", f"{W}space": "0", f"{W}color": "808080"}
+                )
+            text = _INTERVAL.sub("[\\1,\u00a0\\2]", cells[c] if c < len(cells) else "")
+            text = re.sub(r"(\S) \[", "\\1\u00a0[", text)  # keep a value with its interval
+            p = _new_para(text, style="Body")
             if r_idx == 0:
                 rpr = etree.Element(f"{W}rPr")
                 etree.SubElement(rpr, f"{W}b")
                 p.find(f"{W}r").insert(0, rpr)
-            if r_idx < len(rows) - 1:
-                _keep_next(p)  # with cantSplit rows, keeps the whole table on one page
+            _compact_cell_para(p)
+            # Short tables stay on one page; longer ones keep only the header with the first data row.
+            if r_idx < len(rows) - 1 and (keep_together or r_idx == 0):
+                _keep_next(p)
             tc.append(p)
     return tbl
 
@@ -622,8 +689,12 @@ def main() -> None:
     if ack is not None:
         _set_para(ack, "Acknowledgements", style="Heading1")
         _clear_until_next_heading(body, ack, {"References"})
-        p = _new_para("None.", style="Body")
-        ack.addnext(p)
+        ack_paras = [t for k, t in sections.get("Acknowledgements", []) if k == "p"] or ["None."]
+        cur = ack
+        for text in ack_paras:
+            p = _new_para(text, style="Body")
+            cur.addnext(p)
+            cur = p
 
     # References
     paras = list(body.findall(f"{W}p"))
@@ -665,11 +736,37 @@ def main() -> None:
         cur.addnext(p)
         cur = p
 
+    # One spacing for every section heading: the template gives some headings 24 pt before (style) and
+    # others 0 pt, which shows as a blank line before Impact and the declarations.
+    for p in body.findall(f"{W}p"):
+        ps = p.find(f"{W}pPr/{W}pStyle")
+        if ps is not None and ps.get(f"{W}val") == "Heading1":
+            _set_spacing(p, before="0", line="240", lineRule="auto")
+    # Code metadata table: compact cells as in the other tables (template text size kept).
+    meta_tbl = next(root.iter(f"{W}tbl"))
+    for p in meta_tbl.iter(f"{W}p"):
+        if p.find(f"{W}pPr") is None:
+            p.insert(0, etree.Element(f"{W}pPr"))  # keep the template's own cell style
+        _set_spacing(p, before="0", after="0", line="240", lineRule="auto")
+
     # Final empty cleanup (keep figure placeholders)
     for p in list(body.findall(f"{W}p")):
         t = _para_text(p)
         if t == "" and p.find(f".//{W}drawing") is None:
             body.remove(p)
+
+    # A little air between each table's bottom rule and the text that follows it. Word ignores
+    # space-before on the paragraph right after a table, so add a 6 pt spacer without a line number.
+    for tbl in body.findall(f"{W}tbl"):
+        spacer = etree.Element(f"{W}p")
+        ppr = etree.SubElement(spacer, f"{W}pPr")
+        etree.SubElement(ppr, f"{W}suppressLineNumbers")
+        sp = etree.SubElement(ppr, f"{W}spacing")
+        sp.set(f"{W}before", "0")
+        sp.set(f"{W}after", "0")
+        sp.set(f"{W}line", "120")
+        sp.set(f"{W}lineRule", "exact")
+        tbl.addnext(spacer)
 
     for el in root.iter():
         for attr in list(el.attrib):

@@ -155,6 +155,8 @@ def apply_trafilatura_ideas(
     root_words = _word_count(scope.get_text(" ", strip=True))
 
     out: dict[str, int] = {}
+    if not getattr(cfg, "enable_trafilatura_rules", True):
+        return out
     if getattr(cfg, "trafilatura_link_blocks", True):
         out["link_blocks"] = _drop_link_dense_blocks(scope, root=root, root_words=root_words, stats=stats)
         if out["link_blocks"]:

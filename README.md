@@ -3,31 +3,29 @@
 [![PyPI](https://img.shields.io/pypi/v/chromerag.svg)](https://pypi.org/project/chromerag/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE.txt)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/downloads/)
-[![Tests](https://github.com/pedapudibhargav/ChromeRAG/actions/workflows/pages.yml/badge.svg)](https://github.com/pedapudibhargav/ChromeRAG/actions/workflows/pages.yml)
-[![Results](https://img.shields.io/badge/results-GitHub%20Pages-2a78d6.svg)](https://pedapudibhargav.github.io/ChromeRAG/)
+[![ci](https://github.com/pedapudibhargav/ChromeRAG/actions/workflows/ci.yml/badge.svg)](https://github.com/pedapudibhargav/ChromeRAG/actions/workflows/ci.yml)
+[![Results](https://img.shields.io/badge/results-0.1.5%20evaluation-2a78d6.svg)](evaluations/2026-11-final/)
 [![DOI](https://zenodo.org/badge/1378773845.svg)](https://doi.org/10.5281/zenodo.22970289)
 
-**HTML → RAG-ready Markdown and chunks.** A small learned filter, evidence-backed rules and an optional
-site-template model remove navigation, footers, calls to action, cookie banners, related links and comment
-threads, and keep article text, documentation, tables and code. Pure NumPy inference: no GPU, no model
-download. Chunks carry their heading path, ready for a vector database. A drop-in alternative to Trafilatura,
-Readability and MarkItDown when the pages are documentation, forums, marketing or product pages as well as
-articles.
+**HTML → RAG-ready Markdown and chunks.** A small learned block filter and a few evidence-backed rules remove
+navigation, footers, calls to action, cookie banners, share strips and comment sections of articles, and keep
+article text, documentation, forum threads, tables and code. Pure NumPy inference: no GPU, no model download.
+Chunks carry their heading path, ready for a vector database.
 
-> Built for **RAG ingest**, **LLM chunking**, **vector indexing** and **boilerplate / noise removal** from scraped
+> Built for **RAG ingest**, **LLM chunking**, **vector indexing** and **boilerplate / noise removal** from stored
 > HTML, not for pixel-perfect web archiving.
 
 | Owns | Does **not** own |
 |---|---|
 | HTML string / file → clean Markdown | Crawling, Playwright, rate limits |
 | Heading-aware chunks with `embed_text` | Vector DB / embeddings |
-| Optional site-chrome **learn → extract** (STCE) | Rendering JavaScript shells (it warns; render first) |
-| Schema.org → YAML front-matter | Hosted SaaS API |
-| Tables, code and lists kept as Markdown | PDF / Office formats |
-| Precision / coverage priority knobs | |
+| Schema.org → YAML front matter | Rendering JavaScript shells (it warns; render first) |
+| Tables, code and lists kept as Markdown | Hosted SaaS API |
+| Precision / coverage priority modes | PDF / Office formats |
+| Optional site-template model (`learn` → `batch`), experimental | |
 
-**Paper:** *ChromeRAG: A Learned Boilerplate Filter for Web RAG Ingestion* (submitted to SoftwareX)  
-**Release:** [`v0.1.4`](https://github.com/pedapudibhargav/ChromeRAG/tree/v0.1.4)  
+**Paper:** *ChromeRAG: A Learned Boilerplate Filter for Web RAG Ingestion* (under revision at SoftwareX)  
+**Release:** [`v0.1.5`](https://github.com/pedapudibhargav/ChromeRAG/tree/v0.1.5) · DOI (all versions) [10.5281/zenodo.22970289](https://doi.org/10.5281/zenodo.22970289)  
 **Author:** [Bhargava Chary Peddapudi](https://orcid.org/0009-0002-8523-8415)
 
 ---
@@ -37,8 +35,8 @@ articles.
 Requires **Python 3.11+**. CPU only; no model downloads. Four direct dependencies (BeautifulSoup, lxml, PyYAML, NumPy).
 
 ```bash
-pip install chromerag
-chromerag --version
+pip install chromerag==0.1.5
+chromerag --version          # chromerag 0.1.5
 ```
 
 From source (adds tests and the benchmark baselines):
@@ -49,8 +47,14 @@ cd ChromeRAG
 python3 -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
 pip install -e ".[dev,baselines]"
+ruff check .
 pytest -q
 ```
+
+The `ci` workflow runs `ruff check .` and `pytest -q` on Linux, macOS and Windows with Python 3.11 and 3.13 on every
+push and pull request; tests that need the WCXB data or optional integrations are skipped there. The `pypi-smoke`
+workflow installs each release from PyPI on the same systems and runs [`scripts/readme_smoke.sh`](scripts/readme_smoke.sh),
+which follows the quick start below.
 
 ---
 
@@ -60,36 +64,44 @@ pytest -q
 from chromerag import ChromeRAG
 
 result = ChromeRAG().extract(open("page.html", encoding="utf-8").read(), url="https://example.com/page")
-print(result.markdown)              # RAG-ready Markdown (+ YAML front-matter when Schema.org is present)
+print(result.markdown)              # RAG-ready Markdown (+ YAML front matter when Schema.org is present)
 for chunk in result.chunks():       # heading-aware chunks for a vector database
     vector_db.upsert(text=chunk.embed_text, metadata=chunk.to_dict())
 ```
 
-The repository ships a tiny synthetic site in [`examples/site/`](examples/) (four pages that share a
-header, cookie banner, sales CTA, footer, and a repeated in-content promo strip). Run these from the
-repository root:
+The repository ships a small synthetic documentation site in [`examples/site/`](examples/): four pages that share a
+header menu, cookie banner, sales call to action, footer and a repeated event paragraph inside `<main>`. Run these from
+the repository root:
 
 ```bash
-# 1) One page → Markdown (JSON-LD becomes YAML front-matter, tables become Markdown tables)
+# 1) One page → Markdown (JSON-LD becomes YAML front matter, the plan table becomes a Markdown table)
 chromerag extract examples/site/pricing.html -o out/pricing.md --priority balanced --json-meta
 
-# 2) Learn the site's repeated chrome from ≥3 pages, then batch-extract with it
+# 2) Chunks as JSON lines, each with heading_path and embed_text
+chromerag extract examples/site/pricing.html --chunks
+
+# 3) Optional: learn the site's repeated blocks from ≥3 pages, then batch-extract with the site model
 chromerag learn examples/site -o out/site_chrome.json --min-pages 3
 chromerag batch examples/site -o out/batch --chrome-model out/site_chrome.json
-
-# 3) Chunks as JSON lines
-chromerag extract examples/site/pricing.html --chunks
 ```
 
-`learn` reports one site group (`docs.example.com/docs`) with its chrome signatures; `batch`
-writes `out/batch/<page>/chromerag.md` plus `out/batch/batch_summary.json`. The repeated
-"Widget Summit" paragraph survives single-page extraction but is removed once the site model is applied.
+`out/pricing.md` starts with the front matter (`title: Plans and pricing`, `type: TechArticle`, …), then the page
+title, the intro paragraph and the plan table (`| Team | 20,000 | 49 |`); the menu, cookie banner, call to action,
+event paragraph and footer are gone. The pricing page gives one chunk with `heading_path`
+`["Plans and pricing", "Reference table"]`.
+
+`learn` finds six chrome signatures in one site group (`docs.example.com/docs`); `batch` writes
+`out/batch/<page>/chromerag.md` plus `out/batch/batch_summary.json`. In version 0.1.4 the learned filter kept the
+repeated event paragraph and only the site model removed it. The 0.1.5 filter already removes it from every page, so
+`batch` gives byte-identical Markdown with and without the site model on this example. The site model (STCE) helps
+only when a template block reads like content to the filter; it is optional, off unless a site model is given, and was
+last measured with version 0.1.4 (see [Earlier evaluations](#earlier-evaluations-v014-superseded)).
 
 Priorities: `precision` (strip more) · `balanced` (default) · `coverage` (keep more).
 
 ### Thin / JavaScript-shell input
 
-ChromeRAG does not execute JavaScript. Unrendered SPA shells produce a warning on stderr (and in
+ChromeRAG does not execute JavaScript. Unrendered single-page-application shells produce a warning on stderr (and in
 `result.warnings`); render them with Playwright/Puppeteer first.
 
 ```bash
@@ -109,16 +121,18 @@ result = ChromeRAG(config=cfg).extract(html, url="https://docs.example.com/docs/
 print(result.front_matter)    # dict
 print(result.tokens_estimate)
 print(result.warnings)        # e.g. JS shell → render with Playwright first
-print(result.diagnostics)     # rules that fired, kept/rejected samples, per-page confidence
+print(result.diagnostics)     # rules that fired, tables rescued, per-page confidence estimate
 ```
 
-Learn-then-extract from Python: `chromerag.learn_then_extract(pages)` or
-`load_chrome_models(path)` + `ChromeRAG(site_chrome=model)`. Switches: `--no-rules`, `--no-schema`,
-`--no-tables`, `--no-stce`, `--links` (keep link targets), `--table-format linearized` (key-value rows instead
-of Markdown tables), `PipelineConfig(enable_lbc=False)` (the 0.1.2 density filter). Every generic chrome rule
-has its own flag (`chrome_drop_toc`, `chrome_drop_pager`, `chrome_drop_comments`, `chrome_drop_related`,
-`chrome_drop_cta`, `chrome_drop_share`, `chrome_drop_newsletter`, `chrome_drop_author_bio`,
-`chrome_drop_nav_misc`, `chrome_trim_tail`, `chrome_drop_attr_junk`, `trafilatura_link_blocks`).
+Learn-then-extract from Python: `chromerag.learn_then_extract(pages)` or `load_chrome_models(path)` +
+`ChromeRAG(site_chrome=model)`. Command-line switches: `--no-rules`, `--no-schema`, `--no-tables`, `--no-stce`,
+`--links` (keep link targets), `--table-format linearized` (key-value rows instead of Markdown tables). Every stage
+can be switched off in `PipelineConfig` (`enable_lbc`, `enable_rules`, `enable_generic_chrome`, `enable_chrome_prune`,
+`enable_trafilatura_rules`, `enable_lbc_structure_rules`, `enable_lbc_stage2`, `lbc_rescue_tables`,
+`lbc_rich_collapsed_retry`), and every generic chrome detector has its own flag (`chrome_drop_toc`,
+`chrome_drop_comments`, `chrome_drop_cta`, `chrome_drop_share`, `chrome_drop_newsletter`, `chrome_drop_author_bio`,
+`chrome_drop_nav_misc`, `chrome_trim_tail`, `chrome_drop_attr_junk`; `chrome_drop_pager` and `chrome_drop_related`
+are off by default since 0.1.5).
 
 ### Use it in a RAG pipeline
 
@@ -132,17 +146,13 @@ from chromerag.integrations.llamaindex import ChromeRAGReader
 docs = ChromeRAGReader().load_data(["pages/pricing.html"])
 ```
 
-Front-matter (title, type, dates, breadcrumb) becomes document metadata, so a text splitter copies it
-onto every chunk.
+Front matter (title, type, dates, breadcrumb) becomes document metadata, so a text splitter copies it onto every chunk.
 
 ### Chunks for vector databases
 
 `result.chunks()` splits the Markdown into chunks of at most 180 words inside heading sections and never cuts a
 code block or table. Each chunk has the heading path (page title → h2 → h3), its depth and `embed_text`, the body
-preceded by that path. On 400 questions over 3,395 documentation chunks from sites not used in training,
-prepending the path raised dense MRR from 0.853 to 0.913 and BM25 MRR by +0.060 (95% intervals exclude 0;
-questions were written by Claude from each chunk and its page title; see
-`evaluations/2026-10-v0.1.3/FINAL/heading_context_retrieval.json`).
+preceded by that path.
 
 ```python
 for chunk in ChromeRAG().extract(html).chunks():
@@ -154,180 +164,166 @@ for chunk in ChromeRAG().extract(html).chunks():
 
 **Does it need a model download or a GPU?** No. The model is a 150 KB array file inside the wheel.
 **Does it run JavaScript?** No; it warns on unrendered shells. Render with Playwright first.
-**When should I pick Trafilatura instead?** For plain news or blog articles the two tie on word-level F1 against
-human labels (blinded judges slightly prefer ChromeRAG on fresh articles). ChromeRAG is clearly better on forums,
-service and product pages, listings and category pages, and when you can show it several pages of one site.
+**When should I pick Trafilatura instead?** For plain news or blog articles Trafilatura is slightly better on WCXB
+(0.952 against 0.940 word F1) and about three times faster. ChromeRAG's gain is largest on forums and
+question-and-answer threads, and it adds front matter, Markdown tables, chunks and input warnings.
 **How do I keep link URLs?** `PipelineConfig(include_links=True)` or `--links`.
-**Can I trust the numbers?** Every table below is recomputed from files in the repository (`evaluations/`,
-`docs/data/`); learned-model numbers come from cross-validation grouped by site or from a held-out set.
-
----
-
-## Why ChromeRAG (vs MarkItDown / Trafilatura / Readability)?
-
-| Tool | Best at | Gap for web RAG |
-|------|---------|-----------------|
-| **MarkItDown** | Office/PDF/HTML → Markdown for LLMs | Keeps most page chrome; not designed to strip nav/footer |
-| **Trafilatura** | News/article main content | Weaker on forums, service and category pages; no chunks or site model |
-| **Readability** | Single-article extraction | Often drops tables, lists and reference sections |
-| **ChromeRAG** | Ingest-time chrome removal + schema + tables + chunks + input warnings | HTML only; fetching/rendering stays in your crawler |
-
-Median time per page on 200 stored pages (one process, Apple M4 Pro): 52 ms ChromeRAG,
-32 ms Trafilatura, 31 ms Readability, 39 ms MarkItDown.
+**Can I trust the numbers?** The 0.1.5 numbers below come from a frozen tag (`freeze-0.1.5`) and the result files in
+[`evaluations/2026-11-final/`](evaluations/2026-11-final/), with a ledger of every held-out run. The WCXB test split
+was consulted during earlier development and is reported as such.
 
 ---
 
 ## How it works
 
 Six stages: input-quality gate → schema harvest → cleaning (YAML rules, generic chrome detectors, optional site
-model) → chrome pruning and content-root ladder → learned block filter → tables and Markdown. The learned
-filter splits the page into *blocks* (paragraphs, headings, list items, quotes, tables, text-only divs) and scores
-each with gradient-boosted trees over about 530 numbers (its text, its place in the tree, the names of its
-ancestors, the heading above it, its neighbours). A block is kept when its score reaches the threshold of the
-chosen priority: `coverage` 0.30, `balanced` 0.50, `precision` 0.70. The page title, a heading above kept content
-and the lead paragraph are always kept. 37 YAML rules (consent managers, share bars, documentation-framework
-widgets, 16 rules adapted from Trafilatura's discard patterns, credited in `NOTICE`) and generic detectors remove
-tables of contents, pagers, comment sections, related-post blocks, call-to-action buttons, share strips,
-newsletter blocks, author boxes and page tails.
+model) → chrome pruning → learned block filter → tables and Markdown. The learned filter splits the page into
+*blocks* (paragraphs, headings, list items, tables, preformatted or loose text) and scores each with gradient-boosted
+trees (300 trees of depth 6) over 535 features: its text, its position, its tree context, feature-hashed class and id
+words of its ancestors and the heading above it. A block is kept when its score reaches the threshold of the chosen
+priority: `coverage` 0.30, `balanced` 0.50, `precision` 0.70. The page title, headings above kept content and the lead
+paragraph are kept; a table rescue keeps data tables under kept headings, and a retry in coverage mode handles
+collapsed output (the richer collapse signal follows a design described for rs-trafilatura). 13 YAML rules (3 consent
+managers, 2 share/related blocks, 8 rules adapted from Trafilatura's discard patterns, credited in `NOTICE`) and
+generic detectors remove in-page tables of contents, comment sections of articles, call-to-action buttons, share
+strips, newsletter blocks, author boxes and footer-like page tails. A per-page F1 estimate below 0.70 raises a warning.
 
-* The model is a 150 KB array file (`src/chromerag/assets/lbc_stage1.npz`) evaluated with NumPy only;
-  scikit-learn is needed to retrain, not to run. It was trained on human-reviewed pages (WCXB development
-  split, 1,495 pages).
-* Output keeps headings, bold and italic, inline code, fenced code blocks with their lines, ordered and
-  nested lists and GitHub Markdown tables; link targets are omitted unless requested, repeated blocks are
-  written once, and the Markdown follows document order.
+* The model is a 152,432-byte array file (`src/chromerag/assets/lbc_stage1.npz`) evaluated with NumPy only;
+  scikit-learn is needed to retrain, not to run. Version 0.1.5 is trained on a strict subset of the public WCXB
+  development folder: the 139 files that duplicate test pages and the 96 pages whose registrable domain (Public Suffix
+  List) occurs in the test split are removed, leaving 1,238 pages. A test asserts that no training domain is a test domain.
+* Components were kept only when a five-fold, domain-grouped ablation on those 1,238 pages showed a benefit
+  ([`evaluations/2026-10-v0.1.3/strict_ablation_cv.json`](evaluations/2026-10-v0.1.3/strict_ablation_cv.json)); five
+  Trafilatura-derived rule groups, 15 documentation-framework rules and the pager and related-post detectors were
+  dropped or switched off.
+* Output keeps headings, bold and italic, inline code, fenced code blocks with their lines, ordered and nested lists
+  and GitHub Markdown tables; link targets are omitted unless requested.
 
-Retrain (needs `pip install -e ".[train]"` and WCXB in `data/wcxb/`):
+Retrain the shipped strict model (needs `pip install -e ".[train]"` and WCXB in `data/wcxb/`). From the repository root
+with `PYTHONPATH=src:.`:
 
 ```bash
-python -m poc.lbc_data --split dev                      # block table -> data/outputs/lbc/lbc_dev.npz
-python -m poc.train_lbc --fit-all --out-dir src/chromerag/assets
-python -m poc.run_wcxb_eval --split dev --out /tmp/wcxb_dev.json   # sanity check (in-sample after --fit-all)
+bash poc/rebuild_strict.sh          # full sequence: ids, feature table, 5 fold models, fit-all verify (byte-identical
+                                    # to the shipped model), strict_dev_cv.json, ablation_cv, golden (long)
+# Or step by step:
+python -m poc.strict_split --write  # refreshes poc/wcxb_strict_train_ids.json
+python -m poc.lbc_data --split dev  # -> data/outputs/lbc/lbc_strict.npz (default strict ids)
+for k in 0 1 2 3 4; do
+  python -m poc.train_lbc --data data/outputs/lbc/lbc_strict.npz --holdout-fold "$k" \
+    --out-dir "data/outputs/lbc/cv/fold_$k"
+done
+python -m poc.train_lbc --data data/outputs/lbc/lbc_strict.npz --fit-all --out-dir data/outputs/lbc/verify_a
+cmp data/outputs/lbc/verify_a/lbc_stage1.npz src/chromerag/assets/lbc_stage1.npz
+python -m poc.update_strict_manifest --verify-npz data/outputs/lbc/verify_a/lbc_stage1.npz
+python -m poc.run_strict_dev_cv --jobs 6
+python -m poc.ablation_cv --no-cache --train-stack --jobs 6
+python -m poc.golden --write
 ```
 
-**WCXB data.** Get WCXB v1.0 (CC-BY-4.0, https://arxiv.org/abs/2605.21097) into `data/wcxb/{dev,test}/{ground-truth/*.json,html/*.html.gz}`.
-`python -m poc.run_wcxb_eval --split dev|test [--final] --out FILE` scores the tools (the test split needs `--final`; always pass
-`--out`, the default overwrites a tracked file). The public `dev/` folder contains 139 files that WCXB's metadata assigns to
-the test split (`poc/wcxb_leaked_ids.json`); `load_split("test", drop_leaked=True)` drops them, and the paper reports test
-results without them. Scores are computed on the Markdown body with ChromeRAG's YAML front-matter removed; the benchmark's
-own script on raw default output gives a lower value (the front-matter counts as words).
+**WCXB data.** Get WCXB v1.0 (CC-BY-4.0, https://arxiv.org/abs/2605.21097) into
+`data/wcxb/{dev,test}/{ground-truth/*.json,html/*.html.gz}`. Scores are computed on the Markdown body with ChromeRAG's
+YAML front matter removed unless a row says "raw"; the front matter counts against precision because the reference
+holds body text only.
 
 ---
 
-## Results
+## Results (version 0.1.5)
 
-All numbers below are recomputed from the files in [`docs/data/`](docs/data/) and
-[`evaluations/2026-10-v0.1.3/FINAL/`](evaluations/2026-10-v0.1.3/FINAL/) and shown, with a per-page explorer, at
-**https://pedapudibhargav.github.io/ChromeRAG/**.
+All numbers are read from the files in [`evaluations/2026-11-final/`](evaluations/2026-11-final/); supplementary
+tables S1–S9 are in [`evaluations/2026-11-final/SUPPLEMENT.md`](evaluations/2026-11-final/SUPPLEMENT.md). The code
+was frozen (tag `freeze-0.1.5`) before any held-out run; the protocol, page list and rubric were tagged before the runs
+they govern (`protocol-2026-11`, `protocol-2026-11a`, `pages-2026-11`, `rubric-2026-11`), and each run is listed in
+[`results/held_out_runs.jsonl`](evaluations/2026-11-final/results/held_out_runs.jsonl).
 
-### Human-labelled benchmark (WCXB)
+### WCXB test split (511 pages, human-reviewed main content)
 
-Word-level F1 against human-reviewed main content on the **372 test pages absent from the development folder**
-(ChromeRAG in `balanced` mode):
+Word-level F1, "without" = share of listed chrome snippets left in (lower is better), "with" = share of required
+snippets kept. All tools receive the same HTML and no site model; Trafilatura 2.2.0 runs without metadata.
 
-| Page type (n) | ChromeRAG | Trafilatura | Readability | MarkItDown |
-|---|---:|---:|---:|---:|
-| **All (372)** | **0.907** | 0.867 | 0.778 | 0.568 |
-| Article (178) | 0.951 | 0.953 | 0.944 | 0.663 |
-| Documentation (40) | 0.949 | 0.931 | 0.866 | 0.614 |
-| Service (56) | 0.864 | 0.813 | 0.595 | 0.478 |
-| Forum (50) | 0.895 | 0.731 | 0.628 | 0.452 |
-| Listing (37) | 0.754 | 0.707 | 0.445 | 0.386 |
-| Collection (9) | 0.774 | 0.717 | 0.523 | 0.512 |
-| Product (2) | 0.991 | 0.491 | 0.473 | 0.157 |
+| Tool | F1 | Without | With |
+|---|---:|---:|---:|
+| **ChromeRAG 0.1.5 balanced** | **0.884** | 0.070 | 0.759 |
+| ChromeRAG balanced, raw default output (front matter kept) | 0.853 | 0.092 | 0.761 |
+| ChromeRAG coverage / precision | 0.882 / 0.872 | 0.083 / 0.060 | 0.781 / 0.725 |
+| Trafilatura 2.2.0 | 0.860 | 0.083 | 0.720 |
+| rs-trafilatura 0.1.1 | 0.891 | 0.111 | 0.864 |
+| Readability | 0.763 | 0.089 | 0.552 |
+| BoilerPy3 1.0.7 Default / Article | 0.753 / 0.686 | 0.150 / 0.099 | 0.695 / 0.545 |
+| jusText 3.0.2 | 0.713 | 0.058 | 0.593 |
+| MarkItDown 0.1.7 | 0.540 | 0.967 | 0.768 |
 
-ChromeRAG − Trafilatura: **+0.040** (95% CI [+0.021, +0.059]); forums +0.164 [+0.102, +0.230]; services +0.051
-[+0.004, +0.107]; collections +0.057 [+0.024, +0.090]; articles, documentation and listings are ties. On all
-511 test pages (139 of them also in the development folder): 0.901, 0.860, 0.763, 0.540. The test pages were
-scored once with the frozen pipeline (see the paper for the leak audit).
+Balanced ChromeRAG minus Trafilatura (both without metadata): **+0.024** [+0.008, +0.042] (paired, 5,000 resamples of
+444 sites). Raw default output against Trafilatura's default: −0.006 [−0.022, +0.010], a tie; with metadata on both
+sides: +0.022 [+0.007, +0.037]. rs-trafilatura ties with ChromeRAG on F1 (+0.007 [−0.013, +0.025]) and leaves more
+listed chrome; it was developed against the same development folder, and no superiority is claimed. The freeze-0.1.3
+code with the 0.1.5 model scores 0.885, so later rule changes did not raise F1 here.
 
-### Blinded judging on fresh pages
+| Page type (n) | ChromeRAG | Trafilatura | Difference [95% CI] | rs-trafilatura |
+|---|---:|---:|---|---:|
+| Article (257) | 0.940 | 0.952 | −0.012 [−0.024, −0.001] | 0.951 |
+| Documentation (42) | 0.954 | 0.934 | +0.020 [−0.022, +0.070] | 0.973 |
+| Service (59) | 0.849 | 0.817 | +0.031 [−0.008, +0.071] | 0.832 |
+| Forum (51) | 0.866 | 0.717 | +0.149 [+0.092, +0.230] | 0.836 |
+| Listing (40) | 0.732 | 0.722 | +0.010 [−0.113, +0.140] | 0.748 |
+| Product (28) | 0.805 | 0.724 | +0.081 [+0.000, +0.181] | 0.777 |
+| Collection (34) | 0.704 | 0.626 | +0.078 [−0.002, +0.152] | 0.775 |
 
-328 pages from 106 sites (news and blogs, forums, listings, service and software landing pages) whose seed lists
-were written before any extractor ran on them and that no development step used. A judge sees the page's text
-and two outputs in random order, tool names hidden, and applies one rubric. Net score = wins − losses over pairs
-(+1 = always preferred), ChromeRAG against Trafilatura:
+The gain comes from forums and, less certainly, products and collections; Trafilatura leads on articles. **The WCXB
+test split was consulted during development of versions 0.1.3 and 0.1.4**, so it is not clean held-out evidence (Table
+S1). On the 1,238 strict development pages (five folds grouped by registrable domain) balanced F1 is 0.859 against
+0.828 for Trafilatura.
 
-| Judge | All (328) | Articles | Forums | Listings | Services |
-|---|---:|---:|---:|---:|---:|
-| Claude Sonnet 5.5 | **+0.41** [+0.33, +0.50] | +0.32 | +0.93 | +0.27 | +0.31 |
-| GPT-5.6 luna | **+0.19** [+0.09, +0.29] | +0.07 | +0.48 | +0.27 | +0.17 |
-| Gemini 3.7 Flash | **+0.45** [+0.35, +0.54] | +0.37 | +0.91 | +0.33 | +0.34 |
+### Human raters and AI judges (75 new pages)
 
-On the 367 WCXB test pages the nets are +0.25 [+0.16, +0.34] (Claude) and +0.22 [+0.13, +0.32] (GPT). Against
-Readability on the fresh pages GPT gives +0.52 [+0.44, +0.61]. On 180 held-out documentation pages GPT gives
-+0.07 [−0.07, +0.21] (a tie) and on 97 held-out product pages +0.40 [+0.22, +0.57]. Content kept scores higher
-for ChromeRAG and chrome left out about equal. These are language-model judges, not people: agreement across
-three families is evidence, not a human study. Raw verdicts: `evaluations/2026-10-v0.1.3/FINAL/`.
+Five volunteer raters compared ChromeRAG (balanced), Trafilatura and Readability blind on 75 pages from 48 sites, three
+raters per page, with an analysis plan fixed before rating. Net = share of pages won minus share lost (majority
+verdict per page), 95% site-bootstrap interval:
 
-### Structural-anchor benchmark
+| Judge | vs Trafilatura, all 75 | Forums (10) | Without forums (65) | vs Readability, all 75 |
+|---|---|---|---|---|
+| Human majority | +0.23 [+0.01, +0.42] | +0.80 [+0.60, +1.00] | +0.14 [−0.09, +0.35] | +0.33 [+0.13, +0.52] |
+| GPT gpt-5.6-luna | +0.21 [−0.03, +0.44] | +0.60 [+0.00, +1.00] | +0.15 [−0.09, +0.39] | +0.35 [+0.12, +0.56] |
+| Grok 4.5 | +0.25 [+0.03, +0.48] | +1.00 [+1.00, +1.00] | +0.14 [−0.09, +0.37] | +0.32 [+0.08, +0.54] |
+| Gemini | +0.25 [+0.01, +0.48] | +1.00 [+1.00, +1.00] | +0.14 [−0.11, +0.39] | +0.33 [+0.10, +0.55] |
 
-**Metrics** (deterministic, computed from each input DOM, independent of any extractor):
+Outside forums the interval against Trafilatura includes zero. Agreement among raters is low to moderate
+(Krippendorff's α 0.42). Pseudonymized ratings: [`evaluations/2026-11-final/human_set_ratings/`](evaluations/2026-11-final/human_set_ratings/);
+the analysis is [`poc/human_set_analysis.py`](poc/human_set_analysis.py); the rating app is in [`evaluators/`](evaluators/).
+On 296 further new pages a GPT judge preferred ChromeRAG to Trafilatura (158–114–24), but longer outputs won 65% of
+decided pairs and a fixed-order check ties 74–74, so this is weak evidence (Table S8).
 
-| Metric | Meaning | Better |
-|--------|---------|--------|
-| **Recall** (`content_recall`) | Share of `<main>`/`<article>` 5-gram anchors kept | Higher |
-| **Noise ret** (`noise_retention`) | Share of nav/header/footer/aside/cookie anchors kept | Lower |
-| **Fbal** (`f_balanced`) | Harmonic mean of recall and (1 − noise) | Higher |
+### Answers on CRAG (500 questions, split 1, run once)
 
-**Corpus:** 367 unique URLs in `poc/corpus_urls.json` → **268** unique pages fetched (plain HTTP, no
-JS rendering) → **242 scoreable** (a page is scoreable when its **input HTML** has ≥ 50 main-content anchors; the rule
-never looks at any tool's output). 208 of the 242 pages are documentation.
+Each tool's output is cut into 200-word chunks, BM25 retrieves the top five, and gpt-5.6-luna answers from them and
+grades the answers (score = accurate − incorrect). Balanced ChromeRAG 0.306, Trafilatura 0.298: +0.008
+[−0.040, +0.054], no measurable difference in answer accuracy, from an index of 1,948 against 2,335 words per page.
 
-| Method | Recall ↑ | Noise ↓ | Fbal ↑ (242 scoreable) | Fbal ↑ (all 268) |
-|--------|--------:|--------:|-------:|-------:|
-| chromerag_coverage | 0.696 | 0.009 | **0.797** | **0.755** |
-| chromerag (balanced) | 0.653 | 0.007 | 0.765 | 0.718 |
-| trafilatura | 0.640 | 0.012 | 0.739 | 0.696 |
-| markitdown | 0.691 | 0.250 | 0.696 | 0.661 |
-| readability | 0.449 | 0.013 | 0.531 | 0.495 |
+### Speed
 
-This corpus was a **development** set (rules were tuned against it; it was re-fetched on 2026-10-02) and is not
-held out. Paired bootstrap (95% CI): coverage − Trafilatura Fbal **+0.058 [+0.034, +0.085]**; coverage −
-MarkItDown noise **−0.242 [−0.264, −0.219]**. On the held-out landing pages the coverage Fbal is 0.741 against
-0.680 for Trafilatura (+0.061 [+0.032, +0.090], 177 pages) and on 178 pages of companies fetched after the 0.1.3
-freeze 0.735 against 0.649 (+0.087 [+0.054, +0.119]). The anchors come from `<main>`/`<article>`, which
-ChromeRAG's content-root selection also prefers, and cannot see chrome inside `<main>`, which the rules remove, so
-treat this as a proxy; the human-labelled and blinded results above are the primary evidence.
+Median time per page on the 511 WCXB test pages, one process, one timed pass after a warm-up, Apple M4 Pro, Python
+3.14, with other processes running on the machine
+([`revision_rows/speed.json`](evaluations/2026-11-final/results/revision_rows/speed.json)):
 
-### Retrieval
+| Tool | Median ms | 90th percentile ms |
+|---|---:|---:|
+| ChromeRAG 0.1.5 balanced | 39.6 | 86.3 |
+| Trafilatura 2.2.0 | 14.2 | 41.1 |
+| Readability | 15.8 | 38.2 |
+| jusText | 8.1 | 17.0 |
 
-Each tool's output is split into ~200-word chunks and indexed with BM25. 773 known-item queries
-(page titles, section headings and content passages from the input HTML, each with exactly one
-correct page) are run against each index.
+ChromeRAG is about three times slower than Trafilatura here, about 20–25 pages per second per process. Timings depend
+on the page set, Python version and machine load: the v0.1.4 measurement on 200 other stored pages gave 52 ms against
+32 ms (1.6 times). Measure on your own pages with `python -m poc.revision_rows speed` or `python -m poc.bench_speed`.
 
-| Method | Hit@5 ↑ | Chrome in top-5 context ↓ | Chunks indexed |
-|--------|--------:|--------:|--------:|
-| chromerag_coverage | 0.946 | 0.6% | 1,898 |
-| chromerag (balanced) | 0.948 | 0.4% | 1,634 |
-| trafilatura | 0.921 | 0.6% | 1,950 |
-| markitdown | 0.964 | 2.6% | 3,909 |
-| readability | 0.775 | 0.6% | 1,702 |
+### Earlier evaluations (v0.1.4, superseded)
 
-ChromeRAG (coverage) vs Trafilatura hit@5 +0.025 [+0.005, +0.047]; vs MarkItDown −0.018 [−0.036, 0.000] with
-about half the chunks and a tenth of the chrome in the retrieved context. On 178 fresh-company pages
-(668 queries) hit@5 is 0.894 (balanced) against 0.832 for Trafilatura, with 0.3% against 1.1% chrome in the context.
-
-### Site-template learning (STCE)
-
-`chromerag learn` is evaluated by `poc/run_stce_eval.py` (coverage mode, with vs without the site
-model) on the benchmark's site groups with ≥ 3 unique pages and on a crawl of up to 15 same-section
-pages per documentation site (`poc/stce_crawl_urls.json`, fetched with `poc/crawl_site_groups.py`).
-
-| Set | Variant | Content recall | Noise retained | F_bal | Site-repeated text |
-|---|---|---:|---:|---:|---:|
-| Benchmark groups (11 sites, 47 pages) | ChromeRAG | 0.747 | 0.002 | 0.840 | 0.4% |
-| | ChromeRAG + site model | 0.743 | 0.002 | 0.837 | 0.5% |
-| | Trafilatura | 0.689 | 0.001 | 0.786 | 0.5% |
-| | MarkItDown | 0.700 | 0.306 | 0.682 | 26.7% |
-| Crawl (125 sites, 1,727 pages) | ChromeRAG | 0.790 | 0.009 | 0.866 | 2.0% |
-| | ChromeRAG + site model | 0.791 | 0.008 | 0.867 | 2.0% |
-| | Trafilatura | 0.759 | 0.005 | 0.841 | 2.1% |
-| | MarkItDown | 0.776 | 0.244 | 0.749 | 34.9% |
-
-Single-page extraction and the rules already remove most repeated chrome, so STCE is an optional, guarded
-complement for template blocks that read like content (like the "Widget Summit" paragraph in the quick start); it
-no longer adds measurable accuracy on these pages.
+The v0.1.4 README reported 0.907 F1 on 372 WCXB test pages, 52 ms per page, blinded LLM-judge panels on 328 fresh
+pages (Claude, GPT, Gemini), a structural-anchor benchmark, BM25 retrieval, a heading-path retrieval study with
+questions written by Claude, and the site-template (STCE) study. Those results came from a model trained with test
+domains present, from pages and judge rounds used while the code was still changing, and partly from Claude-judged
+rounds; they are superseded and not used for claims. The files stay in
+[`evaluations/2026-10-v0.1.3/`](evaluations/2026-10-v0.1.3/) and [`docs/data/`](docs/data/) for the record. The last
+STCE measurement (version 0.1.4) changed a structural score by 0.001 or less on 1,727 crawled pages.
 
 ---
 
@@ -335,37 +331,28 @@ no longer adds measurable accuracy on these pages.
 
 ```bash
 pip install -e ".[dev,baselines]"
+export PYTHONPATH=src:.
 
-# Offline: recompute the published cohort and every leaderboard mean from docs/data/
-python scripts/revalidate_corpus.py
+# WCXB test split: the protocol run and the revision rows (need WCXB in data/wcxb/)
+python -m poc.final_wcxb --wcxb-root data/wcxb --outputs-dir out/wcxb_outputs --out out/wcxb_test.json
+python -m poc.revision_rows --help             # extract, p07, p03, justext, boilerpy3, speed, gt-manifest
 
-# Human-labelled benchmark (needs WCXB in data/wcxb/)
-python -m poc.run_wcxb_eval --split test --final --out /tmp/wcxb_test.json
+# Strict development cross-validation and the component ablation
+python -m poc.run_strict_dev_cv --jobs 6
+python -m poc.ablation_cv --no-cache --jobs 6
 
-# Anchor benchmark: fetch the public corpus into data/raw/ and score every tool (network)
-python -m poc.run_corpus_comparison            # add --no-fetch to re-score stored HTML
+# Human rating set: analysis fixed in advance, from the pseudonymized ratings and the label key
+python -m poc.human_set_analysis --out out/human_set
 
-# Retrieval over each tool's chunks (uses the outputs written above)
-python -m poc.run_retrieval_eval
+# AI page judge and CRAG answer test (need OPENAI_API_KEY; CRAG data from its authors)
+python -m poc.final_page_judge --dry-run
+python -m poc.crag_answer_eval --help
 
-# Blinded judging: build pairs, then judge them with a model of your choice
-EXTRA_FINAL2=1 python -m poc.extra_corpus      # fetch the frozen fresh-page seed lists (network)
-python -m poc.claude_judge_build --set final2  # writes blinded batches and a hidden key
-python -m poc.gpt_judge_batches --tag final2   # GPT judge (needs OPENAI_API_KEY)
-python -m poc.claude_judge_aggregate --set final2 --dir /tmp/cr/judge_gpt
-
-# Site-template learning: benchmark sites, then a multi-page crawl (network)
-python -m poc.run_stce_eval
-python -m poc.crawl_site_groups --fetch        # pages listed in poc/stce_crawl_urls.json
-python -m poc.run_stce_eval --raw data/stce_crawl
-
-# Publish: copy results into docs/data, run tests, assemble _site/ (CI does this on main)
-bash scripts/build_docs.sh
+# Held-out ledger
+python -m poc.held_out_ledger
 ```
 
-Live pages change over time, so a fresh fetch will not reproduce the published numbers exactly;
-the published per-page scores are in `docs/data/corpus_comparison_report.json` and `evaluations/`. Behind a
-TLS-intercepting proxy, point `SSL_EXTRA_CA` at the proxy's CA bundle before fetching.
+Third-party HTML pages are not redistributed; page lists, URLs and hashes are in `evaluations/2026-11-final/`.
 
 ---
 
@@ -374,11 +361,12 @@ TLS-intercepting proxy, point `SSL_EXTRA_CA` at the proxy's CA bundle before fet
 ```
 src/chromerag/     # library (HTML in → Markdown and chunks out)
 examples/          # small synthetic site for the quick start
+evaluators/        # blind human-rating kit (stdlib app + author build/analyse); see evaluators/README.md
 tests/             # unit, CLI, rule-fixture and golden-output tests
-poc/               # fetch, baselines, benchmarks, judging, retrieval and STCE evaluations (not needed at runtime)
-docs/              # one-page GitHub Pages site (index.html) + published results (data/)
-evaluations/       # per-page results, judge verdicts and logs behind the paper
-scripts/           # revalidation, docs build, paper figures
+poc/               # training, baselines, benchmarks, judging and analysis scripts (not needed at runtime)
+evaluations/       # protocols, page lists, per-page results, ratings and the held-out ledger behind the paper
+docs/              # one-page GitHub Pages site (v0.1.4 results, marked superseded) + data
+scripts/           # README smoke test, docs build, paper figures and template filling
 papers/softwarex/  # SoftwareX manuscript sources
 ```
 
@@ -386,10 +374,12 @@ papers/softwarex/  # SoftwareX manuscript sources
 
 ## Citation
 
-If you use ChromeRAG, please cite the software (see [`CITATION.cff`](CITATION.cff)). To cite whichever version is
-latest, use the all-versions DOI [10.5281/zenodo.22970289](https://doi.org/10.5281/zenodo.22970289):
+If you use ChromeRAG, please cite the software (see [`CITATION.cff`](CITATION.cff)):
 
-> B. C. Peddapudi, *ChromeRAG*, Zenodo, 2026. https://doi.org/10.5281/zenodo.22970289
+> B. C. Peddapudi, *ChromeRAG*, version 0.1.5, Zenodo, 2026. https://doi.org/10.5281/zenodo.22970289
+
+The all-versions DOI always resolves to the latest version; each version's own DOI is listed on that record:
+[10.5281/zenodo.22970289](https://doi.org/10.5281/zenodo.22970289).
 
 ## License
 

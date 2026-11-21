@@ -1,0 +1,19 @@
+name: boilerpy3 extraction on WCXB test
+on:
+  push:
+    branches: [ci/boilerpy3-wcxb]
+permissions:
+  contents: read
+jobs:
+  extract:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install boilerpy3==1.0.7 && pip freeze
+      - name: Fetch WCXB (CC-BY-4.0, upstream)
+        run: git clone --depth 1 https://github.com/Murrough-Foley/web-content-extraction-benchmark.git wcx && git -C wcx rev-parse HEAD
+      - name: Digest of upstream test split
+        run: python hash_split.py wcx/test

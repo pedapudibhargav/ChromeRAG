@@ -1,0 +1,1069 @@
+{
+ "status": "POST HOC (revision round 2, 2026-11-20). Computed from existing per-page results, ratings and saved HTML after all results had been seen; no extraction, no new scoring, no model call. Not in any pre-registered plan.",
+ "psl_version": "2026-10-31_14-17-28_UTC",
+ "human_set_development_domains": {
+  "definition": "development domain = registrable domain (PSL) of any WCXB page: strict training page, WCXB test page (test split consulted in v0.1.3-v0.1.4 development) or other WCXB dev/ page; category order: training, then test, then other dev",
+  "wcxb_registrable_domains": {
+   "strict_training": 1065,
+   "test_split": 443,
+   "other_dev_only_pages": 169
+  },
+  "pages": 75,
+  "sites_registrable": 48,
+  "pages_by_category": {
+   "test_split_domain": 14,
+   "no_wcxb_domain": 41,
+   "strict_training_domain": 20
+  },
+  "pages_on_development_domains": 34,
+  "registrable_domains_on_development_domains": 20,
+  "registrable_domains_on_test_split_only": [
+   "amazon.com",
+   "docker.com",
+   "github.com",
+   "microsoft.com",
+   "mit.edu",
+   "nih.gov",
+   "oracle.com"
+  ],
+  "forum_pages_total": 10,
+  "forum_pages_on_development_domains": 5,
+  "forum_pages": [
+   {
+    "page": "human-0140",
+    "domain": "microsoft.com",
+    "category": "test_split_domain",
+    "human_majority_vs_trafilatura": "tie"
+   },
+   {
+    "page": "human-0141",
+    "domain": "microsoft.com",
+    "category": "test_split_domain",
+    "human_majority_vs_trafilatura": "a"
+   },
+   {
+    "page": "human-0145",
+    "domain": "repost.aws",
+    "category": "no_wcxb_domain",
+    "human_majority_vs_trafilatura": "a"
+   },
+   {
+    "page": "human-0146",
+    "domain": "repost.aws",
+    "category": "no_wcxb_domain",
+    "human_majority_vs_trafilatura": "a"
+   },
+   {
+    "page": "human-0148",
+    "domain": "python.org",
+    "category": "strict_training_domain",
+    "human_majority_vs_trafilatura": "a"
+   },
+   {
+    "page": "human-0150",
+    "domain": "python.org",
+    "category": "strict_training_domain",
+    "human_majority_vs_trafilatura": "a"
+   },
+   {
+    "page": "human-0153",
+    "domain": "pytorch.org",
+    "category": "no_wcxb_domain",
+    "human_majority_vs_trafilatura": "a"
+   },
+   {
+    "page": "human-0157",
+    "domain": "ubuntu.com",
+    "category": "no_wcxb_domain",
+    "human_majority_vs_trafilatura": "a"
+   },
+   {
+    "page": "human-0158",
+    "domain": "ubuntu.com",
+    "category": "no_wcxb_domain",
+    "human_majority_vs_trafilatura": "tie"
+   },
+   {
+    "page": "human-0160",
+    "domain": "docker.com",
+    "category": "test_split_domain",
+    "human_majority_vs_trafilatura": "a"
+   }
+  ],
+  "nets": {
+   "chromerag_vs_trafilatura": {
+    "all_pages": {
+     "n": 75,
+     "n_sites": 48,
+     "wins": 32,
+     "losses": 15,
+     "ties": 28,
+     "net": 0.2267,
+     "net_ci95": [
+      0.0137,
+      0.4231
+     ]
+    },
+    "pages_on_development_domains": {
+     "n": 34,
+     "n_sites": 20,
+     "wins": 15,
+     "losses": 7,
+     "ties": 12,
+     "net": 0.2353,
+     "net_ci95": [
+      -0.129,
+      0.5405
+     ]
+    },
+    "pages_on_test_split_domains_only": {
+     "n": 14,
+     "n_sites": 7,
+     "wins": 6,
+     "losses": 4,
+     "ties": 4,
+     "net": 0.1429,
+     "net_ci95": [
+      -0.5556,
+      0.6111
+     ]
+    },
+    "clean_pages_no_wcxb_domain": {
+     "n": 41,
+     "n_sites": 28,
+     "wins": 17,
+     "losses": 8,
+     "ties": 16,
+     "net": 0.2195,
+     "net_ci95": [
+      -0.0488,
+      0.4634
+     ]
+    },
+    "clean_pages_without_forums": {
+     "n": 36,
+     "n_sites": 25,
+     "wins": 13,
+     "losses": 8,
+     "ties": 15,
+     "net": 0.1389,
+     "net_ci95": [
+      -0.1471,
+      0.4118
+     ]
+    },
+    "clean_forum_pages": {
+     "n": 5,
+     "n_sites": 3,
+     "wins": 4,
+     "losses": 0,
+     "ties": 1,
+     "net": 0.8,
+     "net_ci95": [
+      0.5,
+      1.0
+     ]
+    }
+   },
+   "chromerag_vs_readability": {
+    "all_pages": {
+     "n": 75,
+     "n_sites": 48,
+     "wins": 38,
+     "losses": 13,
+     "ties": 24,
+     "net": 0.3333,
+     "net_ci95": [
+      0.1299,
+      0.5244
+     ]
+    },
+    "pages_on_development_domains": {
+     "n": 34,
+     "n_sites": 20,
+     "wins": 19,
+     "losses": 6,
+     "ties": 9,
+     "net": 0.3824,
+     "net_ci95": [
+      0.0571,
+      0.6579
+     ]
+    },
+    "pages_on_test_split_domains_only": {
+     "n": 14,
+     "n_sites": 7,
+     "wins": 7,
+     "losses": 1,
+     "ties": 6,
+     "net": 0.4286,
+     "net_ci95": [
+      -0.2,
+      0.8125
+     ]
+    },
+    "clean_pages_no_wcxb_domain": {
+     "n": 41,
+     "n_sites": 28,
+     "wins": 19,
+     "losses": 7,
+     "ties": 15,
+     "net": 0.2927,
+     "net_ci95": [
+      0.025,
+      0.5385
+     ]
+    },
+    "clean_pages_without_forums": {
+     "n": 36,
+     "n_sites": 25,
+     "wins": 16,
+     "losses": 6,
+     "ties": 14,
+     "net": 0.2778,
+     "net_ci95": [
+      0.0,
+      0.5366
+     ]
+    },
+    "clean_forum_pages": {
+     "n": 5,
+     "n_sites": 3,
+     "wins": 3,
+     "losses": 1,
+     "ties": 1,
+     "net": 0.4,
+     "net_ci95": [
+      -0.5,
+      1.0
+     ]
+    }
+   }
+  }
+ },
+ "wcxb_forum_platforms": {
+  "rule": "host on the Stack Exchange network -> stackexchange; else first matching HTML marker in PLATFORM_RULES (poc/rev1_round2_posthoc.py); else not_identified. Seen = the rule finds the platform on at least one strict training page labelled forum.",
+  "rule_history": "A first version of the rule checked product names that can occur in page text before asset-path markers; it classed the one Vanilla training page (which names other forum products in its text) as Flarum and one XenForo training page as vBulletin. Under that version 15 test forum pages were 'not seen', balanced - Trafilatura +0.111 [-0.014, +0.246]. The rule was reordered after seeing this, so the split is sensitive to the rule; both versions are reported.",
+  "strict_training_forum_pages": 100,
+  "strict_training_forum_pages_by_platform": {
+   "xenforo": 27,
+   "discourse": 21,
+   "invision": 8,
+   "phpbb": 7,
+   "stackexchange": 6,
+   "nodebb": 3,
+   "vbulletin": 2,
+   "smf": 1,
+   "flarum": 1,
+   "mybb": 1,
+   "vanilla": 1
+  },
+  "strict_training_pages_any_type_by_platform": {
+   "xenforo": 27,
+   "discourse": 21,
+   "bbpress": 10,
+   "phpbb": 9,
+   "invision": 9,
+   "stackexchange": 6,
+   "nodebb": 3,
+   "vbulletin": 2,
+   "smf": 1,
+   "flarum": 1,
+   "mybb": 1,
+   "vanilla": 1
+  },
+  "test_forum_pages_by_platform": {
+   "xenforo": 14,
+   "stackexchange": 11,
+   "bbpress": 6,
+   "not_identified": 4,
+   "vbulletin": 3,
+   "phpbb": 2,
+   "vanilla": 2,
+   "jforum": 2,
+   "wpforo": 2,
+   "discourse": 1,
+   "ubbthreads": 1,
+   "gainsight_insided": 1,
+   "invision": 1,
+   "khoros": 1
+  },
+  "balanced_minus_trafilatura_f1": {
+   "all_forum_pages": {
+    "mean": 0.149,
+    "ci95": [
+     0.0925,
+     0.2304
+    ],
+    "n_pages": 51,
+    "n_sites": 38,
+    "chromerag_mean_f1": 0.8656,
+    "trafilatura_mean_f1": 0.7166
+   },
+   "seen_in_training_forum_pages": {
+    "mean": 0.1568,
+    "ci95": [
+     0.0991,
+     0.2492
+    ],
+    "n_pages": 34,
+    "n_sites": 25,
+    "chromerag_mean_f1": 0.8433,
+    "trafilatura_mean_f1": 0.6865
+   },
+   "not_seen_in_training": {
+    "mean": 0.0589,
+    "ci95": [
+     -0.0708,
+     0.1866
+    ],
+    "n_pages": 13,
+    "n_sites": 9,
+    "chromerag_mean_f1": 0.8949,
+    "trafilatura_mean_f1": 0.8361
+   },
+   "not_identified": {
+    "mean": 0.3756,
+    "ci95": [
+     0.0128,
+     0.7384
+    ],
+    "n_pages": 4,
+    "n_sites": 4,
+    "chromerag_mean_f1": 0.9591,
+    "trafilatura_mean_f1": 0.5835
+   },
+   "not_seen_or_not_identified": {
+    "mean": 0.1334,
+    "ci95": [
+     -0.0015,
+     0.2981
+    ],
+    "n_pages": 17,
+    "n_sites": 13,
+    "chromerag_mean_f1": 0.91,
+    "trafilatura_mean_f1": 0.7767
+   },
+   "seen_without_stackexchange": {
+    "mean": 0.2098,
+    "ci95": [
+     0.143,
+     0.2768
+    ],
+    "n_pages": 23,
+    "n_sites": 23,
+    "chromerag_mean_f1": 0.8349,
+    "trafilatura_mean_f1": 0.6251
+   }
+  },
+  "by_platform": {
+   "xenforo": {
+    "mean": 0.1831,
+    "ci95": [
+     0.1046,
+     0.2647
+    ],
+    "n_pages": 14,
+    "n_sites": 14,
+    "chromerag_mean_f1": 0.9186,
+    "trafilatura_mean_f1": 0.7354
+   },
+   "stackexchange": {
+    "mean": 0.0461,
+    "ci95": [
+     -0.0182,
+     0.0525
+    ],
+    "n_pages": 11,
+    "n_sites": 2,
+    "chromerag_mean_f1": 0.8611,
+    "trafilatura_mean_f1": 0.815
+   },
+   "bbpress": {
+    "mean": 0.0488,
+    "ci95": [
+     0.0065,
+     0.0926
+    ],
+    "n_pages": 6,
+    "n_sites": 3,
+    "chromerag_mean_f1": 0.9336,
+    "trafilatura_mean_f1": 0.8848
+   },
+   "not_identified": {
+    "mean": 0.3756,
+    "ci95": [
+     0.0128,
+     0.7384
+    ],
+    "n_pages": 4,
+    "n_sites": 4,
+    "chromerag_mean_f1": 0.9591,
+    "trafilatura_mean_f1": 0.5835
+   },
+   "vbulletin": {
+    "mean": 0.2335,
+    "ci95": [
+     0.1528,
+     0.3424
+    ],
+    "n_pages": 3,
+    "n_sites": 3,
+    "chromerag_mean_f1": 0.8649,
+    "trafilatura_mean_f1": 0.6314
+   },
+   "phpbb": {
+    "mean": 0.1082,
+    "ci95": [
+     0.0695,
+     0.1468
+    ],
+    "n_pages": 2,
+    "n_sites": 2,
+    "chromerag_mean_f1": 0.7992,
+    "trafilatura_mean_f1": 0.691
+   },
+   "vanilla": {
+    "mean": 0.4507,
+    "ci95": [
+     0.3956,
+     0.5059
+    ],
+    "n_pages": 2,
+    "n_sites": 2,
+    "chromerag_mean_f1": 0.8481,
+    "trafilatura_mean_f1": 0.3974
+   },
+   "jforum": {
+    "mean": 0.358,
+    "ci95": [
+     0.358,
+     0.358
+    ],
+    "n_pages": 2,
+    "n_sites": 1,
+    "chromerag_mean_f1": 0.9203,
+    "trafilatura_mean_f1": 0.5623
+   },
+   "wpforo": {
+    "mean": -0.0543,
+    "ci95": [
+     -0.0623,
+     -0.0462
+    ],
+    "n_pages": 2,
+    "n_sites": 2,
+    "chromerag_mean_f1": 0.8804,
+    "trafilatura_mean_f1": 0.9346
+   },
+   "discourse": {
+    "mean": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "n_pages": 1,
+    "n_sites": 1,
+    "chromerag_mean_f1": 0.0,
+    "trafilatura_mean_f1": 0.0
+   },
+   "ubbthreads": {
+    "mean": 0.2912,
+    "ci95": [
+     0.2912,
+     0.2912
+    ],
+    "n_pages": 1,
+    "n_sites": 1,
+    "chromerag_mean_f1": 0.9105,
+    "trafilatura_mean_f1": 0.6194
+   },
+   "gainsight_insided": {
+    "mean": -0.3874,
+    "ci95": [
+     -0.3874,
+     -0.3874
+    ],
+    "n_pages": 1,
+    "n_sites": 1,
+    "chromerag_mean_f1": 0.6004,
+    "trafilatura_mean_f1": 0.9878
+   },
+   "invision": {
+    "mean": 0.4433,
+    "ci95": [
+     0.4433,
+     0.4433
+    ],
+    "n_pages": 1,
+    "n_sites": 1,
+    "chromerag_mean_f1": 0.4525,
+    "trafilatura_mean_f1": 0.0093
+   },
+   "khoros": {
+    "mean": -0.0393,
+    "ci95": [
+     -0.0393,
+     -0.0393
+    ],
+    "n_pages": 1,
+    "n_sites": 1,
+    "chromerag_mean_f1": 0.9205,
+    "trafilatura_mean_f1": 0.9597
+   }
+  },
+  "pages": [
+   {
+    "id": "4145",
+    "host": "forum.astronomy.com",
+    "site": "astronomy.com",
+    "platform": "discourse",
+    "status": "seen_in_training_forum_pages",
+    "chromerag_f1": 0.0,
+    "trafilatura_f1": 0.0
+   },
+   {
+    "id": "5007",
+    "host": "forum.expeditionportal.com",
+    "site": "expeditionportal.com",
+    "platform": "xenforo",
+    "status": "seen_in_training_forum_pages",
+    "chromerag_f1": 0.8898,
+    "trafilatura_f1": 0.8339
+   },
+   {
+    "id": "5009",
+    "host": "ambergriscaye.com",
+    "site": "ambergriscaye.com",
+    "platform": "ubbthreads",
+    "status": "not_seen_in_training",
+    "chromerag_f1": 0.9105,
+    "trafilatura_f1": 0.6194
+   },
+   {
+    "id": "5019",
+    "host": "beersmith.com",
+    "site": "beersmith.com",
+    "platform": "xenforo",
+    "status": "seen_in_training_forum_pages",
+    "chromerag_f1": 0.8962,
+    "trafilatura_f1": 0.8139
+   },
+   {
+    "id": "5028",
+    "host": "plantedtank.net",
+    "site": "plantedtank.net",
+    "platform": "xenforo",
+    "status": "seen_in_training_forum_pages",
+    "chromerag_f1": 0.914,
+    "trafilatura_f1": 0.6459
+   },
+   {
+    "id": "5029",
+    "host": "fishforums.net",
+    "site": "fishforums.net",
+    "platform": "xenforo",
+    "status": "seen_in_training_forum_pages",
+    "chromerag_f1": 0.9336,
+    "trafilatura_f1": 0.5284
+   },
+   {
+    "id": "5032",
+    "host": "forum.simplydiscus.com",
+    "site": "simplydiscus.com",
+    "platform": "vbulletin",
+    "status": "seen_in_training_forum_pages",
+    "chromerag_f1": 0.8451,
+    "trafilatura_f1": 0.5028
+   },
+   {
+    "id": "5033",
+    "host": "thepufferforum.com",
+    "site": "thepufferforum.com",
+    "platform": "phpbb",
+    "status": "seen_in_training_forum_pages",
+    "chromerag_f1": 0.7966,
+    "trafilatura_f1": 0.727
+   },
+   {
+    "id": "5039",
+    "host": "lowendtalk.com",
+    "site": "lowendtalk.com",
+    "platform": "vanilla",
+    "status": "seen_in_training_forum_pages",
+    "chromerag_f1": 0.8733,
+    "trafilatura_f1": 0.4777
+   },
+   {
+    "id": "5044",
+    "host": "rivianforums.com",
+    "site": "rivianforums.com",
+    "platform": "xenforo",
+    "status": "seen_in_training_forum_pages",
+    "chromerag_f1": 0.9947,
+    "trafilatura_f1": 0.964
+   },
+   {
+    "id": "5049",
+    "host": "forum.ovoenergy.com",
+    "site": "ovoenergy.com",
+    "platform": "gainsight_insided",
+    "status": "not_seen_in_training",
+    "chromerag_f1": 0.6004,
+    "trafilatura_f1": 0.9878
+   },
+   {
+    "id": "5055",
+    "host": "theprepared.com",
+    "site": "theprepared.com",
+    "platform": "bbpress",
+    "status": "not_seen_in_training",
+    "chromerag_f1": 0.9301,
+    "trafilatura_f1": 0.7847
+   },
+   {
+    "id": "5060",
+    "host": "forum.charlesdowding.co.uk",
+    "site": "charlesdowding.co.uk",
+    "platform": "bbpress",
+    "status": "not_seen_in_training",
+    "chromerag_f1": 0.9928,
+    "trafilatura_f1": 0.9044
+   },
+   {
+    "id": "5061",
+    "host": "theprepared.com",
+    "site": "theprepared.com",
+    "platform": "bbpress",
+    "status": "not_seen_in_training",
+    "chromerag_f1": 0.848,
+    "trafilatura_f1": 0.8083
+   },
+   {
+    "id": "5063",
+    "host": "steamcommunity.com",
+    "site": "steamcommunity.com",
+    "platform": "not_identified",
+    "status": "not_identified",
+    "chromerag_f1": 0.9761,
+    "trafilatura_f1": 0.0197
+   },
+   {
+    "id": "5071",
+    "host": "forumsforums.com",
+    "site": "forumsforums.com",
+    "platform": "xenforo",
+    "status": "seen_in_training_forum_pages",
+    "chromerag_f1": 0.9428,
+    "trafilatura_f1": 0.905
+   },
+   {
+    "id": "5072",
+    "host": "forums.sassnet.com",
+    "site": "sassnet.com",
+    "platform": "invision",
+    "status": "seen_in_training_forum_pages",
+    "chromerag_f1": 0.4525,
+    "trafilatura_f1": 0.0093
+   },
+   {
+    "id": "5073",
+    "host": "forums.sailinganarchy.com",
+    "site": "sailinganarchy.com",
+    "platform": "xenforo",
+    "status": "seen_in_training_forum_pages",
+    "chromerag_f1": 0.9304,
+    "trafilatura_f1": 0.5698
+   },
+   {
+    "id": "5080",
+    "host": "permies.com",
+    "site": "permies.com",
+    "platform": "jforum",
+    "status": "not_seen_in_training",
+    "chromerag_f1": 0.9029,
+    "trafilatura_f1": 0.936
+   },
+   {
+    "id": "5084",
+    "host": "backpackinglight.com",
+    "site": "backpackinglight.com",
+    "platform": "bbpress",
+    "status": "not_seen_in_training",
+    "chromerag_f1": 0.9424,
+    "trafilatura_f1": 0.9296
+   },
+   {
+    "id": "5086",
+    "host": "thehikingforum.com",
+    "site": "thehikingforum.com",
+    "platform": "xenforo",
+    "status": "seen_in_training_forum_pages",
+    "chromerag_f1": 0.8326,
+    "trafilatura_f1": 0.5727
+   },
+   {
+    "id": "5089",
+    "host": "forum.shopsmith.com",
+    "site": "shopsmith.com",
+    "platform": "phpbb",
+    "status": "seen_in_training_forum_pages",
+    "chromerag_f1": 0.8019,
+    "trafilatura_f1": 0.6551
+   },
+   {
+    "id": "5092",
+    "host": "woodworkingtalk.com",
+    "site": "woodworkingtalk.com",
+    "platform": "xenforo",
+    "status": "seen_in_training_forum_pages",
+    "chromerag_f1": 0.9714,
+    "trafilatura_f1": 0.6468
+   },
+   {
+    "id": "5095",
+    "host": "doityourself.com",
+    "site": "doityourself.com",
+    "platform": "vbulletin",
+    "status": "seen_in_training_forum_pages",
+    "chromerag_f1": 0.8285,
+    "trafilatura_f1": 0.6757
+   },
+   {
+    "id": "5101",
+    "host": "audiosciencereview.com",
+    "site": "audiosciencereview.com",
+    "platform": "xenforo",
+    "status": "seen_in_training_forum_pages",
+    "chromerag_f1": 0.8269,
+    "trafilatura_f1": 0.8787
+   },
+   {
+    "id": "5104",
+    "host": "forum.polkaudio.com",
+    "site": "polkaudio.com",
+    "platform": "vanilla",
+    "status": "seen_in_training_forum_pages",
+    "chromerag_f1": 0.823,
+    "trafilatura_f1": 0.3171
+   },
+   {
+    "id": "5105",
+    "host": "forum.ascendacoustics.com",
+    "site": "ascendacoustics.com",
+    "platform": "vbulletin",
+    "status": "seen_in_training_forum_pages",
+    "chromerag_f1": 0.9211,
+    "trafilatura_f1": 0.7159
+   },
+   {
+    "id": "5115",
+    "host": "forums.horseandhound.co.uk",
+    "site": "horseandhound.co.uk",
+    "platform": "xenforo",
+    "status": "seen_in_training_forum_pages",
+    "chromerag_f1": 0.98,
+    "trafilatura_f1": 0.9388
+   },
+   {
+    "id": "5120",
+    "host": "permies.com",
+    "site": "permies.com",
+    "platform": "jforum",
+    "status": "not_seen_in_training",
+    "chromerag_f1": 0.9378,
+    "trafilatura_f1": 0.1886
+   },
+   {
+    "id": "5121",
+    "host": "forum.champdogs.co.uk",
+    "site": "champdogs.co.uk",
+    "platform": "not_identified",
+    "status": "not_identified",
+    "chromerag_f1": 0.9466,
+    "trafilatura_f1": 0.4263
+   },
+   {
+    "id": "5124",
+    "host": "forum.kemper-amps.com",
+    "site": "kemper-amps.com",
+    "platform": "not_identified",
+    "status": "not_identified",
+    "chromerag_f1": 0.9174,
+    "trafilatura_f1": 0.908
+   },
+   {
+    "id": "5127",
+    "host": "forum.seymourduncan.com",
+    "site": "seymourduncan.com",
+    "platform": "xenforo",
+    "status": "seen_in_training_forum_pages",
+    "chromerag_f1": 0.893,
+    "trafilatura_f1": 0.8327
+   },
+   {
+    "id": "5132",
+    "host": "forum.prusa3d.com",
+    "site": "prusa3d.com",
+    "platform": "wpforo",
+    "status": "not_seen_in_training",
+    "chromerag_f1": 0.9221,
+    "trafilatura_f1": 0.9683
+   },
+   {
+    "id": "5144",
+    "host": "roadbikereview.com",
+    "site": "roadbikereview.com",
+    "platform": "xenforo",
+    "status": "seen_in_training_forum_pages",
+    "chromerag_f1": 0.8966,
+    "trafilatura_f1": 0.4848
+   },
+   {
+    "id": "5148",
+    "host": "backpackinglight.com",
+    "site": "backpackinglight.com",
+    "platform": "bbpress",
+    "status": "not_seen_in_training",
+    "chromerag_f1": 0.9697,
+    "trafilatura_f1": 0.9609
+   },
+   {
+    "id": "5151",
+    "host": "backpackinglight.com",
+    "site": "backpackinglight.com",
+    "platform": "bbpress",
+    "status": "not_seen_in_training",
+    "chromerag_f1": 0.9185,
+    "trafilatura_f1": 0.9207
+   },
+   {
+    "id": "5153",
+    "host": "contractortalk.com",
+    "site": "contractortalk.com",
+    "platform": "xenforo",
+    "status": "seen_in_training_forum_pages",
+    "chromerag_f1": 0.9577,
+    "trafilatura_f1": 0.6804
+   },
+   {
+    "id": "5155",
+    "host": "grassrootsmotorsports.com",
+    "site": "grassrootsmotorsports.com",
+    "platform": "not_identified",
+    "status": "not_identified",
+    "chromerag_f1": 0.9964,
+    "trafilatura_f1": 0.98
+   },
+   {
+    "id": "5171",
+    "host": "cooking.stackexchange.com",
+    "site": "stackexchange.com",
+    "platform": "stackexchange",
+    "status": "seen_in_training_forum_pages",
+    "chromerag_f1": 0.6424,
+    "trafilatura_f1": 0.7643
+   },
+   {
+    "id": "5172",
+    "host": "cooking.meta.stackexchange.com",
+    "site": "stackexchange.com",
+    "platform": "stackexchange",
+    "status": "seen_in_training_forum_pages",
+    "chromerag_f1": 0.8494,
+    "trafilatura_f1": 0.8667
+   },
+   {
+    "id": "5175",
+    "host": "travel.stackexchange.com",
+    "site": "stackexchange.com",
+    "platform": "stackexchange",
+    "status": "seen_in_training_forum_pages",
+    "chromerag_f1": 0.9778,
+    "trafilatura_f1": 0.9754
+   },
+   {
+    "id": "5176",
+    "host": "travel.stackexchange.com",
+    "site": "stackexchange.com",
+    "platform": "stackexchange",
+    "status": "seen_in_training_forum_pages",
+    "chromerag_f1": 0.917,
+    "trafilatura_f1": 0.859
+   },
+   {
+    "id": "5177",
+    "host": "english.stackexchange.com",
+    "site": "stackexchange.com",
+    "platform": "stackexchange",
+    "status": "seen_in_training_forum_pages",
+    "chromerag_f1": 0.9844,
+    "trafilatura_f1": 0.6246
+   },
+   {
+    "id": "5178",
+    "host": "ell.stackexchange.com",
+    "site": "stackexchange.com",
+    "platform": "stackexchange",
+    "status": "seen_in_training_forum_pages",
+    "chromerag_f1": 0.9409,
+    "trafilatura_f1": 0.6577
+   },
+   {
+    "id": "5179",
+    "host": "linguistics.stackexchange.com",
+    "site": "stackexchange.com",
+    "platform": "stackexchange",
+    "status": "seen_in_training_forum_pages",
+    "chromerag_f1": 0.9905,
+    "trafilatura_f1": 0.9931
+   },
+   {
+    "id": "5180",
+    "host": "english.stackexchange.com",
+    "site": "stackexchange.com",
+    "platform": "stackexchange",
+    "status": "seen_in_training_forum_pages",
+    "chromerag_f1": 0.9841,
+    "trafilatura_f1": 0.7966
+   },
+   {
+    "id": "5181",
+    "host": "english.stackexchange.com",
+    "site": "stackexchange.com",
+    "platform": "stackexchange",
+    "status": "seen_in_training_forum_pages",
+    "chromerag_f1": 0.5736,
+    "trafilatura_f1": 0.4925
+   },
+   {
+    "id": "5182",
+    "host": "english.meta.stackexchange.com",
+    "site": "stackexchange.com",
+    "platform": "stackexchange",
+    "status": "seen_in_training_forum_pages",
+    "chromerag_f1": 0.6436,
+    "trafilatura_f1": 0.9486
+   },
+   {
+    "id": "5183",
+    "host": "superuser.com",
+    "site": "superuser.com",
+    "platform": "stackexchange",
+    "status": "seen_in_training_forum_pages",
+    "chromerag_f1": 0.9679,
+    "trafilatura_f1": 0.9861
+   },
+   {
+    "id": "5191",
+    "host": "techcommunity.microsoft.com",
+    "site": "microsoft.com",
+    "platform": "khoros",
+    "status": "not_seen_in_training",
+    "chromerag_f1": 0.9205,
+    "trafilatura_f1": 0.9597
+   },
+   {
+    "id": "5199",
+    "host": "redwoodrvowners.com",
+    "site": "redwoodrvowners.com",
+    "platform": "wpforo",
+    "status": "not_seen_in_training",
+    "chromerag_f1": 0.8386,
+    "trafilatura_f1": 0.9009
+   }
+  ]
+ },
+ "old_code_control": {
+  "source": "results/revision_rows/p03_extra_rows.json all_511 (paired chromerag_balanced_minus_old013_balanced)",
+  "chromerag_0_1_5": {
+   "f1": 0.8839,
+   "without": 0.07,
+   "with": 0.7595
+  },
+  "freeze_0_1_3_code_with_0_1_5_model": {
+   "f1": 0.8854,
+   "without": 0.0918,
+   "with": 0.7945
+  },
+  "difference_0_1_5_minus_old": {
+   "f1": {
+    "mean": -0.0015,
+    "ci95": [
+     -0.0083,
+     0.0047
+    ]
+   },
+   "without": {
+    "mean": -0.0219,
+    "ci95": [
+     -0.0336,
+     -0.0109
+    ]
+   },
+   "with": {
+    "mean": -0.035,
+    "ci95": [
+     -0.049,
+     -0.0219
+    ]
+   }
+  }
+ },
+ "ledger_counts": {
+  "source": "evaluations/2026-10-v0.1.3/HELD_OUT_LEDGER.csv (Table S1a row numbers)",
+  "freeze_run_row": 1,
+  "full_511_page_f1_scorings_after_freeze_run": {
+   "count": 12,
+   "rows": [
+    7,
+    8,
+    9,
+    11,
+    12,
+    18,
+    19,
+    28,
+    30,
+    32,
+    46,
+    47
+   ]
+  },
+  "subset_f1_rescorings_after_freeze_run": {
+   "count": 2,
+   "rows": [
+    6,
+    31
+   ],
+   "note": "row 6 is an aggregate of the freeze run; row 31 accompanies row 32"
+  },
+  "ai_judge_runs_on_test_pages_only": {
+   "count": 8,
+   "rows": [
+    3,
+    22,
+    26,
+    34,
+    37,
+    51,
+    52,
+    53
+   ]
+  },
+  "ai_judge_runs_on_mixed_sets_including_test_pages": {
+   "count": 2,
+   "rows": [
+    16,
+    17
+   ]
+  },
+  "derived_subsets_not_separate_runs": [
+   5
+  ],
+  "ai_judge_runs_including_test_pages_by_judge": {
+   "gpt-5.6-luna": 3,
+   "Claude Sonnet 5.5": 7
+  }
+ }
+}

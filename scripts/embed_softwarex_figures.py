@@ -27,25 +27,23 @@ W, R, A, WP, PIC = f"{{{W_NS}}}", f"{{{R_NS}}}", f"{{{A_NS}}}", f"{{{WP_NS}}}", 
 IMAGES = [
     (
         "fig1_architecture.png",
-        "Figure 1. ChromeRAG processing pipeline. The learned block filter (stage 5) scores every text block; "
-        "the optional site model produced by chromerag learn is applied in stage 3.",
+        "Figure 1. ChromeRAG 0.1.5 pipeline; the optional site model from chromerag learn acts in stage 3.",
     ),
     (
-        "fig2_wcxb_test.png",
-        "Figure 2. Word-level F1 on the 372 WCXB test pages whose URL is not in the development split, overall and by "
-        "page type (n in brackets; product has 2 pages and collection 9, so those rows are indicative only). Each dot is "
-        "the mean over the pages of one type; ChromeRAG is in balanced mode and its value is printed.",
+        "fig2_wcxb_types.png",
+        "Figure 2. WCXB test F1 by page type (511 pages, n in brackets): (a) mean F1 per tool; (b) balanced ChromeRAG "
+        "minus Trafilatura with 95% site-bootstrap intervals.",
     ),
     (
-        "fig3_frontier.png",
-        "Figure 3. Precision and recall on WCXB development pages (five-fold cross-validation grouped by site) as "
-        "the ChromeRAG threshold goes from 0.15 to 0.90, against the single operating points of Trafilatura and Readability.",
+        "fig3_speed_f1.png",
+        "Figure 3. Median time per page against F1 on the 511 WCXB test pages (one process, Apple M4 Pro, other "
+        "processes running); bars reach the 90th percentile of time.",
     ),
     (
-        "fig5_judge.png",
-        "Figure 4. Net score (wins minus losses over pairs; +1 means always preferred) of ChromeRAG against Trafilatura "
-        "under blinded pairwise judging by three model families, with 95% bootstrap intervals: (a) 328 fresh pages, "
-        "(b) 367 WCXB test pages absent from the development folder (Gemini was not run on (b)).",
+        "fig4_human_ai.png",
+        "Figure 4. Net preference for ChromeRAG by the human majority and three AI judges (models as in Table 6) on the "
+        "same 75 pages, against Trafilatura and Readability, overall, on forums and without forums (95% site-bootstrap "
+        "intervals).",
     ),
 ]
 

@@ -19,7 +19,7 @@ from typing import Any
 
 from chromerag.config import ContentPriority, PipelineConfig
 from chromerag.extractor import ChromeRAG
-from chromerag.integrations._metadata import flat
+from chromerag.integrations._metadata import flat, path_key
 from chromerag.site_chrome import SiteChromeModel
 
 try:
@@ -57,10 +57,10 @@ class ChromeRAGReader(BaseReader):
         **_: Any,
     ) -> list[Document]:
         paths = [file_paths] if isinstance(file_paths, (str, Path)) else list(file_paths)
-        lookup = {str(Path(k)): v for k, v in (urls or {}).items()}
+        lookup = {path_key(k): v for k, v in (urls or {}).items()}
         docs: list[Document] = []
         for path in map(Path, paths):
-            url = lookup.get(str(path))
+            url = lookup.get(path.as_posix())
             html = path.read_text(encoding=self.encoding, errors="replace")
             result = self.extractor.extract(html, url=url)
             if self.skip_thin and result.input_quality.get("is_thin"):

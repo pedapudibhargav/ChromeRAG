@@ -56,19 +56,26 @@ def _one(page):
     return page.id, page.url, page.page_type, ours, traf, page.main_content
 
 
-def run(split: str, out: str, half: str = "all", fold: int | None = None) -> None:
+def run(split: str, out: str, half: str = "all", fold: int | None = None, ids_path: str | None = None, jobs: int | None = None) -> None:
+    import json
+    from pathlib import Path
+
+    from poc.learn_tokens import cv_fold, cv_site_of
     from poc.learn_tokens import half as site_half
-    from poc.learn_tokens import site_of
 
     pages = load_split(split)
+    if ids_path:
+        allow = frozenset(json.loads(Path(ids_path).read_text(encoding="utf-8")))
+        pages = [p for p in pages if p.id in allow]
     if fold is not None:
-        import zlib
-
-        pages = [p for p in pages if zlib.crc32(site_of(p.url).encode()) % 5 == fold]
+        pages = [p for p in pages if cv_fold(p.url) == fold]
     elif half != "all":
-        pages = [p for p in pages if site_half(site_of(p.url)) == half]
-    with ProcessPoolExecutor() as pool:
-        rows = list(pool.map(_one, pages, chunksize=8))
+        pages = [p for p in pages if site_half(cv_site_of(p.url)) == half]
+    if jobs == 1:
+        rows = [_one(p) for p in pages]
+    else:
+        with ProcessPoolExecutor(max_workers=jobs) as pool:
+            rows = list(pool.map(_one, pages, chunksize=8))
     pickle.dump(rows, open(out, "wb"))
     summarize(rows)
 
@@ -118,11 +125,13 @@ def main() -> None:
     ap.add_argument("--pkl", default="/tmp/cr/dev.pkl")
     ap.add_argument("--type", default=None)
     ap.add_argument("--fold", type=int, default=None)
+    ap.add_argument("--ids", default=None, help="JSON list of page ids to include")
+    ap.add_argument("--jobs", type=int, default=None, help="worker processes (1 = sequential)")
     ap.add_argument("--half", default="all", choices=["all", "learn", "valid"])
     ap.add_argument("--n", type=int, default=15)
     a = ap.parse_args()
     if a.cmd == "run":
-        run(a.split, a.out, a.half, a.fold)
+        run(a.split, a.out, a.half, a.fold, a.ids, a.jobs)
         return
     rows = pickle.load(open(a.pkl, "rb"))
     if a.cmd == "summary":

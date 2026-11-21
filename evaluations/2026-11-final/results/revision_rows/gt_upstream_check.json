@@ -1,0 +1,8 @@
+{
+ "result": "The local WCXB test split equals the upstream copy used by the BoilerPy3 CI run",
+ "rule": "sha256 over lines '<sub>/<file>\\t<sha256 of file bytes>' for every file in test/ground-truth and test/html, sorted, joined by newline",
+ "local": {"path": "data/wcxb/test", "files": 1022, "digest": "eea9c654ba6f722ab6edcbaa9067490e23cdc6430c5ce22f1bca2c15b828d91b"},
+ "upstream": {"repository": "github.com/Murrough-Foley/web-content-extraction-benchmark", "commit": "c039d5ee9f5a3a984a0e167e63aacd04e76e78a9", "ci_run": 44818754399, "files": 1022, "digest": "eea9c654ba6f722ab6edcbaa9067490e23cdc6430c5ce22f1bca2c15b828d91b"},
+ "equal": true,
+ "made": "2026-11-20"
+}

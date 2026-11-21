@@ -14,3 +14,11 @@ Trafilatura's XPath discard lists in `trafilatura/xpaths.py` (Apache-2.0, Adrien
 The evaluation scripts in `poc/` read the Web Content Extraction Benchmark (M. Foley, arXiv:2605.21097,
 https://arxiv.org/abs/2605.21097, licensed CC-BY-4.0). The model in `src/chromerag/assets/` was trained on pages and
 human-reviewed labels from its development folder. The benchmark data itself is not redistributed here.
+
+## Public Suffix List (MPL-2.0)
+
+The file `poc/public_suffix_list.dat` is the Mozilla Public Suffix List
+(https://publicsuffix.org/list/). It is licensed under the Mozilla Public License 2.0.
+ChromeRAG uses it only in evaluation tooling (`poc/psl.py`, `poc/strict_split.py`) to
+derive registrable domains for the strict training split. It is not included in the
+published wheel.

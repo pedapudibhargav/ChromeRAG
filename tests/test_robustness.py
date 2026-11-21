@@ -100,3 +100,75 @@ def test_learn_is_fast_on_unclosed_script_tags() -> None:
 def test_output_is_deterministic() -> None:
     html = "<html><body><main>" + "".join(f"<p>Paragraph number {i} about configuration, retention and restores.</p>" for i in range(30)) + "</main></body></html>"
     assert len({ChromeRAG().extract(html).markdown for _ in range(3)}) == 1
+
+
+def test_deep_emphasis_nesting_does_not_raise() -> None:
+    # Text long enough to survive density filtering; must remain after depth-cap fallback.
+    marker = "AAAADEEP_EMPHASIS_KEEP_ME_THROUGH_FILTERING_AAAA"
+    html = (
+        "<html><body><main><p>"
+        + "<b>" * 1500
+        + marker
+        + "</b>" * 1500
+        + "</p></main></body></html>"
+    )
+    result = ChromeRAG(config=PipelineConfig(enable_dvdf=False, enable_lbc=False)).extract(html)
+    assert isinstance(result.markdown, str)
+    assert marker in result.markdown
+
+
+def test_deep_list_nesting_does_not_raise() -> None:
+    marker = "AAAALIST_LEAF_KEEP_ME_THROUGH_FILTERING_AAAA"
+    html = (
+        "<html><body><main>"
+        + "<ul><li>" * 500
+        + marker
+        + "</li></ul>" * 500
+        + "</main></body></html>"
+    )
+    result = ChromeRAG(config=PipelineConfig(enable_dvdf=False, enable_lbc=False)).extract(html)
+    assert isinstance(result.markdown, str)
+    assert marker in result.markdown
+
+
+def test_lone_surrogate_does_not_raise_on_encode() -> None:
+    html = (
+        "<html><body><main><p>hello \ud800 world with enough words for extraction "
+        "thresholds easily today and tomorrow.</p></main></body></html>"
+    )
+    result = ChromeRAG(config=PipelineConfig(enable_dvdf=False, enable_lbc=False)).extract(html)
+    result.markdown.encode("utf-8")  # must not raise
+
+
+def test_pathological_inputs_finish_under_two_seconds() -> None:
+    import time
+
+    cfg = PipelineConfig(enable_dvdf=False, enable_lbc=False)
+    rag = ChromeRAG(config=cfg)
+
+    def nested_tables(depth: int) -> str:
+        opener = "<html><body><main>" + "<table><tr><td>" * depth
+        closer = "</td></tr></table>" * depth + "</main></body></html>"
+        return opener + "cell data value" + closer
+
+    rows = "".join(f"<tr><td>A{i}</td><td>B{i}</td><td>C{i}</td></tr>" for i in range(30000))
+    huge = (
+        "<html><body><main><table><tr><th>A</th><th>B</th><th>C</th></tr>"
+        + rows
+        + "</table></main></body></html>"
+    )
+    deep_divs = (
+        "<html><body><main>"
+        + "<div>" * 20000
+        + "<p>Text about widgets with enough words for extraction.</p>"
+        + "</main></body></html>"
+    )
+    for html, limit in (
+        (nested_tables(2000), 2.0),
+        (huge, 5.0),
+        (deep_divs, 2.0),
+    ):
+        start = time.perf_counter()
+        result = rag.extract(html)
+        assert time.perf_counter() - start < limit
+        assert isinstance(result.markdown, str)

@@ -58,7 +58,7 @@ EMBED_BATCH = 256
 EMBED_MAX_CHARS = 6000
 
 _TOKEN = re.compile(r"[a-z0-9]+")
-_FRONT_MATTER = re.compile(r"\A---\n.*?\n---\n", re.DOTALL)
+_YAML_FM_LINE = re.compile(r"^[A-Za-z0-9_.-]+:\s*")
 _WS = re.compile(r"\s+")
 
 
@@ -66,23 +66,86 @@ def tokenize(text: str) -> list[str]:
     return _TOKEN.findall(text.lower())
 
 
+def strip_yaml_front_matter(text: str) -> str:
+    """Strip YAML front matter only when opener --- is followed by key: lines then ---.
+
+    Horizontal rules (``---`` with a blank line before body) must not remove content.
+    """
+    body = text or ""
+    if not body.startswith("---\n"):
+        return body
+    lines = body.split("\n")
+    i = 1
+    while i < len(lines):
+        line = lines[i]
+        if line.strip() == "---":
+            rest = "\n".join(lines[i + 1 :])
+            return rest.lstrip("\n")
+        if line == "" or not _YAML_FM_LINE.match(line):
+            return body
+        i += 1
+    return body
+
+
 def chunk_markdown(text: str, *, words: int = CHUNK_WORDS) -> list[str]:
-    """Pack paragraphs into chunks of about ``words`` words (long paragraphs are split)."""
-    text = _FRONT_MATTER.sub("", text)
+    """Pack paragraphs into chunks bounded by BM25 alphanumeric tokens; keep newlines."""
+    text = strip_yaml_front_matter(text)
+    if not (text or "").strip():
+        return []
     chunks: list[str] = []
-    current: list[str] = []
+    current_parts: list[str] = []
+    current_n = 0
+
+    def flush() -> None:
+        nonlocal current_parts, current_n
+        if not current_parts:
+            return
+        chunk = "\n\n".join(current_parts)
+        if tokenize(chunk):
+            chunks.append(chunk)
+        current_parts = []
+        current_n = 0
+
+    def append_piece(piece: str) -> None:
+        nonlocal current_n
+        pt = len(tokenize(piece))
+        if pt == 0:
+            return
+        if current_n + pt > words and current_parts:
+            flush()
+        if pt > words:
+            for line in piece.split("\n"):
+                line = line.rstrip()
+                if not line.strip():
+                    continue
+                # A single line longer than the budget (common in flat text) is split by words.
+                line_words = line.split()
+                start = 0
+                while start < len(line_words):
+                    end, used = start, 0
+                    while end < len(line_words):
+                        wt = len(tokenize(line_words[end]))
+                        if used + wt > words and end > start:
+                            break
+                        used += wt
+                        end += 1
+                    part = " ".join(line_words[start:end])
+                    if current_n + used > words and current_parts:
+                        flush()
+                    current_parts.append(part)
+                    current_n += used
+                    start = end
+            return
+        current_parts.append(piece)
+        current_n += pt
+
     for para in re.split(r"\n\s*\n", text):
-        para_words = para.split()
-        while para_words:
-            room = words - len(current)
-            current.extend(para_words[:room])
-            para_words = para_words[room:]
-            if len(current) >= words:
-                chunks.append(" ".join(current))
-                current = []
-    if current:
-        chunks.append(" ".join(current))
-    return [c for c in chunks if tokenize(c)]
+        para = para.strip()
+        if not para:
+            continue
+        append_piece(para)
+    flush()
+    return chunks
 
 
 class BM25:

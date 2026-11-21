@@ -66,10 +66,13 @@ class PipelineConfig:
     enable_dvdf: bool = True
     enable_stce: bool = True  # applied only when a SiteChromeModel is provided
     enable_rules: bool = True
+    enable_generic_chrome: bool = True
+    enable_chrome_prune: bool = True
+    enable_trafilatura_rules: bool = True
     chrome_drop_toc: bool = True
-    chrome_drop_pager: bool = True
+    chrome_drop_pager: bool = False
     chrome_drop_comments: bool = True
-    chrome_drop_related: bool = True
+    chrome_drop_related: bool = False
     chrome_drop_cta: bool = True
     chrome_drop_share: bool = True
     chrome_drop_newsletter: bool = True
@@ -81,6 +84,8 @@ class PipelineConfig:
     trafilatura_link_blocks: bool = True
     trafilatura_micro: bool = True
     enable_lbc: bool = True  # learned block classifier (needs assets/lbc_stage1.npz)
+    enable_lbc_stage2: bool = True  # context stage of the block classifier (needs lbc_stage2.npz)
+    enable_lbc_structure_rules: bool = True  # title / heading / lead rescue after classifier scores
     inject_heading_paths: bool = False
     include_links: bool = False  # write [text](url); off keeps link text only
 
@@ -99,8 +104,10 @@ class PipelineConfig:
     lbc_title_fallback: bool = True  # when no h1 matches <title>, keep the first content-root h1 with p >= 0.03
     lbc_rescue_headings: bool = True  # keep short headings above kept body when p is in [0.08, threshold)
     lbc_rescue_lead: bool = True  # keep the p/div block after a kept title h1 when it looks like a lead
+    lbc_rescue_tables: bool = True  # keep data tables under a kept section heading (or pair-rescue heading+table)
     lbc_drop_repeats: bool = True  # drop a block whose text already appeared earlier on the page
     lbc_whole_page: bool = True  # classify blocks outside the detected content root too
+    lbc_rich_collapsed_retry: bool = True  # extra collapsed signals before coverage retry
 
     # DVDF
     dvdf_threshold: float = 0.42

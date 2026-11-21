@@ -2,6 +2,84 @@
 
 All notable changes to ChromeRAG. Versions follow [Semantic Versioning](https://semver.org/).
 
+## 0.1.5 — 2026-11-20
+
+Strict-retrain and validation release. Code frozen at tag `freeze-0.1.5` before any held-out run; the results cited by
+the SoftwareX revision are in `evaluations/2026-11-final/`.
+
+### Changed
+- **Strict retrain.** `assets/lbc_stage1.npz` (152,432 bytes) is retrained on a strict subset of the WCXB development
+  folder: the 139 files that duplicate test pages and the 96 pages whose registrable domain (Public Suffix List) occurs
+  in the test split are removed, plus a fixed 0.8 Jaccard near-duplicate guard against test reference text; 1,238
+  pages remain. No test page, test domain, test label or test score is used. A test asserts that no training domain is
+  a test domain; `poc/rebuild_strict.sh` rebuilds the model byte for byte.
+- Cross-validation folds and site-level bootstrap group pages by registrable domain (`poc/psl.py`), not hostname.
+- **Components dropped after the ablation** (five folds grouped by domain on the 1,238 strict pages; a component was
+  dropped when removing it neither lowered F1 nor raised the without-snippet rate):
+  - five Trafilatura-derived rule groups: `tf.share` (`sociable`, `viral`), `tf.related` (`teaser`, `popular`),
+    `tf.newsletter.block`, `tf.ads` (`outbrain`, `taboola`), `tf.tools.print`; 8 Trafilatura-derived rules remain,
+    13 YAML rules in all;
+  - the 15 documentation-framework YAML rules (`docs_generators.yaml`); the last ablation run that still included
+    them is commit `7ca7e9e`;
+  - the pager and related-post detectors, now off by default (`chrome_drop_pager=False`,
+    `chrome_drop_related=False`).
+  Structure rules and table rescue were kept as disclosed exceptions (removing them lost content on some pages); a
+  stacked second-stage model was not shipped (ten times the file size for +0.004 F1).
+- Pinned the `[train]` extra to scikit-learn 1.9.x (training environment used 1.9.1).
+
+### Added
+- **Switches for every stage** (`PipelineConfig`): `enable_generic_chrome`, `enable_chrome_prune`,
+  `enable_trafilatura_rules`, `enable_lbc_structure_rules`, `enable_lbc_stage2`, `lbc_rescue_tables`,
+  `lbc_rich_collapsed_retry`; existing `enable_lbc`, `enable_rules` and the per-detector `chrome_*` flags unchanged.
+- **Table rescue.** Data tables under a kept section heading are kept even when the classifier scores them low (for
+  example plan and price tables); `diagnostics["lbc"]["tables_rescued"]` counts them.
+- **Empty-output rescue.** Main content hidden by CSS (`visibility:hidden`, off-canvas wrappers) is kept when it holds
+  most of the page text, while hidden cookie modals, mega menus and off-canvas navigation stay removed; collapsed
+  outputs are retried in coverage mode, and broken list shells around `<main>` are walked.
+- **Collapse signal.** Besides the old word-count test, a collapsed extraction is now also detected from a low share
+  of kept blocks, a low per-page F1 estimate, or two high-scoring content regions with little output; such pages are
+  retried in coverage mode (`collapse.py`, switch `lbc_rich_collapsed_retry`). The idea of checking richer thin-output signals
+  comes from a design described for rs-trafilatura; it was implemented independently.
+- **CI workflow** `.github/workflows/ci.yml`: `ruff check .` and `pytest -q` on Linux, macOS and Windows with
+  Python 3.11 and 3.13 on every push and pull request; cross-platform test fixes (URL path keys, LF line endings in
+  golden files).
+- **Evaluation kit** `evaluators/`: an offline, standard-library blind rating app (outputs labelled A, B, C in random
+  order, difference highlighting, practice items with notes, repeats), bundle builder, part splitter, pseudonymizer
+  and an analyzer that applies the pre-registered careless-rating checks.
+- **Held-out ledger**: `poc/held_out_ledger.py`, `evaluations/2026-10-v0.1.3/HELD_OUT_LEDGER.csv` (every v0.1.3 and
+  v0.1.4 run on a held-out or later-held-out set) and `evaluations/2026-11-final/results/held_out_runs.jsonl`.
+- Evaluation harnesses for the revision: `poc/strict_split.py`, `poc/run_strict_dev_cv.py`, `poc/ablation_cv.py`,
+  `poc/update_strict_manifest.py`, `poc/final_wcxb.py`, `poc/revision_rows.py` (raw and stripped output, subsets,
+  page types, freeze-0.1.3 code with the 0.1.5 model, jusText, BoilerPy3, speed), `poc/crag_answer_eval.py`,
+  `poc/final_page_judge.py`, `poc/final_page_length_analysis.py`, and the pre-registered human rating analysis
+  `poc/human_set_analysis.py` with `poc/human_set_score_diff.py`, `poc/human_set_ai_by_forum.py` and
+  `poc/gen_supplement.py`.
+
+### Fixed
+- Emphasis: whitespace-only emphasis keeps word separation; adjacent bold tags no longer glue markers; literal
+  asterisks in `pre` and inline code are not broken.
+- Word breaks: `<br>`-like break spans separate sentences that were joined.
+- A duplicate page `h1` is written once.
+- Tables: empty columns are omitted, spacer rows no longer block a pipe table, a blank header row no longer emits a
+  separator-only table, a pipe table inside a list keeps its header above the separator, large tables keep every row
+  (a single warning when a cap applies).
+- Term lists (`<dl>`) keep all terms and definitions, including consecutive `<dt>` and paragraph `<dd>`; figures that
+  wrap content keep the content; captions are kept.
+- Warnings: the JavaScript-shell warning is cleared when the body has prose; the empty-body warning counts body words,
+  not front-matter tokens.
+- Rules never drop `html`, `body`, `main` or the content root.
+- Crash and time safety: deep emphasis and list nesting and lone surrogates no longer raise; pathological inputs
+  finish in under two seconds.
+- An article header inside a card river is no longer pruned as site chrome.
+
+### Results (evaluations/2026-11-final)
+- WCXB test split, 511 pages: word F1 0.884 (balanced, front matter removed) against 0.860 for Trafilatura 2.2.0,
+  +0.024 [+0.008, +0.042]; raw default output 0.853. The test split was consulted during earlier development.
+- Human raters on 75 new pages: net +0.23 [+0.01, +0.42] against Trafilatura; CRAG split 1: no measurable difference
+  in answer accuracy (+0.008 [−0.040, +0.054]) from an index about 17% smaller.
+- Median time per page about 40 ms (Trafilatura about 14 ms) on the WCXB test pages, one process on a loaded machine.
+- The v0.1.4 results below (0.907 on 372 pages, 52 ms, LLM-judge panels) are superseded.
+
 ## 0.1.4 — 2026-10-03
 
 Output-quality release: better structure, much less leftover chrome, heading-aware chunks. The learned model file is unchanged.

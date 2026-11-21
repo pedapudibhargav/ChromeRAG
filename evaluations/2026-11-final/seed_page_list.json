@@ -1,0 +1,1566 @@
+{
+  "sample_seed": 20261101,
+  "max_pages_per_domain": 3,
+  "quotas": {
+    "article": 119,
+    "forum": 51,
+    "listing": 27,
+    "service": 88,
+    "product": 10,
+    "collection": 5,
+    "landing": 10
+  },
+  "tranco_list_id": "V354N",
+  "pages": [
+    {
+      "id": "final-0000",
+      "url": "https://ukessays.com/assignments/degree-of-flexibility-of-electricity-prices-2021.php",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0001",
+      "url": "https://corvidae.ai/insights/survey-findings-the-value-of-attribution-in-uk-financial-services",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0002",
+      "url": "https://stalbertgazette.com/adopt-a-pet/adopt-a-pet-hello-im-eos-12956169",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0003",
+      "url": "https://hirslanden.ch/en/corporate/media-news/press-releases/centre-de-chirurgie-ambulatoire-de-geneve.html",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0004",
+      "url": "https://jobylon.com/blog/5-ways-to-automate-your-hiring-process",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0005",
+      "url": "https://stalbertgazette.com/beyond-local/calgary-flames-foundation-donates-100000-to-support-military-families-affected-by-cfb-wainwright-tragedy-12955487",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0006",
+      "url": "https://wtvy.com/video/2026/10/28/police-release-booking-photo-diamond-head-kidnapping-suspect",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0007",
+      "url": "https://wlos.com/news/nation-world/nine-killed-as-learjet-60-goes-crashes-in-a-residential-area-in-florida",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0008",
+      "url": "https://digitail.com/customer-stories/35-appointments-in-one-day-home-on-time-how-ai-rescued-riverside-vet-from-burnout",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0009",
+      "url": "https://strangerline.io/it/text-chat-with-strangers",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0010",
+      "url": "https://wavenewstoday.com/news/before-you-trash-that-jack-o-lantern-try-these-pumpkin-ideas?id=2282f12c-749e-481a-856b-70963b2e4ca3",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0011",
+      "url": "https://theabsolutesound.com/articles/wilson-audio-sabrina-v",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0012",
+      "url": "https://iolo.com/en-gb/landing/partner/dynabook/fix-errors-with-system-mechanic",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0013",
+      "url": "https://classictic.com/en/city/special-t0/special-events-ec1/musici-veneziani-venice-el7174",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0014",
+      "url": "https://29news.com/video/2026/10/30/relationship-between-christian-nationalism-americans-views-democracy",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0015",
+      "url": "https://muses.org/faq/2:How-can-I-put-Muses-Radio-Player-on-my-blog.html",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0016",
+      "url": "https://visionaryecho.com/en/articles/funeral-costs-in-denmark-how-to-compare-funeral-directors-and-plan-a-simpler-service",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0017",
+      "url": "https://dacardworld.com/gaming/pokemon-mega-evolution-phantasmal-flames-booster-box",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0018",
+      "url": "https://sungazette.com/news/top-news/2026/10/candidates-push-for-voters-to-turn-out-turn-the-state-red",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0019",
+      "url": "https://eurohoops.net/en/euroleague/2027420/euroleague-roundup-olympiacos-surged-late-and-beat-besiktas",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0020",
+      "url": "https://cleanpower.org/resources/2026-q2-clean-power-quarterly-market-report",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0021",
+      "url": "https://datavant.com/blog/what-real-payer-interoperability-takes",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0022",
+      "url": "https://usefomo.com/blog/doubling-the-downloads-of-free-offerings-with-fomo",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0023",
+      "url": "https://tiledesk.com/blog/the-tiledesk-instant-messaging-engine",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0024",
+      "url": "https://ipregistry.co/blog/tor-exit-relay-hijack-ssh-interception-hosting-concentration",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0025",
+      "url": "https://gopack.com/news/2026/11/1/womens-soccer-wolfpack-ends-regular-season-with-victory-at-cal",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0026",
+      "url": "https://aans.org/education-publications/joint-cme-providership-program-overview",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0027",
+      "url": "https://eshop.macsales.com/business/federal-state-local-government",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0028",
+      "url": "https://ipl.com/series/the-hundred-womens-2026-129913",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0029",
+      "url": "https://disneylandparis.com/en-usd/legal/disneyland-paris-legal-notice",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0030",
+      "url": "https://rugiet.com/blog/do-testosterone-supplements-work",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0031",
+      "url": "https://chargedevs.com/newswire/molicels-inr-21700-p70x-cell-is-designed-to-close-the-gap-between-li-ion-batteries-and-supercapacitors",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0032",
+      "url": "https://bajajgeneralinsurance.com/health-insurance-plans/health-insurance-for-senior-citizens.html",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0033",
+      "url": "https://voc.ai/blog/amazon-review-analysis-tool-buyer-scorecard",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0034",
+      "url": "https://cleanpower.org/news/nj-implementing-energy-storage-program",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0035",
+      "url": "https://fashiongonerogue.com/story/massimo-dutti-new-york-2026",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0036",
+      "url": "https://meyerweb.com/eric/thoughts/2026/06/17/in-situ-syntax-highlighting-in-macos-applications-like-keynote",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0037",
+      "url": "https://dealercarsearch.com/resources/articles/ai-in-the-non-franchise-auto-industry-a-smart-investment-not-a-gimmick",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0038",
+      "url": "https://getpurpledot.com/case-studies/how-jaxxon-launched-watches-on-pre-order-with-purple-dot-headless",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0039",
+      "url": "https://cosmeticsnow.com/iteminfo/afnan-supremacy-collectors-edition-man-eau-de-parfum-100ml",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0040",
+      "url": "https://careerarc.com/blog/arianna-huffington-job-solution-election-nears",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0041",
+      "url": "https://flextv.cc/drama/top-in-flextv-10604",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0042",
+      "url": "https://wtvy.com/video/2026/10/31/i-choked-that-dog-out-butler-rescue-operator-charged-with-felony-animal-torture-fraud",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0043",
+      "url": "https://29news.com/video/2026/10/30/helicopter-collision-aftermath-near-oregon-airport",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0044",
+      "url": "https://utah.com/articles/post/spring-break-staycation-a-perfect-day-at-gardner-village",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0045",
+      "url": "https://glassdoor.ca/Job/work-from-home-insurance-jobs-SRCH_FW0,14_KO15,24.htm",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0046",
+      "url": "https://dealerspike.com/blog/your-price-all-in-price-box-is-here",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0047",
+      "url": "https://lse.ac.uk/news/lse-celebrates-second-annual-impact-prize",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0048",
+      "url": "https://bookmarkgenius.com/story22089860/cq6280c-lathe-maker-for-very-long-pipe-and-shaft-turning",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0049",
+      "url": "https://gastongazette.com/videos/lifestyle/2026/10/31/trunk-or-treat-returns-to-bessemer-city/92533951007",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0050",
+      "url": "https://concord.org/blog/co-designing-machine-learning-investigations-for-earth-science-inquiry",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0051",
+      "url": "https://tophost.md/en/news/how-litespeed-accelerates-your-wordpress-website-complete-performance-guide",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0052",
+      "url": "https://allaccessible.org/blog/how-does-digital-accessibility-audit-work-for-websites",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0053",
+      "url": "https://freewebmarks.com/story/https-quizlet-com-study-guides-fixmestick-subscription-cancellation-and-renewal-guide-1a54bd35-e4de-40bf-85de-314f5cfbf8ad",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0054",
+      "url": "https://usdairy.com/about-us/dmi/statement-responsible-marketing-and-communications",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0055",
+      "url": "https://fawkesgames.com/en/last-chaos-news/last-chaos-easy-anti-cheat-eac-installation-guide",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0056",
+      "url": "https://entsoe.eu/about/information-and-communication-technologies",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0057",
+      "url": "https://iss-stoxx.com/insights/articles/how-could-el-nino-impact-my-portfolio",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0058",
+      "url": "https://realting.com/news/mipif-global-moscow-june-2026-real-estate-exhibition",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0059",
+      "url": "https://eurohoops.net/en/tbl/2029421/fenerbahce-bounces-back-with-a-win-against-tofas",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0060",
+      "url": "https://uplers.com/article/hire-product-engineers-from-india",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0061",
+      "url": "https://digitail.com/customer-stories",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0062",
+      "url": "https://worddb.com/crossword_clue/workers-in-ers-and-icus",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0063",
+      "url": "https://optable.co/newsroom/optable-and-goodway-group-partner",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0064",
+      "url": "https://dma.org.uk/learning-and-events/events/events-webinars/the-value-of-b2-b-marketing",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0065",
+      "url": "https://equentis.com/blog/return-on-equity-roe-calculation-and-what-it-means",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0066",
+      "url": "https://entsoe.eu/events/2027/05/24/entso-e-s-2027-standard-vetting-interoperability-test-event",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0067",
+      "url": "https://mishimoto.com/engineering/2014/02/2001-2007-subaru-wrxsti-top-mount-intercooler-part-1-introduction-and-goals",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0068",
+      "url": "https://equentis.com/stocks-screener/sector/wood-&-wood-products_109",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0069",
+      "url": "https://fashiongonerogue.com/story/retro-womens-gold-watches",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0070",
+      "url": "https://skillcrush.com/blog/what-is-skillcrush-career-coaching",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0071",
+      "url": "https://bookmarkgenius.com/story22089852/duck-duck-jeep-a-trending-movement-explained",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0072",
+      "url": "https://careerarc.com/blog/4-areas-of-employer-brand-influence",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0073",
+      "url": "https://dftsocial.com/story23411065/next789-the-rising-sensation-in-virtual-gaming",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0074",
+      "url": "https://disneylandparis.com/en-usd/legal/disneyland-paris-privacy-rights",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0075",
+      "url": "https://oldversion.com/windows/x-lite/x-lite-3-0",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0076",
+      "url": "https://fawkesgames.com/en/shaiya-news/-bound-by-fate-patch",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0077",
+      "url": "https://imagekit.io/solutions/video-digital-asset-management",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0078",
+      "url": "https://defensescoop.com/video/ionqs-craig-miller-on-securing-against-quantum-threats",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0079",
+      "url": "https://cfib-fcei.ca/en/member-savings-and-discounts",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0080",
+      "url": "https://ehsinsight.com/blog/12-thanksgiving-safety-tips-to-share-with-your-employees",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0081",
+      "url": "https://fastpixel.io/blog/fastpixel-vs-wp-rocket-best-wordpress-plugin-to-accelerate-your-site",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0082",
+      "url": "https://catalent.com/events/supply-side-global-2026",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0083",
+      "url": "https://mdcalc.com/calc/10083/national-early-warning-score-news-2",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0084",
+      "url": "https://19fortyfive.com/2026/10/the-hardest-part-of-bringing-back-the-lockheed-sr-71-blackbird-to-mach-3-in-2026-youre-talking-about-engines-that-have-been-sitting-for-30-plus-years",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0085",
+      "url": "https://cosmeticsnow.com/iteminfo/lancome-nutrix-nourishing-and-soothing-rich-cream-125ml",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0086",
+      "url": "https://ehsinsight.com/blog/accountability-in-workplace-safety-and-its-benefits",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0087",
+      "url": "https://billythetree.com/charms/friends-and-family-charms",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0088",
+      "url": "https://dailyfreepress.com/10/26/22/221818/title-town-takes-the-patriots-fall-to-4-3-and-their-injuries-will-soon-bring-some-tough-decisions",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0089",
+      "url": "https://utsystem.edu/institutions/university-of-texas-medical-branch-at-galveston",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0090",
+      "url": "https://jobs.strawberryhotels.com/jobs/308549-open-application-hotel-kamp",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0091",
+      "url": "https://simple-help.com/blogs/cve-2026-48558-what-you-need-to-know-about-the-simplehelp-oidc-authentication-bypass",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0092",
+      "url": "https://hudson.org/national-security-defense/irans-maritime-threat-conflict-yemen-can-kasapoglu",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0093",
+      "url": "https://brepols.net/",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0094",
+      "url": "https://swgc.co.za/about-us/mission-vision-and-value-statement",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0095",
+      "url": "https://enhencer.com/blog/enhencer-ai-ads-google-ads-ctr-across-industries-2024",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0096",
+      "url": "https://groq.com/blog/batch-processing-with-groqcloud-for-ai-inference-workloads",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0097",
+      "url": "https://disneylandparis.com/en-usd/entertainment/disney-stars-on-parade",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0098",
+      "url": "https://arsmarttv.com/article/how-hey-google-integration-works-on-smart-tvs",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0099",
+      "url": "https://niagaraparks.com/visit/culinary/whirlpool-pub-and-lounge",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0100",
+      "url": "https://contracts.onecle.com/consumer/living-will-advance-directive.shtml",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0101",
+      "url": "https://wineshop.it/en",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0102",
+      "url": "https://catwalk.com.au/blog/the-best-anti-ageing-skin-care-products-in-40s-and-why",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0103",
+      "url": "https://forms.app/en/templates/human-resources-form-templates",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0104",
+      "url": "https://help.zorin.com/docs/getting-started/switch-your-organization-from-windows",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0105",
+      "url": "https://getpodcast.com/podcast/morbid-a-true-crime-podcast",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0106",
+      "url": "https://consumersinternational.org/news-resources/news/releases/proven-impact-shaping-what-s-next-for-fair-digital-finance",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0107",
+      "url": "https://sangoma.com/why-sangoma?s2s=star2star",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0108",
+      "url": "https://stargate.ca/services/virtual-private-server-hosting",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0109",
+      "url": "https://floridatoday.com/story/money/lottery/2026/10/30/mega-millions-winning-numbers-oct-30-2026/92503921007",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0110",
+      "url": "https://rezolve.com/press-releases/rezolve-ai-to-participate-in-the-maxim-growth-summit-2026",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0111",
+      "url": "https://themoviebox.xyz/detail/fall-2-deadpoint-U65m1Wbz8E4",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0112",
+      "url": "https://kandipatterns.com/patterns/characters/evil-leafy-charm-70558",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0113",
+      "url": "https://metacompliance.com/awareness-assets/get-your-free-toolkit-this-cyber-security-awareness-month",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0114",
+      "url": "https://wlos.com/shopping/early-deals-worth-shopping-amazon-prime-big-deals-days-online-shopping-fall-october-discounts-holidays-presents-decor-home-kids-style-tech",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0115",
+      "url": "https://entrata.com/blog/affordable-housing-vs-housing-affordability",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0116",
+      "url": "https://jobylon.com/blog/customer-stories/how-koenigsegg-reduced-their-time-to-hire-from-2-months-to-25-days",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0117",
+      "url": "https://sliderrevolution.com/templates/scoop-society-ice-cream-shop-website-slider",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0118",
+      "url": "https://hirslanden.ch/en/corporate/media-news/press-releases/mehdi-bensouda-new-manager-lausanne.html",
+      "page_type": "article"
+    },
+    {
+      "id": "final-0119",
+      "url": "https://baptistboard.com/threads/the-sign.136611",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0120",
+      "url": "https://prototypr.io/topic/design-psychology/page/1",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0121",
+      "url": "https://pw.live/school-prep/exams/topics-class-9-mathematics",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0122",
+      "url": "https://baptistboard.com/threads/highland-park-says-it-will-leave-the-umc.136571",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0123",
+      "url": "https://baptistboard.com/threads/peter-ruckmans-tenants-are-indefensibly-heretical-and-seen-as-pure-error-by-me-and-most-bible-believers.136606",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0124",
+      "url": "https://senedd.wales/senedd-now/topics/education",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0125",
+      "url": "https://thepacker.com/topics",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0126",
+      "url": "https://senedd.wales/senedd-now/topics/environment",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0127",
+      "url": "https://cqrb.cn/topics/xuexiguanchedangdeershijiewuzhongquanhuijingshen",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0128",
+      "url": "https://sosnc.gov/home/topics_a_to_z",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0129",
+      "url": "https://automotiveworld.com/topics/software-defined-vehicle",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0130",
+      "url": "https://senedd.wales/senedd-now/topics",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0131",
+      "url": "https://mims.com/malaysia/news-updates/topic/guselkumab-for-ibd-passes-muster-in-real-world",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0132",
+      "url": "https://foleon.com/",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0133",
+      "url": "https://flatwaterfreepress.org/topics/historically-excluded",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0134",
+      "url": "https://thepacker.com/topics/farm-bill",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0135",
+      "url": "https://prototypr.io/topic/career/page/1",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0136",
+      "url": "https://automotiveworld.com/topics/autonomous-driving",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0137",
+      "url": "https://war-lords.net/forum/thread-17812.html",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0138",
+      "url": "https://proinvestor.com/forum/topic/560136/dsv-og-novo-to-fyrt%C3%A5rnes-kamp-med-aktiekursen",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0139",
+      "url": "https://automotiveworld.com/topics/markets",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0140",
+      "url": "https://proinvestor.com/forum/topic/560185/nasdaq-balancerer-p%C3%A5-en-knivs%C3%A6g-tekniske-n%C3%B8gleniveauer-testes-under-ekstrem-frygt",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0141",
+      "url": "https://pw.live/school-prep/exams/class-10-science",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0142",
+      "url": "https://tekedia.com/forum/topic/inde-navarrette-takes-a-dig-at-shane-gillis-over-controversial-snl-joke?part=1",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0143",
+      "url": "https://philanthropy.com/topic/foundation-giving",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0144",
+      "url": "https://chaloke.com/forums/topic/cdc-d2614",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0145",
+      "url": "https://econotimes.com/topics/trade-war-series",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0146",
+      "url": "https://heinemann.com/topics/reading",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0147",
+      "url": "https://kandipatterns.com/questions/44752/advance-warning-of-future-site-changes-partial-shutdown",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0148",
+      "url": "https://econotimes.com/topics",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0149",
+      "url": "https://pw.live/school-prep/exams/topics-class-8-social-science-notes",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0150",
+      "url": "https://heinemann.com/topics/math",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0151",
+      "url": "https://war-lords.net/forum/thread-18828.html",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0152",
+      "url": "https://hudson.org/filtered-grid/select-term/topics/195/52791",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0153",
+      "url": "https://philanthropy.com/topic/communications",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0154",
+      "url": "https://arctic-council.org/explore/topics/ocean",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0155",
+      "url": "https://heinemann.com/topics/sel",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0156",
+      "url": "https://war-lords.net/forum/thread-18819.html",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0157",
+      "url": "https://hudson.org/filtered-grid/select-term/topics/204/52775",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0158",
+      "url": "https://unrv.com/forum/topic/11568-were-the-marian-reforms-the-doom-for-the-roman-republic",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0159",
+      "url": "https://tekedia.com/forum/topic/dwyane-wade-shares-funny-response-to-his-viral-miami-heat-statue-makeover?part=1",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0160",
+      "url": "https://chaloke.com/forums/topic/%e0%b8%9c%e0%b8%a1-download-%e0%b8%82%e0%b9%89%e0%b8%ad%e0%b8%a1%e0%b8%b9%e0%b8%a5%e0%b9%84%e0%b8%a1%e0%b9%88%e0%b9%84%e0%b8%94%e0%b9%89",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0161",
+      "url": "https://flatwaterfreepress.org/topics/statewide",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0162",
+      "url": "https://prototypr.io/topics",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0163",
+      "url": "https://flatwaterfreepress.org/topics/newsletters/statewide-newsletter",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0164",
+      "url": "https://romfordrecorder.co.uk/topics/food-hygiene",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0165",
+      "url": "https://proinvestor.com/forum/topic/560191/ai-s-n%C3%A6ste-store-risiko-gemmer-sig-p%C3%A5-g%C3%A6ldsmarkedet",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0166",
+      "url": "https://chaloke.com/forums/topic/cdc-action-zone-basic-default",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0167",
+      "url": "https://kandipatterns.com/questions/47548/i-need-a-tutorial-on-how-to-make-the-kandi-ak-47-i-have-the-two-easiest-parts-but-idk-how-to-do-the-rest%E2%80%A6",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0168",
+      "url": "https://philanthropy.com/topic/advocacy",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0169",
+      "url": "https://cmtelematics.com/topics/mobility-ai-research",
+      "page_type": "forum"
+    },
+    {
+      "id": "final-0170",
+      "url": "https://limitlesstcg.com/decks/list/29678",
+      "page_type": "listing"
+    },
+    {
+      "id": "final-0171",
+      "url": "https://novaramedia.com/category/audio/acfm",
+      "page_type": "listing"
+    },
+    {
+      "id": "final-0172",
+      "url": "https://popularresistance.org/tag/economy",
+      "page_type": "listing"
+    },
+    {
+      "id": "final-0173",
+      "url": "https://bringatrailer.com/listing/2021-ferrari-f8-spider-19",
+      "page_type": "listing"
+    },
+    {
+      "id": "final-0174",
+      "url": "https://euronext.com/en/listing/raise-capital/sector-focused-listing-solutions/energy-shipping-and-seafood",
+      "page_type": "listing"
+    },
+    {
+      "id": "final-0175",
+      "url": "https://abc30.com/story/list-2026-da-de-los-muertos-events-central-valley/20001170",
+      "page_type": "listing"
+    },
+    {
+      "id": "final-0176",
+      "url": "https://newswire.lk/category/news/page/2",
+      "page_type": "listing"
+    },
+    {
+      "id": "final-0177",
+      "url": "https://yellowblissroad.com/category/recipes/holiday-recipes/christmas",
+      "page_type": "listing"
+    },
+    {
+      "id": "final-0178",
+      "url": "https://bringatrailer.com/listing/2008-cadillac-xlr-v-28",
+      "page_type": "listing"
+    },
+    {
+      "id": "final-0179",
+      "url": "https://salon.com/category/food",
+      "page_type": "listing"
+    },
+    {
+      "id": "final-0180",
+      "url": "https://abeautifulmess.com/category/office",
+      "page_type": "listing"
+    },
+    {
+      "id": "final-0181",
+      "url": "https://derivative.ca/tags/artandtechnology",
+      "page_type": "listing"
+    },
+    {
+      "id": "final-0182",
+      "url": "https://experian.in/category/news",
+      "page_type": "listing"
+    },
+    {
+      "id": "final-0183",
+      "url": "https://immigration.gov.ph/category/announcement",
+      "page_type": "listing"
+    },
+    {
+      "id": "final-0184",
+      "url": "https://pbs.gov.au/browse/streamlined-authority",
+      "page_type": "listing"
+    },
+    {
+      "id": "final-0185",
+      "url": "https://paletico.com/category/colors-in-art-and-design/painting-and-visual-arts",
+      "page_type": "listing"
+    },
+    {
+      "id": "final-0186",
+      "url": "https://parenting.firstcry.com/articles/category/pregnancy?utm_source=firstcry_footer&utm_medium=firstcrysite&utm_campaign=promote_parenting",
+      "page_type": "listing"
+    },
+    {
+      "id": "final-0187",
+      "url": "https://blueprint.ng/category/women",
+      "page_type": "listing"
+    },
+    {
+      "id": "final-0188",
+      "url": "https://kuujia.com/category-other-p7",
+      "page_type": "listing"
+    },
+    {
+      "id": "final-0189",
+      "url": "https://austinkleon.com/category/reading/my-reading-years",
+      "page_type": "listing"
+    },
+    {
+      "id": "final-0190",
+      "url": "https://tvtonight.com.au/tag/paramedics",
+      "page_type": "listing"
+    },
+    {
+      "id": "final-0191",
+      "url": "https://sixsistersstuff.com/category/recipes/course/beverages",
+      "page_type": "listing"
+    },
+    {
+      "id": "final-0192",
+      "url": "https://26magazine.com/category/politics-and-economy/industry-news",
+      "page_type": "listing"
+    },
+    {
+      "id": "final-0193",
+      "url": "https://frictionalgames.com/category/feed/blog",
+      "page_type": "listing"
+    },
+    {
+      "id": "final-0194",
+      "url": "https://resources.amedisys.com/tag/for-healthcare-providers",
+      "page_type": "listing"
+    },
+    {
+      "id": "final-0195",
+      "url": "https://pbs.gov.au/browse/therapeutic-group",
+      "page_type": "listing"
+    },
+    {
+      "id": "final-0196",
+      "url": "https://popularresistance.org/tag/climate-change",
+      "page_type": "listing"
+    },
+    {
+      "id": "final-0197",
+      "url": "https://maptoolkit.com/solutions/tourism",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0198",
+      "url": "https://imagekit.io/solutions/headless-dam",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0199",
+      "url": "https://globalscape.com/solutions/data-security",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0200",
+      "url": "https://hnbgu.ac.in/school/arts/painting/tehri/about-department",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0201",
+      "url": "https://ipregistry.co/about",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0202",
+      "url": "https://sliderrevolution.com/about-us",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0203",
+      "url": "https://deque.com/accessibility-services",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0204",
+      "url": "https://deldure.com/about",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0205",
+      "url": "https://hirslanden.ch/en/corporate/overview-services.html",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0206",
+      "url": "https://hines.com/",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0207",
+      "url": "https://liveu.tv/solutions/broadcast/digital-evolution",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0208",
+      "url": "https://interactivebrokers.com.au/en/general/about/affiliate-programs.php?menu=B",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0209",
+      "url": "https://cosmicjs.com/solutions",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0210",
+      "url": "https://cpaaustralia.com.au/about-cpa-australia",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0211",
+      "url": "https://micaffe.co.za/about",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0212",
+      "url": "https://tecno-mobile.com/laptops/product-list?filterCategories=54",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0213",
+      "url": "https://afrahtafreeh.site/about",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0214",
+      "url": "https://cedar.com/",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0215",
+      "url": "https://globalxetfs.com/about",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0216",
+      "url": "https://flixmedia.com/enrich-your-product-page",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0217",
+      "url": "https://yamaha-motor-india.com/about-companyprofile.html",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0218",
+      "url": "https://aupairworld.com/en/about-us",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0219",
+      "url": "https://usdairy.com/about-us/national-dairy-council/local/minnesota",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0220",
+      "url": "https://southalabama.edu/aboutusa/historyofusa.html",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0221",
+      "url": "https://cpaaustralia.com.au/about-cpa-australia/governance/member-conduct-and-discipline/outcomes-of-disciplinary-hearings/2022/jian-zhang",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0222",
+      "url": "https://hostaway.net.au/about-us/testimonials",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0223",
+      "url": "https://globalscape.com/pro-services",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0224",
+      "url": "https://icij.org/about/media-partners",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0225",
+      "url": "https://arctic-council.org/about/observers/japan",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0226",
+      "url": "https://nagarro.com/en/services/data-analytics-intelligence",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0227",
+      "url": "https://riskified.com/platform-riskified",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0228",
+      "url": "https://hostaway.net.au/about-us",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0229",
+      "url": "https://tads.com/solutions/sis",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0230",
+      "url": "https://assembled.com/about",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0231",
+      "url": "https://forms.app/en/features",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0232",
+      "url": "https://hp.com/us-en/hp-information/about-hp/inclusion.html",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0233",
+      "url": "https://ironman.com/about/history",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0234",
+      "url": "https://automox.com/platform/it-automation/mcp-server",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0235",
+      "url": "https://iss-stoxx.com/about/leadership",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0236",
+      "url": "https://oppo.com/en/events/oppo-product-ambassadors",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0237",
+      "url": "https://sift.com/solutions/payment-fraud",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0238",
+      "url": "https://upcos.org/Home/AboutUpOutsourcingSewaNigam",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0239",
+      "url": "https://moonshot.ai/",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0240",
+      "url": "https://kampanjveckan.se/aboutus",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0241",
+      "url": "https://equifax.co.in/",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0242",
+      "url": "https://sosnc.gov/Identity/Account/Login?ReturnUrl=%2Fonline_services%2Fnotary%2Fe_notary_appointment",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0243",
+      "url": "https://cisp.com/about-us",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0244",
+      "url": "https://usskiandsnowboard.org/about",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0245",
+      "url": "https://tads.com/about",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0246",
+      "url": "https://internetdownloadmanager.com/support/about.html",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0247",
+      "url": "https://imagekit.io/solutions/imagekit-for-agencies",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0248",
+      "url": "https://allpandaexpressmenu.com/about-us",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0249",
+      "url": "https://learnreligions.com/about-us-5112062",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0250",
+      "url": "https://cdgtaxi.com.sg/five-common-misperceptions-about-taxi-driving-in-singapore",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0251",
+      "url": "https://astron.nl/about/diversity-sustainability/diversity",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0252",
+      "url": "https://thomas-krenn.com/en/company/about-us/quality",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0253",
+      "url": "https://arctic-council.org/about/observers/ccu",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0254",
+      "url": "https://amymarlowmacoy.com/about",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0255",
+      "url": "https://automox.com/platform/remote-control",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0256",
+      "url": "https://www2.lehigh.edu/about/inclusive-excellence-belonging",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0257",
+      "url": "https://dxc.com/industries",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0258",
+      "url": "https://sosnc.gov/divisions/business_registration/online_business_services",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0259",
+      "url": "https://brepols.net/",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0260",
+      "url": "https://cphi.com/about-cphi",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0261",
+      "url": "https://polkcountyiowa.gov/",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0262",
+      "url": "https://au.int/en/about/languages",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0263",
+      "url": "https://behance.net/blog",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0264",
+      "url": "https://enfocus.com/en/products",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0265",
+      "url": "https://abnormal.ai/platform/ai-agent-security",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0266",
+      "url": "https://pabbly.com/about-us",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0267",
+      "url": "https://myvitamins.com/c/customer-service/about-us",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0268",
+      "url": "https://mintpressnews.com/about-mint-press-news",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0269",
+      "url": "https://highmark.com/about/corporate-responsibility/bright-blue-futures/community-health/access-to-care",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0270",
+      "url": "https://actionnewsjax.com/news/local/after-woman-shot-arlington-neighbors-raise-concerns-about-late-nights-near-an-after-hours-bar/U3W5B6V63VH5RJHCBP4BPBE5N4",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0271",
+      "url": "https://icij.org/about/our-team",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0272",
+      "url": "https://austinkleon.com/about",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0273",
+      "url": "https://usdairy.com/about-us/innovation-center/leadership/ic-leadership/sarah-hanson",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0274",
+      "url": "https://cincinnatichildrens.org/about/corporate",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0275",
+      "url": "https://opera.com/ads",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0276",
+      "url": "https://web3.bitget.com/about/security-technology",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0277",
+      "url": "https://sunderland.ac.uk/about/academic-staff/caroline-mitchell",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0278",
+      "url": "https://addsearch.com/grounding-pages/experience-platform",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0279",
+      "url": "https://inkworldmagazine.com/column/features",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0280",
+      "url": "https://autotrader.co.nz/about-us",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0281",
+      "url": "https://bathspa.ac.uk/about-us/culture-and-values/sustainability/growing-spaces",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0282",
+      "url": "https://forms.app/en/templates/product-surveys",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0283",
+      "url": "https://nationalhighways.co.uk/about-us/our-responsibilities",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0284",
+      "url": "https://stargate.ca/services/business-wifi",
+      "page_type": "service"
+    },
+    {
+      "id": "final-0285",
+      "url": "https://thefp.com/p/tgif-the-new-school-of-american-diplomacy-press-secretary-kelly-clarkson",
+      "page_type": "product"
+    },
+    {
+      "id": "final-0286",
+      "url": "https://shahzebsaeed.com/products/dark-brown-imported-gurkha-pant-fdt-386",
+      "page_type": "product"
+    },
+    {
+      "id": "final-0287",
+      "url": "https://hlj.com/brickroid-da-garn-seiji-takasugi-set-the-brave-fighter-of-legend-da-garn-gsc59417",
+      "page_type": "product"
+    },
+    {
+      "id": "final-0288",
+      "url": "https://tractive.com/en/pd/gps-tracker-dog",
+      "page_type": "product"
+    },
+    {
+      "id": "final-0289",
+      "url": "https://reisemoto.com/products/net-h2out-jacket-black?variant=50529044660518",
+      "page_type": "product"
+    },
+    {
+      "id": "final-0290",
+      "url": "https://switch-bot.com/products/switchbot-rgbicww-light-bars",
+      "page_type": "product"
+    },
+    {
+      "id": "final-0291",
+      "url": "https://veeva.com/products/vault-platform?area=quality",
+      "page_type": "product"
+    },
+    {
+      "id": "final-0292",
+      "url": "https://digistorm.com/au/products/school-apps",
+      "page_type": "product"
+    },
+    {
+      "id": "final-0293",
+      "url": "https://global.microless.com/product/dyson-hj10-hushjet-purifier-compact-powerful-purification-electrostatic-filtration-activated-carbon-filter-removes-pet-allergens-captures-allergens-and-pollen-white-silver-hj10",
+      "page_type": "product"
+    },
+    {
+      "id": "final-0294",
+      "url": "https://bigyflyco.com/products/woolly-bugger-tungsten",
+      "page_type": "product"
+    },
+    {
+      "id": "final-0295",
+      "url": "https://kimti.in/collections/earrings",
+      "page_type": "collection"
+    },
+    {
+      "id": "final-0296",
+      "url": "https://safetyvestsandmore.com/collections/best-sellers",
+      "page_type": "collection"
+    },
+    {
+      "id": "final-0297",
+      "url": "https://lancasterarchery.com/collections/pro-shop-tools",
+      "page_type": "collection"
+    },
+    {
+      "id": "final-0298",
+      "url": "https://us.tonies.com/collections/wellness-tonies",
+      "page_type": "collection"
+    },
+    {
+      "id": "final-0299",
+      "url": "https://safetyvestsandmore.com/collections/welders-clothing",
+      "page_type": "collection"
+    },
+    {
+      "id": "final-0300",
+      "url": "https://automox.com/pricing",
+      "page_type": "landing"
+    },
+    {
+      "id": "final-0301",
+      "url": "https://atlanta.urbanize.city/",
+      "page_type": "landing"
+    },
+    {
+      "id": "final-0302",
+      "url": "https://austin.urbanize.city/",
+      "page_type": "landing"
+    },
+    {
+      "id": "final-0303",
+      "url": "https://sentree.io/",
+      "page_type": "landing"
+    },
+    {
+      "id": "final-0304",
+      "url": "https://play.limitlesstcg.com/",
+      "page_type": "landing"
+    },
+    {
+      "id": "final-0305",
+      "url": "https://6sense.com/pricing",
+      "page_type": "landing"
+    },
+    {
+      "id": "final-0306",
+      "url": "https://guide.tiledesk.com/",
+      "page_type": "landing"
+    },
+    {
+      "id": "final-0307",
+      "url": "https://viff.org/?form=donate",
+      "page_type": "landing"
+    },
+    {
+      "id": "final-0308",
+      "url": "https://ussignal.com/",
+      "page_type": "landing"
+    },
+    {
+      "id": "final-0309",
+      "url": "https://docs.jan.ai/",
+      "page_type": "landing"
+    }
+  ]
+}

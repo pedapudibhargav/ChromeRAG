@@ -135,7 +135,33 @@ def test_ordered_and_nested_lists_keep_their_shape() -> None:
     assert "1. Install the package" in md and "2. Configure the service" in md and "  - Set the port" in md
 
 
-def test_lbc_rescue_headings_keeps_section_heading_above_body() -> None:
+class _MappedBlockModel:
+    """Stage-2 stand-in that scores each block from a text→probability map (order-independent)."""
+
+    second = object()
+
+    def __init__(self, scores: dict[str, float], default: float = 0.05) -> None:
+        self.scores = scores
+        self.default = default
+        self.last_texts: list[str] = []
+
+    def predict(self, X, chars=None, box=None):  # noqa: ANN001, ARG002
+        assert len(self.last_texts) == len(X)
+        out = []
+        for text in self.last_texts:
+            hit = self.default
+            for key, val in self.scores.items():
+                if key in text:
+                    hit = val
+                    break
+            out.append(hit)
+        return np.asarray(out, dtype=np.float64)
+
+
+def test_lbc_rescue_headings_keeps_section_heading_above_body(monkeypatch) -> None:
+    """Rescue band is fixed by a fake model so a refit cannot move the heading across threshold."""
+    import chromerag.extractor as extractor_mod
+
     para = "This paragraph explains the configuration options in detail and should score well above threshold. " * 4
     html = (
         "<html><head><title>Guide</title></head><body>"
@@ -143,14 +169,225 @@ def test_lbc_rescue_headings_keeps_section_heading_above_body() -> None:
         f"<main><h1>Guide</h1><h2>Setup steps</h2><p>{para}</p><p>{para}</p></main>"
         "<footer><p>Copyright notice all rights reserved privacy terms contact us today</p></footer></body></html>"
     )
-    on = ChromeRAG(config=PipelineConfig(lbc_threshold=0.60, lbc_rescue_lead=False, lbc_title_fallback=False)).extract(html).markdown
+    # h2 at 0.35 is below threshold 0.60 but inside the [0.08, threshold) rescue band.
+    model = _MappedBlockModel(
+        {"Setup steps": 0.35, "Guide": 0.85, "This paragraph": 0.92, "Copyright": 0.02, "Home": 0.02},
+        default=0.05,
+    )
+    real_bf = extractor_mod.block_features
+
+    def _capture(blocks, *args, **kwargs):  # noqa: ANN001
+        model.last_texts = [b.text for b in blocks]
+        return real_bf(blocks, *args, **kwargs)
+
+    monkeypatch.setattr(extractor_mod, "block_features", _capture)
+    base = dict(lbc_threshold=0.60, lbc_rescue_lead=False, lbc_title_fallback=False, enable_lbc_stage2=True)
+    on = ChromeRAG(config=PipelineConfig(**base), lbc_model=model).extract(html).markdown  # type: ignore[arg-type]
     off = ChromeRAG(
-        config=PipelineConfig(
-            lbc_threshold=0.60, lbc_rescue_headings=False, lbc_rescue_lead=False, lbc_title_fallback=False
-        )
+        config=PipelineConfig(**base, lbc_rescue_headings=False),
+        lbc_model=model,  # type: ignore[arg-type]
     ).extract(html).markdown
     assert "## Setup steps" in on
     assert "## Setup steps" not in off
+
+
+def _with_mapped_model(monkeypatch, model: _MappedBlockModel):
+    import chromerag.extractor as extractor_mod
+
+    real_bf = extractor_mod.block_features
+
+    def _capture(blocks, *args, **kwargs):  # noqa: ANN001
+        model.last_texts = [b.text for b in blocks]
+        return real_bf(blocks, *args, **kwargs)
+
+    monkeypatch.setattr(extractor_mod, "block_features", _capture)
+
+
+def test_lbc_rescue_tables_keeps_pricing_under_kept_heading(monkeypatch) -> None:
+    para = "Every plan includes unlimited local runs and hosted minutes billed per compute unit. " * 3
+    html = (
+        "<html><head><title>Plans</title></head><body>"
+        "<nav><a href='/'>Home</a><a href='/docs'>Docs</a><a href='/about'>About</a></nav>"
+        f"<main><h1>Plans</h1><p>{para}</p><h2>Reference table</h2>"
+        "<table><tr><th>Plan</th><th>Minutes</th><th>Price</th></tr>"
+        "<tr><td>Starter</td><td>1000</td><td>0</td></tr>"
+        "<tr><td>Team</td><td>20000</td><td>49</td></tr></table></main>"
+        "<footer><p>Copyright notice all rights reserved privacy terms contact us today</p></footer></body></html>"
+    )
+    model = _MappedBlockModel(
+        {
+            "Plans": 0.90,
+            "Every plan": 0.90,
+            "Reference table": 0.80,
+            "Starter": 0.40,  # below 0.50; rescue should still keep the grid
+            "Copyright": 0.02,
+            "Home": 0.02,
+        }
+    )
+    _with_mapped_model(monkeypatch, model)
+    on = ChromeRAG(
+        config=PipelineConfig(lbc_rescue_lead=False, lbc_title_fallback=False),
+        lbc_model=model,  # type: ignore[arg-type]
+    ).extract(html)
+    off = ChromeRAG(
+        config=PipelineConfig(lbc_rescue_lead=False, lbc_title_fallback=False, lbc_rescue_tables=False),
+        lbc_model=model,  # type: ignore[arg-type]
+    ).extract(html).markdown
+    assert "| Starter |" in on.markdown and "| 49 |" in on.markdown
+    assert on.diagnostics["lbc"]["tables_rescued"] >= 1
+    assert "Starter" not in off
+
+
+def test_lbc_rescue_tables_pair_rescues_near_threshold_heading_and_table(monkeypatch) -> None:
+    para = "Every plan includes unlimited local runs and hosted minutes billed per compute unit. " * 3
+    html = (
+        "<html><head><title>Plans</title></head><body>"
+        "<nav><a href='/'>Home</a><a href='/docs'>Docs</a><a href='/about'>About</a></nav>"
+        f"<main><h1>Plans</h1><p>{para}</p><h2>Prices</h2>"
+        "<table><tr><th>Plan</th><th>Price</th></tr>"
+        "<tr><td>Starter</td><td>0</td></tr>"
+        "<tr><td>Team</td><td>49</td></tr></table></main>"
+        "<footer><p>Copyright notice all rights reserved privacy terms contact us today</p></footer></body></html>"
+    )
+    model = _MappedBlockModel(
+        {
+            "Plans": 0.90,
+            "Every plan": 0.90,
+            "Prices": 0.35,  # [0.08, threshold) — needs the table as body
+            "Starter": 0.35,
+            "Copyright": 0.02,
+            "Home": 0.02,
+        }
+    )
+    _with_mapped_model(monkeypatch, model)
+    base = dict(lbc_threshold=0.50, lbc_rescue_lead=False, lbc_title_fallback=False, enable_lbc_stage2=True)
+    on = ChromeRAG(config=PipelineConfig(**base), lbc_model=model).extract(html).markdown  # type: ignore[arg-type]
+    off = ChromeRAG(
+        config=PipelineConfig(**base, lbc_rescue_tables=False),
+        lbc_model=model,  # type: ignore[arg-type]
+    ).extract(html).markdown
+    assert "## Prices" in on and "| Starter |" in on
+    assert "## Prices" not in off
+    assert "Starter" not in off
+
+
+def test_lbc_rescue_tables_skips_footer_grid_after_kept_paragraph(monkeypatch) -> None:
+    para = "The article body explains the release notes and lists the changes for this version. " * 3
+    para2 = "A second paragraph keeps the classifier active with enough blocks on the page. " * 3
+    html = (
+        "<html><head><title>Notes</title></head><body>"
+        "<nav><a href='/'>Home</a><a href='/docs'>Docs</a><a href='/blog'>Blog</a></nav>"
+        f"<main><h1>Notes</h1><p>{para}</p><p>{para2}</p></main>"
+        # No section heading; neighbour-of-kept-paragraph must not rescue this contact grid.
+        "<table><tr><td>Hours</td><td>9-5</td></tr>"
+        "<tr><td>Phone</td><td>555-0100</td></tr></table>"
+        "<footer><p>Copyright notice all rights reserved privacy terms contact us today</p></footer></body></html>"
+    )
+    model = _MappedBlockModel(
+        {
+            "Notes": 0.90,
+            "The article body": 0.90,
+            "A second paragraph": 0.90,
+            "Hours": 0.20,
+            "Copyright": 0.02,
+            "Home": 0.02,
+        }
+    )
+    _with_mapped_model(monkeypatch, model)
+    md = ChromeRAG(
+        config=PipelineConfig(lbc_rescue_lead=False, lbc_title_fallback=False, enable_lbc_stage2=True),
+        lbc_model=model,  # type: ignore[arg-type]
+    ).extract(html).markdown
+    assert "555-0100" not in md
+    assert "release notes" in md
+
+
+def test_lbc_rescue_tables_skips_dropped_sponsors_ad_table(monkeypatch) -> None:
+    para = "The article body explains the release notes and lists the changes for this version. " * 3
+    html = (
+        "<html><head><title>Notes</title></head><body>"
+        "<nav><a href='/'>Home</a><a href='/docs'>Docs</a><a href='/blog'>Blog</a></nav>"
+        f"<main><h1>Notes</h1><p>{para}</p><h2>Sponsors</h2>"
+        "<table><tr><th>Partner</th><th>Offer</th></tr>"
+        "<tr><td>Acme Ads</td><td>20% off</td></tr>"
+        "<tr><td>Beta Co</td><td>Free trial</td></tr></table></main>"
+        "<footer><p>Copyright notice all rights reserved privacy terms contact us today</p></footer></body></html>"
+    )
+    model = _MappedBlockModel(
+        {
+            "Notes": 0.90,
+            "The article body": 0.90,
+            "Sponsors": 0.05,  # below heading rescue band
+            "Acme Ads": 0.20,
+            "Copyright": 0.02,
+            "Home": 0.02,
+        }
+    )
+    _with_mapped_model(monkeypatch, model)
+    md = ChromeRAG(
+        config=PipelineConfig(lbc_rescue_lead=False, lbc_title_fallback=False),
+        lbc_model=model,  # type: ignore[arg-type]
+    ).extract(html).markdown
+    assert "Acme Ads" not in md
+    assert "Sponsors" not in md
+
+
+def test_lbc_rescue_tables_skips_comparison_tiles_and_footer_contact(monkeypatch) -> None:
+    para = "The article body explains the release notes and lists the changes for this version. " * 3
+    html = (
+        "<html><head><title>Notes</title></head><body>"
+        "<nav><a href='/'>Home</a><a href='/docs'>Docs</a><a href='/blog'>Blog</a></nav>"
+        f"<main><h1>Notes</h1><p>{para}</p><h2>Compare</h2>"
+        "<table><tr>"
+        "<td><a href='/a'>Alpha plan tile</a></td><td><a href='/b'>Beta plan tile</a></td>"
+        "</tr><tr>"
+        "<td><a href='/c'>Gamma plan tile</a></td><td><a href='/d'>Delta plan tile</a></td>"
+        "</tr></table></main>"
+        "<footer><table><tr><td>Hours</td><td>9-5</td></tr>"
+        "<tr><td>Tel</td><td>555-0100</td></tr></table>"
+        "<p>Copyright notice all rights reserved privacy terms contact us today</p></footer></body></html>"
+    )
+    model = _MappedBlockModel(
+        {
+            "Notes": 0.90,
+            "The article body": 0.90,
+            "Compare": 0.80,
+            "Alpha plan": 0.20,
+            "Hours": 0.20,
+            "Copyright": 0.02,
+            "Home": 0.02,
+        }
+    )
+    _with_mapped_model(monkeypatch, model)
+    md = ChromeRAG(
+        config=PipelineConfig(lbc_rescue_lead=False, lbc_title_fallback=False),
+        lbc_model=model,  # type: ignore[arg-type]
+    ).extract(html).markdown
+    assert "Alpha plan tile" not in md
+    assert "555-0100" not in md
+    assert "release notes" in md
+
+
+def test_lbc_rescue_tables_respects_enable_tables_false(monkeypatch) -> None:
+    para = "Every plan includes unlimited local runs and hosted minutes billed per compute unit. " * 3
+    html = (
+        "<html><head><title>Plans</title></head><body>"
+        f"<main><h1>Plans</h1><p>{para}</p><h2>Reference table</h2>"
+        "<table><tr><th>Plan</th><th>Price</th></tr>"
+        "<tr><td>Starter</td><td>0</td></tr>"
+        "<tr><td>Team</td><td>49</td></tr></table></main></body></html>"
+    )
+    model = _MappedBlockModel(
+        {"Plans": 0.90, "Every plan": 0.90, "Reference table": 0.80, "Starter": 0.40}
+    )
+    _with_mapped_model(monkeypatch, model)
+    result = ChromeRAG(
+        config=PipelineConfig(
+            lbc_rescue_lead=False, lbc_title_fallback=False, enable_tables=False, enable_generic_chrome=False
+        ),
+        lbc_model=model,  # type: ignore[arg-type]
+    ).extract(html)
+    assert result.diagnostics["lbc"].get("tables_rescued", 0) == 0
 
 
 def test_lbc_title_fallback_keeps_content_root_h1_without_title_match() -> None:

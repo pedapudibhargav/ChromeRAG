@@ -1,0 +1,42 @@
+[
+ {
+  "id": "human-0019",
+  "reason": "hospice care story"
+ },
+ {
+  "id": "human-0068",
+  "reason": "sexual health service text"
+ },
+ {
+  "id": "human-0091",
+  "reason": "privacy page"
+ },
+ {
+  "id": "human-0097",
+  "reason": "preview shows only Loading"
+ },
+ {
+  "id": "human-0099",
+  "reason": "preview shows only Loading"
+ },
+ {
+  "id": "human-0044",
+  "reason": "page text over 15000 words (15748)"
+ },
+ {
+  "id": "human-0155",
+  "reason": "automated post, not written by a person"
+ },
+ {
+  "id": "human-0156",
+  "reason": "automated post, not written by a person"
+ },
+ {
+  "id": "human-0051",
+  "reason": "policy or terms page; the address rule meant to skip these missed the word inside a longer name"
+ },
+ {
+  "id": "human-0058",
+  "reason": "policy or terms page; the address rule meant to skip these missed the word inside a longer name"
+ }
+]

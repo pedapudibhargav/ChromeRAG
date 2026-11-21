@@ -1,0 +1,1258 @@
+{
+ "status": "post hoc; not in the pre-registered plan; computed after all ratings and after the pre-registered analysis",
+ "bootstrap": {
+  "unit": "registrable domain of the corpus site field",
+  "iterations": 10000,
+  "seed": 20261120,
+  "interval": "95% percentile",
+  "rng": "numpy default_rng"
+ },
+ "n_pages": 75,
+ "n_sites": 48,
+ "n_raters": 5,
+ "robustness": {
+  "chromerag_vs_trafilatura": {
+   "primary_majority": {
+    "n": 75,
+    "n_sites": 48,
+    "wins": 32,
+    "losses": 15,
+    "ties": 28,
+    "net": 0.2267,
+    "net_ci95": [
+     0.0137,
+     0.4231
+    ]
+   },
+   "a_ties_excluded": {
+    "decided_pages": 47,
+    "wins": 32,
+    "losses": 15,
+    "win_share_of_decided": 0.6809,
+    "sign_test_two_sided_p": 0.018624,
+    "test": "exact binomial sign test on page majorities, ties dropped, H0 p = 0.5"
+   },
+   "b_opposite_verdicts": {
+    "pages_with_at_least_one_vote_each_way": 7,
+    "pages": 75,
+    "pages_all_raters_same_verdict": 34,
+    "pages_win_and_tie_only": 22,
+    "pages_loss_and_tie_only": 12,
+    "pooled_ratings_win_loss_tie": [
+     99,
+     44,
+     88
+    ]
+   },
+   "c_leave_one_rater_out": {
+    "drop rater 1": {
+     "n": 75,
+     "n_sites": 48,
+     "wins": 28,
+     "losses": 14,
+     "ties": 33,
+     "net": 0.1867,
+     "net_ci95": [
+      -0.0145,
+      0.3766
+     ],
+     "pages_with_2_ratings_left": 69
+    },
+    "drop rater 2": {
+     "n": 75,
+     "n_sites": 48,
+     "wins": 26,
+     "losses": 11,
+     "ties": 38,
+     "net": 0.2,
+     "net_ci95": [
+      0.0147,
+      0.3684
+     ],
+     "pages_with_2_ratings_left": 24
+    },
+    "drop rater 3": {
+     "n": 75,
+     "n_sites": 48,
+     "wins": 30,
+     "losses": 12,
+     "ties": 33,
+     "net": 0.24,
+     "net_ci95": [
+      0.0435,
+      0.4203
+     ],
+     "pages_with_2_ratings_left": 26
+    },
+    "drop rater 4": {
+     "n": 75,
+     "n_sites": 48,
+     "wins": 26,
+     "losses": 14,
+     "ties": 35,
+     "net": 0.16,
+     "net_ci95": [
+      -0.0375,
+      0.3467
+     ],
+     "pages_with_2_ratings_left": 23
+    },
+    "drop rater 5": {
+     "n": 75,
+     "n_sites": 48,
+     "wins": 20,
+     "losses": 6,
+     "ties": 49,
+     "net": 0.1867,
+     "net_ci95": [
+      0.0563,
+      0.3117
+     ],
+     "pages_with_2_ratings_left": 68
+    }
+   },
+   "d_forums_reweighted": {
+    "rule": "net = 0.10 x net(forum pages) + 0.90 x net(other pages); each forum page weighs 0.10/n_forum and each other page 0.90/n_other",
+    "forum_share_target": 0.1,
+    "forum_pages": 10,
+    "other_pages": 65,
+    "net_forum_pages": 0.8,
+    "net_other_pages": 0.1385,
+    "net": 0.2046,
+    "net_ci95": [
+     -0.0002,
+     0.3955
+    ],
+    "bootstrap_draws_dropped_no_forum_or_no_other": 12
+   }
+  },
+  "chromerag_vs_readability": {
+   "primary_majority": {
+    "n": 75,
+    "n_sites": 48,
+    "wins": 38,
+    "losses": 13,
+    "ties": 24,
+    "net": 0.3333,
+    "net_ci95": [
+     0.1299,
+     0.5244
+    ]
+   },
+   "a_ties_excluded": {
+    "decided_pages": 51,
+    "wins": 38,
+    "losses": 13,
+    "win_share_of_decided": 0.7451,
+    "sign_test_two_sided_p": 0.000621,
+    "test": "exact binomial sign test on page majorities, ties dropped, H0 p = 0.5"
+   },
+   "b_opposite_verdicts": {
+    "pages_with_at_least_one_vote_each_way": 8,
+    "pages": 75,
+    "pages_all_raters_same_verdict": 36,
+    "pages_win_and_tie_only": 19,
+    "pages_loss_and_tie_only": 12,
+    "pooled_ratings_win_loss_tie": [
+     118,
+     42,
+     71
+    ]
+   },
+   "c_leave_one_rater_out": {
+    "drop rater 1": {
+     "n": 75,
+     "n_sites": 48,
+     "wins": 33,
+     "losses": 7,
+     "ties": 35,
+     "net": 0.3467,
+     "net_ci95": [
+      0.1733,
+      0.5069
+     ],
+     "pages_with_2_ratings_left": 69
+    },
+    "drop rater 2": {
+     "n": 75,
+     "n_sites": 48,
+     "wins": 36,
+     "losses": 10,
+     "ties": 29,
+     "net": 0.3467,
+     "net_ci95": [
+      0.147,
+      0.5316
+     ],
+     "pages_with_2_ratings_left": 24
+    },
+    "drop rater 3": {
+     "n": 75,
+     "n_sites": 48,
+     "wins": 36,
+     "losses": 13,
+     "ties": 26,
+     "net": 0.3067,
+     "net_ci95": [
+      0.1053,
+      0.5
+     ],
+     "pages_with_2_ratings_left": 26
+    },
+    "drop rater 4": {
+     "n": 75,
+     "n_sites": 48,
+     "wins": 32,
+     "losses": 11,
+     "ties": 32,
+     "net": 0.28,
+     "net_ci95": [
+      0.1039,
+      0.4474
+     ],
+     "pages_with_2_ratings_left": 23
+    },
+    "drop rater 5": {
+     "n": 75,
+     "n_sites": 48,
+     "wins": 27,
+     "losses": 6,
+     "ties": 42,
+     "net": 0.28,
+     "net_ci95": [
+      0.1429,
+      0.4096
+     ],
+     "pages_with_2_ratings_left": 68
+    }
+   },
+   "d_forums_reweighted": {
+    "rule": "net = 0.10 x net(forum pages) + 0.90 x net(other pages); each forum page weighs 0.10/n_forum and each other page 0.90/n_other",
+    "forum_share_target": 0.1,
+    "forum_pages": 10,
+    "other_pages": 65,
+    "net_forum_pages": 0.6,
+    "net_other_pages": 0.2923,
+    "net": 0.3231,
+    "net_ci95": [
+     0.1191,
+     0.5119
+    ],
+    "bootstrap_draws_dropped_no_forum_or_no_other": 12
+   }
+  }
+ },
+ "training_domain_overlap": {
+  "psl_version": "2026-10-31_14-17-28_UTC",
+  "strict_training_pages": 1238,
+  "strict_training_pages_missing_ground_truth": 0,
+  "strict_training_registrable_domains": 1065,
+  "rated_pages": 75,
+  "rated_pages_on_training_domain": 20,
+  "rated_registrable_domains_on_training_domain": 13,
+  "rated_registrable_domains_total": 48,
+  "bootstrap_sites_touched": 13,
+  "forum_pages_on_training_domain": 2,
+  "forum_pages_total": 10,
+  "exact_url_matches_with_training": 0,
+  "overlap_level": "registrable domain only; no rated URL is a training URL",
+  "pages": [
+   {
+    "page": "human-0079",
+    "domain": "apple.com",
+    "group": "retail"
+   },
+   {
+    "page": "human-0081",
+    "domain": "apple.com",
+    "group": "retail"
+   },
+   {
+    "page": "human-0121",
+    "domain": "britannica.com",
+    "group": "reference"
+   },
+   {
+    "page": "human-0123",
+    "domain": "britannica.com",
+    "group": "reference"
+   },
+   {
+    "page": "human-0065",
+    "domain": "clevelandclinic.org",
+    "group": "medical"
+   },
+   {
+    "page": "human-0066",
+    "domain": "clevelandclinic.org",
+    "group": "medical"
+   },
+   {
+    "page": "human-0062",
+    "domain": "fda.gov",
+    "group": "medical"
+   },
+   {
+    "page": "human-0063",
+    "domain": "fda.gov",
+    "group": "medical"
+   },
+   {
+    "page": "human-0007",
+    "domain": "google.com",
+    "group": "technology"
+   },
+   {
+    "page": "human-0045",
+    "domain": "huggingface.co",
+    "group": "ai"
+   },
+   {
+    "page": "human-0014",
+    "domain": "ibm.com",
+    "group": "technology"
+   },
+   {
+    "page": "human-0009",
+    "domain": "mozilla.org",
+    "group": "technology"
+   },
+   {
+    "page": "human-0010",
+    "domain": "mozilla.org",
+    "group": "technology"
+   },
+   {
+    "page": "human-0142",
+    "domain": "nasa.gov",
+    "group": "reference"
+   },
+   {
+    "page": "human-0024",
+    "domain": "openai.com",
+    "group": "ai"
+   },
+   {
+    "page": "human-0148",
+    "domain": "python.org",
+    "group": "forum"
+   },
+   {
+    "page": "human-0150",
+    "domain": "python.org",
+    "group": "forum"
+   },
+   {
+    "page": "human-0128",
+    "domain": "stanford.edu",
+    "group": "reference"
+   },
+   {
+    "page": "human-0129",
+    "domain": "stanford.edu",
+    "group": "reference"
+   },
+   {
+    "page": "human-0119",
+    "domain": "wikipedia.org",
+    "group": "reference"
+   }
+  ],
+  "nets": {
+   "chromerag_vs_trafilatura": {
+    "without_overlap": {
+     "n": 55,
+     "n_sites": 35,
+     "wins": 23,
+     "losses": 12,
+     "ties": 20,
+     "net": 0.2,
+     "net_ci95": [
+      -0.0517,
+      0.4286
+     ]
+    },
+    "with_overlap": {
+     "n": 20,
+     "n_sites": 13,
+     "wins": 9,
+     "losses": 3,
+     "ties": 8,
+     "net": 0.3,
+     "net_ci95": [
+      -0.1111,
+      0.6667
+     ]
+    },
+    "without_overlap_without_forums": {
+     "n": 47,
+     "n_sites": 31,
+     "wins": 17,
+     "losses": 12,
+     "ties": 18,
+     "net": 0.1064,
+     "net_ci95": [
+      -0.1702,
+      0.36
+     ]
+    }
+   },
+   "chromerag_vs_readability": {
+    "without_overlap": {
+     "n": 55,
+     "n_sites": 35,
+     "wins": 26,
+     "losses": 8,
+     "ties": 21,
+     "net": 0.3273,
+     "net_ci95": [
+      0.0784,
+      0.5517
+     ]
+    },
+    "with_overlap": {
+     "n": 20,
+     "n_sites": 13,
+     "wins": 12,
+     "losses": 5,
+     "ties": 3,
+     "net": 0.35,
+     "net_ci95": [
+      -0.0476,
+      0.7
+     ]
+    },
+    "without_overlap_without_forums": {
+     "n": 47,
+     "n_sites": 31,
+     "wins": 21,
+     "losses": 7,
+     "ties": 19,
+     "net": 0.2979,
+     "net_ci95": [
+      0.0465,
+      0.5294
+     ]
+    }
+   }
+  }
+ },
+ "history": {
+  "first_draw": {
+   "seed": 20261101,
+   "main_pages": 75,
+   "page_groups": {
+    "article": 31,
+    "collection": 1,
+    "forum": 10,
+    "landing": 2,
+    "listing": 6,
+    "product": 2,
+    "service": 23
+   },
+   "candidates_skipped_for_short_tool_output": 35,
+   "gpt_on_296_pages": {
+    "chromerag_vs_trafilatura": [
+     158,
+     114,
+     24
+    ],
+    "chromerag_vs_readability": [
+     182,
+     97,
+     17
+    ]
+   },
+   "gpt_on_first_draw_pages_posthoc": {
+    "chromerag_vs_trafilatura": [
+     34,
+     32,
+     9
+    ],
+    "chromerag_vs_readability": [
+     47,
+     25,
+     3
+    ]
+   }
+  },
+  "length_swaps": {
+   "human-0094": "human-0101",
+   "human-0137": "human-0071",
+   "human-0069": "human-0060",
+   "human-0131": "human-0007",
+   "human-0130": "human-0119"
+  },
+  "ai_judges_on_approved_site_set": {
+   "gpt": {
+    "set_before_length_swaps": {
+     "chromerag_vs_trafilatura": [
+      42,
+      27,
+      6
+     ],
+     "chromerag_vs_readability": [
+      48,
+      24,
+      3
+     ]
+    },
+    "five_pages_swapped_out": {
+     "chromerag_vs_trafilatura": [
+      2,
+      2,
+      1
+     ],
+     "chromerag_vs_readability": [
+      2,
+      1,
+      2
+     ]
+    },
+    "five_pages_swapped_in": {
+     "chromerag_vs_trafilatura": [
+      3,
+      2,
+      0
+     ],
+     "chromerag_vs_readability": [
+      4,
+      1,
+      0
+     ]
+    },
+    "final_set": {
+     "chromerag_vs_trafilatura": [
+      43,
+      27,
+      5
+     ],
+     "chromerag_vs_readability": [
+      50,
+      24,
+      1
+     ]
+    }
+   },
+   "grok": {
+    "set_before_length_swaps": {
+     "chromerag_vs_trafilatura": [
+      42,
+      24,
+      9
+     ],
+     "chromerag_vs_readability": [
+      47,
+      24,
+      4
+     ]
+    },
+    "five_pages_swapped_out": {
+     "chromerag_vs_trafilatura": [
+      3,
+      1,
+      1
+     ],
+     "chromerag_vs_readability": [
+      3,
+      1,
+      1
+     ]
+    },
+    "five_pages_swapped_in": {
+     "chromerag_vs_trafilatura": [
+      4,
+      1,
+      0
+     ],
+     "chromerag_vs_readability": [
+      4,
+      1,
+      0
+     ]
+    },
+    "final_set": {
+     "chromerag_vs_trafilatura": [
+      43,
+      24,
+      8
+     ],
+     "chromerag_vs_readability": [
+      48,
+      24,
+      3
+     ]
+    }
+   },
+   "gemini": {
+    "set_before_length_swaps": {
+     "chromerag_vs_trafilatura": [
+      43,
+      24,
+      8
+     ],
+     "chromerag_vs_readability": [
+      47,
+      25,
+      3
+     ]
+    },
+    "five_pages_swapped_out": {
+     "chromerag_vs_trafilatura": [
+      2,
+      1,
+      2
+     ],
+     "chromerag_vs_readability": [
+      2,
+      2,
+      1
+     ]
+    },
+    "five_pages_swapped_in": {
+     "chromerag_vs_trafilatura": [
+      3,
+      2,
+      0
+     ],
+     "chromerag_vs_readability": [
+      4,
+      1,
+      0
+     ]
+    },
+    "final_set": {
+     "chromerag_vs_trafilatura": [
+      44,
+      25,
+      6
+     ],
+     "chromerag_vs_readability": [
+      49,
+      24,
+      2
+     ]
+    }
+   }
+  }
+ },
+ "error_analysis_cases": {
+  "vote_labels": "a = ChromeRAG preferred, b = baseline preferred, tie",
+  "lost_to_trafilatura": [
+   {
+    "page": "human-0011",
+    "site": "docs.github.com",
+    "group": "technology",
+    "votes_vs_trafilatura": {
+     "b": 2,
+     "a": 1
+    },
+    "votes_vs_readability": {
+     "tie": 2,
+     "a": 1
+    },
+    "majority_vs_trafilatura": "b",
+    "majority_vs_readability": "tie"
+   },
+   {
+    "page": "human-0012",
+    "site": "docs.github.com",
+    "group": "technology",
+    "votes_vs_trafilatura": {
+     "b": 2,
+     "tie": 1
+    },
+    "votes_vs_readability": {
+     "tie": 2,
+     "a": 1
+    },
+    "majority_vs_trafilatura": "b",
+    "majority_vs_readability": "tie"
+   },
+   {
+    "page": "human-0034",
+    "site": "nvidia.com",
+    "group": "ai",
+    "votes_vs_trafilatura": {
+     "b": 2,
+     "tie": 1
+    },
+    "votes_vs_readability": {
+     "tie": 2,
+     "a": 1
+    },
+    "majority_vs_trafilatura": "b",
+    "majority_vs_readability": "tie"
+   },
+   {
+    "page": "human-0038",
+    "site": "cohere.com",
+    "group": "ai",
+    "votes_vs_trafilatura": {
+     "b": 3,
+     "tie": 1
+    },
+    "votes_vs_readability": {
+     "tie": 4
+    },
+    "majority_vs_trafilatura": "b",
+    "majority_vs_readability": "tie"
+   },
+   {
+    "page": "human-0060",
+    "site": "nih.gov",
+    "group": "medical",
+    "votes_vs_trafilatura": {
+     "b": 2,
+     "a": 1
+    },
+    "votes_vs_readability": {
+     "tie": 3
+    },
+    "majority_vs_trafilatura": "b",
+    "majority_vs_readability": "tie"
+   },
+   {
+    "page": "human-0062",
+    "site": "fda.gov",
+    "group": "medical",
+    "votes_vs_trafilatura": {
+     "tie": 1,
+     "b": 2
+    },
+    "votes_vs_readability": {
+     "b": 2,
+     "tie": 1
+    },
+    "majority_vs_trafilatura": "b",
+    "majority_vs_readability": "b"
+   },
+   {
+    "page": "human-0071",
+    "site": "jpmorganchase.com",
+    "group": "finance",
+    "votes_vs_trafilatura": {
+     "tie": 1,
+     "b": 2
+    },
+    "votes_vs_readability": {
+     "a": 1,
+     "tie": 2
+    },
+    "majority_vs_trafilatura": "b",
+    "majority_vs_readability": "tie"
+   },
+   {
+    "page": "human-0083",
+    "site": "homedepot.com",
+    "group": "retail",
+    "votes_vs_trafilatura": {
+     "b": 2,
+     "tie": 1
+    },
+    "votes_vs_readability": {
+     "tie": 2,
+     "a": 1
+    },
+    "majority_vs_trafilatura": "b",
+    "majority_vs_readability": "tie"
+   },
+   {
+    "page": "human-0090",
+    "site": "toyota.com",
+    "group": "automotive",
+    "votes_vs_trafilatura": {
+     "b": 2
+    },
+    "votes_vs_readability": {
+     "tie": 2
+    },
+    "majority_vs_trafilatura": "b",
+    "majority_vs_readability": "tie"
+   },
+   {
+    "page": "human-0092",
+    "site": "ford.com",
+    "group": "automotive",
+    "votes_vs_trafilatura": {
+     "b": 3
+    },
+    "votes_vs_readability": {
+     "tie": 3
+    },
+    "majority_vs_trafilatura": "b",
+    "majority_vs_readability": "tie"
+   },
+   {
+    "page": "human-0106",
+    "site": "siemens.com",
+    "group": "manufacturing",
+    "votes_vs_trafilatura": {
+     "b": 2
+    },
+    "votes_vs_readability": {
+     "tie": 2
+    },
+    "majority_vs_trafilatura": "b",
+    "majority_vs_readability": "tie"
+   },
+   {
+    "page": "human-0108",
+    "site": "siemens.com",
+    "group": "manufacturing",
+    "votes_vs_trafilatura": {
+     "b": 2,
+     "tie": 1
+    },
+    "votes_vs_readability": {
+     "tie": 2,
+     "a": 1
+    },
+    "majority_vs_trafilatura": "b",
+    "majority_vs_readability": "tie"
+   },
+   {
+    "page": "human-0124",
+    "site": "mit.edu",
+    "group": "reference",
+    "votes_vs_trafilatura": {
+     "b": 5
+    },
+    "votes_vs_readability": {
+     "tie": 5
+    },
+    "majority_vs_trafilatura": "b",
+    "majority_vs_readability": "tie"
+   },
+   {
+    "page": "human-0128",
+    "site": "stanford.edu",
+    "group": "reference",
+    "votes_vs_trafilatura": {
+     "b": 2,
+     "tie": 1
+    },
+    "votes_vs_readability": {
+     "tie": 1,
+     "b": 2
+    },
+    "majority_vs_trafilatura": "b",
+    "majority_vs_readability": "b"
+   },
+   {
+    "page": "human-0129",
+    "site": "stanford.edu",
+    "group": "reference",
+    "votes_vs_trafilatura": {
+     "b": 2
+    },
+    "votes_vs_readability": {
+     "tie": 1,
+     "b": 1
+    },
+    "majority_vs_trafilatura": "b",
+    "majority_vs_readability": "tie"
+   }
+  ],
+  "lost_to_readability": [
+   {
+    "page": "human-0014",
+    "site": "ibm.com",
+    "group": "technology",
+    "votes_vs_trafilatura": {
+     "tie": 3
+    },
+    "votes_vs_readability": {
+     "b": 2,
+     "tie": 1
+    },
+    "majority_vs_trafilatura": "tie",
+    "majority_vs_readability": "b"
+   },
+   {
+    "page": "human-0024",
+    "site": "openai.com",
+    "group": "ai",
+    "votes_vs_trafilatura": {
+     "tie": 3
+    },
+    "votes_vs_readability": {
+     "tie": 1,
+     "b": 2
+    },
+    "majority_vs_trafilatura": "tie",
+    "majority_vs_readability": "b"
+   },
+   {
+    "page": "human-0048",
+    "site": "digitalrealty.com",
+    "group": "data_center",
+    "votes_vs_trafilatura": {
+     "tie": 2,
+     "a": 1
+    },
+    "votes_vs_readability": {
+     "b": 2,
+     "tie": 1
+    },
+    "majority_vs_trafilatura": "tie",
+    "majority_vs_readability": "b"
+   },
+   {
+    "page": "human-0054",
+    "site": "vertiv.com",
+    "group": "data_center",
+    "votes_vs_trafilatura": {
+     "tie": 2,
+     "b": 1
+    },
+    "votes_vs_readability": {
+     "b": 3
+    },
+    "majority_vs_trafilatura": "tie",
+    "majority_vs_readability": "b"
+   },
+   {
+    "page": "human-0062",
+    "site": "fda.gov",
+    "group": "medical",
+    "votes_vs_trafilatura": {
+     "tie": 1,
+     "b": 2
+    },
+    "votes_vs_readability": {
+     "b": 2,
+     "tie": 1
+    },
+    "majority_vs_trafilatura": "b",
+    "majority_vs_readability": "b"
+   },
+   {
+    "page": "human-0065",
+    "site": "clevelandclinic.org",
+    "group": "medical",
+    "votes_vs_trafilatura": {
+     "tie": 3
+    },
+    "votes_vs_readability": {
+     "b": 3
+    },
+    "majority_vs_trafilatura": "tie",
+    "majority_vs_readability": "b"
+   },
+   {
+    "page": "human-0074",
+    "site": "goldmansachs.com",
+    "group": "finance",
+    "votes_vs_trafilatura": {
+     "tie": 3,
+     "a": 1,
+     "b": 1
+    },
+    "votes_vs_readability": {
+     "b": 3,
+     "tie": 2
+    },
+    "majority_vs_trafilatura": "tie",
+    "majority_vs_readability": "b"
+   },
+   {
+    "page": "human-0077",
+    "site": "visa.com",
+    "group": "finance",
+    "votes_vs_trafilatura": {
+     "tie": 3
+    },
+    "votes_vs_readability": {
+     "b": 2,
+     "tie": 1
+    },
+    "majority_vs_trafilatura": "tie",
+    "majority_vs_readability": "b"
+   },
+   {
+    "page": "human-0078",
+    "site": "visa.com",
+    "group": "finance",
+    "votes_vs_trafilatura": {
+     "tie": 3
+    },
+    "votes_vs_readability": {
+     "b": 3
+    },
+    "majority_vs_trafilatura": "tie",
+    "majority_vs_readability": "b"
+   },
+   {
+    "page": "human-0125",
+    "site": "mit.edu",
+    "group": "reference",
+    "votes_vs_trafilatura": {
+     "tie": 3
+    },
+    "votes_vs_readability": {
+     "b": 2,
+     "tie": 1
+    },
+    "majority_vs_trafilatura": "tie",
+    "majority_vs_readability": "b"
+   },
+   {
+    "page": "human-0128",
+    "site": "stanford.edu",
+    "group": "reference",
+    "votes_vs_trafilatura": {
+     "b": 2,
+     "tie": 1
+    },
+    "votes_vs_readability": {
+     "tie": 1,
+     "b": 2
+    },
+    "majority_vs_trafilatura": "b",
+    "majority_vs_readability": "b"
+   },
+   {
+    "page": "human-0136",
+    "site": "federalreserve.gov",
+    "group": "finance",
+    "votes_vs_trafilatura": {
+     "tie": 3
+    },
+    "votes_vs_readability": {
+     "tie": 1,
+     "b": 2
+    },
+    "majority_vs_trafilatura": "tie",
+    "majority_vs_readability": "b"
+   },
+   {
+    "page": "human-0158",
+    "site": "discourse.ubuntu.com/t",
+    "group": "forum",
+    "votes_vs_trafilatura": {
+     "tie": 3
+    },
+    "votes_vs_readability": {
+     "b": 3
+    },
+    "majority_vs_trafilatura": "tie",
+    "majority_vs_readability": "b"
+   }
+  ],
+  "contrast_wins_vs_trafilatura": [
+   {
+    "page": "human-0006",
+    "site": "learn.microsoft.com",
+    "group": "technology",
+    "votes_vs_trafilatura": {
+     "b": 1,
+     "a": 2
+    },
+    "votes_vs_readability": {
+     "tie": 1,
+     "a": 2
+    },
+    "majority_vs_trafilatura": "a",
+    "majority_vs_readability": "a"
+   },
+   {
+    "page": "human-0007",
+    "site": "cloud.google.com",
+    "group": "technology",
+    "votes_vs_trafilatura": {
+     "a": 3
+    },
+    "votes_vs_readability": {
+     "a": 3
+    },
+    "majority_vs_trafilatura": "a",
+    "majority_vs_readability": "a"
+   },
+   {
+    "page": "human-0029",
+    "site": "deepmind.google",
+    "group": "ai",
+    "votes_vs_trafilatura": {
+     "a": 2,
+     "tie": 1
+    },
+    "votes_vs_readability": {
+     "a": 3
+    },
+    "majority_vs_trafilatura": "a",
+    "majority_vs_readability": "a"
+   },
+   {
+    "page": "human-0042",
+    "site": "databricks.com",
+    "group": "ai",
+    "votes_vs_trafilatura": {
+     "a": 3
+    },
+    "votes_vs_readability": {
+     "a": 3
+    },
+    "majority_vs_trafilatura": "a",
+    "majority_vs_readability": "a"
+   },
+   {
+    "page": "human-0075",
+    "site": "goldmansachs.com",
+    "group": "finance",
+    "votes_vs_trafilatura": {
+     "a": 2,
+     "b": 1
+    },
+    "votes_vs_readability": {
+     "a": 2,
+     "tie": 1
+    },
+    "majority_vs_trafilatura": "a",
+    "majority_vs_readability": "a"
+   },
+   {
+    "page": "human-0079",
+    "site": "apple.com",
+    "group": "retail",
+    "votes_vs_trafilatura": {
+     "a": 3
+    },
+    "votes_vs_readability": {
+     "a": 2,
+     "tie": 1
+    },
+    "majority_vs_trafilatura": "a",
+    "majority_vs_readability": "a"
+   },
+   {
+    "page": "human-0096",
+    "site": "energy.gov",
+    "group": "energy",
+    "votes_vs_trafilatura": {
+     "a": 2,
+     "tie": 1
+    },
+    "votes_vs_readability": {
+     "a": 3
+    },
+    "majority_vs_trafilatura": "a",
+    "majority_vs_readability": "a"
+   },
+   {
+    "page": "human-0109",
+    "site": "verizon.com",
+    "group": "telecom",
+    "votes_vs_trafilatura": {
+     "a": 2,
+     "tie": 1
+    },
+    "votes_vs_readability": {
+     "a": 3
+    },
+    "majority_vs_trafilatura": "a",
+    "majority_vs_readability": "a"
+   },
+   {
+    "page": "human-0110",
+    "site": "verizon.com",
+    "group": "telecom",
+    "votes_vs_trafilatura": {
+     "a": 2,
+     "tie": 1
+    },
+    "votes_vs_readability": {
+     "a": 2,
+     "tie": 1
+    },
+    "majority_vs_trafilatura": "a",
+    "majority_vs_readability": "a"
+   },
+   {
+    "page": "human-0123",
+    "site": "britannica.com",
+    "group": "reference",
+    "votes_vs_trafilatura": {
+     "a": 3
+    },
+    "votes_vs_readability": {
+     "a": 3
+    },
+    "majority_vs_trafilatura": "a",
+    "majority_vs_readability": "a"
+   },
+   {
+    "page": "human-0135",
+    "site": "census.gov",
+    "group": "reference",
+    "votes_vs_trafilatura": {
+     "a": 3
+    },
+    "votes_vs_readability": {
+     "tie": 1,
+     "a": 2
+    },
+    "majority_vs_trafilatura": "a",
+    "majority_vs_readability": "a"
+   },
+   {
+    "page": "human-0141",
+    "site": "learn.microsoft.com/en-us/answers",
+    "group": "forum",
+    "votes_vs_trafilatura": {
+     "tie": 1,
+     "a": 2
+    },
+    "votes_vs_readability": {
+     "b": 1,
+     "a": 2
+    },
+    "majority_vs_trafilatura": "a",
+    "majority_vs_readability": "a"
+   },
+   {
+    "page": "human-0146",
+    "site": "repost.aws/questions",
+    "group": "forum",
+    "votes_vs_trafilatura": {
+     "a": 2,
+     "tie": 1
+    },
+    "votes_vs_readability": {
+     "a": 2,
+     "b": 1
+    },
+    "majority_vs_trafilatura": "a",
+    "majority_vs_readability": "a"
+   },
+   {
+    "page": "human-0148",
+    "site": "discuss.python.org/t",
+    "group": "forum",
+    "votes_vs_trafilatura": {
+     "a": 3
+    },
+    "votes_vs_readability": {
+     "a": 3
+    },
+    "majority_vs_trafilatura": "a",
+    "majority_vs_readability": "a"
+   },
+   {
+    "page": "human-0150",
+    "site": "discuss.python.org/t",
+    "group": "forum",
+    "votes_vs_trafilatura": {
+     "a": 2,
+     "tie": 1
+    },
+    "votes_vs_readability": {
+     "a": 2,
+     "b": 1
+    },
+    "majority_vs_trafilatura": "a",
+    "majority_vs_readability": "a"
+   }
+  ]
+ }
+}

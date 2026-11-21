@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ChromeRAG: HTML to RAG-ready Markdown, open benchmark vs Trafilatura, Readability and MarkItDown</title>
-<meta name="description" content="ChromeRAG converts scraped HTML into RAG-ready Markdown. A small learned filter removes navigation, footers, cookie banners, related links and comments; documentation, pricing and article text stays. Open benchmark, retrieval evaluation and per-page results.">
+<title>ChromeRAG</title>
+<meta name="description" content="ChromeRAG converts scraped HTML into RAG-ready Markdown. A small learned filter removes navigation, footers, cookie banners and calls to action; documentation, forum, table and article text stays. Version 0.1.5 results and per-page data.">
 <meta name="keywords" content="HTML to Markdown, boilerplate removal, main content extraction, RAG, retrieval-augmented generation, Trafilatura alternative, Readability, MarkItDown, web scraping, LLM">
 <link rel="canonical" href="https://pedapudibhargav.github.io/ChromeRAG/">
 <meta property="og:type" content="website">
@@ -126,6 +126,9 @@ h3 { font-size: 17px; margin: 28px 0 10px; }
 .stage .t { font-weight: 650; margin: 2px 0 6px; line-height: 1.25; }
 .stage .d { font-size: 13px; color: var(--ink-2); }
 @media (max-width: 820px) { .pipeline { grid-template-columns: 1fr; } }
+.notice { border: 1.5px solid var(--accent); background: var(--accent-soft); border-radius: 12px; padding: 14px 16px; color: var(--ink); }
+.notice p { margin: 6px 0; }
+.superseded { border-left: 4px solid var(--bad); padding: 8px 12px; margin: 0 0 14px; color: var(--ink-2); background: var(--surface-2); border-radius: 0 8px 8px 0; font-size: 14px; }
 .learn { margin-top: 10px; border: 1.5px dashed var(--accent); border-radius: 12px; padding: 12px 14px; font-size: 14px; color: var(--ink-2); }
 
 .toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 12px; }
@@ -192,11 +195,8 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: 
     <nav class="links" aria-label="Sections">
       <a href="#start">Quick start</a>
       <a href="#how">How it works</a>
-      <a href="#benchmark">Benchmark</a>
-      <a href="#retrieval">Retrieval</a>
-      <a href="#judging">Blinded judging</a>
-      <a href="#templates">Site templates</a>
-      <a href="#explorer">Page explorer</a>
+      <a href="#results">0.1.5 results</a>
+      <a href="#wcxb">v0.1.4 (superseded)</a>
       <a href="#cite">Cite</a>
     </nav>
     <button class="icon-btn" id="theme" type="button" aria-label="Toggle dark mode">◐</button>
@@ -208,14 +208,14 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: 
   <div class="wrap hero">
     <p class="eyebrow">Open source · MIT · CPU-only</p>
     <h1>RAG-ready Markdown, without the site chrome.</h1>
-    <p class="lede">ChromeRAG turns scraped HTML into clean Markdown for retrieval-augmented generation. It strips navigation, cookie banners, calls to action and footers, can learn a site's repeated template from a few pages, keeps Schema.org metadata as front-matter and tables as key–value rows, and warns you when a page is an unrendered JavaScript shell.</p>
+    <p class="lede">ChromeRAG turns scraped HTML into clean Markdown for retrieval-augmented generation. It strips navigation, cookie banners, calls to action and footers, keeps Schema.org metadata as front matter and tables as Markdown tables, writes heading-aware chunks, and warns you when a page is an unrendered JavaScript shell.</p>
     <div class="cta">
       <span class="cmd"><span class="prompt">$</span><span id="pip">pip install chromerag</span><button class="icon-btn copy" data-copy="#pip" type="button">Copy</button></span>
       <a class="btn primary" href="#start">Get started</a>
-      <a class="btn" href="#benchmark">See the benchmark</a>
+      <a class="btn" href="#results">See the 0.1.5 results</a>
     </div>
     <div class="badges">
-      <span class="badge">v0.1.4</span>
+      <span class="badge">v0.1.5</span>
       <span class="badge">Python ≥ 3.11</span>
       <span class="badge">No model download</span>
       <span class="badge">Works offline</span>
@@ -225,9 +225,9 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: 
 
   <div class="wrap">
     <div class="stats" aria-live="polite">
-      <div class="stat"><p class="label">Balanced F-score, public benchmark</p><div class="value" data-stat="fbal">–</div><div class="sub" data-stat="fbal-sub">loading…</div></div>
-      <div class="stat"><p class="label">Retrieval hit@5 (BM25)</p><div class="value" data-stat="hit">–</div><div class="sub" data-stat="hit-sub">loading…</div></div>
-      <div class="stat"><p class="label">Chrome in retrieved context</p><div class="value" data-stat="chrome">–</div><div class="sub" data-stat="chrome-sub">loading…</div></div>
+      <div class="stat"><p class="label">WCXB test F1, 511 pages</p><div class="value">0.884</div><div class="sub">Trafilatura 0.860; +0.024 [+0.008, +0.042]; test split consulted in earlier development</div></div>
+      <div class="stat"><p class="label">Human raters, 75 new pages</p><div class="value">+0.23</div><div class="sub">net preference over Trafilatura [+0.01, +0.42]; forums +0.80</div></div>
+      <div class="stat"><p class="label">CRAG answers, 500 questions</p><div class="value">+0.008</div><div class="sub">[−0.040, +0.054]: no measurable difference, from an index about 17% smaller</div></div>
     </div>
   </div>
 
@@ -242,10 +242,10 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: 
         </div>
         <div class="code" data-panel="cli">
           <button class="icon-btn copy" data-copy="#code-cli" type="button">Copy</button>
-<pre id="code-cli"><span class="c"># one page → Markdown (front-matter, key–value tables; --json-meta prints diagnostics)</span>
-chromerag extract page.html -o page.md --priority coverage
+<pre id="code-cli"><span class="c"># one page → Markdown (front matter, Markdown tables; --json-meta prints diagnostics)</span>
+chromerag extract page.html -o page.md --priority balanced
 
-<span class="c"># learn a site's repeated chrome from ≥ 3 pages, then convert the whole folder</span>
+<span class="c"># optional: learn a site's repeated blocks from ≥ 3 pages, then convert the whole folder</span>
 chromerag learn pages/ -o site.json --min-pages 3
 chromerag batch pages/ -o out/ --chrome-model site.json
 
@@ -256,7 +256,7 @@ chromerag extract page.html -o page.md --fail-on-thin</pre>
           <button class="icon-btn copy" data-copy="#code-py" type="button">Copy</button>
 <pre id="code-py">from chromerag import ChromeRAG, ContentPriority, PipelineConfig
 
-extractor = ChromeRAG(config=PipelineConfig.from_priority(ContentPriority.COVERAGE))
+extractor = ChromeRAG(config=PipelineConfig.from_priority(ContentPriority.BALANCED))
 result = extractor.extract(html, url="https://docs.example.com/docs/pricing")
 
 result.markdown       <span class="c"># clean Markdown</span>
@@ -275,18 +275,42 @@ result.diagnostics    <span class="c"># what was removed, and why</span></pre>
       <div class="pipeline">
         <div class="stage"><div class="n">1</div><div class="t">Input-quality gate</div><div class="d">Flags thin pages and JavaScript shells before anything is removed.</div></div>
         <div class="stage"><div class="n">2</div><div class="t">Schema harvest</div><div class="d">JSON-LD and Microdata become YAML front-matter.</div></div>
-        <div class="stage accent"><div class="n">3</div><div class="t">Clean + site chrome</div><div class="d">Rule-based stripping plus an optional learned site template model.</div></div>
+        <div class="stage accent"><div class="n">3</div><div class="t">Clean + site chrome</div><div class="d">13 YAML rules and generic detectors, each with a switch; an optional site-template model.</div></div>
         <div class="stage"><div class="n">4</div><div class="t">Chrome prune + root ladder</div><div class="d">Removes landmarks and repeated chrome; walks content-root candidates.</div></div>
         <div class="stage accent"><div class="n">5</div><div class="t">Learned block filter</div><div class="d">Gradient-boosted trees over block features; NumPy-only inference. Set <code>enable_lbc=False</code> to fall back to the older density filter.</div></div>
-        <div class="stage"><div class="n">6</div><div class="t">Tables + Markdown</div><div class="d">Tables become <code>Row n -&gt; header: value</code> lines.</div></div>
+        <div class="stage"><div class="n">6</div><div class="t">Tables + Markdown</div><div class="d">Data tables become Markdown tables; headings, lists and code keep their structure.</div></div>
       </div>
-      <div class="learn"><strong style="color:var(--ink)">chromerag learn</strong> (optional) finds blocks that repeat, with the same text, on most pages of a site section and look like chrome. At extraction time a match is removed only if it is close to its learned size and does not hold the page's main content.</div>
+      <div class="learn"><strong style="color:var(--ink)">chromerag learn</strong> (optional, experimental; last measured with v0.1.4) finds blocks that repeat, with the same text, on most pages of a site section and look like chrome. At extraction time a match is removed only if it is close to its learned size and does not hold the page's main content.</div>
+    </div>
+  </section>
+
+  <section id="results">
+    <div class="wrap">
+      <h2>Version 0.1.5 results</h2>
+      <div class="notice">
+        <p><strong>The numbers on this page below this section are from version 0.1.4 and are superseded.</strong> They came from a model trained with test-split domains present and from pages and judge rounds used while the code was still changing; they are kept for the record only. The 0.1.5 results, with protocol, page lists, held-out ledger and supplementary tables S1–S9, are in <a href="https://github.com/pedapudibhargav/ChromeRAG/tree/v0.1.5/evaluations/2026-11-final">evaluations/2026-11-final</a> (<a href="https://github.com/pedapudibhargav/ChromeRAG/blob/v0.1.5/evaluations/2026-11-final/SUPPLEMENT.md">SUPPLEMENT.md</a>).</p>
+      </div>
+      <div class="card" style="margin-top:14px"><div class="table-scroll"><table>
+        <thead><tr><th scope="col">WCXB test split, 511 pages</th><th scope="col">Word F1</th><th scope="col">Chrome left in ↓</th></tr></thead>
+        <tbody>
+          <tr><td>ChromeRAG 0.1.5 balanced (front matter removed)</td><td>0.884</td><td>0.070</td></tr>
+          <tr><td>ChromeRAG 0.1.5 balanced, raw default output</td><td>0.853</td><td>0.092</td></tr>
+          <tr><td>Trafilatura 2.2.0 (no metadata)</td><td>0.860</td><td>0.083</td></tr>
+          <tr><td>rs-trafilatura 0.1.1</td><td>0.891</td><td>0.111</td></tr>
+          <tr><td>Readability</td><td>0.763</td><td>0.089</td></tr>
+          <tr><td>BoilerPy3 1.0.7 Default</td><td>0.753</td><td>0.150</td></tr>
+          <tr><td>jusText 3.0.2</td><td>0.713</td><td>0.058</td></tr>
+          <tr><td>MarkItDown 0.1.7</td><td>0.540</td><td>0.967</td></tr>
+        </tbody>
+      </table></div></div>
+      <p class="small muted">The model is trained on 1,238 WCXB development pages with no test page and no test-split domain. ChromeRAG minus Trafilatura: +0.024 [+0.008, +0.042] (site bootstrap); the gain comes from forums (+0.149); Trafilatura leads on articles by 0.012. The WCXB test split was consulted during earlier development and is not clean held-out evidence. Human raters (75 new pages, three per page) preferred ChromeRAG to Trafilatura, net +0.23 [+0.01, +0.42]; without forums +0.14 [−0.09, +0.35]. CRAG split 1 (500 questions): +0.008 [−0.040, +0.054]. Median time per page on the 511 test pages, one process on a loaded machine: 39.6 ms for ChromeRAG, 14.2 ms for Trafilatura.</p>
     </div>
   </section>
 
   <section id="wcxb">
     <div class="wrap">
-      <h2>Human-reviewed benchmark (WCXB)</h2>
+      <h2>Human-reviewed benchmark (WCXB) <span class="muted small">v0.1.4, superseded</span></h2>
+      <p class="superseded">Version 0.1.4 result, superseded; not used for claims. See <a href="#results">0.1.5 results</a>.</p>
       <p class="section-lede">Word-level F1 against human-reviewed main content on <a href="https://arxiv.org/abs/2605.21097">WCXB</a>, seven page types. <strong>Test (clean)</strong>: 372 held-out pages with no byte-identical copy in development. <strong>Test (all)</strong>: all 511 test pages. <strong>Development</strong>: five-fold cross-validation grouped by site.</p>
       <div class="toolbar">
         <div class="seg" role="group" aria-label="Split">
@@ -302,7 +326,8 @@ result.diagnostics    <span class="c"># what was removed, and why</span></pre>
 
   <section id="benchmark">
     <div class="wrap">
-      <h2>Public benchmark</h2>
+      <h2>Public benchmark <span class="muted small">v0.1.4, superseded</span></h2>
+      <p class="superseded">Version 0.1.4 result, superseded; not used for claims. See <a href="#results">0.1.5 results</a>.</p>
       <p class="section-lede" id="bench-lede">Every tool runs on the same stored HTML. Recall is the share of main-content 5-grams kept, noise retention the share of navigation, header and footer 5-grams kept, and F<sub>bal</sub> their harmonic balance. The scored pages are chosen from the input HTML only, never from any tool's output.</p>
       <div class="toolbar">
         <div class="seg" role="group" aria-label="Page set">
@@ -333,7 +358,8 @@ result.diagnostics    <span class="c"># what was removed, and why</span></pre>
 
   <section id="retrieval">
     <div class="wrap">
-      <h2>Does it help retrieval?</h2>
+      <h2>Does it help retrieval? <span class="muted small">v0.1.4, superseded</span></h2>
+      <p class="superseded">Version 0.1.4 result, superseded; not used for claims. See <a href="#results">0.1.5 results</a>.</p>
       <p class="section-lede">Each tool's output is split into ~200-word chunks and indexed with BM25, as a RAG ingest step would. Queries are page titles, section headings and content passages taken from the input HTML; each has exactly one correct page.</p>
       <div class="grid-2">
         <div class="card"><h3 style="margin-top:0">Hit@5 <span class="muted small">higher is better</span></h3><div class="bars" id="ret-hit"></div></div>
@@ -345,7 +371,8 @@ result.diagnostics    <span class="c"># what was removed, and why</span></pre>
 
   <section id="judging">
     <div class="wrap">
-      <h2>Blinded judging</h2>
+      <h2>Blinded judging <span class="muted small">v0.1.4, superseded</span></h2>
+      <p class="superseded">Version 0.1.4 result, superseded; not used for claims. See <a href="#results">0.1.5 results</a>.</p>
       <p class="section-lede">Three judge families score blinded pairwise comparisons (tool names hidden, order randomised). Net score is wins minus losses over pages, from −1 to +1; whiskers are 95% bootstrap intervals. Rival is Trafilatura except where noted.</p>
       <div class="grid-2">
         <div class="card"><h3 style="margin-top:0">Fresh pages <span class="muted small">328 pages</span></h3><div class="ci" id="judge-final2"></div></div>
@@ -359,7 +386,8 @@ result.diagnostics    <span class="c"># what was removed, and why</span></pre>
 
   <section id="templates">
     <div class="wrap">
-      <h2>Learning a site's template</h2>
+      <h2>Learning a site's template <span class="muted small">v0.1.4, superseded</span></h2>
+      <p class="superseded">Version 0.1.4 result, superseded; not used for claims. See <a href="#results">0.1.5 results</a>.</p>
       <p class="section-lede">Site-template chrome elimination (STCE) learns blocks that repeat across pages of one site section. It is evaluated on the benchmark's sites with at least three pages and on a separate crawl of up to 15 pages per documentation site.</p>
       <div class="table-wrap">
         <table id="stce">
@@ -373,7 +401,8 @@ result.diagnostics    <span class="c"># what was removed, and why</span></pre>
 
   <section id="explorer">
     <div class="wrap">
-      <h2>Page explorer</h2>
+      <h2>Page explorer <span class="muted small">v0.1.4, superseded</span></h2>
+      <p class="superseded">Version 0.1.4 result, superseded; not used for claims. See <a href="#results">0.1.5 results</a>.</p>
       <p class="section-lede">Every benchmark page with every tool's score, so you can check individual cases instead of trusting the averages.</p>
       <div class="toolbar">
         <input type="search" id="page-search" placeholder="Search by site, URL or id, e.g. kubernetes" aria-label="Search benchmark pages" list="page-list" autocomplete="off">
@@ -388,7 +417,7 @@ result.diagnostics    <span class="c"># what was removed, and why</span></pre>
     <div class="wrap">
       <h2>Reproduce, limits and tests</h2>
       <details open>
-        <summary>Reproduce every number</summary>
+        <summary>Reproduce the v0.1.4 numbers on this page (0.1.5: see the README)</summary>
 <pre>pip install -e ".[dev,baselines]"
 python scripts/revalidate_corpus.py         <span class="c"># offline: recompute every mean from the published per-page scores</span>
 python -m poc.run_corpus_comparison         <span class="c"># fetch the public URLs and score every tool (network)</span>
@@ -401,9 +430,10 @@ python -m poc.run_stce_eval --raw data/stce_crawl</pre>
         <summary>Limitations</summary>
         <ul class="plain">
           <li>ChromeRAG does not run JavaScript. It warns about shell pages but cannot recover their content.</li>
-          <li>The benchmark uses structural anchors, not human-labelled spans. Pages without landmarks are under-represented, and extractors that also use landmarks may have an advantage.</li>
-          <li>Most benchmark pages are documentation; other page types are too few for separate conclusions.</li>
-          <li>The boilerplate filter scores block features with gradient-boosted trees, not semantic embeddings, and retrieval is evaluated with BM25 only.</li>
+          <li>Training data are one mostly English benchmark (WCXB), and features include English stop words.</li>
+          <li>The WCXB test split was consulted during earlier development; product and collection results rest on 28 and 34 pages.</li>
+          <li>ChromeRAG is about three times slower than Trafilatura on the WCXB test pages.</li>
+          <li>The site-template model needs three or more pages per site group and was last measured with version 0.1.4.</li>
           <li>Only HTML is handled. Use other converters for PDF and Office files.</li>
         </ul>
       </details>
@@ -421,11 +451,11 @@ python -m poc.run_stce_eval --raw data/stce_crawl</pre>
         <button class="icon-btn copy" data-copy="#bibtex" type="button">Copy</button>
 <pre id="bibtex">@software{peddapudi_chromerag,
   author  = {Peddapudi, Bhargava Chary},
-  title   = {ChromeRAG: Ingest-Time Elimination of Site Template Noise for Enterprise Web RAG},
+  title   = {ChromeRAG: A Learned Boilerplate Filter for Web RAG Ingestion},
   url     = {https://github.com/pedapudibhargav/ChromeRAG},
   license = {MIT},
   doi     = {10.5281/zenodo.22970289},
-  version = {0.1.4},
+  version = {0.1.5},
   year    = {2026}
 }</pre>
       </div>
@@ -435,7 +465,7 @@ python -m poc.run_stce_eval --raw data/stce_crawl</pre>
 
 <footer>
   <div class="wrap">
-    <span>ChromeRAG v0.1.4 · MIT licence · <a href="https://github.com/pedapudibhargav/ChromeRAG">GitHub</a> · <a href="https://pypi.org/project/chromerag/">PyPI</a> · <a href="https://github.com/pedapudibhargav/ChromeRAG/issues">Issues</a> · <a href="https://doi.org/10.5281/zenodo.22970289">DOI</a></span>
+    <span>ChromeRAG v0.1.5 · MIT licence · <a href="https://github.com/pedapudibhargav/ChromeRAG">GitHub</a> · <a href="https://pypi.org/project/chromerag/">PyPI</a> · <a href="https://github.com/pedapudibhargav/ChromeRAG/issues">Issues</a> · <a href="https://doi.org/10.5281/zenodo.22970289">DOI</a></span>
     <span>Bhargava Chary Peddapudi · <a href="https://orcid.org/0009-0002-8523-8415">ORCID</a></span>
   </div>
 </footer>

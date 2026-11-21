@@ -36,8 +36,14 @@ Performance work (single-pass statistics, cached densities) is output-identical:
 19. **Shallow-div writer** — a `div` that wraps custom elements but holds blocks below no longer collapses into one text blob.
 20. **`<header>` of an `<article>`** that holds the page `h1` is content, not chrome.
 21. **Tables** render as GitHub pipe tables when the grid is rectangular (`table_format="markdown"`); other tables keep the key-value form.
-22. **Documentation-framework rules** (table of contents, feedback and pagination widgets of Docusaurus, MkDocs, Starlight, VitePress, Mintlify, Cloudflare, Grafana, DigitalOcean docs) in `rules/docs_generators.yaml`.
+22. **Documentation-framework rules** (table of contents, feedback and pagination widgets of Docusaurus, MkDocs, Starlight, VitePress, Mintlify, Cloudflare, Grafana, DigitalOcean docs) were removed in **0.1.5**; docs chrome is handled by generic detectors and the remaining YAML rules.
 23. **Generic chrome** (`generic_chrome.py`) drops in-page tables of contents, previous/next pagers, article comment sections, related-post blocks and unrendered template placeholders before the classifier sees them.
 24. **Residual chrome** — standalone call-to-action blocks, share strips, newsletter blocks, post-article author boxes, back-to-top links and language switchers are dropped by `generic_chrome.py` (flags `chrome_drop_cta`, `chrome_drop_share`, `chrome_drop_newsletter`, `chrome_drop_author_bio`, `chrome_drop_nav_misc`).
 25. **Tail trim and attribute residue** — footer-zone and short link-dense tails after the last substantive block, and blocks that are serialised attributes or repeated words, are dropped (`chrome_trim_tail`, `chrome_drop_attr_junk`).
-26. **Trafilatura-inspired rules** — 16 discard rules adapted from Trafilatura's patterns (`rules/trafilatura_inspired.yaml`) and two density passes (`trafilatura_link_blocks`, `trafilatura_micro`) remove share bars, teasers, comment forms, newsletter and sidebar widgets, bylines, pagination, footers and tag clouds.
+26. **Trafilatura-inspired rules** — 10 discard rules adapted from Trafilatura's patterns (`rules/trafilatura_inspired.yaml`) and two density passes (`trafilatura_link_blocks`, `trafilatura_micro`) remove share bars, teasers, comment forms, newsletter and sidebar widgets, bylines, pagination, footers and tag clouds.
+
+27. **Strict LBC retrain (v0.1.5)** — `assets/lbc_stage1.npz` refit on WCXB dev pages after removing leaked ids, test registrable domains, and near-duplicate reference overlap; golden hashes updated accordingly.
+
+28. **Final pipeline rebuild (rev1/p09b)** — Hidden-node handling, coverage retry, and rule drops change which blocks exist and their features; strict LBC and fold CV models refit; golden manifest and fixtures refreshed. Includes **LBC data-table rescue** (`lbc_rescue_tables`, default on): after classifier scores, keep real data tables (header/th or numeric cells, low link density, not chrome) when the nearest kept heading above them in the content root stays, or pair-rescue a near-threshold heading with its table.
+
+29. **Rich collapsed retry (p09d)** — `lbc_rich_collapsed_retry` (default on) widens coverage-retry triggers when the classifier keeps almost nothing; may change golden hashes on pages that previously stayed collapsed.

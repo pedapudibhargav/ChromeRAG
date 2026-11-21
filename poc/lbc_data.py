@@ -5,15 +5,15 @@ For each page: clean it with the normal pipeline, list its blocks, describe each
 content when most of its word trigrams occur in the reference (short blocks: the whole word
 sequence occurs in it). Rows are weighted by word count because the benchmark scores words.
 
-  python -m poc.lbc_data --split dev --out data/outputs/lbc/lbc_dev.npz
+  python -m poc.lbc_data --split dev
 """
 
 from __future__ import annotations
 
 import argparse
-from pathlib import Path
-import zlib
+import json
 from concurrent.futures import ProcessPoolExecutor
+from pathlib import Path
 
 import numpy as np
 
@@ -21,7 +21,7 @@ from chromerag import ChromeRAG, ContentPriority, PipelineConfig
 from chromerag.blockfeatures import block_features, find_blocks
 from chromerag.extractor import StopExtraction
 from chromerag.treestats import TreeStats
-from poc.learn_tokens import half, site_of
+from poc.learn_tokens import cv_fold, cv_site_of, half
 from poc.wcxb import load_split, tokenize
 
 POSITIVE_SHARE = 0.5
@@ -75,14 +75,20 @@ def _one(page):
     if "X" not in rows or len(rows["texts"]) == 0:
         return None
     y, w = label_blocks(rows["texts"], page.main_content, page.without_snippets)
-    site = site_of(page.url)
-    return page.id, page.page_type, half(site), rows["X"], y, w, [len(t) for t in rows["texts"]], rows["box"], zlib.crc32(site.encode()) % 5
+    return page.id, page.page_type, half(cv_site_of(page.url)), rows["X"], y, w, [len(t) for t in rows["texts"]], rows["box"], cv_fold(page.url)
 
 
-def build(split: str, out: str) -> None:
-    pages = [p for p in load_split(split) if len(tokenize(p.main_content)) >= 30]
-    with ProcessPoolExecutor() as pool:
-        results = [r for r in pool.map(_one, pages, chunksize=8) if r is not None]
+def build(split: str, out: str, ids_path: str | None = None, jobs: int | None = None) -> None:
+    pages = list(load_split(split))
+    if ids_path:
+        allow = frozenset(json.loads(Path(ids_path).read_text(encoding="utf-8")))
+        pages = [p for p in pages if p.id in allow]
+    pages = [p for p in pages if len(tokenize(p.main_content)) >= 30]
+    if jobs == 1:
+        results = [r for r in map(_one, pages) if r is not None]
+    else:
+        with ProcessPoolExecutor(max_workers=jobs) as pool:
+            results = [r for r in pool.map(_one, pages, chunksize=8) if r is not None]
     X = np.concatenate([r[3] for r in results])
     y = np.concatenate([r[4] for r in results])
     w = np.concatenate([r[5] for r in results])
@@ -101,9 +107,11 @@ def build(split: str, out: str) -> None:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--split", default="dev")
-    ap.add_argument("--out", default="data/outputs/lbc/lbc_dev.npz")
+    ap.add_argument("--ids", default="poc/wcxb_strict_train_ids.json", help="JSON list of page ids to include")
+    ap.add_argument("--out", default="data/outputs/lbc/lbc_strict.npz")
+    ap.add_argument("--jobs", type=int, default=None, help="worker processes (1 = in-process sequential)")
     a = ap.parse_args()
-    build(a.split, a.out)
+    build(a.split, a.out, a.ids, a.jobs)
 
 
 if __name__ == "__main__":

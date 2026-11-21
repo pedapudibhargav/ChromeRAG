@@ -1,0 +1,2567 @@
+{
+ "question": "What does the block filter's feature design add beyond a shallow-feature learned block detector (Kohlschuetter et al. 2010 / BoilerPy3) with the training data held equal?",
+ "config": {
+  "pages": 1238,
+  "pages_in_block_table": 1233,
+  "blocks": 112436,
+  "ids_file": "poc/wcxb_strict_train_ids.json",
+  "block_table": "python -m poc.lbc_data --split dev (strict ids)",
+  "folds": "5, grouped by registrable domain (poc.learn_tokens.cv_fold)",
+  "model": {
+   "type": "HistGradientBoostingClassifier, single stage",
+   "max_iter": 300,
+   "max_depth": 6,
+   "learning_rate": 0.06,
+   "l2_regularization": 1.0,
+   "min_samples_leaf": 40,
+   "random_state": 0
+  },
+  "group_removal": "columns of removed groups set to 0 for training (never split on); pipeline unchanged",
+  "priority": "balanced",
+  "lbc_threshold": 0.5,
+  "scorer": "poc.wcxb.word_f1 and snippet_rate after strip_front_matter (poc.ablation_cv._score_page)",
+  "modes": {
+   "pipeline": {},
+   "filter_only": {
+    "enable_lbc": true,
+    "enable_rules": false,
+    "enable_generic_chrome": false,
+    "enable_chrome_prune": false,
+    "enable_trafilatura_rules": false
+   }
+  },
+  "bootstrap": {
+   "unit": "registrable domain",
+   "iters": 5000,
+   "seed": 0,
+   "paired": true
+  },
+  "test_leakage_check": {
+   "test_ids_checked": 511,
+   "test_registrable_domains_checked": 443,
+   "strict_page_domains": 1066,
+   "id_overlap": 0,
+   "domain_overlap": 0
+  },
+  "sklearn": "1.9.1",
+  "numpy": "2.5.3",
+  "python": "3.14.7"
+ },
+ "groups": {
+  "shallow_text": {
+   "n_features": 18,
+   "description": "block's own shallow text statistics: lengths, word/char ratios, capitalisation, punctuation, stop-word ratio, sentence count, link density and link count, emphasis share",
+   "indices": [
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    28,
+    29,
+    30
+   ],
+   "names": [
+    "log_chars",
+    "log_words",
+    "link_density",
+    "n_links",
+    "avg_word_len",
+    "upper_frac",
+    "digit_frac",
+    "punct_frac",
+    "ends_sentence",
+    "n_sentences",
+    "commas_per_word",
+    "stopword_frac",
+    "all_caps",
+    "starts_capital",
+    "has_separator",
+    "name_like",
+    "ends_colon",
+    "emphasis_frac"
+   ]
+  },
+  "neighbour_shallow": {
+   "n_features": 4,
+   "description": "length and link density of the previous and next block",
+   "indices": [
+    66,
+    67,
+    68,
+    69
+   ],
+   "names": [
+    "prev_log_chars",
+    "prev_link_density",
+    "next_log_chars",
+    "next_link_density"
+   ]
+  },
+  "position": {
+   "n_features": 6,
+   "description": "relative position in the page (block index, characters before/after), page size, block length relative to the page median",
+   "indices": [
+    34,
+    35,
+    36,
+    37,
+    38,
+    81
+   ],
+   "names": [
+    "idx_frac",
+    "chars_before_frac",
+    "chars_after_frac",
+    "log_n_blocks",
+    "log_page_chars",
+    "len_rel_page"
+   ]
+  },
+  "dom_context": {
+   "n_features": 46,
+   "description": "tag of the block, depth, ancestor-tag flags (main, article, nav, footer, ...), inside the detected content root, enclosing-box statistics, same-box neighbours, sibling counts, repeated-structure counts",
+   "indices": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    82
+   ],
+   "names": [
+    "tag_p",
+    "tag_h1",
+    "tag_h2",
+    "tag_h3",
+    "tag_h456",
+    "tag_li",
+    "tag_pre",
+    "tag_blockquote",
+    "tag_div",
+    "tag_figcaption",
+    "tag_table",
+    "tag_other",
+    "in_root",
+    "depth",
+    "in_main",
+    "in_article",
+    "in_header",
+    "in_footer",
+    "in_aside",
+    "in_form",
+    "in_ul",
+    "in_ol",
+    "in_blockquote",
+    "in_section",
+    "in_nav",
+    "in_a",
+    "in_label",
+    "box_link_density",
+    "box_log_chars",
+    "box_long_p",
+    "box_blocks",
+    "unit_share_of_box",
+    "box_share_of_page",
+    "box2_link_density",
+    "box2_log_chars",
+    "box2_long_p",
+    "prev_same_box",
+    "next_same_box",
+    "same_tag_siblings",
+    "pos_in_parent",
+    "rep_up1",
+    "rep_up2",
+    "rep_up3",
+    "rep_up4",
+    "rep_card_blocks",
+    "box_mean_chars"
+   ]
+  },
+  "class_id_hash": {
+   "n_features": 192,
+   "description": "hashed words of the class/id attributes of the block and up to 8 ancestors (192 buckets)",
+   "indices": [
+    87,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95,
+    96,
+    97,
+    98,
+    99,
+    100,
+    101,
+    102,
+    103,
+    104,
+    105,
+    106,
+    107,
+    108,
+    109,
+    110,
+    111,
+    112,
+    113,
+    114,
+    115,
+    116,
+    117,
+    118,
+    119,
+    120,
+    121,
+    122,
+    123,
+    124,
+    125,
+    126,
+    127,
+    128,
+    129,
+    130,
+    131,
+    132,
+    133,
+    134,
+    135,
+    136,
+    137,
+    138,
+    139,
+    140,
+    141,
+    142,
+    143,
+    144,
+    145,
+    146,
+    147,
+    148,
+    149,
+    150,
+    151,
+    152,
+    153,
+    154,
+    155,
+    156,
+    157,
+    158,
+    159,
+    160,
+    161,
+    162,
+    163,
+    164,
+    165,
+    166,
+    167,
+    168,
+    169,
+    170,
+    171,
+    172,
+    173,
+    174,
+    175,
+    176,
+    177,
+    178,
+    179,
+    180,
+    181,
+    182,
+    183,
+    184,
+    185,
+    186,
+    187,
+    188,
+    189,
+    190,
+    191,
+    192,
+    193,
+    194,
+    195,
+    196,
+    197,
+    198,
+    199,
+    200,
+    201,
+    202,
+    203,
+    204,
+    205,
+    206,
+    207,
+    208,
+    209,
+    210,
+    211,
+    212,
+    213,
+    214,
+    215,
+    216,
+    217,
+    218,
+    219,
+    220,
+    221,
+    222,
+    223,
+    224,
+    225,
+    226,
+    227,
+    228,
+    229,
+    230,
+    231,
+    232,
+    233,
+    234,
+    235,
+    236,
+    237,
+    238,
+    239,
+    240,
+    241,
+    242,
+    243,
+    244,
+    245,
+    246,
+    247,
+    248,
+    249,
+    250,
+    251,
+    252,
+    253,
+    254,
+    255,
+    256,
+    257,
+    258,
+    259,
+    260,
+    261,
+    262,
+    263,
+    264,
+    265,
+    266,
+    267,
+    268,
+    269,
+    270,
+    271,
+    272,
+    273,
+    274,
+    275,
+    276,
+    277,
+    278
+   ],
+   "names": [
+    "cls_0",
+    "cls_1",
+    "cls_2",
+    "cls_3",
+    "cls_4",
+    "cls_5",
+    "cls_6",
+    "cls_7",
+    "cls_8",
+    "cls_9",
+    "cls_10",
+    "cls_11",
+    "cls_12",
+    "cls_13",
+    "cls_14",
+    "cls_15",
+    "cls_16",
+    "cls_17",
+    "cls_18",
+    "cls_19",
+    "cls_20",
+    "cls_21",
+    "cls_22",
+    "cls_23",
+    "cls_24",
+    "cls_25",
+    "cls_26",
+    "cls_27",
+    "cls_28",
+    "cls_29",
+    "cls_30",
+    "cls_31",
+    "cls_32",
+    "cls_33",
+    "cls_34",
+    "cls_35",
+    "cls_36",
+    "cls_37",
+    "cls_38",
+    "cls_39",
+    "cls_40",
+    "cls_41",
+    "cls_42",
+    "cls_43",
+    "cls_44",
+    "cls_45",
+    "cls_46",
+    "cls_47",
+    "cls_48",
+    "cls_49",
+    "cls_50",
+    "cls_51",
+    "cls_52",
+    "cls_53",
+    "cls_54",
+    "cls_55",
+    "cls_56",
+    "cls_57",
+    "cls_58",
+    "cls_59",
+    "cls_60",
+    "cls_61",
+    "cls_62",
+    "cls_63",
+    "cls_64",
+    "cls_65",
+    "cls_66",
+    "cls_67",
+    "cls_68",
+    "cls_69",
+    "cls_70",
+    "cls_71",
+    "cls_72",
+    "cls_73",
+    "cls_74",
+    "cls_75",
+    "cls_76",
+    "cls_77",
+    "cls_78",
+    "cls_79",
+    "cls_80",
+    "cls_81",
+    "cls_82",
+    "cls_83",
+    "cls_84",
+    "cls_85",
+    "cls_86",
+    "cls_87",
+    "cls_88",
+    "cls_89",
+    "cls_90",
+    "cls_91",
+    "cls_92",
+    "cls_93",
+    "cls_94",
+    "cls_95",
+    "cls_96",
+    "cls_97",
+    "cls_98",
+    "cls_99",
+    "cls_100",
+    "cls_101",
+    "cls_102",
+    "cls_103",
+    "cls_104",
+    "cls_105",
+    "cls_106",
+    "cls_107",
+    "cls_108",
+    "cls_109",
+    "cls_110",
+    "cls_111",
+    "cls_112",
+    "cls_113",
+    "cls_114",
+    "cls_115",
+    "cls_116",
+    "cls_117",
+    "cls_118",
+    "cls_119",
+    "cls_120",
+    "cls_121",
+    "cls_122",
+    "cls_123",
+    "cls_124",
+    "cls_125",
+    "cls_126",
+    "cls_127",
+    "cls_128",
+    "cls_129",
+    "cls_130",
+    "cls_131",
+    "cls_132",
+    "cls_133",
+    "cls_134",
+    "cls_135",
+    "cls_136",
+    "cls_137",
+    "cls_138",
+    "cls_139",
+    "cls_140",
+    "cls_141",
+    "cls_142",
+    "cls_143",
+    "cls_144",
+    "cls_145",
+    "cls_146",
+    "cls_147",
+    "cls_148",
+    "cls_149",
+    "cls_150",
+    "cls_151",
+    "cls_152",
+    "cls_153",
+    "cls_154",
+    "cls_155",
+    "cls_156",
+    "cls_157",
+    "cls_158",
+    "cls_159",
+    "cls_160",
+    "cls_161",
+    "cls_162",
+    "cls_163",
+    "cls_164",
+    "cls_165",
+    "cls_166",
+    "cls_167",
+    "cls_168",
+    "cls_169",
+    "cls_170",
+    "cls_171",
+    "cls_172",
+    "cls_173",
+    "cls_174",
+    "cls_175",
+    "cls_176",
+    "cls_177",
+    "cls_178",
+    "cls_179",
+    "cls_180",
+    "cls_181",
+    "cls_182",
+    "cls_183",
+    "cls_184",
+    "cls_185",
+    "cls_186",
+    "cls_187",
+    "cls_188",
+    "cls_189",
+    "cls_190",
+    "cls_191"
+   ]
+  },
+  "heading_context": {
+   "n_features": 195,
+   "description": "distance to the previous heading, h1 seen / before first h1, hashed words of the nearest heading and of the nearest h1-h3 (2 x 96 buckets)",
+   "indices": [
+    39,
+    40,
+    41,
+    343,
+    344,
+    345,
+    346,
+    347,
+    348,
+    349,
+    350,
+    351,
+    352,
+    353,
+    354,
+    355,
+    356,
+    357,
+    358,
+    359,
+    360,
+    361,
+    362,
+    363,
+    364,
+    365,
+    366,
+    367,
+    368,
+    369,
+    370,
+    371,
+    372,
+    373,
+    374,
+    375,
+    376,
+    377,
+    378,
+    379,
+    380,
+    381,
+    382,
+    383,
+    384,
+    385,
+    386,
+    387,
+    388,
+    389,
+    390,
+    391,
+    392,
+    393,
+    394,
+    395,
+    396,
+    397,
+    398,
+    399,
+    400,
+    401,
+    402,
+    403,
+    404,
+    405,
+    406,
+    407,
+    408,
+    409,
+    410,
+    411,
+    412,
+    413,
+    414,
+    415,
+    416,
+    417,
+    418,
+    419,
+    420,
+    421,
+    422,
+    423,
+    424,
+    425,
+    426,
+    427,
+    428,
+    429,
+    430,
+    431,
+    432,
+    433,
+    434,
+    435,
+    436,
+    437,
+    438,
+    439,
+    440,
+    441,
+    442,
+    443,
+    444,
+    445,
+    446,
+    447,
+    448,
+    449,
+    450,
+    451,
+    452,
+    453,
+    454,
+    455,
+    456,
+    457,
+    458,
+    459,
+    460,
+    461,
+    462,
+    463,
+    464,
+    465,
+    466,
+    467,
+    468,
+    469,
+    470,
+    471,
+    472,
+    473,
+    474,
+    475,
+    476,
+    477,
+    478,
+    479,
+    480,
+    481,
+    482,
+    483,
+    484,
+    485,
+    486,
+    487,
+    488,
+    489,
+    490,
+    491,
+    492,
+    493,
+    494,
+    495,
+    496,
+    497,
+    498,
+    499,
+    500,
+    501,
+    502,
+    503,
+    504,
+    505,
+    506,
+    507,
+    508,
+    509,
+    510,
+    511,
+    512,
+    513,
+    514,
+    515,
+    516,
+    517,
+    518,
+    519,
+    520,
+    521,
+    522,
+    523,
+    524,
+    525,
+    526,
+    527,
+    528,
+    529,
+    530,
+    531,
+    532,
+    533,
+    534
+   ],
+   "names": [
+    "dist_prev_heading",
+    "seen_h1",
+    "before_first_h1",
+    "sec_0",
+    "sec_1",
+    "sec_2",
+    "sec_3",
+    "sec_4",
+    "sec_5",
+    "sec_6",
+    "sec_7",
+    "sec_8",
+    "sec_9",
+    "sec_10",
+    "sec_11",
+    "sec_12",
+    "sec_13",
+    "sec_14",
+    "sec_15",
+    "sec_16",
+    "sec_17",
+    "sec_18",
+    "sec_19",
+    "sec_20",
+    "sec_21",
+    "sec_22",
+    "sec_23",
+    "sec_24",
+    "sec_25",
+    "sec_26",
+    "sec_27",
+    "sec_28",
+    "sec_29",
+    "sec_30",
+    "sec_31",
+    "sec_32",
+    "sec_33",
+    "sec_34",
+    "sec_35",
+    "sec_36",
+    "sec_37",
+    "sec_38",
+    "sec_39",
+    "sec_40",
+    "sec_41",
+    "sec_42",
+    "sec_43",
+    "sec_44",
+    "sec_45",
+    "sec_46",
+    "sec_47",
+    "sec_48",
+    "sec_49",
+    "sec_50",
+    "sec_51",
+    "sec_52",
+    "sec_53",
+    "sec_54",
+    "sec_55",
+    "sec_56",
+    "sec_57",
+    "sec_58",
+    "sec_59",
+    "sec_60",
+    "sec_61",
+    "sec_62",
+    "sec_63",
+    "sec_64",
+    "sec_65",
+    "sec_66",
+    "sec_67",
+    "sec_68",
+    "sec_69",
+    "sec_70",
+    "sec_71",
+    "sec_72",
+    "sec_73",
+    "sec_74",
+    "sec_75",
+    "sec_76",
+    "sec_77",
+    "sec_78",
+    "sec_79",
+    "sec_80",
+    "sec_81",
+    "sec_82",
+    "sec_83",
+    "sec_84",
+    "sec_85",
+    "sec_86",
+    "sec_87",
+    "sec_88",
+    "sec_89",
+    "sec_90",
+    "sec_91",
+    "sec_92",
+    "sec_93",
+    "sec_94",
+    "sec_95",
+    "sec2_0",
+    "sec2_1",
+    "sec2_2",
+    "sec2_3",
+    "sec2_4",
+    "sec2_5",
+    "sec2_6",
+    "sec2_7",
+    "sec2_8",
+    "sec2_9",
+    "sec2_10",
+    "sec2_11",
+    "sec2_12",
+    "sec2_13",
+    "sec2_14",
+    "sec2_15",
+    "sec2_16",
+    "sec2_17",
+    "sec2_18",
+    "sec2_19",
+    "sec2_20",
+    "sec2_21",
+    "sec2_22",
+    "sec2_23",
+    "sec2_24",
+    "sec2_25",
+    "sec2_26",
+    "sec2_27",
+    "sec2_28",
+    "sec2_29",
+    "sec2_30",
+    "sec2_31",
+    "sec2_32",
+    "sec2_33",
+    "sec2_34",
+    "sec2_35",
+    "sec2_36",
+    "sec2_37",
+    "sec2_38",
+    "sec2_39",
+    "sec2_40",
+    "sec2_41",
+    "sec2_42",
+    "sec2_43",
+    "sec2_44",
+    "sec2_45",
+    "sec2_46",
+    "sec2_47",
+    "sec2_48",
+    "sec2_49",
+    "sec2_50",
+    "sec2_51",
+    "sec2_52",
+    "sec2_53",
+    "sec2_54",
+    "sec2_55",
+    "sec2_56",
+    "sec2_57",
+    "sec2_58",
+    "sec2_59",
+    "sec2_60",
+    "sec2_61",
+    "sec2_62",
+    "sec2_63",
+    "sec2_64",
+    "sec2_65",
+    "sec2_66",
+    "sec2_67",
+    "sec2_68",
+    "sec2_69",
+    "sec2_70",
+    "sec2_71",
+    "sec2_72",
+    "sec2_73",
+    "sec2_74",
+    "sec2_75",
+    "sec2_76",
+    "sec2_77",
+    "sec2_78",
+    "sec2_79",
+    "sec2_80",
+    "sec2_81",
+    "sec2_82",
+    "sec2_83",
+    "sec2_84",
+    "sec2_85",
+    "sec2_86",
+    "sec2_87",
+    "sec2_88",
+    "sec2_89",
+    "sec2_90",
+    "sec2_91",
+    "sec2_92",
+    "sec2_93",
+    "sec2_94",
+    "sec2_95"
+   ]
+  },
+  "lexical_cues": {
+   "n_features": 68,
+   "description": "fixed word lists (chrome words, call-to-action verbs, month/date patterns) and hashed first two words of the block (64 buckets)",
+   "indices": [
+    27,
+    31,
+    32,
+    33,
+    279,
+    280,
+    281,
+    282,
+    283,
+    284,
+    285,
+    286,
+    287,
+    288,
+    289,
+    290,
+    291,
+    292,
+    293,
+    294,
+    295,
+    296,
+    297,
+    298,
+    299,
+    300,
+    301,
+    302,
+    303,
+    304,
+    305,
+    306,
+    307,
+    308,
+    309,
+    310,
+    311,
+    312,
+    313,
+    314,
+    315,
+    316,
+    317,
+    318,
+    319,
+    320,
+    321,
+    322,
+    323,
+    324,
+    325,
+    326,
+    327,
+    328,
+    329,
+    330,
+    331,
+    332,
+    333,
+    334,
+    335,
+    336,
+    337,
+    338,
+    339,
+    340,
+    341,
+    342
+   ],
+   "names": [
+    "dateish",
+    "chrome_word_frac",
+    "starts_cta_verb",
+    "short_cta",
+    "txt_0",
+    "txt_1",
+    "txt_2",
+    "txt_3",
+    "txt_4",
+    "txt_5",
+    "txt_6",
+    "txt_7",
+    "txt_8",
+    "txt_9",
+    "txt_10",
+    "txt_11",
+    "txt_12",
+    "txt_13",
+    "txt_14",
+    "txt_15",
+    "txt_16",
+    "txt_17",
+    "txt_18",
+    "txt_19",
+    "txt_20",
+    "txt_21",
+    "txt_22",
+    "txt_23",
+    "txt_24",
+    "txt_25",
+    "txt_26",
+    "txt_27",
+    "txt_28",
+    "txt_29",
+    "txt_30",
+    "txt_31",
+    "txt_32",
+    "txt_33",
+    "txt_34",
+    "txt_35",
+    "txt_36",
+    "txt_37",
+    "txt_38",
+    "txt_39",
+    "txt_40",
+    "txt_41",
+    "txt_42",
+    "txt_43",
+    "txt_44",
+    "txt_45",
+    "txt_46",
+    "txt_47",
+    "txt_48",
+    "txt_49",
+    "txt_50",
+    "txt_51",
+    "txt_52",
+    "txt_53",
+    "txt_54",
+    "txt_55",
+    "txt_56",
+    "txt_57",
+    "txt_58",
+    "txt_59",
+    "txt_60",
+    "txt_61",
+    "txt_62",
+    "txt_63"
+   ]
+  },
+  "page_relations": {
+   "n_features": 6,
+   "description": "duplicate text elsewhere on the page and word overlap with title, meta description and the page's long blocks",
+   "indices": [
+    79,
+    80,
+    83,
+    84,
+    85,
+    86
+   ],
+   "names": [
+    "dup_count",
+    "dup_earlier",
+    "title_overlap",
+    "desc_overlap",
+    "topic_overlap",
+    "topic_overlap_strong"
+   ]
+  }
+ },
+ "row_definitions": {
+  "full": {
+   "n_features": 535,
+   "note": "all features (the shipped feature set)",
+   "kept_groups": [
+    "shallow_text",
+    "neighbour_shallow",
+    "position",
+    "dom_context",
+    "class_id_hash",
+    "heading_context",
+    "lexical_cues",
+    "page_relations"
+   ]
+  },
+  "minus_shallow_text": {
+   "n_features": 517,
+   "note": "all features except shallow_text",
+   "kept_groups": [
+    "neighbour_shallow",
+    "position",
+    "dom_context",
+    "class_id_hash",
+    "heading_context",
+    "lexical_cues",
+    "page_relations"
+   ]
+  },
+  "minus_neighbour_shallow": {
+   "n_features": 531,
+   "note": "all features except neighbour_shallow",
+   "kept_groups": [
+    "shallow_text",
+    "position",
+    "dom_context",
+    "class_id_hash",
+    "heading_context",
+    "lexical_cues",
+    "page_relations"
+   ]
+  },
+  "minus_position": {
+   "n_features": 529,
+   "note": "all features except position",
+   "kept_groups": [
+    "shallow_text",
+    "neighbour_shallow",
+    "dom_context",
+    "class_id_hash",
+    "heading_context",
+    "lexical_cues",
+    "page_relations"
+   ]
+  },
+  "minus_dom_context": {
+   "n_features": 489,
+   "note": "all features except dom_context",
+   "kept_groups": [
+    "shallow_text",
+    "neighbour_shallow",
+    "position",
+    "class_id_hash",
+    "heading_context",
+    "lexical_cues",
+    "page_relations"
+   ]
+  },
+  "minus_class_id_hash": {
+   "n_features": 343,
+   "note": "all features except class_id_hash",
+   "kept_groups": [
+    "shallow_text",
+    "neighbour_shallow",
+    "position",
+    "dom_context",
+    "heading_context",
+    "lexical_cues",
+    "page_relations"
+   ]
+  },
+  "minus_heading_context": {
+   "n_features": 340,
+   "note": "all features except heading_context",
+   "kept_groups": [
+    "shallow_text",
+    "neighbour_shallow",
+    "position",
+    "dom_context",
+    "class_id_hash",
+    "lexical_cues",
+    "page_relations"
+   ]
+  },
+  "minus_lexical_cues": {
+   "n_features": 467,
+   "note": "all features except lexical_cues",
+   "kept_groups": [
+    "shallow_text",
+    "neighbour_shallow",
+    "position",
+    "dom_context",
+    "class_id_hash",
+    "heading_context",
+    "page_relations"
+   ]
+  },
+  "minus_page_relations": {
+   "n_features": 529,
+   "note": "all features except page_relations",
+   "kept_groups": [
+    "shallow_text",
+    "neighbour_shallow",
+    "position",
+    "dom_context",
+    "class_id_hash",
+    "heading_context",
+    "lexical_cues"
+   ]
+  },
+  "shallow_only": {
+   "n_features": 22,
+   "note": "Kohlschuetter-style set: the block's shallow text features plus those of the previous and next block (their best classifier used current, previous and next block)",
+   "kept_groups": [
+    "shallow_text",
+    "neighbour_shallow"
+   ]
+  },
+  "shallow_plus_position": {
+   "n_features": 28,
+   "note": "shallow set plus relative position and page size",
+   "kept_groups": [
+    "shallow_text",
+    "neighbour_shallow",
+    "position"
+   ]
+  },
+  "shallow_plus_context": {
+   "n_features": 269,
+   "note": "shallow set plus position, DOM context and heading context (no hashed class/id words, no lexical cues, no page relations)",
+   "kept_groups": [
+    "shallow_text",
+    "neighbour_shallow",
+    "position",
+    "dom_context",
+    "heading_context"
+   ]
+  }
+ },
+ "reproduction": {
+  "pipeline_vs_strict_dev_cv": {
+   "pages_compared": 1238,
+   "pages_f1_differ_gt_1e-6": 0,
+   "pages_without_differ_gt_1e-6": 0,
+   "saved_mean_f1": 0.8592500955191259,
+   "saved_mean_without": 0.055162897145934295
+  },
+  "filter_only_vs_strict_ablation_cv": {
+   "pages_compared": 1238,
+   "pages_f1_differ_gt_1e-6": 0,
+   "saved_mean_f1": 0.8404380975425811,
+   "saved_mean_without": 0.20427022941158643
+  }
+ },
+ "shipped_model_check": {
+  "sha256_match": true,
+  "same_tree_structure": true,
+  "max_abs_prob_diff_on_table": 0.0,
+  "n_iter": 300,
+  "seconds": 51.839789999998175
+ },
+ "rows": {
+  "pipeline": {
+   "full": {
+    "n_features": 535,
+    "mean_f1": 0.8592500955191259,
+    "mean_without": 0.055162897145934295,
+    "mean_with": 0.6981556273559504,
+    "f1_by_type": {
+     "article": 0.9444263608348279,
+     "collection": 0.6432476448199909,
+     "documentation": 0.9276757263010114,
+     "forum": 0.8005743511275523,
+     "listing": 0.7069237824512162,
+     "product": 0.6085941687787226,
+     "service": 0.8186578596432268
+    }
+   },
+   "minus_shallow_text": {
+    "n_features": 517,
+    "mean_f1": 0.8608896338654912,
+    "mean_without": 0.057182283252557885,
+    "mean_with": 0.7003231017770598,
+    "f1_by_type": {
+     "article": 0.9453141609325564,
+     "collection": 0.6433350490560914,
+     "documentation": 0.9260694339686172,
+     "forum": 0.8034028136348864,
+     "listing": 0.723351158621683,
+     "product": 0.6038542646316324,
+     "service": 0.8203153271244438
+    },
+    "delta_f1_vs_full": {
+     "mean": 0.0016395383463653013,
+     "ci95": [
+      -0.00046359152731096536,
+      0.003932359977537793
+     ]
+    },
+    "delta_without_vs_full": {
+     "mean": 0.0020193861066235864,
+     "ci95": [
+      -0.001134629748186086,
+      0.00526675584760086
+     ]
+    },
+    "delta_f1_vs_full_by_type": {
+     "article": {
+      "mean": 0.0008878000977286041,
+      "ci95": [
+       -0.0006878992364753705,
+       0.0025430915025848344
+      ],
+      "pages": 668
+     },
+     "forum": {
+      "mean": 0.0028284625073341334,
+      "ci95": [
+       -0.0028636051070163033,
+       0.009509006259875892
+      ],
+      "pages": 100
+     }
+    }
+   },
+   "minus_neighbour_shallow": {
+    "n_features": 531,
+    "mean_f1": 0.859026807600687,
+    "mean_without": 0.05731690899299946,
+    "mean_with": 0.7007539041464728,
+    "f1_by_type": {
+     "article": 0.9435482112767983,
+     "collection": 0.6406234398308736,
+     "documentation": 0.925765761312994,
+     "forum": 0.8002553542581977,
+     "listing": 0.7222480758897489,
+     "product": 0.604092698701694,
+     "service": 0.8170077189629068
+    },
+    "delta_f1_vs_full": {
+     "mean": -0.0002232879184390868,
+     "ci95": [
+      -0.0019613486220063227,
+      0.0016778648458348352
+     ]
+    },
+    "delta_without_vs_full": {
+     "mean": 0.0021540118470651593,
+     "ci95": [
+      -0.00037614011966026495,
+      0.004875706791819612
+     ]
+    },
+    "delta_f1_vs_full_by_type": {
+     "article": {
+      "mean": -0.0008781495580296216,
+      "ci95": [
+       -0.0024986378863852427,
+       0.0003979698788993495
+      ],
+      "pages": 668
+     },
+     "forum": {
+      "mean": -0.00031899686935464854,
+      "ci95": [
+       -0.005389307121071107,
+       0.004738128204325911
+      ],
+      "pages": 100
+     }
+    }
+   },
+   "minus_position": {
+    "n_features": 529,
+    "mean_f1": 0.8570252244643042,
+    "mean_without": 0.05901319332256328,
+    "mean_with": 0.6961631663974152,
+    "f1_by_type": {
+     "article": 0.9422184848716629,
+     "collection": 0.637789811110667,
+     "documentation": 0.9274620659692879,
+     "forum": 0.7957839450796143,
+     "listing": 0.7038231944539755,
+     "product": 0.6107631183219864,
+     "service": 0.8168502812722792
+    },
+    "delta_f1_vs_full": {
+     "mean": -0.0022248710548218777,
+     "ci95": [
+      -0.0047475717228074995,
+      0.00019713524699660609
+     ]
+    },
+    "delta_without_vs_full": {
+     "mean": 0.0038502961766289714,
+     "ci95": [
+      0.0003975727859470837,
+      0.007448942789766754
+     ]
+    },
+    "delta_f1_vs_full_by_type": {
+     "article": {
+      "mean": -0.0022078759631648575,
+      "ci95": [
+       -0.003832750261439328,
+       -0.0006444772139911508
+      ],
+      "pages": 668
+     },
+     "forum": {
+      "mean": -0.004790406047938241,
+      "ci95": [
+       -0.012652972842644574,
+       0.0021991883103959797
+      ],
+      "pages": 100
+     }
+    }
+   },
+   "minus_dom_context": {
+    "n_features": 489,
+    "mean_f1": 0.851655965035178,
+    "mean_without": 0.06566370490037694,
+    "mean_with": 0.696661281637049,
+    "f1_by_type": {
+     "article": 0.9382830734474803,
+     "collection": 0.6128076830417587,
+     "documentation": 0.9197804320459777,
+     "forum": 0.7984820814462305,
+     "listing": 0.7049884492489523,
+     "product": 0.5879339389849334,
+     "service": 0.8165501483428242
+    },
+    "delta_f1_vs_full": {
+     "mean": -0.007594130483948016,
+     "ci95": [
+      -0.011642366144977313,
+      -0.0037774721451783915
+     ]
+    },
+    "delta_without_vs_full": {
+     "mean": 0.01050080775444265,
+     "ci95": [
+      0.006024015690511624,
+      0.015062173196953578
+     ]
+    },
+    "delta_f1_vs_full_by_type": {
+     "article": {
+      "mean": -0.006143287387347539,
+      "ci95": [
+       -0.009184973896694603,
+       -0.0031638216010007516
+      ],
+      "pages": 668
+     },
+     "forum": {
+      "mean": -0.0020922696813219007,
+      "ci95": [
+       -0.010599584083278787,
+       0.006365788862702272
+      ],
+      "pages": 100
+     }
+    }
+   },
+   "minus_class_id_hash": {
+    "n_features": 343,
+    "mean_f1": 0.857367363876521,
+    "mean_without": 0.05552638664512654,
+    "mean_with": 0.7021540118470652,
+    "f1_by_type": {
+     "article": 0.9436374076652391,
+     "collection": 0.6465851108865306,
+     "documentation": 0.9247489357788502,
+     "forum": 0.7862417327382363,
+     "listing": 0.707231687595833,
+     "product": 0.5957462049249208,
+     "service": 0.8226027715978269
+    },
+    "delta_f1_vs_full": {
+     "mean": -0.001882731642604971,
+     "ci95": [
+      -0.004374951245501924,
+      0.0006200818499997577
+     ]
+    },
+    "delta_without_vs_full": {
+     "mean": 0.00036348949919224585,
+     "ci95": [
+      -0.0023457506746137648,
+      0.003121583907569064
+     ]
+    },
+    "delta_f1_vs_full_by_type": {
+     "article": {
+      "mean": -0.0007889531695887264,
+      "ci95": [
+       -0.002989148349319047,
+       0.0011961886048674725
+      ],
+      "pages": 668
+     },
+     "forum": {
+      "mean": -0.014332618389315918,
+      "ci95": [
+       -0.025453933535471714,
+       -0.005293488211814428
+      ],
+      "pages": 100
+     }
+    }
+   },
+   "minus_heading_context": {
+    "n_features": 340,
+    "mean_f1": 0.8597781348460779,
+    "mean_without": 0.05440899299946149,
+    "mean_with": 0.6996768982229402,
+    "f1_by_type": {
+     "article": 0.9430262775394521,
+     "collection": 0.650411554247739,
+     "documentation": 0.9222929866665476,
+     "forum": 0.7978944025461614,
+     "listing": 0.7169087471165255,
+     "product": 0.6167899161641216,
+     "service": 0.8199067966266346
+    },
+    "delta_f1_vs_full": {
+     "mean": 0.0005280393269517016,
+     "ci95": [
+      -0.001667368680683624,
+      0.002670398485635006
+     ]
+    },
+    "delta_without_vs_full": {
+     "mean": -0.0007539041464728056,
+     "ci95": [
+      -0.0034688675311344733,
+      0.0020186739381272715
+     ]
+    },
+    "delta_f1_vs_full_by_type": {
+     "article": {
+      "mean": -0.0014000832953757036,
+      "ci95": [
+       -0.0030492883472956205,
+       -3.1913401151135074e-05
+      ],
+      "pages": 668
+     },
+     "forum": {
+      "mean": -0.002679948581390982,
+      "ci95": [
+       -0.007514404313786743,
+       0.00160700852269044
+      ],
+      "pages": 100
+     }
+    }
+   },
+   "minus_lexical_cues": {
+    "n_features": 467,
+    "mean_f1": 0.8588517811118481,
+    "mean_without": 0.05667070543887991,
+    "mean_with": 0.7001615508885298,
+    "f1_by_type": {
+     "article": 0.9444346809740072,
+     "collection": 0.6361198310468338,
+     "documentation": 0.9251007274443391,
+     "forum": 0.8000306446839879,
+     "listing": 0.7168649308973938,
+     "product": 0.5999805203325009,
+     "service": 0.8196238664230975
+    },
+    "delta_f1_vs_full": {
+     "mean": -0.0003983144072779947,
+     "ci95": [
+      -0.0021273177748632804,
+      0.0016007187566051382
+     ]
+    },
+    "delta_without_vs_full": {
+     "mean": 0.001507808292945611,
+     "ci95": [
+      -0.0010940429166849783,
+      0.0042846858696564466
+     ]
+    },
+    "delta_f1_vs_full_by_type": {
+     "article": {
+      "mean": 8.320139179309745e-06,
+      "ci95": [
+       -0.0009265560609497776,
+       0.0010194119233792476
+      ],
+      "pages": 668
+     },
+     "forum": {
+      "mean": -0.0005437064435643841,
+      "ci95": [
+       -0.004207268038672406,
+       0.0028978811318017017
+      ],
+      "pages": 100
+     }
+    }
+   },
+   "minus_page_relations": {
+    "n_features": 529,
+    "mean_f1": 0.8596960681229764,
+    "mean_without": 0.057653473344103395,
+    "mean_with": 0.6999865374259557,
+    "f1_by_type": {
+     "article": 0.9429861816623134,
+     "collection": 0.6479780093944477,
+     "documentation": 0.9259111137719395,
+     "forum": 0.7984221124219034,
+     "listing": 0.7170062915048744,
+     "product": 0.6134888957978767,
+     "service": 0.8202410932260833
+    },
+    "delta_f1_vs_full": {
+     "mean": 0.00044597260385034705,
+     "ci95": [
+      -0.0012836925974344293,
+      0.0023778132780150722
+     ]
+    },
+    "delta_without_vs_full": {
+     "mean": 0.0024905761981690896,
+     "ci95": [
+      4.3402864835987854e-20,
+      0.005072522922212362
+     ]
+    },
+    "delta_f1_vs_full_by_type": {
+     "article": {
+      "mean": -0.001440179172514546,
+      "ci95": [
+       -0.0027266578528955406,
+       -0.0003039969196264043
+      ],
+      "pages": 668
+     },
+     "forum": {
+      "mean": -0.0021522387056488023,
+      "ci95": [
+       -0.0070543596032831895,
+       0.0017614531493320789
+      ],
+      "pages": 100
+     }
+    }
+   },
+   "shallow_only": {
+    "n_features": 22,
+    "mean_f1": 0.8435144192892937,
+    "mean_without": 0.08725644979683753,
+    "mean_with": 0.701803984921917,
+    "f1_by_type": {
+     "article": 0.9261505855026819,
+     "collection": 0.626605371804436,
+     "documentation": 0.9133394962066438,
+     "forum": 0.781277469663917,
+     "listing": 0.6894890326213675,
+     "product": 0.5892287183254193,
+     "service": 0.8189848541996986
+    },
+    "delta_f1_vs_full": {
+     "mean": -0.015735676229832296,
+     "ci95": [
+      -0.020580129281174163,
+      -0.01127858312274138
+     ]
+    },
+    "delta_without_vs_full": {
+     "mean": 0.03209355265090321,
+     "ci95": [
+      0.02594970494053718,
+      0.038438682430364246
+     ]
+    },
+    "delta_f1_vs_full_by_type": {
+     "article": {
+      "mean": -0.018275775332145833,
+      "ci95": [
+       -0.021998687631610666,
+       -0.014676312582940445
+      ],
+      "pages": 668
+     },
+     "forum": {
+      "mean": -0.019296881463635288,
+      "ci95": [
+       -0.03149526341105743,
+       -0.008198101665820925
+      ],
+      "pages": 100
+     }
+    }
+   },
+   "shallow_plus_position": {
+    "n_features": 28,
+    "mean_f1": 0.8447699732721368,
+    "mean_without": 0.0735992803642238,
+    "mean_with": 0.6983979536887452,
+    "f1_by_type": {
+     "article": 0.9299536806611366,
+     "collection": 0.636034448237193,
+     "documentation": 0.910284709448289,
+     "forum": 0.7797276555025792,
+     "listing": 0.6829874822781696,
+     "product": 0.5777716341971335,
+     "service": 0.8199623745226046
+    },
+    "delta_f1_vs_full": {
+     "mean": -0.014480122246989349,
+     "ci95": [
+      -0.01932318300171159,
+      -0.009688565635827824
+     ]
+    },
+    "delta_without_vs_full": {
+     "mean": 0.01843638321828952,
+     "ci95": [
+      0.012894897642492065,
+      0.024338449328512805
+     ]
+    },
+    "delta_f1_vs_full_by_type": {
+     "article": {
+      "mean": -0.014472680173691228,
+      "ci95": [
+       -0.018198289686772343,
+       -0.011050819207695893
+      ],
+      "pages": 668
+     },
+     "forum": {
+      "mean": -0.020846695624973054,
+      "ci95": [
+       -0.03322079399792822,
+       -0.009405199457209011
+      ],
+      "pages": 100
+     }
+    }
+   },
+   "shallow_plus_context": {
+    "n_features": 269,
+    "mean_f1": 0.8572792518376137,
+    "mean_without": 0.0596324717285945,
+    "mean_with": 0.7021540118470652,
+    "f1_by_type": {
+     "article": 0.9433463833993448,
+     "collection": 0.6542465509598232,
+     "documentation": 0.9186318897220627,
+     "forum": 0.7929411513522702,
+     "listing": 0.7034258678422102,
+     "product": 0.5973146583395414,
+     "service": 0.8191685240101078
+    },
+    "delta_f1_vs_full": {
+     "mean": -0.001970843681512417,
+     "ci95": [
+      -0.00471226567005386,
+      0.0009449608579380825
+     ]
+    },
+    "delta_without_vs_full": {
+     "mean": 0.004469574582660204,
+     "ci95": [
+      0.0012345302619692865,
+      0.007695496186207439
+     ]
+    },
+    "delta_f1_vs_full_by_type": {
+     "article": {
+      "mean": -0.0010799774354829826,
+      "ci95": [
+       -0.0030881597999211315,
+       0.0007544858686678738
+      ],
+      "pages": 668
+     },
+     "forum": {
+      "mean": -0.007633199775282087,
+      "ci95": [
+       -0.016113556312401956,
+       -0.0005170627644008371
+      ],
+      "pages": 100
+     }
+    }
+   }
+  },
+  "filter_only": {
+   "full": {
+    "n_features": 535,
+    "mean_f1": 0.8404380975425811,
+    "mean_without": 0.20427022941158643,
+    "mean_with": 0.7244345718901454,
+    "f1_by_type": {
+     "article": 0.9218291807136316,
+     "collection": 0.6427721242851281,
+     "documentation": 0.9216188452045371,
+     "forum": 0.748946597123645,
+     "listing": 0.713638606814914,
+     "product": 0.569080343626087,
+     "service": 0.8192011424874102
+    }
+   },
+   "minus_shallow_text": {
+    "n_features": 517,
+    "mean_f1": 0.8432077633163072,
+    "mean_without": 0.20558982392584976,
+    "mean_with": 0.7284598815293485,
+    "f1_by_type": {
+     "article": 0.9229293222458991,
+     "collection": 0.6374521855974415,
+     "documentation": 0.9236608919275924,
+     "forum": 0.7530180253391642,
+     "listing": 0.7349765226176582,
+     "product": 0.5757946695231274,
+     "service": 0.8204282630319741
+    },
+    "delta_f1_vs_full": {
+     "mean": 0.002769665773725952,
+     "ci95": [
+      -0.00029437520938325887,
+      0.005786980223299502
+     ]
+    },
+    "delta_without_vs_full": {
+     "mean": 0.0013195945142633351,
+     "ci95": [
+      -0.004100274789722212,
+      0.0068090691137566136
+     ]
+    },
+    "delta_f1_vs_full_by_type": {
+     "article": {
+      "mean": 0.0011001415322676041,
+      "ci95": [
+       -0.0008069689615532769,
+       0.0030873232260943246
+      ],
+      "pages": 668
+     },
+     "forum": {
+      "mean": 0.004071428215519171,
+      "ci95": [
+       -0.00474349282916203,
+       0.013407598546417147
+      ],
+      "pages": 100
+     }
+    }
+   },
+   "minus_neighbour_shallow": {
+    "n_features": 531,
+    "mean_f1": 0.8409352115608302,
+    "mean_without": 0.20803520433972778,
+    "mean_with": 0.7247845988152934,
+    "f1_by_type": {
+     "article": 0.920768923027983,
+     "collection": 0.6354329312757051,
+     "documentation": 0.922514500364541,
+     "forum": 0.7515493741661955,
+     "listing": 0.7295933050553264,
+     "product": 0.5723947860484059,
+     "service": 0.8187934416873627
+    },
+    "delta_f1_vs_full": {
+     "mean": 0.0004971140182489686,
+     "ci95": [
+      -0.0013797424193657546,
+      0.0023722497340821235
+     ]
+    },
+    "delta_without_vs_full": {
+     "mean": 0.0037649749281413254,
+     "ci95": [
+      -0.0008540401991142449,
+      0.008405444800502981
+     ]
+    },
+    "delta_f1_vs_full_by_type": {
+     "article": {
+      "mean": -0.0010602576856484506,
+      "ci95": [
+       -0.0024336711771224583,
+       0.00042425164869547695
+      ],
+      "pages": 668
+     },
+     "forum": {
+      "mean": 0.0026027770425504364,
+      "ci95": [
+       -0.0040022208475568475,
+       0.010528331873517094
+      ],
+      "pages": 100
+     }
+    }
+   },
+   "minus_position": {
+    "n_features": 529,
+    "mean_f1": 0.8423067567861369,
+    "mean_without": 0.20491249909666712,
+    "mean_with": 0.7162358642972537,
+    "f1_by_type": {
+     "article": 0.9241481418796939,
+     "collection": 0.6471873209792663,
+     "documentation": 0.9281050080232739,
+     "forum": 0.7443094708829133,
+     "listing": 0.714452026145264,
+     "product": 0.5829505276712685,
+     "service": 0.8140735278723172
+    },
+    "delta_f1_vs_full": {
+     "mean": 0.0018686592435556524,
+     "ci95": [
+      -0.0013491714515250694,
+      0.00521854673489021
+     ]
+    },
+    "delta_without_vs_full": {
+     "mean": 0.0006422696850806704,
+     "ci95": [
+      -0.005758407344161329,
+      0.0070452355756127644
+     ]
+    },
+    "delta_f1_vs_full_by_type": {
+     "article": {
+      "mean": 0.002318961166062334,
+      "ci95": [
+       -0.0004209984091768339,
+       0.005498614135993494
+      ],
+      "pages": 668
+     },
+     "forum": {
+      "mean": -0.004637126240731739,
+      "ci95": [
+       -0.015522321804207845,
+       0.006954390981517649
+      ],
+      "pages": 100
+     }
+    }
+   },
+   "minus_dom_context": {
+    "n_features": 489,
+    "mean_f1": 0.8151650809141883,
+    "mean_without": 0.27193557429825604,
+    "mean_with": 0.7289714593430263,
+    "f1_by_type": {
+     "article": 0.8968473658781658,
+     "collection": 0.6158776526936202,
+     "documentation": 0.8986280072089303,
+     "forum": 0.7378151425113092,
+     "listing": 0.6889417333622672,
+     "product": 0.5143122983602877,
+     "service": 0.7984210471906775
+    },
+    "delta_f1_vs_full": {
+     "mean": -0.025273016628392916,
+     "ci95": [
+      -0.030390362316478965,
+      -0.020213979891863434
+     ]
+    },
+    "delta_without_vs_full": {
+     "mean": 0.0676653448866696,
+     "ci95": [
+      0.05737197160149741,
+      0.07849960208728789
+     ]
+    },
+    "delta_f1_vs_full_by_type": {
+     "article": {
+      "mean": -0.024981814835465622,
+      "ci95": [
+       -0.02965711785973923,
+       -0.020510971098653876
+      ],
+      "pages": 668
+     },
+     "forum": {
+      "mean": -0.011131454612335723,
+      "ci95": [
+       -0.022838687076115412,
+       0.0014187527640972348
+      ],
+      "pages": 100
+     }
+    }
+   },
+   "minus_class_id_hash": {
+    "n_features": 343,
+    "mean_f1": 0.8420985121886891,
+    "mean_without": 0.2056394780950516,
+    "mean_with": 0.7308562197092083,
+    "f1_by_type": {
+     "article": 0.9235086551334231,
+     "collection": 0.6561463057708977,
+     "documentation": 0.9228535720447065,
+     "forum": 0.7359222531600856,
+     "listing": 0.7223003937247165,
+     "product": 0.5703495138995901,
+     "service": 0.8210044259890653
+    },
+    "delta_f1_vs_full": {
+     "mean": 0.0016604146461079905,
+     "ci95": [
+      -0.0022332518479559562,
+      0.0060568753358737955
+     ]
+    },
+    "delta_without_vs_full": {
+     "mean": 0.0013692486834651612,
+     "ci95": [
+      -0.004997295108519598,
+      0.007750629934828165
+     ]
+    },
+    "delta_f1_vs_full_by_type": {
+     "article": {
+      "mean": 0.0016794744197913625,
+      "ci95": [
+       -0.0014258684467944338,
+       0.005057957603428853
+      ],
+      "pages": 668
+     },
+     "forum": {
+      "mean": -0.013024343963559323,
+      "ci95": [
+       -0.023860643150119622,
+       -0.002034515907828435
+      ],
+      "pages": 100
+     }
+    }
+   },
+   "minus_heading_context": {
+    "n_features": 340,
+    "mean_f1": 0.8400552237578296,
+    "mean_without": 0.20851373765347914,
+    "mean_with": 0.7244211093161012,
+    "f1_by_type": {
+     "article": 0.9198003847001501,
+     "collection": 0.642113548721055,
+     "documentation": 0.9172972205097847,
+     "forum": 0.7494084087480114,
+     "listing": 0.7334361142194223,
+     "product": 0.5724478321272175,
+     "service": 0.8142992645587636
+    },
+    "delta_f1_vs_full": {
+     "mean": -0.0003828737847515588,
+     "ci95": [
+      -0.0029973858594124084,
+      0.0022194674801482486
+     ]
+    },
+    "delta_without_vs_full": {
+     "mean": 0.004243508241892733,
+     "ci95": [
+      -0.0012468547632808811,
+      0.009887526173530498
+     ]
+    },
+    "delta_f1_vs_full_by_type": {
+     "article": {
+      "mean": -0.002028796013481474,
+      "ci95": [
+       -0.004004256160047142,
+       -0.0003447951011917706
+      ],
+      "pages": 668
+     },
+     "forum": {
+      "mean": 0.00046181162436642164,
+      "ci95": [
+       -0.009016054142278119,
+       0.010991468252392923
+      ],
+      "pages": 100
+     }
+    }
+   },
+   "minus_lexical_cues": {
+    "n_features": 467,
+    "mean_f1": 0.8402871092437045,
+    "mean_without": 0.21380111989966594,
+    "mean_with": 0.7245557350565428,
+    "f1_by_type": {
+     "article": 0.9221707512118579,
+     "collection": 0.6368024685681966,
+     "documentation": 0.9205609756310966,
+     "forum": 0.7442703107113872,
+     "listing": 0.7211098750742732,
+     "product": 0.5707773043983891,
+     "service": 0.8180114055490944
+    },
+    "delta_f1_vs_full": {
+     "mean": -0.00015098829887667494,
+     "ci95": [
+      -0.0021583544423852464,
+      0.0018969917748462091
+     ]
+    },
+    "delta_without_vs_full": {
+     "mean": 0.009530890488079502,
+     "ci95": [
+      0.004242932858295272,
+      0.014969961511018712
+     ]
+    },
+    "delta_f1_vs_full_by_type": {
+     "article": {
+      "mean": 0.0003415704982261923,
+      "ci95": [
+       -0.001757378913630391,
+       0.0022642655846082244
+      ],
+      "pages": 668
+     },
+     "forum": {
+      "mean": -0.0046762864122578225,
+      "ci95": [
+       -0.011311512564794965,
+       0.0011130428832714777
+      ],
+      "pages": 100
+     }
+    }
+   },
+   "minus_page_relations": {
+    "n_features": 529,
+    "mean_f1": 0.8416540057229303,
+    "mean_without": 0.20297904617371496,
+    "mean_with": 0.72380183091007,
+    "f1_by_type": {
+     "article": 0.9228885667518386,
+     "collection": 0.6395896685320729,
+     "documentation": 0.9227783659799181,
+     "forum": 0.7475417838976752,
+     "listing": 0.7248103524028149,
+     "product": 0.573173390058373,
+     "service": 0.8179999346179139
+    },
+    "delta_f1_vs_full": {
+     "mean": 0.001215908180348923,
+     "ci95": [
+      -0.000908909886992177,
+      0.0032818221070167347
+     ]
+    },
+    "delta_without_vs_full": {
+     "mean": -0.0012911832378714448,
+     "ci95": [
+      -0.006464911239629611,
+      0.003681477215421994
+     ]
+    },
+    "delta_f1_vs_full_by_type": {
+     "article": {
+      "mean": 0.001059386038206893,
+      "ci95": [
+       -0.0005534895603771243,
+       0.0028319113232311674
+      ],
+      "pages": 668
+     },
+     "forum": {
+      "mean": -0.0014048132259700018,
+      "ci95": [
+       -0.009475364348877233,
+       0.006257812520378531
+      ],
+      "pages": 100
+     }
+    }
+   },
+   "shallow_only": {
+    "n_features": 22,
+    "mean_f1": 0.7995535142931565,
+    "mean_without": 0.38978266393452177,
+    "mean_with": 0.7368201400107701,
+    "f1_by_type": {
+     "article": 0.8777477637910531,
+     "collection": 0.5892573031126348,
+     "documentation": 0.8969724309306334,
+     "forum": 0.7119904895477753,
+     "listing": 0.6805598067641032,
+     "product": 0.51837561496074,
+     "service": 0.7890713392968505
+    },
+    "delta_f1_vs_full": {
+     "mean": -0.04088458324942467,
+     "ci95": [
+      -0.04786501387436769,
+      -0.034033278656597415
+     ]
+    },
+    "delta_without_vs_full": {
+     "mean": 0.18551243452293534,
+     "ci95": [
+      0.1704249085980083,
+      0.20079983597877463
+     ]
+    },
+    "delta_f1_vs_full_by_type": {
+     "article": {
+      "mean": -0.0440814169225783,
+      "ci95": [
+       -0.050394391057876374,
+       -0.038162447413436676
+      ],
+      "pages": 668
+     },
+     "forum": {
+      "mean": -0.03695610757586958,
+      "ci95": [
+       -0.05330798314459051,
+       -0.02113607774300125
+      ],
+      "pages": 100
+     }
+    }
+   },
+   "shallow_plus_position": {
+    "n_features": 28,
+    "mean_f1": 0.7919680736136699,
+    "mean_without": 0.3404252832968503,
+    "mean_with": 0.7182821755519655,
+    "f1_by_type": {
+     "article": 0.8758758966350421,
+     "collection": 0.5895454663357634,
+     "documentation": 0.8676612399764136,
+     "forum": 0.718845422333099,
+     "listing": 0.6643288999783474,
+     "product": 0.48034369274535643,
+     "service": 0.774569318114795
+    },
+    "delta_f1_vs_full": {
+     "mean": -0.04847002392891123,
+     "ci95": [
+      -0.0544697280009485,
+      -0.042518106128505005
+     ]
+    },
+    "delta_without_vs_full": {
+     "mean": 0.1361550538852639,
+     "ci95": [
+      0.12299537984646403,
+      0.14965794099871954
+     ]
+    },
+    "delta_f1_vs_full_by_type": {
+     "article": {
+      "mean": -0.04595328407858956,
+      "ci95": [
+       -0.05288546454170187,
+       -0.03954079202351156
+      ],
+      "pages": 668
+     },
+     "forum": {
+      "mean": -0.030101174790546067,
+      "ci95": [
+       -0.047300769795457526,
+       -0.012971536807598136
+      ],
+      "pages": 100
+     }
+    }
+   },
+   "shallow_plus_context": {
+    "n_features": 269,
+    "mean_f1": 0.8413368641834117,
+    "mean_without": 0.21039605027892586,
+    "mean_with": 0.7278944534194938,
+    "f1_by_type": {
+     "article": 0.922011035741169,
+     "collection": 0.659616428784191,
+     "documentation": 0.9200818815547902,
+     "forum": 0.7390628158480688,
+     "listing": 0.7240926371005836,
+     "product": 0.5679936842320922,
+     "service": 0.8191731867409782
+    },
+    "delta_f1_vs_full": {
+     "mean": 0.0008987666408305539,
+     "ci95": [
+      -0.003314096758472585,
+      0.005781283418334216
+     ]
+    },
+    "delta_without_vs_full": {
+     "mean": 0.006125820867339446,
+     "ci95": [
+      -0.00039198410496163455,
+      0.01284748009891174
+     ]
+    },
+    "delta_f1_vs_full_by_type": {
+     "article": {
+      "mean": 0.00018185502753742574,
+      "ci95": [
+       -0.0027283062108309545,
+       0.0031740744259426343
+      ],
+      "pages": 668
+     },
+     "forum": {
+      "mean": -0.009883781275576124,
+      "ci95": [
+       -0.02108996802431506,
+       0.0021095875416461056
+      ],
+      "pages": 100
+     }
+    }
+   }
+  }
+ },
+ "training": {
+  "fits": 60,
+  "n_iter_by_row_fold": {
+   "full/fold_2": 300,
+   "full/fold_1": 300,
+   "minus_shallow_text/fold_0": 300,
+   "full/fold_0": 300,
+   "minus_shallow_text/fold_2": 300,
+   "minus_shallow_text/fold_1": 300,
+   "minus_shallow_text/fold_3": 300,
+   "minus_shallow_text/fold_4": 300,
+   "minus_neighbour_shallow/fold_0": 300,
+   "minus_neighbour_shallow/fold_1": 300,
+   "minus_neighbour_shallow/fold_2": 300,
+   "minus_neighbour_shallow/fold_3": 300,
+   "minus_neighbour_shallow/fold_4": 300,
+   "minus_position/fold_0": 300,
+   "minus_position/fold_1": 300,
+   "minus_position/fold_2": 300,
+   "minus_position/fold_3": 300,
+   "minus_position/fold_4": 300,
+   "minus_dom_context/fold_0": 300,
+   "minus_dom_context/fold_1": 300,
+   "minus_dom_context/fold_2": 300,
+   "minus_dom_context/fold_3": 300,
+   "minus_dom_context/fold_4": 300,
+   "minus_class_id_hash/fold_0": 300,
+   "minus_class_id_hash/fold_1": 300,
+   "minus_class_id_hash/fold_2": 300,
+   "minus_class_id_hash/fold_3": 300,
+   "minus_heading_context/fold_0": 300,
+   "minus_class_id_hash/fold_4": 300,
+   "minus_heading_context/fold_1": 300,
+   "minus_heading_context/fold_2": 300,
+   "minus_heading_context/fold_3": 300,
+   "minus_heading_context/fold_4": 300,
+   "minus_lexical_cues/fold_0": 300,
+   "minus_lexical_cues/fold_1": 300,
+   "minus_lexical_cues/fold_2": 300,
+   "minus_lexical_cues/fold_3": 300,
+   "minus_lexical_cues/fold_4": 300,
+   "minus_page_relations/fold_0": 300,
+   "minus_page_relations/fold_1": 300,
+   "minus_page_relations/fold_2": 300,
+   "minus_page_relations/fold_3": 300,
+   "minus_page_relations/fold_4": 300,
+   "shallow_only/fold_0": 300,
+   "shallow_only/fold_1": 300,
+   "shallow_only/fold_2": 300,
+   "shallow_only/fold_3": 300,
+   "shallow_only/fold_4": 300,
+   "shallow_plus_position/fold_0": 300,
+   "shallow_plus_position/fold_1": 300,
+   "shallow_plus_position/fold_2": 300,
+   "shallow_plus_position/fold_3": 300,
+   "shallow_plus_position/fold_4": 300,
+   "shallow_plus_context/fold_0": 300,
+   "shallow_plus_context/fold_1": 300,
+   "shallow_plus_context/fold_2": 300,
+   "shallow_plus_context/fold_4": 300,
+   "shallow_plus_context/fold_3": 300,
+   "full/fold_3": 300,
+   "full/fold_4": 300
+  },
+  "features_used_by_row_fold": {
+   "full/fold_2": 426,
+   "full/fold_1": 421,
+   "minus_shallow_text/fold_0": 411,
+   "full/fold_0": 420,
+   "minus_shallow_text/fold_2": 406,
+   "minus_shallow_text/fold_1": 415,
+   "minus_shallow_text/fold_3": 423,
+   "minus_shallow_text/fold_4": 413,
+   "minus_neighbour_shallow/fold_0": 420,
+   "minus_neighbour_shallow/fold_1": 426,
+   "minus_neighbour_shallow/fold_2": 417,
+   "minus_neighbour_shallow/fold_3": 435,
+   "minus_neighbour_shallow/fold_4": 420,
+   "minus_position/fold_0": 434,
+   "minus_position/fold_1": 440,
+   "minus_position/fold_2": 427,
+   "minus_position/fold_3": 428,
+   "minus_position/fold_4": 434,
+   "minus_dom_context/fold_0": 413,
+   "minus_dom_context/fold_1": 395,
+   "minus_dom_context/fold_2": 411,
+   "minus_dom_context/fold_3": 419,
+   "minus_dom_context/fold_4": 408,
+   "minus_class_id_hash/fold_0": 271,
+   "minus_class_id_hash/fold_1": 274,
+   "minus_class_id_hash/fold_2": 263,
+   "minus_class_id_hash/fold_3": 279,
+   "minus_heading_context/fold_0": 285,
+   "minus_class_id_hash/fold_4": 269,
+   "minus_heading_context/fold_1": 290,
+   "minus_heading_context/fold_2": 288,
+   "minus_heading_context/fold_3": 294,
+   "minus_heading_context/fold_4": 283,
+   "minus_lexical_cues/fold_0": 398,
+   "minus_lexical_cues/fold_1": 396,
+   "minus_lexical_cues/fold_2": 395,
+   "minus_lexical_cues/fold_3": 406,
+   "minus_lexical_cues/fold_4": 400,
+   "minus_page_relations/fold_0": 424,
+   "minus_page_relations/fold_1": 408,
+   "minus_page_relations/fold_2": 418,
+   "minus_page_relations/fold_3": 434,
+   "minus_page_relations/fold_4": 420,
+   "shallow_only/fold_0": 22,
+   "shallow_only/fold_1": 22,
+   "shallow_only/fold_2": 22,
+   "shallow_only/fold_3": 22,
+   "shallow_only/fold_4": 22,
+   "shallow_plus_position/fold_0": 28,
+   "shallow_plus_position/fold_1": 28,
+   "shallow_plus_position/fold_2": 27,
+   "shallow_plus_position/fold_3": 28,
+   "shallow_plus_position/fold_4": 28,
+   "shallow_plus_context/fold_0": 233,
+   "shallow_plus_context/fold_1": 238,
+   "shallow_plus_context/fold_2": 236,
+   "shallow_plus_context/fold_4": 245,
+   "shallow_plus_context/fold_3": 238,
+   "full/fold_3": 439,
+   "full/fold_4": 422
+  }
+ },
+ "runtime_seconds": {
+  "note": "fit and scoring wall-clock as recorded when each model or score file was produced; training ran 5 fits in parallel, scoring 12 worker processes",
+  "fits_sum": 2564.2,
+  "fits_wall_estimate": 512.8,
+  "scoring_sum": 191.3,
+  "this_invocation": {
+   "train": 1.6,
+   "score": 0.0,
+   "total": 9.6
+  },
+  "verify_shipped_fit": 51.8
+ },
+ "code_commit": "54477c557d5815e852878761f2fe9a0c0d69f02b",
+ "summary_text": "With the rest of the pipeline unchanged, a model restricted to the 22 Kohlschuetter-style shallow features (the block's own plus the previous and next block's) scores F1 0.8435 against 0.8593 for the full 535-feature model (-0.0157 [-0.0206, -0.0113]) and lets more chrome through (without-snippet rate 0.0873 against 0.0552); with the filter alone the gap is larger (-0.0409 F1, without rate 0.390 against 0.204). Nearly all of that gap is recovered by adding position, DOM-tree and heading context while leaving out the hashed class/id words, lexical cues and page relations (shallow_plus_context: -0.0020 [-0.0047, +0.0009] F1, +0.0045 without rate), and DOM-tree context is the only group whose removal from the full model clearly lowers F1 (-0.0076 in the pipeline, -0.0253 filter only); dropping any other single group moves F1 by at most 0.0022 with intervals covering zero, though the hashed class/id words matter on forum pages (-0.0143 [-0.0255, -0.0053]). The block's own shallow text features are redundant given the rest (removing them leaves F1 unchanged, +0.0016 [-0.0005, +0.0039]), so on these pages the feature design adds a moderate 1.6 F1 points over a shallow learned detector trained on the same data, and that gain comes from structural context rather than from the large hashed vocabularies."
+}
