@@ -279,6 +279,7 @@ def _args(synthetic_data: Path, tmp_path: Path, **over) -> SimpleNamespace:
     return SimpleNamespace(**base)
 
 
+@pytest.mark.baselines
 def test_rejudge_dry_run_reads_from_cache(synthetic_data: Path, tmp_path: Path):
     args = _args(
         synthetic_data,
@@ -303,6 +304,7 @@ def test_rejudge_dry_run_reads_from_cache(synthetic_data: Path, tmp_path: Path):
     assert report["judge"]["judge_calls"] >= 0
 
 
+@pytest.mark.baselines
 def test_rejudge_only_answers_from_old_cache_no_tool_names(synthetic_data: Path, tmp_path: Path):
     old_cache = tmp_path / "old_cache"
     new_cache = tmp_path / "new_cache"
@@ -351,6 +353,7 @@ def test_rejudge_only_answers_from_old_cache_no_tool_names(synthetic_data: Path,
         assert "rule_id" in system or "R-PART" in system
 
 
+@pytest.mark.baselines
 def test_rejudge_identical_qa_graded_once(synthetic_data: Path, tmp_path: Path):
     old_cache = tmp_path / "old_cache"
     m.run(
@@ -377,6 +380,7 @@ def test_rejudge_identical_qa_graded_once(synthetic_data: Path, tmp_path: Path):
     assert judge_calls == 1
 
 
+@pytest.mark.baselines
 def test_rejudge_idk_same_v1_v2_change_table(tmp_path: Path, synthetic_data: Path):
     old_cache = tmp_path / "old_cache"
     base_out = tmp_path / "base.json"
@@ -427,6 +431,7 @@ def test_rejudge_idk_same_v1_v2_change_table(tmp_path: Path, synthetic_data: Pat
     assert all(not c for c in report["label_changes_v1_v2_by_tool"].values())
 
 
+@pytest.mark.baselines
 def test_rejudge_budget_keeps_earned_labels(synthetic_data: Path, tmp_path: Path):
     old_cache = tmp_path / "old_cache"
     m.run(
@@ -586,6 +591,7 @@ def test_retrieve_bm25_top_chunks():
     assert "Paris" in result["chunks"][0]
 
 
+@pytest.mark.baselines
 def test_dry_run_token_estimate(synthetic_data: Path, tmp_path: Path, capsys):
     args = _args(synthetic_data, tmp_path, dry_run=True, n=2, price_in=1.0, price_out=2.0)
     report = m.run(args, client_factory=lambda: FakeClient())
@@ -598,6 +604,7 @@ def test_dry_run_token_estimate(synthetic_data: Path, tmp_path: Path, capsys):
     assert "est_usd=" in printed
 
 
+@pytest.mark.baselines
 def test_end_to_end_fake_client(synthetic_data: Path, tmp_path: Path):
     args = _args(synthetic_data, tmp_path, n=3, model="fake-model", out=tmp_path / "report.json")
     report = m.run(args, client_factory=lambda: FakeClient())
@@ -624,6 +631,7 @@ def test_end_to_end_fake_client(synthetic_data: Path, tmp_path: Path):
     assert report2["tools"]["trafilatura"]["n"] == 3
 
 
+@pytest.mark.baselines
 def test_budget_stops_partial(synthetic_data: Path, tmp_path: Path):
     """1: BudgetExceeded during judge/generate reports partial=True."""
     args = _args(
@@ -837,6 +845,7 @@ def test_persisted_spend_across_runs(tmp_path: Path):
         client._reserve(1.0)
 
 
+@pytest.mark.baselines
 def test_dry_run_judge_no_tool_dedup(synthetic_data: Path, tmp_path: Path):
     """9: dry-run judge estimate assumes no dedup across tools."""
     args = _args(synthetic_data, tmp_path, dry_run=True, n=2)
@@ -1047,6 +1056,7 @@ def test_large_extract_result_no_false_timeout():
     assert len(result["text"]) > 64_000
 
 
+@pytest.mark.baselines
 def test_extract_pool_reuses_worker_reports_seconds(tmp_path: Path):
     """Bug2: long-lived workers; seconds_per_page recorded."""
     questions = [
@@ -1131,6 +1141,7 @@ def test_worker_infra_errors_not_cached(tmp_path: Path):
     assert out["q1"]["trafilatura"][0]["error"] == "missing_cache"
 
 
+@pytest.mark.baselines
 def test_save_persisted_spend_runs_on_corrupt_cache(synthetic_data: Path, tmp_path: Path):
     """Bug5: try/finally persists spend even when a stage raises non-budget errors."""
     import unittest.mock as um
@@ -1168,6 +1179,7 @@ def test_save_persisted_spend_runs_on_corrupt_cache(synthetic_data: Path, tmp_pa
     assert m.load_persisted_spend(cache) == pytest.approx(prior + 0.02)
 
 
+@pytest.mark.baselines
 def test_budget_stop_loads_rule_labels(synthetic_data: Path, tmp_path: Path):
     """Bug6: budget-stop reload includes judge/rule labels so IDK stays in intersection."""
     import unittest.mock as um

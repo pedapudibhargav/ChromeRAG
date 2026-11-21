@@ -89,6 +89,7 @@ def test_cache_key_includes_html_tool_version():
     assert len({k1, k2, k3, k4}) == 4
 
 
+@pytest.mark.baselines
 def test_error_rows_not_reused(tmp_path: Path, synthetic_pages: Path, monkeypatch):
     """Finding 7: cached error rows are not reused silently."""
     pages = fr.load_pages_from_dir(synthetic_pages)
@@ -116,6 +117,7 @@ def test_load_pages_from_dir(synthetic_pages: Path):
     assert "Hello" in pages[0]["html"]
 
 
+@pytest.mark.baselines
 def test_run_set_caches(tmp_path: Path, synthetic_pages: Path, monkeypatch):
     monkeypatch.setattr(fr, "assert_chromerag_freeze", lambda: None)
     pages = fr.load_pages_from_dir(synthetic_pages)
@@ -135,6 +137,8 @@ def test_summarize_includes_f1():
 
 
 def test_freeze_check_passes_at_repo_tag():
+    if fr._git("rev-parse", f"refs/tags/{fr.REQUIRED_TAG}").returncode != 0:
+        pytest.skip(f"git tag {fr.REQUIRED_TAG} not in this checkout (shallow clone or tag not fetched)")
     errors = fr.freeze_check_errors()
     assert errors == []
 

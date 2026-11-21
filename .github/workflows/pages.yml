@@ -14,6 +14,10 @@ on:
 permissions:
   contents: read
 
+# Shared runners are slower than a desktop; timing tests multiply their limits by this factor.
+env:
+  CHROMERAG_TEST_TIME_SCALE: "4"
+
 concurrency:
   group: pages-${{ github.ref }}
   cancel-in-progress: true

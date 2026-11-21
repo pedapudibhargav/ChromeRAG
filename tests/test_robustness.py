@@ -140,6 +140,13 @@ def test_lone_surrogate_does_not_raise_on_encode() -> None:
     result.markdown.encode("utf-8")  # must not raise
 
 
+def _time_limit(seconds: float) -> float:
+    """Wall-clock limit for timing tests; shared CI runners set CHROMERAG_TEST_TIME_SCALE (>1)."""
+    import os
+
+    return seconds * float(os.environ.get("CHROMERAG_TEST_TIME_SCALE", "1"))
+
+
 def test_pathological_inputs_finish_under_two_seconds() -> None:
     import time
 
@@ -170,5 +177,5 @@ def test_pathological_inputs_finish_under_two_seconds() -> None:
     ):
         start = time.perf_counter()
         result = rag.extract(html)
-        assert time.perf_counter() - start < limit
+        assert time.perf_counter() - start < _time_limit(limit)
         assert isinstance(result.markdown, str)

@@ -9,6 +9,10 @@ on:
 permissions:
   contents: read
 
+# Shared runners are slower than a desktop; timing tests multiply their limits by this factor.
+env:
+  CHROMERAG_TEST_TIME_SCALE: "4"
+
 jobs:
   test:
     runs-on: ${{ matrix.os }}
@@ -19,6 +23,8 @@ jobs:
         python-version: ["3.11", "3.13"]
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # full history and tags, for the freeze-0.1.5 check
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
@@ -28,6 +34,6 @@ jobs:
         run: |
           set -euo pipefail
           python -m pip install --upgrade pip
-          pip install -e ".[dev]"
+          pip install -e ".[dev,baselines]"
           ruff check .
           pytest -q

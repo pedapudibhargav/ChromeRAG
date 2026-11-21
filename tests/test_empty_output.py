@@ -501,6 +501,13 @@ def test_main_dl_and_figure_render_in_markdown() -> None:
     assert "Figure caption explaining" in md
 
 
+def _time_limit(seconds: float) -> float:
+    """Wall-clock limit for timing tests; shared CI runners set CHROMERAG_TEST_TIME_SCALE (>1)."""
+    import os
+
+    return seconds * float(os.environ.get("CHROMERAG_TEST_TIME_SCALE", "1"))
+
+
 def test_large_main_table_keeps_at_least_thirty_thousand_rows() -> None:
     import time
 
@@ -512,7 +519,7 @@ def test_large_main_table_keeps_at_least_thirty_thousand_rows() -> None:
     )
     start = time.perf_counter()
     md = ChromeRAG(config=PipelineConfig(enable_dvdf=False, enable_lbc=False)).extract(html).markdown
-    assert time.perf_counter() - start < 5.0
+    assert time.perf_counter() - start < _time_limit(5.0)
     assert "A29999" in md and "B29999" in md
     assert "[Table truncated after" not in md
 
