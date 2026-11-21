@@ -1,4 +1,4 @@
-"""Descriptive (not pre-registered): AI judge net preference on the 75 human-set pages, overall, forums only and
+"""Descriptive (not planned): AI judge net preference on the 75 human-set pages, overall, forums only and
 without forums.
 
 Same unit, bootstrap (site, 10,000 draws, seed 20261120) and verdict mapping as the AI-judge block of
@@ -15,7 +15,7 @@ from pathlib import Path
 
 from poc import human_set_analysis as A
 
-NOTE = ("Descriptive (not pre-registered): AI judge net preference on the 75 human-set pages, overall, forums only "
+NOTE = ("Descriptive (not planned): AI judge net preference on the 75 human-set pages, overall, forums only "
         "and without forums. Same unit, bootstrap and verdict mapping as poc/human_set_analysis.py.")
 
 

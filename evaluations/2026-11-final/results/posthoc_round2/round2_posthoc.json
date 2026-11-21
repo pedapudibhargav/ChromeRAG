@@ -1,5 +1,5 @@
 {
- "status": "POST HOC (revision round 2, 2026-11-20). Computed from existing per-page results, ratings and saved HTML after all results had been seen; no extraction, no new scoring, no model call. Not in any pre-registered plan.",
+ "status": "POST HOC (revision round 2, 2026-11-20). Computed from existing per-page results, ratings and saved HTML after all results had been seen; no extraction, no new scoring, no model call. Not in any analysis plan.",
  "psl_version": "2026-10-31_14-17-28_UTC",
  "human_set_development_domains": {
   "definition": "development domain = registrable domain (PSL) of any WCXB page: strict training page, WCXB test page (test split consulted in v0.1.3-v0.1.4 development) or other WCXB dev/ page; category order: training, then test, then other dev",

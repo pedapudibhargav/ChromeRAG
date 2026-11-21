@@ -1,12 +1,12 @@
 """Post hoc analyses added in the second revision round (2026-11-20), from EXISTING per-page results only.
 
 POST HOC. Written after every result below had been seen, in answer to review comments. Nothing here extracts a
-page, scores a test page anew, calls a model or changes the tool, a page, a rating or a pre-registered result.
+page, scores a test page anew, calls a model or changes the tool, a page, a rating or a planned result.
 
 1. Human set on development domains. Pages of the 75-page human set whose registrable domain (Public Suffix List)
    is the domain of any WCXB page used in development: the strict training pages, the WCXB test split (consulted
    during v0.1.3-v0.1.4 development) or any other WCXB dev/ page. Net preference (ChromeRAG vs Trafilatura and vs
-   Readability) on the remaining pages, with the pre-registered site bootstrap (`poc.human_set_posthoc`).
+   Readability) on the remaining pages, with the planned site bootstrap (`poc.human_set_posthoc`).
 2. WCXB test forum gain by forum platform seen or not seen in the strict training pages. Platform is detected
    mechanically from the saved HTML and the host name (rule in PLATFORM_RULES below, first match wins); a platform
    is "seen" if the same rule finds it on at least one strict training page labelled forum. Per-page F1 comes from
@@ -355,7 +355,7 @@ def main() -> None:
     rep = {
         "status": ("POST HOC (revision round 2, 2026-11-20). Computed from existing per-page results, ratings and saved "
                    "HTML after all results had been seen; no extraction, no new scoring, no model call. Not in any "
-                   "pre-registered plan."),
+                   "analysis plan."),
         "psl_version": psl.version_line,
         "human_set_development_domains": human_dev_domains(args.wcxb, psl),
         "wcxb_forum_platforms": forum_platforms(args.wcxb),

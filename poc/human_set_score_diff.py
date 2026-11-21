@@ -1,4 +1,4 @@
-"""Pre-registered secondary outcome of the human rating set: 1-5 score differences, ChromeRAG minus baseline.
+"""Planned secondary outcome of the human rating set: 1-5 score differences, ChromeRAG minus baseline.
 
 Per page, the mean over raters of (ChromeRAG score - baseline score); site bootstrap as in
 poc/human_set_analysis.py (registrable domain, 10,000 draws, seed 20261120). Prints one line per

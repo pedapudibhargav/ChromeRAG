@@ -1,6 +1,6 @@
 {
   "title": "ChromeRAG: A Learned Boilerplate Filter for Web RAG Ingestion",
-  "description": "ChromeRAG converts scraped HTML into Markdown for retrieval-augmented generation. A small learned model (NumPy-only inference) scores each text block and removes site chrome; site-template learning removes repeated navigation and promotions across a site's pages.",
+  "description": "ChromeRAG converts scraped HTML into Markdown for retrieval-augmented generation. A small learned model (NumPy-only inference) scores each text block and removes site chrome. An optional, experimental site-template model can be learned from a site's pages; it has no measured benefit in version 0.1.5.",
   "upload_type": "software",
   "license": "MIT",
   "creators": [

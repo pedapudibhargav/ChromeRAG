@@ -1,4 +1,4 @@
-"""Pre-registered analysis of the human rating set (evaluations/2026-11-final/PROTOCOL.md).
+"""Planned analysis of the human rating set (evaluations/2026-11-final/PROTOCOL.md).
 
 Follows "Analysis plan for the human rating set (fixed before any rating)" and the amendments after it.
 Inputs, all repository-relative except the label key:
@@ -728,7 +728,7 @@ def _row(label, o):
 
 
 def render_md(rep):
-    L = ["# Human rating set: pre-registered analysis", "",
+    L = ["# Human rating set: planned analysis", "",
          f"Majority verdict per page; 95% percentile intervals from a site bootstrap "
          f"({rep['bootstrap']['iterations']:,} draws, seed {rep['bootstrap']['seed']}, {rep['n_sites_registrable']} sites). "
          "Net = wins minus losses over pages, for the first tool named.", ""]

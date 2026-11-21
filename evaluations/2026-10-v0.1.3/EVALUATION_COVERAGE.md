@@ -1,5 +1,7 @@
 # Evaluation coverage (ChromeRAG 0.1.3)
 
+> **Superseded (November 2026).** This file is the original v0.1.3/v0.1.4 record and is kept unchanged below. Its statements that sets were "held out", "scored once" or "run once" are withdrawn: the WCXB test split and the fresh and landing sets were scored repeatedly while rules changed (see `../2026-11-final/SUPPLEMENT.md`, Table S1a, and `HELD_OUT_LEDGER.csv`). Current results and the held-out evidence for version 0.1.5 are in `../2026-11-final/`.
+
 Every page set, how many pages and domains it has, and what it was used for. Domain lists: `evaluation_domains.csv`.
 
 | Set | Role | Pages | Domains | Notes |

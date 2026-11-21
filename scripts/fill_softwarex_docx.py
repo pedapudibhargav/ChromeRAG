@@ -49,7 +49,7 @@ KEYWORDS = (
 BOLD_LEAD, ITALIC_LEAD, LEAD_END = "\x01", "\x02", "\x03"
 
 METADATA = {
-    "C1": "v0.1.5",
+    "C1": "v0.1.5 (as evaluated; v0.1.6 fixes chunks() only)",
     "C2": "https://github.com/pedapudibhargav/ChromeRAG/tree/v0.1.5",
     "C3": "MIT",
     "C4": "git",

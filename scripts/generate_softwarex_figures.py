@@ -2,7 +2,7 @@
 """Render the SoftwareX figures (revision 1, ChromeRAG 0.1.5) from the result files.
 
 Every number in a figure is read from a file in the repository (for the human rating
-aggregates, from the output folder of the pre-registered analysis); none is typed in here.
+aggregates, from the output folder of the planned analysis); none is typed in here.
 See FIGURE_SPECS.md for the source of each panel.
 
 Figures are drawn at print size (6.5 in text width, sizes in points), sans-serif
@@ -17,7 +17,7 @@ throw-away profile and a dead proxy, so it makes no network requests.
 Usage:
   python scripts/generate_softwarex_figures.py [--prereg-dir DIR]
 
-DIR holds results.json and ai_by_forum.json of the pre-registered human analysis
+DIR holds results.json and ai_by_forum.json of the planned human analysis
 (aggregates only); default: out/human_set under the repository root, or $CHROMERAG_PREREG_DIR.
 Make them with:
   PYTHONPATH=src:. python -m poc.human_set_analysis --out out/human_set
@@ -572,7 +572,7 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n", 1)[0])
     ap.add_argument("--prereg-dir", type=Path,
                     default=Path(os.environ.get("CHROMERAG_PREREG_DIR", PREREG_DEFAULT)),
-                    help="folder with results.json and ai_by_forum.json (pre-registered human analysis)")
+                    help="folder with results.json and ai_by_forum.json (planned human analysis)")
     args = ap.parse_args()
     p03 = json.loads(P03.read_text(encoding="utf-8"))
     speed = json.loads(SPEED.read_text(encoding="utf-8"))

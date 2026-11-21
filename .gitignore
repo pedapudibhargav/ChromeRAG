@@ -27,7 +27,7 @@ infra/certs/
 infra/certs/*.pem
 !infra/certs/.gitkeep
 
-# Author-private notes (process, venue strategy, internal research)
+# Author-private notes
 # Keep local copies under private/; never push.
 private/
 

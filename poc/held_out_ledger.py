@@ -4,11 +4,15 @@ Reads file mtimes from the main checkout (clones do not keep mtimes), plus
 WORKLOG.md, git history, openai_spend.json, and the judge scripts. Values that
 cannot be evidenced are written as "unknown" or "inferred" with a notes trail.
 
-  PYTHONPATH=src:. python -m poc.held_out_ledger
+  PYTHONPATH=src:. python -m poc.held_out_ledger --out out/HELD_OUT_LEDGER.csv
+
+The committed ledger is overwritten only with --write. It depends on mtimes in the author's main checkout, so
+do not rewrite it from a clone.
 """
 
 from __future__ import annotations
 
+import argparse
 import csv
 import hashlib
 import json
@@ -511,6 +515,13 @@ def _session_log_rows() -> list[dict]:
 
 
 def main() -> None:
+    ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
+    ap.add_argument("--out", type=Path, help="write the ledger here instead of the committed file")
+    ap.add_argument("--write", action="store_true", help="overwrite the committed HELD_OUT_LEDGER.csv")
+    args = ap.parse_args()
+    if args.out is None and not args.write:
+        ap.error("give --out PATH, or --write to overwrite the committed ledger")
+    out_csv = args.out or OUT_CSV
     main_final = _main_final()
     commits = _commits_oct2()
     # Also include freeze tip and morning commits for inference before Oct-2 17:14
@@ -526,12 +537,12 @@ def main() -> None:
 
     rows = _correct_from_session_log(_file_rows(main_final, commits) + _deleted_rows(commits)) + _worklog_only_rows() + _session_log_rows()
     rows.sort(key=lambda r: (r["run_time"], r["result_file"], r["set"]))
-    OUT_CSV.parent.mkdir(parents=True, exist_ok=True)
-    with OUT_CSV.open("w", newline="", encoding="utf-8") as f:
+    out_csv.parent.mkdir(parents=True, exist_ok=True)
+    with out_csv.open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=COLUMNS)
         w.writeheader()
         w.writerows(rows)
-    print(f"wrote {OUT_CSV} ({len(rows)} rows)")
+    print(f"wrote {out_csv} ({len(rows)} rows)")
 
 
 if __name__ == "__main__":

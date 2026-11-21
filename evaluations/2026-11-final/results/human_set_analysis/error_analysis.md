@@ -1,6 +1,6 @@
 # Human rating set: qualitative error analysis (post hoc, descriptive)
 
-**Post hoc and descriptive.** Not in the pre-registered plan. One coder (an AI assistant) coded the pages after all ratings were in and after unblinding, knowing which tool produced each output and how the raters voted. There is no second coder and no agreement figure, so the counts below describe these pages; they are not a test. Nothing in the tool, the pages or the ratings was changed.
+**Post hoc and descriptive.** Not in the analysis plan. One coder (an AI assistant) coded the pages after all ratings were in and after unblinding, knowing which tool produced each output and how the raters voted. There is no second coder and no agreement figure, so the counts below describe these pages; they are not a test. Nothing in the tool, the pages or the ratings was changed.
 
 Clarification (2026-11-20): the coder was a Claude model (Claude Opus 5.5) working as the author's assistant.
 

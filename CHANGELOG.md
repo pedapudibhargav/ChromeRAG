@@ -4,14 +4,14 @@ All notable changes to ChromeRAG. Versions follow [Semantic Versioning](https://
 
 ## 0.1.5 — 2026-11-20
 
-Strict-retrain and validation release. Code frozen at tag `freeze-0.1.5` before any held-out run; the results cited by
+Strict-retrain and validation release. Code frozen at tag `freeze-0.1.5` before any held-out run of 0.1.5 code; the results cited by
 the SoftwareX revision are in `evaluations/2026-11-final/`.
 
 ### Changed
 - **Strict retrain.** `assets/lbc_stage1.npz` (152,432 bytes) is retrained on a strict subset of the WCXB development
-  folder: the 139 files that duplicate test pages and the 96 pages whose registrable domain (Public Suffix List) occurs
-  in the test split are removed, plus a fixed 0.8 Jaccard near-duplicate guard against test reference text; 1,238
-  pages remain. No test page, test domain, test label or test score is used. A test asserts that no training domain is
+  folder: of its 1,473 pages with at least 30 reference words, the 139 that duplicate test pages and the 96 whose
+  registrable domain (Public Suffix List) occurs in the test split are removed, plus a fixed 0.8 Jaccard near-duplicate guard against test reference text; 1,238
+  pages remain. Test reference text is read only by the near-duplicate guard, which removed no page; no test page, test domain, test label or test score is used for training. A test asserts that no training domain is
   a test domain; `poc/rebuild_strict.sh` rebuilds the model byte for byte.
 - Cross-validation folds and site-level bootstrap group pages by registrable domain (`poc/psl.py`), not hostname.
 - **Components dropped after the ablation** (five folds grouped by domain on the 1,238 strict pages; a component was
@@ -19,7 +19,7 @@ the SoftwareX revision are in `evaluations/2026-11-final/`.
   - five Trafilatura-derived rule groups: `tf.share` (`sociable`, `viral`), `tf.related` (`teaser`, `popular`),
     `tf.newsletter.block`, `tf.ads` (`outbrain`, `taboola`), `tf.tools.print`; 8 Trafilatura-derived rules remain,
     13 YAML rules in all;
-  - the 15 documentation-framework YAML rules (`docs_generators.yaml`); the last ablation run that still included
+  - the 16 documentation-framework YAML rules (`docs_generators.yaml`); the last ablation run that still included
     them is commit `7ca7e9e`;
   - the pager and related-post detectors, now off by default (`chrome_drop_pager=False`,
     `chrome_drop_related=False`).
@@ -45,13 +45,13 @@ the SoftwareX revision are in `evaluations/2026-11-final/`.
   golden files).
 - **Evaluation kit** `evaluators/`: an offline, standard-library blind rating app (outputs labelled A, B, C in random
   order, difference highlighting, practice items with notes, repeats), bundle builder, part splitter, pseudonymizer
-  and an analyzer that applies the pre-registered careless-rating checks.
+  and an analyzer that applies the planned careless-rating checks.
 - **Held-out ledger**: `poc/held_out_ledger.py`, `evaluations/2026-10-v0.1.3/HELD_OUT_LEDGER.csv` (every v0.1.3 and
   v0.1.4 run on a held-out or later-held-out set) and `evaluations/2026-11-final/results/held_out_runs.jsonl`.
 - Evaluation harnesses for the revision: `poc/strict_split.py`, `poc/run_strict_dev_cv.py`, `poc/ablation_cv.py`,
   `poc/update_strict_manifest.py`, `poc/final_wcxb.py`, `poc/revision_rows.py` (raw and stripped output, subsets,
   page types, freeze-0.1.3 code with the 0.1.5 model, jusText, BoilerPy3, speed), `poc/crag_answer_eval.py`,
-  `poc/final_page_judge.py`, `poc/final_page_length_analysis.py`, and the pre-registered human rating analysis
+  `poc/final_page_judge.py`, `poc/final_page_length_analysis.py`, and the planned human rating analysis
   `poc/human_set_analysis.py` with `poc/human_set_score_diff.py`, `poc/human_set_ai_by_forum.py` and
   `poc/gen_supplement.py`.
 
@@ -94,7 +94,7 @@ Output-quality release: better structure, much less leftover chrome, heading-awa
   blocks, call-to-action buttons, share strips, newsletter blocks, author boxes, template placeholders, footer-like page tails and
   attribute residue; one flag per detector (`chrome_drop_*`, `chrome_trim_tail`).
 - **16 rules adapted from Trafilatura's discard patterns** (`rules/trafilatura_inspired.yaml`, Apache-2.0, credited in `NOTICE`),
-  15 documentation-framework rules (Docusaurus, MkDocs, Starlight, VitePress, Mintlify, Cloudflare, Grafana, DigitalOcean), and two
+  16 documentation-framework rules (Docusaurus, MkDocs, Starlight, VitePress, Mintlify, Cloudflare, Grafana, DigitalOcean), and two
   density passes (`trafilatura_link_blocks`, `trafilatura_micro`).
 - Evaluation: frozen fresh-page seed lists (`poc/extra_seeds*.json`, `poc/extra_corpus.py`), blinded judge builder and aggregator
   (`poc/claude_judge_build.py`, `poc/claude_judge_aggregate.py`), a GPT judge (`poc/gpt_judge_batches.py`), a heading-context retrieval study

@@ -1,0 +1,207 @@
+{
+ "status": "post hoc, added during final review; not in the analysis plan",
+ "bootstrap": {
+  "unit": "site",
+  "iterations": 10000,
+  "seed": 20261120,
+  "interval": "95% percentile"
+ },
+ "ai_judge_agreement": {
+  "chromerag_vs_trafilatura": {
+   "n_pages": 75,
+   "all_three_same": 64,
+   "fleiss_kappa": 0.8206,
+   "pairwise_cohen_kappa": {
+    "gpt-grok": 0.7814,
+    "gpt-gemini": 0.7771,
+    "grok-gemini": 0.9028
+   },
+   "verdict_counts": {
+    "gpt": {
+     "chromerag": 43,
+     "baseline": 27,
+     "tie": 5
+    },
+    "grok": {
+     "chromerag": 43,
+     "baseline": 24,
+     "tie": 8
+    },
+    "gemini": {
+     "chromerag": 44,
+     "baseline": 25,
+     "tie": 6
+    }
+   }
+  },
+  "chromerag_vs_readability": {
+   "n_pages": 75,
+   "all_three_same": 61,
+   "fleiss_kappa": 0.7258,
+   "pairwise_cohen_kappa": {
+    "gpt-grok": 0.6599,
+    "gpt-gemini": 0.769,
+    "grok-gemini": 0.7492
+   },
+   "verdict_counts": {
+    "gpt": {
+     "chromerag": 50,
+     "baseline": 24,
+     "tie": 1
+    },
+    "grok": {
+     "chromerag": 48,
+     "baseline": 24,
+     "tie": 3
+    },
+    "gemini": {
+     "chromerag": 49,
+     "baseline": 24,
+     "tie": 2
+    }
+   }
+  }
+ },
+ "earlier_set_overlap": {
+  "earlier_sets": [
+   "Landing dev companies (53)",
+   "Landing heldout companies (47)",
+   "Documentation/pricing/article corpus",
+   "Fresh companies (51)"
+  ],
+  "chromerag_vs_trafilatura": {
+   "all": {
+    "n": 75,
+    "n_sites": 48,
+    "wins": 32,
+    "losses": 15,
+    "ties": 28,
+    "net": 0.22666666666666666,
+    "net_ci95": [
+     0.0136986301369863,
+     0.423076923076923
+    ]
+   },
+   "no_wcxb_domain": {
+    "n": 41,
+    "n_sites": 28,
+    "wins": 17,
+    "losses": 8,
+    "ties": 16,
+    "net": 0.21951219512195122,
+    "net_ci95": [
+     -0.04878048780487804,
+     0.4634146341463415
+    ]
+   },
+   "no_wcxb_or_earlier_set_domain": {
+    "n": 28,
+    "n_sites": 21,
+    "wins": 12,
+    "losses": 4,
+    "ties": 12,
+    "net": 0.2857142857142857,
+    "net_ci95": [
+     -0.037037037037037035,
+     0.5517241379310345
+    ]
+   },
+   "earlier_set_pages_among_no_wcxb": {
+    "Landing dev companies (53)": 4,
+    "Landing heldout companies (47)": 4,
+    "Documentation/pricing/article corpus": 7,
+    "Fresh companies (51)": 0
+   }
+  },
+  "chromerag_vs_readability": {
+   "all": {
+    "n": 75,
+    "n_sites": 48,
+    "wins": 38,
+    "losses": 13,
+    "ties": 24,
+    "net": 0.3333333333333333,
+    "net_ci95": [
+     0.12987012987012989,
+     0.524390243902439
+    ]
+   },
+   "no_wcxb_domain": {
+    "n": 41,
+    "n_sites": 28,
+    "wins": 19,
+    "losses": 7,
+    "ties": 15,
+    "net": 0.2926829268292683,
+    "net_ci95": [
+     0.024999999999999994,
+     0.5384615384615384
+    ]
+   },
+   "no_wcxb_or_earlier_set_domain": {
+    "n": 28,
+    "n_sites": 21,
+    "wins": 15,
+    "losses": 4,
+    "ties": 9,
+    "net": 0.39285714285714285,
+    "net_ci95": [
+     0.10714285714285715,
+     0.6551724137931034
+    ]
+   },
+   "earlier_set_pages_among_no_wcxb": {
+    "Landing dev companies (53)": 4,
+    "Landing heldout companies (47)": 4,
+    "Documentation/pricing/article corpus": 7,
+    "Fresh companies (51)": 0
+   }
+  }
+ },
+ "without_length_swapped_in_pages": {
+  "swapped_in_pages": [
+   "human-0007",
+   "human-0060",
+   "human-0071",
+   "human-0101",
+   "human-0119"
+  ],
+  "chromerag_vs_trafilatura": {
+   "swapped_in_outcomes": {
+    "tie": 1,
+    "b": 2,
+    "a": 2
+   },
+   "without_swapped_in": {
+    "n": 70,
+    "n_sites": 44,
+    "wins": 30,
+    "losses": 13,
+    "ties": 27,
+    "net": 0.24285714285714285,
+    "net_ci95": [
+     0.015384615384615385,
+     0.4459459459459459
+    ]
+   }
+  },
+  "chromerag_vs_readability": {
+   "swapped_in_outcomes": {
+    "a": 3,
+    "tie": 2
+   },
+   "without_swapped_in": {
+    "n": 70,
+    "n_sites": 44,
+    "wins": 35,
+    "losses": 13,
+    "ties": 22,
+    "net": 0.3142857142857143,
+    "net_ci95": [
+     0.09090909090909088,
+     0.5125
+    ]
+   }
+  }
+ }
+}

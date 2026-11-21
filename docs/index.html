@@ -15,7 +15,7 @@
 <meta name="twitter:title" content="ChromeRAG: HTML to RAG-ready Markdown">
 <meta name="twitter:description" content="Learned boilerplate filter for RAG ingestion. Open benchmark and per-page results.">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"SoftwareSourceCode","name":"ChromeRAG","description":"HTML to RAG-ready Markdown with a learned boilerplate filter and site-template learning.","codeRepository":"https://github.com/pedapudibhargav/ChromeRAG","programmingLanguage":"Python","license":"https://spdx.org/licenses/MIT","url":"https://pedapudibhargav.github.io/ChromeRAG/","identifier":"https://doi.org/10.5281/zenodo.22970289","author":{"@type":"Person","name":"Bhargava Chary Peddapudi","identifier":"https://orcid.org/0009-0002-8523-8415"}}
+{"@context":"https://schema.org","@type":"SoftwareSourceCode","name":"ChromeRAG","description":"HTML to RAG-ready Markdown with a learned boilerplate filter.","codeRepository":"https://github.com/pedapudibhargav/ChromeRAG","programmingLanguage":"Python","license":"https://spdx.org/licenses/MIT","url":"https://pedapudibhargav.github.io/ChromeRAG/","identifier":"https://doi.org/10.5281/zenodo.22970289","author":{"@type":"Person","name":"Bhargava Chary Peddapudi","identifier":"https://orcid.org/0009-0002-8523-8415"}}
 </script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232a78d6'/%3E%3Cpath d='M9 11h14M9 16h10M9 21h12' stroke='white' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E">
 <style>
@@ -260,9 +260,9 @@ extractor = ChromeRAG(config=PipelineConfig.from_priority(ContentPriority.BALANC
 result = extractor.extract(html, url="https://docs.example.com/docs/pricing")
 
 result.markdown       <span class="c"># clean Markdown</span>
-result.front_matter   <span class="c"># title, type, dates, breadcrumb from JSON-LD / Microdata</span>
+result.front_matter   <span class="c"># title, type, lastUpdated, breadcrumb from JSON-LD / Microdata</span>
 result.warnings       <span class="c"># e.g. the input looks like a JavaScript-rendered shell</span>
-result.diagnostics    <span class="c"># what was removed, and why</span></pre>
+result.diagnostics    <span class="c"># rules and detectors that fired, confidence estimate</span></pre>
         </div>
       </div>
     </div>
@@ -303,7 +303,7 @@ result.diagnostics    <span class="c"># what was removed, and why</span></pre>
           <tr><td>MarkItDown 0.1.7</td><td>0.540</td><td>0.967</td></tr>
         </tbody>
       </table></div></div>
-      <p class="small muted">The model is trained on 1,238 WCXB development pages with no test page and no test-split domain. ChromeRAG minus Trafilatura: +0.024 [+0.008, +0.042] (site bootstrap); the gain comes from forums (+0.149); Trafilatura leads on articles by 0.012. The WCXB test split was consulted during earlier development and is not clean held-out evidence. Human raters (75 new pages, three per page) preferred ChromeRAG to Trafilatura, net +0.23 [+0.01, +0.42]; without forums +0.14 [−0.09, +0.35]. CRAG split 1 (500 questions): +0.008 [−0.040, +0.054]. Median time per page on the 511 test pages, one process on a loaded machine: 39.6 ms for ChromeRAG, 14.2 ms for Trafilatura.</p>
+      <p class="small muted">The model is trained on 1,238 WCXB development pages with no test page and no known test-split domain. ChromeRAG minus Trafilatura: +0.024 [+0.008, +0.042] (site bootstrap); the gain comes from forums (+0.149); Trafilatura leads on articles by 0.012. The WCXB test split was consulted during earlier development and is not clean held-out evidence. Human raters (75 new pages, mostly three per page) preferred ChromeRAG to Trafilatura, net +0.23 [+0.01, +0.42]; without forums +0.14 [−0.09, +0.35]. CRAG split 1 (500 questions): +0.008 [−0.040, +0.054]. Median time per page on the 511 test pages, one process on a loaded machine: 39.6 ms for ChromeRAG, 14.2 ms for Trafilatura.</p>
     </div>
   </section>
 
@@ -311,7 +311,7 @@ result.diagnostics    <span class="c"># what was removed, and why</span></pre>
     <div class="wrap">
       <h2>Human-reviewed benchmark (WCXB) <span class="muted small">v0.1.4, superseded</span></h2>
       <p class="superseded">Version 0.1.4 result, superseded; not used for claims. See <a href="#results">0.1.5 results</a>.</p>
-      <p class="section-lede">Word-level F1 against human-reviewed main content on <a href="https://arxiv.org/abs/2605.21097">WCXB</a>, seven page types. <strong>Test (clean)</strong>: 372 held-out pages with no byte-identical copy in development. <strong>Test (all)</strong>: all 511 test pages. <strong>Development</strong>: five-fold cross-validation grouped by site.</p>
+      <p class="section-lede">Word-level F1 against human-reviewed main content on <a href="https://arxiv.org/abs/2605.21097">WCXB</a>, seven page types. <strong>Test (clean)</strong>: 372 test pages with no byte-identical copy in development (the test split was consulted during development). <strong>Test (all)</strong>: all 511 test pages. <strong>Development</strong>: five-fold cross-validation grouped by site.</p>
       <div class="toolbar">
         <div class="seg" role="group" aria-label="Split">
           <button type="button" aria-pressed="true" data-wsplit="wcxb_test_deduplicated">WCXB test, clean (372 pages)</button>
@@ -433,7 +433,7 @@ python -m poc.run_stce_eval --raw data/stce_crawl</pre>
           <li>Training data are one mostly English benchmark (WCXB), and features include English stop words.</li>
           <li>The WCXB test split was consulted during earlier development; product and collection results rest on 28 and 34 pages.</li>
           <li>ChromeRAG is about three times slower than Trafilatura on the WCXB test pages.</li>
-          <li>The site-template model needs three or more pages per site group and was last measured with version 0.1.4.</li>
+          <li>The site-template model is learned from site groups of at least five pages in <code>batch</code> (three with <code>chromerag learn --min-pages 3</code>) and was last measured with version 0.1.4.</li>
           <li>Only HTML is handled. Use other converters for PDF and Office files.</li>
         </ul>
       </details>

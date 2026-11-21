@@ -1,5 +1,5 @@
 {
- "status": "post hoc; not in the pre-registered plan; computed after all ratings and after the pre-registered analysis",
+ "status": "post hoc; not in the analysis plan; computed after all ratings and after the planned analysis",
  "bootstrap": {
   "unit": "registrable domain of the corpus site field",
   "iterations": 10000,

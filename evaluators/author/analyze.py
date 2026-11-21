@@ -225,7 +225,7 @@ def _pair_reports(per_rater: dict[str, dict[str, dict]], tools: list[str], repea
 
 
 def care_flags(items: dict[str, dict], repeat: dict) -> list[str]:
-    """Pre-registered checks for careless rating (protocol, 2026-11-02). Used only for the sensitivity result."""
+    """Planned checks for careless rating (protocol, 2026-11-02). Used only for the sensitivity result."""
     flags = []
     times = [u["seconds_spent"] for u in items.values()]
     if times and float(np.median(times)) < CARE_MIN_MEDIAN_SECONDS:

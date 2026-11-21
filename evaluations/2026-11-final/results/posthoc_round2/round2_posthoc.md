@@ -1,6 +1,6 @@
 # Post hoc analyses, revision round 2 (2026-11-20)
 
-POST HOC (revision round 2, 2026-11-20). Computed from existing per-page results, ratings and saved HTML after all results had been seen; no extraction, no new scoring, no model call. Not in any pre-registered plan.
+POST HOC (revision round 2, 2026-11-20). Computed from existing per-page results, ratings and saved HTML after all results had been seen; no extraction, no new scoring, no model call. Not in any analysis plan.
 
 ## 1. Human set pages on WCXB development domains
 
