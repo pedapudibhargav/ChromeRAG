@@ -1,0 +1,1858 @@
+{
+  "generated_at": "2026-11-21T06:13:48+00:00",
+  "pytest_exit_code": 0,
+  "totals": {
+    "tests": 369,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 17,
+    "passed": 352
+  },
+  "cases": [
+    {
+      "classname": "",
+      "name": "tests.test_llamaindex_reader",
+      "status": "skipped"
+    },
+    {
+      "classname": "tests.test_ablation_cv",
+      "name": "test_ablation_config_catalog",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_ablation_cv",
+      "name": "test_rule_prefix_count",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_ablation_cv",
+      "name": "test_yaml_skip_stems_disable_rules",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_ablation_cv",
+      "name": "test_tf_prefixes_match_rules",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_ablation_cv",
+      "name": "test_ablation_prefix_specs_disable_rules",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_ablation_cv",
+      "name": "test_chrome_ablation_flags_exist",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_ablation_cv",
+      "name": "test_pipeline_ablation_flags_exist",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_chunking",
+      "name": "test_heading_path_and_depth",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_chunking",
+      "name": "test_dedupe_adjacent_title_and_h1",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_chunking",
+      "name": "test_strip_yaml_front_matter",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_chunking",
+      "name": "test_code_block_never_split",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_chunking",
+      "name": "test_table_block_never_split",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_chunking",
+      "name": "test_pipe_table_block_never_split",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_chunking",
+      "name": "test_small_trailing_section_merged_backward",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_chunking",
+      "name": "test_small_trailing_section_merged_forward",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_chunking",
+      "name": "test_empty_input",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_chunking",
+      "name": "test_min_words_fallback_single_chunk",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_chunking",
+      "name": "test_embed_text_and_to_dict",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_chunking",
+      "name": "test_extract_result_chunks",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_chunking",
+      "name": "test_cli_chunks_jsonl",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_chunking",
+      "name": "test_cli_chunks_stdout",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_chunking",
+      "name": "test_short_section_without_merge_partner_is_kept",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_chunking",
+      "name": "test_chunks_keep_every_word",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_chunking",
+      "name": "test_chunks_keep_reading_order",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_content_wrapper_with_sidebar_class_is_not_pruned",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_small_sidebar_is_still_pruned",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_learn_creates_missing_output_dir_and_batch_uses_model",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_extract_writes_into_missing_dir",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_missing_chrome_model_is_a_clean_error",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_stce_keeps_match_far_larger_than_learned_block",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_stce_does_not_learn_shared_class_with_different_text",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_stce_counts_a_repeated_url_once",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_stce_learns_identical_short_text_without_chrome_markup",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_stce_keeps_content_that_only_shares_a_utility_class",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_stce_counts_near_duplicate_pages_once",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_cli_and_stce",
+      "name": "test_stce_keeps_link_list_content_that_only_shares_a_layout_class",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_collapse",
+      "name": "test_rich_collapsed_retry_detects_low_keep_ratio",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_collapse",
+      "name": "test_dual_region_candidate_is_pure_detection",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_collapse",
+      "name": "test_dual_region_candidate_signal_widens_collapsed",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_rejudge_dry_run_reads_from_cache",
+      "status": "skipped"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_rejudge_only_answers_from_old_cache_no_tool_names",
+      "status": "skipped"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_rejudge_identical_qa_graded_once",
+      "status": "skipped"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_rejudge_idk_same_v1_v2_change_table",
+      "status": "skipped"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_rejudge_budget_keeps_earned_labels",
+      "status": "skipped"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_rejudge_rejects_same_from_cache_and_cache_dir",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_locked_split_1_required_for_rejudge",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_enforce_split_raises",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_load_only_split0",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_filter_exclusion_counts",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_sample_seed_stable",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_idk_labelled_missing_without_llm",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_judge_dedup_shared_cache",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_gold_in_top5_short_only",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_retrieve_bm25_top_chunks",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_dry_run_token_estimate",
+      "status": "skipped"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_end_to_end_fake_client",
+      "status": "skipped"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_budget_stops_partial",
+      "status": "skipped"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_intersection_rates_drop_unlabelled",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_judge_unparseable_retries_then_error",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_mid_batch_caches_successes",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_charge_keeps_over_cap_response",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_max_completion_tokens_and_empty_answer",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_retry_usage_from_error_body",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_persisted_spend_across_runs",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_dry_run_judge_no_tool_dedup",
+      "status": "skipped"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_markitdown_missing_raises_at_startup",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_page_timeout_kills_worker",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_infra_failure_not_cached",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_cache_keys_hash_full_inputs",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_page_stats_report_fields",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_trafilatura_receives_url",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_cli_split_rejected",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_empty_extract_contributes_no_chunks",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_httpx_timeout_retries",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_large_extract_result_no_false_timeout",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_extract_pool_reuses_worker_reports_seconds",
+      "status": "skipped"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_rule_label_cache_hashes_answer_and_finish_reason",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_worker_infra_errors_not_cached",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_save_persisted_spend_runs_on_corrupt_cache",
+      "status": "skipped"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_budget_stop_loads_rule_labels",
+      "status": "skipped"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_generate_cache_key_includes_max_tokens_and_temperature",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_generate_dedup_same_context_across_tools",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_strip_yaml_not_horizontal_rule",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_chunk_harness_bm25_tokens_and_newlines",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_cap_context_keeps_newlines",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_mean_words_indexed_aggregates_pages_not_questions",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_mean_words_per_page_aggregates_over_pages_not_questions",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_rule_label_cache_resume_counts",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_markitdown_missing_is_extract_error",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_horizontal_rule_not_stripped_in_retrieve",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_run_retrieval_eval_chunk_keeps_hr_and_tokenize_budget",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_failure_stats_use_scored_plus_all_sampled_block",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_markitdown_missing_returns_clear_error_text",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_page_timeout_not_cached_but_counted_on_resume",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_generate_errors_counted_partial_and_messages",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_generate_prompt_and_cache_key_include_query_time",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_long_single_line_is_split_into_bounded_chunks",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_answer_eval",
+      "name": "test_harness_splits_long_line_and_cap_keeps_text",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_rubric",
+      "name": "test_rubric_fixtures_well_formed",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_crag_rubric",
+      "name": "test_judge_rubric_v2_loads",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_markdown_walks_main_nested_under_list_shell",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_markdown_walks_main_inside_list_item_shell",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_markdown_landmark_li_skips_sibling_nav_and_promo",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_related_article_card_list_is_not_layout_shell",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_visibility_hidden_body_dominant_content_kept",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_hidden_cookie_modal_not_rescued",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_hidden_mega_menu_not_rescued",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_hidden_offcanvas_nav_not_rescued",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_rescued_wrapper_drops_nested_hidden_modal",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_aria_hidden_chrome_not_rescued",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_article_header_inside_river_card_is_not_pruned",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_site_header_inside_article_is_pruned",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_collapsed_lbc_output_retries_without_classifier",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_partial_retry_keeps_final_quality_warnings",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_real_answer_skips_coverage_retry",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_third_pass_skipped_when_lbc_dropped_nothing",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_whitespace_only_emphasis_keeps_word_separation",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_adjacent_bold_tags_do_not_glue_markers",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_break_span_separates_joined_sentences",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_duplicate_h1_emitted_once",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_js_shell_warning_cleared_when_body_has_prose",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_empty_body_warns_using_body_words_not_front_matter_tokens",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_rules_never_drop_html_body_main_or_content_root",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_table_rescue_skips_repeat_dropped_duplicate",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_main_dl_and_figure_render_in_markdown",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_large_main_table_keeps_at_least_thirty_thousand_rows",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_figure_wrapping_content_keeps_the_content",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_dl_wrapping_blocks_keeps_every_block",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_dl_with_paragraph_dd_keeps_all_terms_and_defs",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_dl_consecutive_dts_keep_both_terms",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_long_glossary_dl_not_treated_as_product_metafield",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_pre_literal_asterisks_not_broken",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_inline_code_literal_asterisks_not_broken",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_large_table_keeps_every_row",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_empty_output",
+      "name": "test_dd_with_blocks_keeps_direct_text",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_evaluators.TestDemoBundle",
+      "name": "test_demo_has_no_tool_names",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_evaluators.TestBlinding",
+      "name": "test_order_differs_by_rater_and_is_stable",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_evaluators.TestAtomicResume",
+      "name": "test_atomic_write_and_resume",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_evaluators.TestAppHandler",
+      "name": "test_html_sandbox_headers",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_evaluators.TestAppHandler",
+      "name": "test_index_and_session",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_evaluators.TestAppHandler",
+      "name": "test_multiselect_saved",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_evaluators.TestBuilderKeyPath",
+      "name": "test_rejects_key_inside_bundle",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_evaluators.TestAnalyzerSynthetic",
+      "name": "test_known_net_and_alpha",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_evaluators.TestAnalyzerSynthetic",
+      "name": "test_missing_note_reported",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_evaluators.TestFolderBundleBuilder",
+      "name": "test_stratified_deterministic_and_blind",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_evaluators.TestSyntheticSessionEndToEnd",
+      "name": "test_full_session_analyse_no_tool_leak",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_evaluators.TestNoSrcImportInApp",
+      "name": "test_handout_has_no_tool_names",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_evaluators.TestNoSrcImportInApp",
+      "name": "test_run_module_source_clean",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_evaluators.TestSavedPagesAreOffline",
+      "name": "test_sanitise_removes_all_styling_and_masks_addresses",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_evaluators.TestSavedPagesAreOffline",
+      "name": "test_sanitise_removes_everything_that_can_reach_a_site",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_evaluators",
+      "name": "test_replace_after_draw_keeps_positions_and_type",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_evaluators",
+      "name": "test_split_bundle_covers_every_page_and_shares_anchors",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_evaluators",
+      "name": "test_careless_rater_left_out_only_in_sensitivity_result",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_evaluators",
+      "name": "test_package_adds_practice_notes_only_to_practice_items",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_extractor",
+      "name": "test_version_semver_shape",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_extractor",
+      "name": "test_extract_keeps_main_content_drops_nav",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_extractor",
+      "name": "test_schema_front_matter_before_script_strip",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_extractor",
+      "name": "test_table_linearization",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_extractor",
+      "name": "test_precision_vs_coverage_keeps_core_content",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_extractor",
+      "name": "test_fuse_front_matter_reads_json_ld",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_extractor",
+      "name": "test_empty_html_does_not_crash",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_collect",
+      "name": "test_protocol_constants",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_collect",
+      "name": "test_normalize_url_keeps_query_drops_fragment",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_collect",
+      "name": "test_load_seed_pages",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_collect",
+      "name": "test_inventory_applies_registrable_and_raw",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_collect",
+      "name": "test_build_excluded_merges_inventory",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_collect",
+      "name": "test_refuses_excluded_domain_in_seed_list",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_collect",
+      "name": "test_manifest_roundtrip",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_collect",
+      "name": "test_fetch_one_excluded_without_network",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_collect",
+      "name": "test_fetch_one_applies_shared_english_word_rules",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_collect",
+      "name": "test_shared_validator_same_module",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_collect",
+      "name": "test_dry_run_cli",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_collect",
+      "name": "test_validate_fetched_content_language",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_page_filter",
+      "name": "test_filter_duplicate_json_and_non_english",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_page_filter",
+      "name": "test_english_list_page_with_few_common_words_is_kept",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_page_filter",
+      "name": "test_english_pronoun_and_web_addresses_are_not_foreign_evidence",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_page_filter",
+      "name": "test_terse_list_with_language_switcher_is_kept",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_page_filter",
+      "name": "test_thai_body_under_english_menu_is_removed",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_page_filter",
+      "name": "test_json_inside_textarea",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_page_filter",
+      "name": "test_main_writes_page_filter_json",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_page_judge",
+      "name": "test_sensitivity_rules",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_page_judge",
+      "name": "test_clip_same_budget",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_page_judge",
+      "name": "test_score_row_maps_a_b_to_tools",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_page_judge",
+      "name": "test_summary_separates_unclipped_and_swapped",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_page_judge",
+      "name": "test_rule_sets_cover_all_ids",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_page_judge",
+      "name": "test_fixture_cases_fit_label_rule_pairs",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_rater_safety_filter",
+      "name": "test_domain_rules",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_rater_safety_filter",
+      "name": "test_text_needs_several_hits",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_run",
+      "name": "test_refuses_held_out_set",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_run",
+      "name": "test_refuses_new_pages_and_pages_dir",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_run",
+      "name": "test_second_held_out_run_requires_resume",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_run",
+      "name": "test_allows_synthetic_set",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_run",
+      "name": "test_cache_key_includes_html_tool_version",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_run",
+      "name": "test_error_rows_not_reused",
+      "status": "skipped"
+    },
+    {
+      "classname": "tests.test_final_run",
+      "name": "test_load_pages_from_dir",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_run",
+      "name": "test_run_set_caches",
+      "status": "skipped"
+    },
+    {
+      "classname": "tests.test_final_run",
+      "name": "test_summarize_includes_f1",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_run",
+      "name": "test_freeze_check_passes_at_repo_tag",
+      "status": "skipped"
+    },
+    {
+      "classname": "tests.test_final_run",
+      "name": "test_freeze_check_reports_missing_tag",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_run",
+      "name": "test_recorded_dependency_versions",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_run",
+      "name": "test_main_synthetic",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_sample",
+      "name": "test_tranco_load_and_blocklist",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_sample",
+      "name": "test_select_respects_quota_and_domain_cap",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_sample",
+      "name": "test_merge_domain_results_fixed_order_not_completion_order",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_sample",
+      "name": "test_sample_offline_deterministic_same_responses",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_sample",
+      "name": "test_json_ld_classifies_after_fetch_unmatched_unused",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_sample",
+      "name": "test_pricing_same_registrable_domain_and_final_domain_cap",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_sample",
+      "name": "test_content_language_shared_validator",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_sample",
+      "name": "test_sample_offline_pipeline",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_sample",
+      "name": "test_visible_word_count_rejects_short",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_sample",
+      "name": "test_write_seed_list",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_final_sample",
+      "name": "test_cap_candidates_is_fixed_and_bounded",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_toc_dropped_with_label",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_toc_like_list_that_is_content_kept",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_pager_dropped_at_bottom",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_pager_mid_page_kept_without_class",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_comments_dropped_on_article",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_comments_kept_on_forum",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_related_posts_dropped",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_placeholder_dropped",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_config_flag_disables_rule[chrome_drop_toc-html0-contents-body text]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_config_flag_disables_rule[chrome_drop_pager-html1-next page-body text]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_config_flag_disables_rule[chrome_drop_comments-html2-remove me please-body text]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_config_flag_disables_rule[chrome_drop_related-html3-you may also like-body text]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_drop_generic_chrome_direct",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_cta_button_dropped",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_cta_in_sentence_kept",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_share_strip_dropped",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_social_topic_paragraph_kept",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_newsletter_form_dropped",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_newsletter_mention_in_article_kept",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_author_bio_dropped_after_article",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_byline_before_article_kept",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_back_to_top_dropped",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_language_switcher_dropped",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_new_rule_config_flag[chrome_drop_cta-html0-contact us-body text-cta]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_new_rule_config_flag[chrome_drop_share-html1-facebook-body text-share]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_new_rule_config_flag[chrome_drop_newsletter-html2-sign up for our newsletter-body text-newsletter]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_new_rule_config_flag[chrome_drop_author_bio-html3-writer bio-body text-author_bio]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_new_rule_config_flag[chrome_drop_nav_misc-html4-top-body text-nav_misc]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_trim_tail_drops_footer_chrome",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_trim_tail_keeps_short_real_conclusion",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_micro_block_drops_stray_glyph",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_micro_block_keeps_numbered_list_and_code",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_attr_junk_dropped",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_attr_junk_keeps_table",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_tail_micro_attr_config_flag[chrome_trim_tail-html0-tags: widgets-third paragraph-trim_tail]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_tail_micro_attr_config_flag[chrome_drop_micro_blocks-html1-|-body text-micro_blocks]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_generic_chrome",
+      "name": "test_tail_micro_attr_config_flag[chrome_drop_attr_junk-html2-class=foo-bar-body text-attr_junk]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_golden",
+      "name": "test_golden_check",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_human_set_collect",
+      "name": "test_only_approved_pages_are_allowed",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_human_set_collect",
+      "name": "test_sensitive_address_is_rejected",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_human_set_collect",
+      "name": "test_no_news_or_left_out_sites",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_human_set_collect",
+      "name": "test_gate_outcomes",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_human_set_collect",
+      "name": "test_forum_filter",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_input_quality",
+      "name": "test_visible_text_matches_legacy_on_fixtures",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_input_quality",
+      "name": "test_js_shell_triggers_warning",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_input_quality",
+      "name": "test_rich_html_has_no_thin_warning",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_input_quality",
+      "name": "test_extract_result_surfaces_warnings",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_input_quality",
+      "name": "test_empty_html_warns",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_langchain_loader",
+      "name": "test_loader_moves_front_matter_into_metadata",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_langchain_loader",
+      "name": "test_loader_can_skip_javascript_shells",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_blocks_are_listed_in_document_order_without_nesting",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_feature_matrix_shape_and_box_ids",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_shipped_model_matches_feature_count",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_model_scores_prose_above_chrome",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_extraction_keeps_article_and_drops_page_furniture",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_classifier_can_be_switched_off",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_link_targets_are_off_by_default_and_available",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_content_after_a_stray_closing_html_tag_is_kept",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_page_wide_form_does_not_swallow_the_article",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_layout_table_is_unwrapped_not_duplicated",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_highlighted_code_keeps_its_lines",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_page_title_heading_is_kept",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_ordered_and_nested_lists_keep_their_shape",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_lbc_rescue_headings_keeps_section_heading_above_body",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_lbc_rescue_tables_keeps_pricing_under_kept_heading",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_lbc_rescue_tables_pair_rescues_near_threshold_heading_and_table",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_lbc_rescue_tables_skips_footer_grid_after_kept_paragraph",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_lbc_rescue_tables_skips_dropped_sponsors_ad_table",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_lbc_rescue_tables_skips_comparison_tiles_and_footer_contact",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_lbc_rescue_tables_respects_enable_tables_false",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_lbc_title_fallback_keeps_content_root_h1_without_title_match",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_lbc",
+      "name": "test_lbc_rescue_lead_keeps_summary_after_title",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_offline",
+      "name": "test_extract_learn_and_batch_work_offline",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_offline",
+      "name": "test_token_estimate_is_deterministic",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_psl",
+      "name": "test_co_uk",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_psl",
+      "name": "test_wildcard_ck",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_psl",
+      "name": "test_exception_city_kawasaki",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_psl",
+      "name": "test_www_stripped_for_registrable",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_reviewer_p09b",
+      "name": "test_trim_notes_follow_winning_pass_not_rejected_retry",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_reviewer_p09b",
+      "name": "test_trim_notes_context_isolated_across_resets",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_reviewer_p09b",
+      "name": "test_fold_model_loader_raises_when_missing",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_reviewer_p09b",
+      "name": "test_empty_output_fold_model_raises_when_missing",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_reviewer_p09b",
+      "name": "test_site_bootstrap_is_page_weighted",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_reviewer_p09b",
+      "name": "test_half_uses_cv_site_of_not_hostname_only",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_reviewer_p09b",
+      "name": "test_rebuild_strict_copies_assets_and_documents_test_url_use",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_reviewer_p09b",
+      "name": "test_strict_dev_cv_tool_row_omits_ms",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_reviewer_p09b",
+      "name": "test_extract_does_not_raise_on_ordinary_page",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_robustness",
+      "name": "test_per_call_config_uses_inferred_type_per_url",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_robustness",
+      "name": "test_hidden_nodes_removed_from_output",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_robustness",
+      "name": "test_skip_link_removed",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_robustness",
+      "name": "test_content_root_in_diagnostics",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_robustness",
+      "name": "test_very_deep_nesting_does_not_crash",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_robustness",
+      "name": "test_batch_survives_one_failing_page",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_robustness",
+      "name": "test_non_utf8_bytes_are_decoded_with_the_declared_charset",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_robustness",
+      "name": "test_learn_is_fast_on_unclosed_script_tags",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_robustness",
+      "name": "test_output_is_deterministic",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_robustness",
+      "name": "test_deep_emphasis_nesting_does_not_raise",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_robustness",
+      "name": "test_deep_list_nesting_does_not_raise",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_robustness",
+      "name": "test_lone_surrogate_does_not_raise_on_encode",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_robustness",
+      "name": "test_pathological_inputs_finish_under_two_seconds",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_ids_unique_and_documented",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[consent.onetrust]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[consent.cookiebot]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[consent.osano]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[share.social]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[share.related]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[tf.comments.thread]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[tf.comments.respond]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[tf.sidebar.rail]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[tf.author.byline]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[tf.pagination.nav]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[tf.skip.back_to_top]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[tf.footer.legal]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_rule_drops_chrome_and_keeps_content[tf.tags.cloud]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_text_outside_rule_scope_is_kept",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_rules",
+      "name": "test_class_token_is_a_whole_class_name",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_run_llm_judge_final",
+      "name": "test_ab_assignment_shared_across_baselines",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_strict_split",
+      "name": "test_strict_train_ids_disjoint_from_leaked",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_strict_split",
+      "name": "test_strict_train_domains_disjoint_from_test",
+      "status": "skipped"
+    },
+    {
+      "classname": "tests.test_tables",
+      "name": "test_rectangular_table_renders_pipe_markdown",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_tables",
+      "name": "test_colspan_table_stays_linearized",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_tables",
+      "name": "test_table_format_linearized_kwarg",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_tables",
+      "name": "test_pipe_cell_escapes_pipes",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_tables",
+      "name": "test_extractor_default_pipe_table",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_tables",
+      "name": "test_extractor_linearized_table_format",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_tables",
+      "name": "test_table_without_rows_does_not_crash",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_tables",
+      "name": "test_empty_columns_omitted_from_linearized_and_pipe",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_tables",
+      "name": "test_spacer_rows_still_allow_pipe_table",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_tables",
+      "name": "test_blank_header_row_does_not_emit_separator_only_pipe",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_tables",
+      "name": "test_pipe_table_inside_list_keeps_header_above_separator",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_tables",
+      "name": "test_shallow_first_table_does_not_skip_deep_nesting_guard",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_tables",
+      "name": "test_layout_wrapping_eighty_sibling_data_tables_keeps_tables",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_tables",
+      "name": "test_headered_table_over_emit_cap_warns",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_tables",
+      "name": "test_one_hundred_twenty_thousand_row_table_warns",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_trafilatura_ideas",
+      "name": "test_link_blocks_drop_high_link_density_short_nav",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_trafilatura_ideas",
+      "name": "test_link_blocks_keep_editorial_list_in_main",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_trafilatura_ideas",
+      "name": "test_micro_drops_tiny_leaf_nodes",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_trafilatura_ideas",
+      "name": "test_flags_disable_passes",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[html0]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[html1]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[html2]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[html3]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[html4]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[html5]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[html6]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[html7]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[html8]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[html9]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[html10]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[html11]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[html12]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[html13]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[html14]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[html15]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_equal_live_bs4[html16]",
+      "status": "passed"
+    },
+    {
+      "classname": "tests.test_treestats",
+      "name": "test_stats_stay_valid_for_later_tags_when_visited_tag_is_removed",
+      "status": "passed"
+    }
+  ]
+}

@@ -1,0 +1,235 @@
+{
+  "n_pages": 242,
+  "chunk_words": 200,
+  "n_queries": {
+    "heading": 331,
+    "passage": 330,
+    "title": 112
+  },
+  "tools": {
+    "chromerag_coverage": {
+      "chunks": 1898,
+      "indexed_words": 347446,
+      "scores": {
+        "heading": {
+          "context_chrome@5": 0.005,
+          "hit@1": 0.773,
+          "hit@5": 0.915,
+          "mrr@5": 0.832
+        },
+        "all": {
+          "context_chrome@5": 0.006,
+          "hit@1": 0.873,
+          "hit@5": 0.946,
+          "mrr@5": 0.904
+        },
+        "passage": {
+          "context_chrome@5": 0.006,
+          "hit@1": 0.955,
+          "hit@5": 0.97,
+          "mrr@5": 0.961
+        },
+        "title": {
+          "context_chrome@5": 0.007,
+          "hit@1": 0.929,
+          "hit@5": 0.964,
+          "mrr@5": 0.944
+        }
+      }
+    },
+    "chromerag": {
+      "chunks": 1634,
+      "indexed_words": 295937,
+      "scores": {
+        "heading": {
+          "context_chrome@5": 0.003,
+          "hit@1": 0.789,
+          "hit@5": 0.918,
+          "mrr@5": 0.842
+        },
+        "all": {
+          "context_chrome@5": 0.004,
+          "hit@1": 0.882,
+          "hit@5": 0.948,
+          "mrr@5": 0.909
+        },
+        "passage": {
+          "context_chrome@5": 0.003,
+          "hit@1": 0.961,
+          "hit@5": 0.97,
+          "mrr@5": 0.964
+        },
+        "title": {
+          "context_chrome@5": 0.007,
+          "hit@1": 0.929,
+          "hit@5": 0.973,
+          "mrr@5": 0.946
+        }
+      }
+    },
+    "trafilatura": {
+      "chunks": 1950,
+      "indexed_words": 362191,
+      "scores": {
+        "heading": {
+          "context_chrome@5": 0.006,
+          "hit@1": 0.761,
+          "hit@5": 0.879,
+          "mrr@5": 0.809
+        },
+        "all": {
+          "context_chrome@5": 0.006,
+          "hit@1": 0.856,
+          "hit@5": 0.921,
+          "mrr@5": 0.882
+        },
+        "passage": {
+          "context_chrome@5": 0.005,
+          "hit@1": 0.936,
+          "hit@5": 0.952,
+          "mrr@5": 0.943
+        },
+        "title": {
+          "context_chrome@5": 0.006,
+          "hit@1": 0.902,
+          "hit@5": 0.955,
+          "mrr@5": 0.921
+        }
+      }
+    },
+    "markitdown": {
+      "chunks": 3909,
+      "indexed_words": 1159195,
+      "scores": {
+        "heading": {
+          "context_chrome@5": 0.029,
+          "hit@1": 0.779,
+          "hit@5": 0.921,
+          "mrr@5": 0.834
+        },
+        "all": {
+          "context_chrome@5": 0.026,
+          "hit@1": 0.889,
+          "hit@5": 0.964,
+          "mrr@5": 0.918
+        },
+        "passage": {
+          "context_chrome@5": 0.018,
+          "hit@1": 0.988,
+          "hit@5": 1.0,
+          "mrr@5": 0.994
+        },
+        "title": {
+          "context_chrome@5": 0.036,
+          "hit@1": 0.92,
+          "hit@5": 0.982,
+          "mrr@5": 0.943
+        }
+      }
+    },
+    "readability": {
+      "chunks": 1702,
+      "indexed_words": 315600,
+      "scores": {
+        "heading": {
+          "context_chrome@5": 0.005,
+          "hit@1": 0.571,
+          "hit@5": 0.701,
+          "mrr@5": 0.622
+        },
+        "all": {
+          "context_chrome@5": 0.006,
+          "hit@1": 0.684,
+          "hit@5": 0.775,
+          "mrr@5": 0.719
+        },
+        "passage": {
+          "context_chrome@5": 0.007,
+          "hit@1": 0.73,
+          "hit@5": 0.788,
+          "mrr@5": 0.751
+        },
+        "title": {
+          "context_chrome@5": 0.006,
+          "hit@1": 0.884,
+          "hit@5": 0.955,
+          "mrr@5": 0.911
+        }
+      }
+    }
+  },
+  "paired_bootstrap": [
+    {
+      "comparison": "chromerag_coverage - chromerag",
+      "metric": "hit@5",
+      "mean_diff": -0.003,
+      "ci95": [
+        -0.006,
+        0.0
+      ]
+    },
+    {
+      "comparison": "chromerag_coverage - chromerag",
+      "metric": "context_chrome@5",
+      "mean_diff": 0.002,
+      "ci95": [
+        0.001,
+        0.003
+      ]
+    },
+    {
+      "comparison": "chromerag_coverage - trafilatura",
+      "metric": "hit@5",
+      "mean_diff": 0.025,
+      "ci95": [
+        0.005,
+        0.047
+      ]
+    },
+    {
+      "comparison": "chromerag_coverage - trafilatura",
+      "metric": "context_chrome@5",
+      "mean_diff": -0.0,
+      "ci95": [
+        -0.002,
+        0.002
+      ]
+    },
+    {
+      "comparison": "chromerag_coverage - markitdown",
+      "metric": "hit@5",
+      "mean_diff": -0.018,
+      "ci95": [
+        -0.036,
+        0.0
+      ]
+    },
+    {
+      "comparison": "chromerag_coverage - markitdown",
+      "metric": "context_chrome@5",
+      "mean_diff": -0.02,
+      "ci95": [
+        -0.024,
+        -0.017
+      ]
+    },
+    {
+      "comparison": "chromerag_coverage - readability",
+      "metric": "hit@5",
+      "mean_diff": 0.171,
+      "ci95": [
+        0.13,
+        0.213
+      ]
+    },
+    {
+      "comparison": "chromerag_coverage - readability",
+      "metric": "context_chrome@5",
+      "mean_diff": -0.0,
+      "ci95": [
+        -0.003,
+        0.002
+      ]
+    }
+  ]
+}

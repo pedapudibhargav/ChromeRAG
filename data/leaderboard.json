@@ -1,0 +1,246 @@
+{
+  "source": "corpus_comparison_report.json",
+  "n_scoreable": 242,
+  "n_fetched": 268,
+  "corpus_urls_listed": 367,
+  "summary": {
+    "chromerag": {
+      "pages_scored": 242,
+      "avg_content_recall": 0.653,
+      "avg_noise_retention": 0.0072,
+      "avg_f_balanced": 0.7647,
+      "avg_f_precision": 0.6915,
+      "avg_f_coverage": 0.6915,
+      "avg_tokens": 2090.5455,
+      "avg_noise_per_1k_tokens": 0.0733
+    },
+    "chromerag_coverage": {
+      "pages_scored": 242,
+      "avg_content_recall": 0.6956,
+      "avg_noise_retention": 0.0085,
+      "avg_f_balanced": 0.7975,
+      "avg_f_precision": 0.7312,
+      "avg_f_coverage": 0.7312,
+      "avg_tokens": 2442.595,
+      "avg_noise_per_1k_tokens": 0.0764
+    },
+    "chromerag_precision": {
+      "pages_scored": 242,
+      "avg_content_recall": 0.5925,
+      "avg_noise_retention": 0.0075,
+      "avg_f_balanced": 0.7112,
+      "avg_f_precision": 0.6325,
+      "avg_f_coverage": 0.6325,
+      "avg_tokens": 1742.9421,
+      "avg_noise_per_1k_tokens": 0.0659
+    },
+    "trafilatura": {
+      "pages_scored": 242,
+      "avg_content_recall": 0.6399,
+      "avg_noise_retention": 0.0122,
+      "avg_f_balanced": 0.7393,
+      "avg_f_precision": 0.6733,
+      "avg_f_coverage": 0.6733,
+      "avg_tokens": 2487.3554,
+      "avg_noise_per_1k_tokens": 0.2138
+    },
+    "readability": {
+      "pages_scored": 242,
+      "avg_content_recall": 0.4492,
+      "avg_noise_retention": 0.0129,
+      "avg_f_balanced": 0.5309,
+      "avg_f_precision": 0.4752,
+      "avg_f_coverage": 0.4752,
+      "avg_tokens": 2066.719,
+      "avg_noise_per_1k_tokens": 0.0827
+    },
+    "markdownify": {
+      "pages_scored": 242,
+      "avg_content_recall": 0.6909,
+      "avg_noise_retention": 0.2512,
+      "avg_f_balanced": 0.695,
+      "avg_f_precision": 0.6861,
+      "avg_f_coverage": 0.6861,
+      "avg_tokens": 8846.0868,
+      "avg_noise_per_1k_tokens": 0.566
+    },
+    "html2text": {
+      "pages_scored": 242,
+      "avg_content_recall": 0.676,
+      "avg_noise_retention": 0.2671,
+      "avg_f_balanced": 0.6719,
+      "avg_f_precision": 0.6633,
+      "avg_f_coverage": 0.6633,
+      "avg_tokens": 8728.5041,
+      "avg_noise_per_1k_tokens": 0.5581
+    },
+    "beautifulsoup_text": {
+      "pages_scored": 242,
+      "avg_content_recall": 0.8145,
+      "avg_noise_retention": 0.8233,
+      "avg_f_balanced": 0.2444,
+      "avg_f_precision": 0.3685,
+      "avg_f_coverage": 0.3685,
+      "avg_tokens": 4476.3264,
+      "avg_noise_per_1k_tokens": 0.9248
+    },
+    "markitdown": {
+      "pages_scored": 242,
+      "avg_content_recall": 0.6908,
+      "avg_noise_retention": 0.25,
+      "avg_f_balanced": 0.6955,
+      "avg_f_precision": 0.6862,
+      "avg_f_coverage": 0.6862,
+      "avg_tokens": 8886.2645,
+      "avg_noise_per_1k_tokens": 0.5606
+    }
+  },
+  "summary_all_fetched": {
+    "chromerag": {
+      "pages_scored": 268,
+      "avg_content_recall": 0.6141,
+      "avg_noise_retention": 0.011,
+      "avg_f_balanced": 0.7182,
+      "avg_tokens": 1918.0485
+    },
+    "chromerag_coverage": {
+      "pages_scored": 268,
+      "avg_content_recall": 0.6602,
+      "avg_noise_retention": 0.0122,
+      "avg_f_balanced": 0.7551,
+      "avg_tokens": 2238.1343
+    },
+    "chromerag_precision": {
+      "pages_scored": 268,
+      "avg_content_recall": 0.5581,
+      "avg_noise_retention": 0.0105,
+      "avg_f_balanced": 0.6681,
+      "avg_tokens": 1604.5746
+    },
+    "trafilatura": {
+      "pages_scored": 268,
+      "avg_content_recall": 0.6068,
+      "avg_noise_retention": 0.0242,
+      "avg_f_balanced": 0.6957,
+      "avg_tokens": 2277.6157
+    },
+    "readability": {
+      "pages_scored": 268,
+      "avg_content_recall": 0.4197,
+      "avg_noise_retention": 0.0168,
+      "avg_f_balanced": 0.4955,
+      "avg_tokens": 1872.2015
+    },
+    "markdownify": {
+      "pages_scored": 268,
+      "avg_content_recall": 0.6577,
+      "avg_noise_retention": 0.2414,
+      "avg_f_balanced": 0.6607,
+      "avg_tokens": 8380.459
+    },
+    "html2text": {
+      "pages_scored": 268,
+      "avg_content_recall": 0.644,
+      "avg_noise_retention": 0.2559,
+      "avg_f_balanced": 0.6396,
+      "avg_tokens": 8276.0299
+    },
+    "beautifulsoup_text": {
+      "pages_scored": 268,
+      "avg_content_recall": 0.7727,
+      "avg_noise_retention": 0.7928,
+      "avg_f_balanced": 0.2345,
+      "avg_tokens": 4139.7425
+    },
+    "markitdown": {
+      "pages_scored": 268,
+      "avg_content_recall": 0.6576,
+      "avg_noise_retention": 0.2403,
+      "avg_f_balanced": 0.6612,
+      "avg_tokens": 8422.0709
+    }
+  },
+  "paired_bootstrap": [
+    {
+      "a": "chromerag_coverage",
+      "b": "trafilatura",
+      "metric": "f_balanced",
+      "n": 242,
+      "mean_diff": 0.0583,
+      "ci_low": 0.0344,
+      "ci_high": 0.0846
+    },
+    {
+      "a": "chromerag_coverage",
+      "b": "trafilatura",
+      "metric": "content_recall",
+      "n": 242,
+      "mean_diff": 0.0557,
+      "ci_low": 0.0293,
+      "ci_high": 0.0821
+    },
+    {
+      "a": "chromerag_coverage",
+      "b": "trafilatura",
+      "metric": "noise_retention",
+      "n": 242,
+      "mean_diff": -0.0037,
+      "ci_low": -0.0128,
+      "ci_high": 0.0035
+    },
+    {
+      "a": "chromerag",
+      "b": "trafilatura",
+      "metric": "f_balanced",
+      "n": 242,
+      "mean_diff": 0.0255,
+      "ci_low": 0.0018,
+      "ci_high": 0.0502
+    },
+    {
+      "a": "chromerag",
+      "b": "trafilatura",
+      "metric": "content_recall",
+      "n": 242,
+      "mean_diff": 0.0132,
+      "ci_low": -0.0114,
+      "ci_high": 0.0368
+    },
+    {
+      "a": "chromerag",
+      "b": "trafilatura",
+      "metric": "noise_retention",
+      "n": 242,
+      "mean_diff": -0.0049,
+      "ci_low": -0.0144,
+      "ci_high": 0.0015
+    },
+    {
+      "a": "chromerag_coverage",
+      "b": "markitdown",
+      "metric": "f_balanced",
+      "n": 242,
+      "mean_diff": 0.102,
+      "ci_low": 0.0796,
+      "ci_high": 0.1238
+    },
+    {
+      "a": "chromerag_coverage",
+      "b": "markitdown",
+      "metric": "content_recall",
+      "n": 242,
+      "mean_diff": 0.0048,
+      "ci_low": -0.0167,
+      "ci_high": 0.0274
+    },
+    {
+      "a": "chromerag_coverage",
+      "b": "markitdown",
+      "metric": "noise_retention",
+      "n": 242,
+      "mean_diff": -0.2415,
+      "ci_low": -0.2642,
+      "ci_high": -0.2192
+    }
+  ]
+}
