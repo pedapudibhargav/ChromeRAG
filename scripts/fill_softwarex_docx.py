@@ -373,6 +373,40 @@ def _column_widths(rows: list[list[str]], ncols: int, total: int = 9000) -> list
     return widths
 
 
+_OPTION = re.compile(r"(?<![^\s(])--?[A-Za-z][A-Za-z0-9-]*")
+
+
+def _nobreak_option_hyphens(p: etree._Element) -> None:
+    """In table cells, keep command-line options such as --min-pages on one line.
+
+    Word may break a line after any hyphen, which split "--" from "min-pages" in narrow
+    columns. Hyphens inside option tokens become non-breaking hyphens (w:noBreakHyphen).
+    """
+    for run in p.findall(f"{W}r"):
+        t = run.find(f"{W}t")
+        if t is None or not t.text or not _OPTION.search(t.text):
+            continue
+        text, pos, pieces = t.text, 0, []
+        for m in _OPTION.finditer(text):
+            pieces.append(("t", text[pos:m.start()]))
+            for part in re.split(r"(-)", m.group(0)):
+                if part == "-":
+                    pieces.append(("nbh", ""))
+                elif part:
+                    pieces.append(("t", part))
+            pos = m.end()
+        pieces.append(("t", text[pos:]))
+        run.remove(t)
+        for kind, val in pieces:
+            if kind == "nbh":
+                etree.SubElement(run, f"{W}noBreakHyphen")
+            elif val:
+                el = etree.SubElement(run, f"{W}t")
+                el.text = val
+                if val[:1].isspace() or val[-1:].isspace():
+                    el.set("{http://www.w3.org/XML/1998/namespace}space", "preserve")
+
+
 def _table(rows: list[list[str]]) -> etree._Element:
     """Plain Word table (horizontal rules only; no new table styles); compact 9 pt cells."""
     tbl = etree.Element(f"{W}tbl")
@@ -415,6 +449,7 @@ def _table(rows: list[list[str]]) -> etree._Element:
                 etree.SubElement(rpr, f"{W}b")
                 p.find(f"{W}r").insert(0, rpr)
             _compact_cell_para(p)
+            _nobreak_option_hyphens(p)
             # Short tables stay on one page; longer ones keep only the header with the first data row.
             if r_idx < len(rows) - 1 and (keep_together or r_idx == 0):
                 _keep_next(p)

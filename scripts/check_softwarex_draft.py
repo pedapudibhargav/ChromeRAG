@@ -90,7 +90,11 @@ def main() -> int:
     body_words = sum(_words(t) for t in texts[start:end] if not t.startswith("__FIG"))
     table_words = 0
     for t in body.findall(f"{W}tbl")[1:]:
-        table_words += _words(" ".join(x.text or "" for x in t.iter(f"{W}t")))
+        # one string per cell paragraph; a non-breaking hyphen (w:noBreakHyphen) is part of its word
+        table_words += _words(" ".join(
+            "".join((x.text or "") if x.tag == f"{W}t" else "-" for x in para.iter(f"{W}t", f"{W}noBreakHyphen"))
+            for para in t.iter(f"{W}p")
+        ))
     total = n_abs + body_words + table_words
     print(f"Words (abstract + main sections + captions + tables): {total} (limit 4000)")
     if total > 4000:
