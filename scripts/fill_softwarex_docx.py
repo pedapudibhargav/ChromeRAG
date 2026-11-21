@@ -768,6 +768,34 @@ def main() -> None:
         sp.set(f"{W}lineRule", "exact")
         tbl.addnext(spacer)
 
+    # Number the main sections as the template does (numbering list 1: "1.", "1.1."),
+    # so that "Section 3.5" in the text and the response letter resolves.
+    numbered = ("Motivation and significance", "Software description", "Illustrative examples", "Impact", "Conclusions")
+    before_num = {f"{W}{t}" for t in ("pStyle", "keepNext", "keepLines", "pageBreakBefore", "framePr", "widowControl")}
+    in_main = False
+    for p in body.findall(f"{W}p"):
+        ps = p.find(f"{W}pPr/{W}pStyle")
+        style = ps.get(f"{W}val") if ps is not None else ""
+        if style not in ("Heading1", "Heading2"):
+            continue
+        text = _para_text(p)
+        if style == "Heading1":
+            in_main = text in numbered
+            level = 0 if in_main else None
+        else:
+            level = 1 if in_main else None
+        if level is None:
+            continue
+        pPr = p.find(f"{W}pPr")
+        num = etree.Element(f"{W}numPr")
+        etree.SubElement(num, f"{W}ilvl").set(f"{W}val", str(level))
+        etree.SubElement(num, f"{W}numId").set(f"{W}val", "1")
+        pos = 0
+        for i, child in enumerate(pPr):
+            if child.tag in before_num:
+                pos = i + 1
+        pPr.insert(pos, num)
+
     for el in root.iter():
         for attr in list(el.attrib):
             local = etree.QName(attr).localname if attr.startswith("{") else attr
