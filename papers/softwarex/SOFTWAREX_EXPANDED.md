@@ -2,7 +2,7 @@
 
 **Target journal:** Elsevier *SoftwareX* (Original Software Publication)  
 **Package:** `chromerag` (v0.1.5)  
-**Draft status:** Revision 1 (manuscript SOFTX-S-26-01950). Source text for `scripts/fill_softwarex_docx.py`, which fills the official SoftwareX OSP Word template (v6, March 2026). Do not submit this Markdown file as-is. Supplementary tables S1–S9: `evaluations/2026-11-final/SUPPLEMENT.md`.
+**Draft status:** Revision 1 (manuscript SOFTX-D-26-01378). Source text for `scripts/fill_softwarex_docx.py`, which fills the official SoftwareX OSP Word template (v6, March 2026). Do not submit this Markdown file as-is. Supplementary tables S1–S9: `evaluations/2026-11-final/SUPPLEMENT.md`.
 
 **Authors:** Bhargava Chary Peddapudi (Independent Researcher, Milpitas, California 95035, United States; ORCID: https://orcid.org/0009-0002-8523-8415)  
 **Corresponding email:** pedapudibhargav@gmail.com

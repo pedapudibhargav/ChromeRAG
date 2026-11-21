@@ -30,7 +30,7 @@ def tbl(header, rows):
     for r in rows: w('| ' + ' | '.join(str(x) for x in r) + ' |')
     w('')
 
-w('# Supplementary material: ChromeRAG 0.1.5 (SoftwareX revision 1, SOFTX-S-26-01950)')
+w('# Supplementary material: ChromeRAG 0.1.5 (SoftwareX revision 1, SOFTX-D-26-01378)')
 w('')
 w('Tables S1–S9 support the revised manuscript. Values are read by script (`poc/gen_supplement.py`) from the file named in each table '
   'note. Values marked "author record" come from the author\'s dated audit record and have no public file. Intervals are 95% percentile bootstrap intervals; "site" means registrable domain '
